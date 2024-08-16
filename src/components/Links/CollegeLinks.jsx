@@ -1,53 +1,85 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import '../../App.css';
 
 const Collegelinks = () => {
+    const { collegeName } = useParams();
+
     return (
-        <section className="flex justify-center items-center text-center">
-            <div className="bg-white h-24 flex justify-between items-center p-10 my-10 gap-12 border-radius-38 text-lg">
-                <div className="rounded-xl hover:bg-sky-100 w-auto px-4 py-2">
-                    <Link to="seniors" className="">
-                        <i class="fa-solid fa-user-tie"></i>
+        <section className="flex justify-center items-center text-center my-10">
+            <div className="bg-white h-24 flex justify-between items-center p-10 gap-12 border-radius-38 text-lg">
+                <Link
+                    to={`/college/${collegeName}`}
+                    className="rounded-xl hover:bg-sky-100 w-auto px-4 py-2"
+                >
+                    <div>
+                        <i className="fa-solid fa-building"></i>
+                        <p>College</p>
+                    </div>
+                </Link>
+                <Link
+                    to={`/college/${collegeName}/seniors`}
+                    className="rounded-xl hover:bg-sky-100 w-auto px-4 py-2"
+                >
+                    <div>
+                        <i className="fa-solid fa-user-tie"></i>
                         <p>Seniors</p>
-                    </Link>
-                </div>
-                <div className="rounded-xl hover:bg-sky-100 w-auto px-4 py-2">
-                    <Link to="pyq" className="">
-                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                </Link>
+                <Link
+                    to={`/college/${collegeName}/pyq`}
+                    className="rounded-xl hover:bg-sky-100 w-auto px-4 py-2"
+                >
+                    <div>
+                        <i className="fa-solid fa-bolt"></i>
                         <p>PYQs</p>
-                    </Link>
-                </div>
-                <div className="rounded-xl hover:bg-sky-100 w-auto px-4 py-2">
-                    <Link to="store" className="">
-                        <i class="fa-solid fa-store"></i>
+                    </div>
+                </Link>
+                <Link
+                    to={`/college/${collegeName}/store`}
+                    className="rounded-xl hover:bg-sky-100 w-auto px-4 py-2"
+                >
+                    <div>
+                        <i className="fa-solid fa-store"></i>
                         <p>Store</p>
-                    </Link>
-                </div>
-                <div className="rounded-xl hover:bg-sky-100 w-auto px-4 py-2">
-                    <Link to="community" className="">
-                        <i class="fa-solid fa-users"></i>
+                    </div>
+                </Link>
+                <Link
+                    to={`/college/${collegeName}/community`}
+                    className="rounded-xl hover:bg-sky-100 w-auto px-4 py-2"
+                >
+                    <div>
+                        <i className="fa-solid fa-users"></i>
                         <p>Community</p>
-                    </Link>
-                </div>
-                <div className="rounded-xl hover:bg-sky-100 w-auto px-4 py-2">
-                    <Link to="notes" className="">
-                        <i class="fa-solid fa-note-sticky"></i>
+                    </div>
+                </Link>
+                <Link
+                    to={`/college/${collegeName}/notes`}
+                    className="rounded-xl hover:bg-sky-100 w-auto px-4 py-2"
+                >
+                    <div>
+                        <i className="fa-solid fa-note-sticky"></i>
                         <p>Notes</p>
-                    </Link>
-                </div>
-                <div className="rounded-xl hover:bg-sky-100 w-auto px-4 py-2">
-                    <Link to="whatsapp-group" className="">
-                        <i class="fa-brands fa-square-whatsapp"></i>
+                    </div>
+                </Link>
+                <Link
+                    to={`/college/${collegeName}/whatsapp-group`}
+                    className="rounded-xl hover:bg-sky-100 w-auto px-4 py-2"
+                >
+                    <div>
+                        <i className="fa-brands fa-square-whatsapp"></i>
                         <p>Groups</p>
-                    </Link>
-                </div>
-                <div className="rounded-xl hover:bg-sky-100 w-auto px-4 py-2">
-                    <Link to="opportunities" className="">
-                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                </Link>
+                <Link
+                    to={`/college/${collegeName}/opportunities`}
+                    className="rounded-xl hover:bg-sky-100 w-auto px-4 py-2"
+                >
+                    <div>
+                        <i className="fa-solid fa-magnifying-glass"></i>
                         <p>Opportunities</p>
-                    </Link>
-                </div>
+                    </div>
+                </Link>
             </div>
         </section>
     );

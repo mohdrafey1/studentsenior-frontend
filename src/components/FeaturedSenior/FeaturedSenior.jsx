@@ -1,5 +1,4 @@
 import React from 'react';
-import girlimg from '../../assets/womenn.jpg';
 
 const FeaturedSeniors = ({ seniors }) => {
     return (
@@ -64,7 +63,7 @@ const FeaturedSeniors = ({ seniors }) => {
                             <div className="content flex flex-col justify-center items-center text-center">
                                 <div className="img h-32 w-32 rounded-full p-1 bg-sky-300 mb-4">
                                     <img
-                                        src={girlimg}
+                                        src="https://media.licdn.com/dms/image/v2/D4D03AQHsGr8kzHfnAw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1721041561276?e=1729123200&v=beta&t=RopWIpm73YuuZsZ_eRL6tzuBKLtQdYtpfzA2SjlQ8uA"
                                         alt=""
                                         className="h-full w-full rounded-full border-4 border-white object-cover"
                                     />
@@ -107,7 +106,7 @@ const FeaturedSeniors = ({ seniors }) => {
                             <div className="content flex flex-col justify-center items-center text-center">
                                 <div className="img h-32 w-32 rounded-full p-1 bg-sky-300 mb-4">
                                     <img
-                                        src={girlimg}
+                                        src="https://media.licdn.com/dms/image/v2/D4E03AQFuTaTBMWzUEQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1720321562388?e=1729123200&v=beta&t=Y-gGbgYgJwan__XQN828C0kAkAVMFegCzGLpEdLmX3o"
                                         alt=""
                                         className="h-full w-full rounded-full border-4 border-white object-cover"
                                     />
