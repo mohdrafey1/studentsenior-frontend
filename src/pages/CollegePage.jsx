@@ -1,11 +1,12 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Header from '../components/Header/Header';
-import Hero from '../components/Hero/Hero';
+import CollegeHero from '../components/Hero/CollegeHero';
 import FeaturedSeniors from '../components/FeaturedSenior/FeaturedSenior';
 import Testimonials from '../components/Testimonials/Testimonials';
-import About from '../components/About/About';
+import CollegeAbout from '../components/About/CollegeAbout';
 import Footer from '../components/Footer/Footer';
+import Collegelinks from '../components/Links/CollegeLinks';
 
 const CollegePage = () => {
     const { collegeName } = useParams();
@@ -37,50 +38,12 @@ const CollegePage = () => {
     return (
         <>
             <Header />
-            <Hero tagline={`Welcome to ${collegeName}`} />
-            <section className="container mx-auto p-8">
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-5 mb-10">
-                    <Link
-                        to="seniors"
-                        className="p-5 bg-blue-500 text-white text-center rounded-lg shadow-md"
-                    >
-                        Seniors
-                    </Link>
-                    <Link
-                        to="pyq"
-                        className="p-5 bg-blue-500 text-white text-center rounded-lg shadow-md"
-                    >
-                        Past Year Questions (PYQ)
-                    </Link>
-                    <Link
-                        to="store"
-                        className="p-5 bg-blue-500 text-white text-center rounded-lg shadow-md"
-                    >
-                        Store
-                    </Link>
-                    <Link
-                        to="community"
-                        className="p-5 bg-blue-500 text-white text-center rounded-lg shadow-md"
-                    >
-                        Community
-                    </Link>
-                    <Link
-                        to="whatsapp-group"
-                        className="p-5 bg-blue-500 text-white text-center rounded-lg shadow-md"
-                    >
-                        WhatsApp Group
-                    </Link>
-                    <Link
-                        to="opportunities"
-                        className="p-5 bg-blue-500 text-white text-center rounded-lg shadow-md"
-                    >
-                        Opportunities
-                    </Link>
-                </div>
-            </section>
+            <CollegeHero tagline={`${collegeName}`}>
+                <Collegelinks />
+            </CollegeHero>
             <FeaturedSeniors seniors={seniors} />
             <Testimonials testimonials={testimonials} />
-            <About />
+            <CollegeAbout />
             <Footer />
         </>
     );

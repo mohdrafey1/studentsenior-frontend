@@ -52,8 +52,8 @@ const MainPage = () => {
     return (
         <>
             <Header />
-            <Hero tagline="Find the perfect guidance">
-                <div className="flex justify-center">
+            <Hero>
+                <div className="flex justify-center my-10">
                     <div className="flex justify-between items-center mt-10 bg-white text-black p-2 mr-4 rounded-3xl border-4 border-sky-300">
                         <div className="text-2xl ml-4">
                             <i className="fa-solid fa-building"></i>

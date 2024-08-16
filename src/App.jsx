@@ -8,6 +8,7 @@ import StorePage from './pages/StorePage';
 import CommunityPage from './pages/CommunityPage';
 import WhatsAppGroupPage from './pages/WhatsAppGroupPage';
 import OpportunitiesPage from './pages/OpportunitiesPage';
+import NotesPage from './pages/NotesPage';
 
 const App = () => {
     return (
@@ -35,6 +36,10 @@ const App = () => {
                 <Route
                     path="/college/:collegeName/opportunities"
                     element={<OpportunitiesPage />}
+                />
+                <Route
+                    path="/college/:collegeName/notes"
+                    element={<NotesPage />}
                 />
             </Routes>
         </Router>
