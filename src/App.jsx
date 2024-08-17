@@ -12,6 +12,7 @@ import NotesPage from './pages/NotesPage';
 import AddSenior from './Forms/AddSenior';
 import AddCollege from './Forms/AddCollege';
 import AboutPage from './pages/AboutPage';
+import { Analytics } from '@vercel/analytics/react';
 
 const App = () => {
     return (
@@ -48,6 +49,7 @@ const App = () => {
                 <Route path="/add-college" element={<AddCollege />} />
                 <Route path="/about" element={<AboutPage />} />
             </Routes>
+            <Analytics />
         </Router>
     );
 };
