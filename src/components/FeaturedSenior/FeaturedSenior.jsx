@@ -41,8 +41,8 @@ const FeaturedSeniors = () => {
     return (
         <section className="container mx-auto p-4">
             <div className="flex flex-col md:flex-row justify-center items-center text-2xl text-center">
-                <h3>10 Thousands of Students Learned</h3>&nbsp;&nbsp;
-                <div className="text-sky-500">
+                <h3>10 Thousands of Students Learned</h3>
+                <div className="text-sky-500 ml-2">
                     <i className="fa-solid fa-star"></i>
                     <i className="fa-solid fa-star"></i>
                     <i className="fa-solid fa-star"></i>
