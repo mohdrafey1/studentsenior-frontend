@@ -9,6 +9,9 @@ import CommunityPage from './pages/CommunityPage';
 import WhatsAppGroupPage from './pages/WhatsAppGroupPage';
 import OpportunitiesPage from './pages/OpportunitiesPage';
 import NotesPage from './pages/NotesPage';
+import AddSenior from './Forms/AddSenior';
+import AddCollege from './Forms/AddCollege';
+import AboutPage from './pages/AboutPage';
 
 const App = () => {
     return (
@@ -41,6 +44,9 @@ const App = () => {
                     path="/college/:collegeName/notes"
                     element={<NotesPage />}
                 />
+                <Route path="/become-a-senior" element={<AddSenior />} />
+                <Route path="/add-college" element={<AddCollege />} />
+                <Route path="/about" element={<AboutPage />} />
             </Routes>
         </Router>
     );
