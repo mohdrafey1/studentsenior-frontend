@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer';
 
 const initialNotes = [
     {
@@ -169,6 +170,7 @@ const NotesPage = () => {
                     ))}
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };

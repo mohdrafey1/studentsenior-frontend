@@ -1,6 +1,7 @@
 import React from 'react';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer';
 
 const PYQPage = () => {
     return (
@@ -51,6 +52,7 @@ const PYQPage = () => {
                     </a>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };

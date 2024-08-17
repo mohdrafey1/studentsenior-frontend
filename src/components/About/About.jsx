@@ -2,10 +2,12 @@ import React from 'react';
 
 const About = () => {
     return (
-        <section className="container flex justify-center">
-            <div className="text-center mx-4/5 max-w-7xl p-8">
-                <h3 className="text-3xl font-bold mb-6">About Us</h3>
-                <p className="text-gray-500 text-xl">
+        <section className="flex justify-center px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-5xl w-full">
+                <h3 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">
+                    About Us
+                </h3>
+                <p className="text-gray-600 text-lg sm:text-xl leading-relaxed">
                     Our website connects college students for mentorship,
                     guidance, and community building. Students can ask
                     questions, share knowledge, and trade items in a dedicated

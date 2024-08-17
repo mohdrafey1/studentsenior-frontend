@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer';
 
 const initialGetOpportunities = [
     {
@@ -253,6 +254,7 @@ const OpportunitiesPage = () => {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };

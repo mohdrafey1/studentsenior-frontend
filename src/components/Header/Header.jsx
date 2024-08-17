@@ -10,7 +10,7 @@ const Header = () => {
     };
 
     return (
-        <header className="p-4 bg-white shadow-md">
+        <header className="p-4">
             <div className="container mx-auto flex justify-between items-center">
                 <h1 className="text-3xl mx-5 font-bold">Student Senior</h1>
                 <div className="lg:hidden">

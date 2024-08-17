@@ -53,12 +53,12 @@ const MainPage = () => {
         <>
             <Header />
             <Hero>
-                <div className="flex justify-center my-10">
-                    <div className="flex justify-between items-center mt-10 bg-white text-black p-2 mr-4 rounded-3xl border-4 border-sky-300">
-                        <div className="text-2xl ml-4">
-                            <i className="fa-solid fa-building"></i>
+                <div className="flex flex-col items-center my-10">
+                    <div className="text-black bg-white px-4 py-2 border-radius-38 border-4 border-sky-300 flex flex-col sm:flex-row items-center my-10">
+                        <div className="text-xl sm:text-2xl flex items-center mb-4 sm:mb-0">
+                            <i className="fa-solid fa-building mr-2"></i>
                             <select
-                                className="ml-2"
+                                className="p-2 rounded-md"
                                 value={selectedCollege}
                                 onChange={handleCollegeChange}
                             >
@@ -76,7 +76,7 @@ const MainPage = () => {
                         </div>
                         <button
                             onClick={handleCollegeSelect}
-                            className="bg-sky-300 ml-2 px-4 py-2 rounded-xl hover:bg-blue-400"
+                            className="bg-sky-300 mt-4 sm:mt-0 sm:ml-4 px-4 py-2 border-radius-38 hover:bg-blue-400"
                         >
                             Submit
                         </button>

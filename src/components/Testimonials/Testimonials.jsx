@@ -19,24 +19,26 @@ const Testimonials = () => {
     return (
         <div className="w-full flex flex-col justify-center">
             <div className="text-center mt-6">
-                <div className="text-sky-400 text-4xl">
+                <div className="text-sky-400 text-3xl sm:text-4xl">
                     <i className="fa-solid fa-star"></i>
                     <i className="fa-solid fa-star"></i>
                     <i className="fa-solid fa-star"></i>
                     <i className="fa-solid fa-star"></i>
                     <i className="fa-solid fa-star"></i>
                 </div>
-                <h3 className="text-4xl mt-1 font-bold">Perfect Match</h3>
-                <p className="text-3xl mt-1">
+                <h3 className="text-3xl sm:text-4xl mt-1 font-bold">
+                    Perfect Match
+                </h3>
+                <p className="text-xl sm:text-2xl mt-1">
                     Over hundreds of students gave a <br />
-                    review of 5 stars to out website!
+                    review of 5 stars to our website!
                 </p>
             </div>
             <div className="flex justify-center items-center py-8">
-                <div className="wrapper relative w-4/5 overflow-hidden">
+                <div className="wrapper relative w-full sm:w-4/5 overflow-hidden">
                     <i
                         id="left"
-                        className="fa-solid fa-angle-left absolute top-1/2 transform -translate-y-1/2 left-2 cursor-pointer text-3xl z-10"
+                        className="fa-solid fa-angle-left absolute top-1/2 transform -translate-y-1/2 left-2 cursor-pointer text-2xl sm:text-3xl z-10"
                         onClick={scrollLeft}
                     ></i>
                     <ul
@@ -71,20 +73,20 @@ const Testimonials = () => {
                         ].map((review, index) => (
                             <li
                                 key={index}
-                                className="card w-[31%] p-8 mx-2 bg-white rounded-lg flex-shrink-0"
+                                className="card w-[100%] sm:w-[45%] md:w-[31%] p-6 sm:p-8 mx-2 bg-white rounded-lg flex-shrink-0"
                             >
                                 <div className="img mb-4">
                                     <img
                                         src={womenn}
                                         alt="img"
-                                        className="rounded-full h-32 w-32 object-cover mx-auto"
+                                        className="rounded-full h-24 w-24 sm:h-32 sm:w-32 object-cover mx-auto"
                                         draggable="false"
                                     />
                                 </div>
-                                <h2 className="text-xl font-semibold text-center">
+                                <h2 className="text-lg sm:text-xl font-semibold text-center">
                                     {review.name}
                                 </h2>
-                                <p className="text-center text-xl text-gray-400 mt-2">
+                                <p className="text-center text-base sm:text-lg text-gray-400 mt-2">
                                     {review.text}
                                 </p>
                             </li>
@@ -92,7 +94,7 @@ const Testimonials = () => {
                     </ul>
                     <i
                         id="right"
-                        className="fa-solid fa-angle-right absolute top-1/2 transform -translate-y-1/2 right-2 cursor-pointer text-3xl z-10"
+                        className="fa-solid fa-angle-right absolute top-1/2 transform -translate-y-1/2 right-2 cursor-pointer text-2xl sm:text-3xl z-10"
                         onClick={scrollRight}
                     ></i>
                 </div>

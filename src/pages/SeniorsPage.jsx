@@ -3,6 +3,7 @@ import SeniorModal from '../components/SeniorModal/SeniorModal';
 import girlimg from '../assets/womenn.jpg';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer';
 
 const SeniorsPage = () => {
     const [selectedCourse, setSelectedCourse] = useState('');
@@ -15,9 +16,9 @@ const SeniorsPage = () => {
             name: 'Mohd Rafey',
             course: 'B.Tech',
             branch: 'CSE',
-            year: 'Final Year',
+            year: 'Third Year',
             image: 'https://media.licdn.com/dms/image/v2/D5603AQHkxOjh4TJwzA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1707034601913?e=1729123200&v=beta&t=7f0kL83DurSdKPGfMnXwixqxkywwjW7Qg0MYsZHDN_Y',
-            domain: 'Web Development',
+            domain: 'Devops + Web Dev',
             hobbies: 'Coding, Reading',
             whatsapp: 'https://wa.me/123456789',
             telegram: 'https://t.me/username',
@@ -41,7 +42,7 @@ const SeniorsPage = () => {
             name: 'Muskan Khatoon',
             course: 'B.Tech',
             branch: 'CSE',
-            year: 'Final Year',
+            year: 'Third Year',
             image: 'https://media.licdn.com/dms/image/v2/D4E03AQFuTaTBMWzUEQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1720321562388?e=1729123200&v=beta&t=Y-gGbgYgJwan__XQN828C0kAkAVMFegCzGLpEdLmX3o',
             domain: 'Web Development',
             hobbies: 'Coding, Reading',
@@ -103,9 +104,9 @@ const SeniorsPage = () => {
             <div className="container mx-auto p-5">
                 <div className="flex flex-col justify-center items-center">
                     <h1 className="text-3xl font-bold mb-5">Seniors</h1>
-                    <div className="flex text-center space-x-4 mb-5">
+                    <div className="flex flex-wrap justify-center text-center space-x-4 mb-5">
                         <select
-                            className="p-2 border rounded-md"
+                            className="p-2 border rounded-md mb-2 lg:mb-0"
                             onChange={(e) => setSelectedCourse(e.target.value)}
                             value={selectedCourse}
                         >
@@ -126,7 +127,7 @@ const SeniorsPage = () => {
                         </select>
                     </div>
                 </div>
-                <div className="grid w-4/5 mx-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div className="grid w-full sm:w-4/5 mx-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {filteredSeniors.map((senior) => (
                         <div
                             key={senior.id}
@@ -160,6 +161,7 @@ const SeniorsPage = () => {
                     />
                 )}
             </div>
+            <Footer />
         </div>
     );
 };

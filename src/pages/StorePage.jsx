@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../components/Header/Header';
 import CollegeLinks from '../components/Links/CollegeLinks';
+import Footer from '../components/Footer/Footer';
 
 const initialProducts = [
     {
@@ -205,6 +206,7 @@ const StorePage = () => {
                     ))}
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };

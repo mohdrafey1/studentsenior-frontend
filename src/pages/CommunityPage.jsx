@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer';
 
 const CommunityPage = () => {
     const [posts, setPosts] = useState([
@@ -164,6 +165,7 @@ const CommunityPage = () => {
                     ))}
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };

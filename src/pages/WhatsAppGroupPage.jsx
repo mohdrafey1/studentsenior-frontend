@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer';
 
 const WhatsAppGroupPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -76,7 +77,7 @@ const WhatsAppGroupPage = () => {
                                     href={group.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="px-4 py-2 bg-sky-300 text-white rounded-md"
+                                    className="px-4 py-2 bg-sky-300 hover:bg-sky-600 text-white rounded-md"
                                 >
                                     Join Group &nbsp;
                                     <i className="fa-brands fa-whatsapp"></i>
@@ -86,6 +87,7 @@ const WhatsAppGroupPage = () => {
                     ))}
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };
