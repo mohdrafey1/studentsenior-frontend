@@ -6,7 +6,6 @@ import FeaturedSeniors from '../components/FeaturedSenior/FeaturedSenior';
 import Testimonials from '../components/Testimonials/Testimonials';
 import About from '../components/About/About';
 import Footer from '../components/Footer/Footer';
-import popup from '../others/UnderConstructionBanner';
 import '../app.css';
 import UnderConstructionBanner from '../others/UnderConstructionBanner';
 
