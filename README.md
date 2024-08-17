@@ -2,7 +2,7 @@
 
 ## Description
 
-Student Senior is a dynamic platform that connects college students for mentorship, guidance, and community building. The website allows students to ask questions, share knowledge, and trade items. Senior students can register to mentor juniors, creating a collaborative ecosystem of knowledge sharing. The platform also offers academic resources, including notes and past exam papers.
+Student Senior is a dynamic platform that connects college students for mentorship, guidance, and community building. The website allows students to ask questions, share knowledge, and trade items within the same college. Senior students can register to mentor juniors of their college , creating a collaborative ecosystem of knowledge sharing. The platform also offers academic resources, including notes and past exam papers.
 
 ## Demo
 
