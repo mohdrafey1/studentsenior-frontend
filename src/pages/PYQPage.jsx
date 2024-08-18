@@ -9,56 +9,91 @@ const PYQPage = () => {
     const [selectedSemester, setSelectedSemester] = useState('');
     const [selectedBranch, setSelectedBranch] = useState('');
     const [selectedCourse, setSelectedCourse] = useState('');
+    const [selectedExamType, setSelectedExamType] = useState('');
 
+    // Sample data for previous year question papers
     const papers = [
         {
-            subjectName: 'Mathematics I',
-            subjectCode: 'MATH101',
+            subjectName: 'Engineering Mathematics I',
+            subjectCode: 'MT101',
             semester: '1st',
-            year: '2021',
-            branch: 'CSE',
+            year: '2022-23',
+            branch: 'CSE, EC, BME, EE, DSAI',
             course: 'B.Tech',
-            link: 'https://drive.google.com/your-link-to-pdf',
+            examType: 'Midsem 1',
+            link: 'https://drive.google.com/file/d/1gMkzGZ4d_dVtTGgJEWezjWd17_ovj78k/view?usp=drive_link',
+        },
+        {
+            subjectName: 'Basic Electrical Engineering',
+            subjectCode: 'EE102',
+            semester: '1st',
+            year: '2022-23',
+            branch: 'CSE, EC, BME, EE, DSAI',
+            course: 'B.Tech',
+            examType: 'Midsem 1',
+            link: 'https://drive.google.com/file/d/1O3FTyqig1MAruSue51a-nMpAfQLVt3W2/view?usp=drive_link',
+        },
+        {
+            subjectName: 'Basics Electronics',
+            subjectCode: 'EC101',
+            semester: '1st',
+            year: '2022-23',
+            branch: 'CSE, EC, BME, EE, DSAI',
+            course: 'B.Tech',
+            examType: 'Midsem 1',
+            link: 'https://drive.google.com/file/d/1H7TrAbA27mv-V_w4bGKQqjSbgZD_8zdw/view?usp=drive_link',
         },
         {
             subjectName: 'Physics',
-            subjectCode: 'PHYS101',
+            subjectCode: 'PY101',
             semester: '1st',
-            year: '2020',
-            branch: 'CSE',
+            year: '2022-23',
+            branch: 'CSE, EC, BME, EE, DSAI',
             course: 'B.Tech',
-            link: 'https://drive.google.com/your-link-to-pdf',
+            examType: 'Midsem 1',
+            link: 'https://drive.google.com/file/d/19pRSOt5oZRd6-Pd7PmPQnOWESaKSWpOf/view?usp=drive_link',
         },
         {
-            subjectName: 'Management Basics',
-            subjectCode: 'MGMT101',
+            subjectName: 'Basics Professional Communication',
+            subjectCode: 'LN101',
             semester: '1st',
-            year: '2021',
-            branch: 'IT',
-            course: 'BBA',
-            link: 'https://drive.google.com/your-link-to-pdf',
+            year: '2022-23',
+            branch: 'CSE, EC, BME, EE, DSAI',
+            course: 'B.Tech',
+            examType: 'Midsem 1',
+            link: 'https://drive.google.com/file/d/1Y1gB6BqeJbQUSDPZl6_GkVKVW9PQHFWv/view?usp=drive_link',
         },
         // Add more papers as needed
     ];
 
-    // Extract unique courses and branches based on the selected course
+    // Extract unique courses, branches, and exam types
     const courses = [...new Set(papers.map((paper) => paper.course))];
     const branches = selectedCourse
         ? [
               ...new Set(
                   papers
                       .filter((paper) => paper.course === selectedCourse)
-                      .map((paper) => paper.branch)
+                      .flatMap((paper) =>
+                          paper.branch.split(',').map((branch) => branch.trim())
+                      )
               ),
           ]
         : [];
+    const examTypes = [...new Set(papers.map((paper) => paper.examType))];
 
+    // Filter papers based on selected criteria
     const filteredPapers = papers.filter(
         (paper) =>
             (selectedYear ? paper.year === selectedYear : true) &&
             (selectedSemester ? paper.semester === selectedSemester : true) &&
-            (selectedBranch ? paper.branch === selectedBranch : true) &&
+            (selectedBranch
+                ? paper.branch
+                      .split(',')
+                      .map((branch) => branch.trim())
+                      .includes(selectedBranch)
+                : true) &&
             (selectedCourse ? paper.course === selectedCourse : true) &&
+            (selectedExamType ? paper.examType === selectedExamType : true) &&
             (searchTerm
                 ? paper.subjectName
                       .toLowerCase()
@@ -88,9 +123,9 @@ const PYQPage = () => {
                         value={selectedYear}
                     >
                         <option value="">All Years</option>
-                        <option value="2021">2021</option>
-                        <option value="2020">2020</option>
-                        <option value="2019">2019</option>
+                        <option value="2022-23">2022-23</option>
+                        <option value="2023-24">2023-24</option>
+                        <option value="2024-25">2024-25</option>
                     </select>
                     <select
                         className="p-2 border rounded-md w-full sm:w-auto"
@@ -100,6 +135,11 @@ const PYQPage = () => {
                         <option value="">All Semesters</option>
                         <option value="1st">1st</option>
                         <option value="2nd">2nd</option>
+                        <option value="3rd">3rd</option>
+                        <option value="4th">4th</option>
+                        <option value="5th">5th</option>
+                        <option value="6th">6th</option>
+                        <option value="7th">7th</option>
                     </select>
                     <select
                         className="p-2 border rounded-md w-full sm:w-auto"
@@ -129,6 +169,18 @@ const PYQPage = () => {
                             </option>
                         ))}
                     </select>
+                    <select
+                        className="p-2 border rounded-md w-full sm:w-auto"
+                        onChange={(e) => setSelectedExamType(e.target.value)}
+                        value={selectedExamType}
+                    >
+                        <option value="">All Exam Types</option>
+                        {examTypes.map((examType) => (
+                            <option key={examType} value={examType}>
+                                {examType}
+                            </option>
+                        ))}
+                    </select>
                 </div>
 
                 {filteredPapers.length > 0 ? (
@@ -148,6 +200,9 @@ const PYQPage = () => {
                                     Semester: {paper.semester}
                                 </p>
                                 <p className="mb-2">Year: {paper.year}</p>
+                                <p className="mb-2">
+                                    Exam Type: {paper.examType}
+                                </p>
                                 <a
                                     href={paper.link}
                                     target="_blank"
