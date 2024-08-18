@@ -91,11 +91,21 @@ const SeniorsPage = () => {
         },
     ];
 
+    const courseBranches = {
+        'B.Tech': ['CSE', 'ECE', 'Mechanical'],
+        BBA: ['Marketing', 'Finance', 'HR'],
+        MBA: ['Operations', 'Finance', 'Marketing'],
+    };
+
+    // Filter seniors based on selected course and branch
     const filteredSeniors = seniors.filter(
         (senior) =>
             (selectedCourse ? senior.course === selectedCourse : true) &&
             (selectedBranch ? senior.branch === selectedBranch : true)
     );
+
+    // Get branches for the selected course
+    const branches = selectedCourse ? courseBranches[selectedCourse] || [] : [];
 
     return (
         <div className="bg-sky-100">
@@ -107,7 +117,10 @@ const SeniorsPage = () => {
                     <div className="flex flex-wrap justify-center text-center space-x-4 mb-5">
                         <select
                             className="p-2 border rounded-md mb-2 lg:mb-0"
-                            onChange={(e) => setSelectedCourse(e.target.value)}
+                            onChange={(e) => {
+                                setSelectedCourse(e.target.value);
+                                setSelectedBranch(''); // Reset branch when course changes
+                            }}
                             value={selectedCourse}
                         >
                             <option value="">All Courses</option>
@@ -116,44 +129,53 @@ const SeniorsPage = () => {
                             <option value="MBA">MBA</option>
                         </select>
                         <select
-                            className="p-2 border rounded-md"
-                            onChange={(e) => setSelectedBranch(e.target.value)}
                             value={selectedBranch}
+                            onChange={(e) => setSelectedBranch(e.target.value)}
+                            className="p-2 border rounded-md"
+                            disabled={!selectedCourse} // Disable if no course selected
                         >
                             <option value="">All Branches</option>
-                            <option value="CSE">CSE</option>
-                            <option value="ECE">ECE</option>
-                            <option value="Mechanical">Mechanical</option>
+                            {branches.map((branch) => (
+                                <option key={branch} value={branch}>
+                                    {branch}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 </div>
-                <div className="grid w-full sm:w-4/5 mx-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    {filteredSeniors.map((senior) => (
-                        <div
-                            key={senior.id}
-                            className="p-5 bg-white shadow-md rounded-lg text-center"
-                        >
-                            <img
-                                src={senior.image}
-                                alt={senior.name}
-                                className="w-full h-48 rounded-lg mb-4"
-                            />
-                            <h2 className="text-xl font-bold mb-2">
-                                {senior.name}
-                            </h2>
-                            <p>
-                                {senior.course} - {senior.branch}
-                            </p>
-                            <p>{senior.year}</p>
-                            <button
-                                onClick={() => setSelectedSenior(senior)}
-                                className="mt-4 p-2 bg-blue-500 text-white rounded-md"
+                {filteredSeniors.length > 0 ? (
+                    <div className="grid w-full sm:w-4/5 mx-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                        {filteredSeniors.map((senior) => (
+                            <div
+                                key={senior.id}
+                                className="p-5 bg-white shadow-md rounded-lg text-center"
                             >
-                                View Detail
-                            </button>
-                        </div>
-                    ))}
-                </div>
+                                <img
+                                    src={senior.image}
+                                    alt={senior.name}
+                                    className="w-full h-48 rounded-lg mb-4"
+                                />
+                                <h2 className="text-xl font-bold mb-2">
+                                    {senior.name}
+                                </h2>
+                                <p>
+                                    {senior.course} - {senior.branch}
+                                </p>
+                                <p>{senior.year}</p>
+                                <button
+                                    onClick={() => setSelectedSenior(senior)}
+                                    className="mt-4 p-2 bg-blue-500 text-white rounded-md"
+                                >
+                                    View Detail
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center text-red-500 mt-10">
+                        No seniors found matching the selected filters.
+                    </div>
+                )}
                 {selectedSenior && (
                     <SeniorModal
                         senior={selectedSenior}

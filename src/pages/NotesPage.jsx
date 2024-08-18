@@ -42,7 +42,7 @@ const initialNotes = [
         title: 'Database Management Systems',
         by: 'Bob Brown',
         for: 'B.Tech ECE',
-        branch: 'ECE',
+        branch: 'DSAI',
         course: 'B.Tech',
         description:
             'Introduction to DBMS concepts, including SQL and NoSQL databases.',
@@ -67,8 +67,16 @@ const NotesPage = () => {
     const [selectedCourse, setSelectedCourse] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
 
-    const branches = [...new Set(initialNotes.map((note) => note.branch))];
     const courses = [...new Set(initialNotes.map((note) => note.course))];
+    const branches = selectedCourse
+        ? [
+              ...new Set(
+                  initialNotes
+                      .filter((note) => note.course === selectedCourse)
+                      .map((note) => note.branch)
+              ),
+          ]
+        : [];
 
     const filteredNotes = initialNotes.filter(
         (note) =>
@@ -100,26 +108,30 @@ const NotesPage = () => {
                         className="p-2 border rounded-md w-full sm:w-64 mb-2 sm:mb-0"
                     />
                     <select
-                        value={selectedBranch}
-                        onChange={(e) => setSelectedBranch(e.target.value)}
-                        className="p-2 border rounded-md mb-2 sm:mb-0"
-                    >
-                        <option value="">All Branches</option>
-                        {branches.map((branch) => (
-                            <option key={branch} value={branch}>
-                                {branch}
-                            </option>
-                        ))}
-                    </select>
-                    <select
                         value={selectedCourse}
-                        onChange={(e) => setSelectedCourse(e.target.value)}
-                        className="p-2 border rounded-md"
+                        onChange={(e) => {
+                            setSelectedCourse(e.target.value);
+                            setSelectedBranch(''); // Reset branch when course changes
+                        }}
+                        className="p-2 border rounded-md mb-2 sm:mb-0"
                     >
                         <option value="">All Courses</option>
                         {courses.map((course) => (
                             <option key={course} value={course}>
                                 {course}
+                            </option>
+                        ))}
+                    </select>
+                    <select
+                        value={selectedBranch}
+                        onChange={(e) => setSelectedBranch(e.target.value)}
+                        className="p-2 border rounded-md"
+                        disabled={!selectedCourse} // Disable if no course selected
+                    >
+                        <option value="">All Branches</option>
+                        {branches.map((branch) => (
+                            <option key={branch} value={branch}>
+                                {branch}
                             </option>
                         ))}
                     </select>
@@ -140,35 +152,42 @@ const NotesPage = () => {
                         </p>
                     </div>
                 )}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    {filteredNotes.map((note) => (
-                        <div
-                            key={note.id}
-                            className="bg-white p-5 shadow-md rounded-md"
-                        >
-                            <h2 className="text-xl font-bold mb-2">
-                                {note.title}
-                            </h2>
-                            <p className="mb-1">
-                                <strong>By:</strong> {note.by}
-                            </p>
-                            <p className="mb-1">
-                                <strong>For:</strong> {note.for}
-                            </p>
-                            <p className="mb-1">
-                                <strong>Description:</strong> {note.description}
-                            </p>
-                            <a
-                                href={note.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-500 underline"
+                {filteredNotes.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                        {filteredNotes.map((note) => (
+                            <div
+                                key={note.id}
+                                className="bg-white p-5 shadow-md rounded-md"
                             >
-                                View Notes
-                            </a>
-                        </div>
-                    ))}
-                </div>
+                                <h2 className="text-xl font-bold mb-2">
+                                    {note.title}
+                                </h2>
+                                <p className="mb-1">
+                                    <strong>By:</strong> {note.by}
+                                </p>
+                                <p className="mb-1">
+                                    <strong>For:</strong> {note.for}
+                                </p>
+                                <p className="mb-1">
+                                    <strong>Description:</strong>{' '}
+                                    {note.description}
+                                </p>
+                                <a
+                                    href={note.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-500 underline"
+                                >
+                                    View Notes
+                                </a>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-center text-gray-500 mt-5">
+                        No notes found for the selected filters.
+                    </p>
+                )}
             </div>
             <Footer />
         </div>
