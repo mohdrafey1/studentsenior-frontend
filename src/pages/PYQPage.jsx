@@ -219,10 +219,46 @@ const PYQPage = () => {
                         <p className="text-xl font-semibold text-gray-700">
                             No papers found matching the criteria. Please try
                             adjusting your filters.
+                            <br /> If You any Pyq, Please Provide us{' '}
+                            <a
+                                href="https://docs.google.com/forms/d/e/1FAIpQLSebji3Hfr-6Volc7KJwk4entnuXH803AAVF1QnHYGPK7AtjPw/viewform?usp=sf_link"
+                                className="text-blue-500"
+                                target="_blank"
+                            >
+                                Click
+                            </a>
                         </p>
                     </div>
                 )}
             </div>
+            <div className="bg-white p-6 rounded-lg shadow-md text-center mb-8">
+                <p className="mb-4">
+                    Get solved questions for just ₹29. <br />
+                    <a className="text-sm text-gray-500">
+                        Terms and conditions apply.
+                    </a>
+                </p>
+                <a
+                    href="#"
+                    className="inline-block px-6 py-3 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors duration-200"
+                >
+                    Buy Solved Question Paper
+                </a>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-md text-center">
+                <p className="mb-4">
+                    If you have any past year questions or notes, please share
+                    them with us.
+                </p>
+                <a
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSebji3Hfr-6Volc7KJwk4entnuXH803AAVF1QnHYGPK7AtjPw/viewform?usp=sf_link"
+                    className="inline-block px-6 py-3 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition-colors duration-200"
+                    target="_blank"
+                >
+                    Click Here to Share
+                </a>
+            </div>
+
             <Footer />
         </div>
     );

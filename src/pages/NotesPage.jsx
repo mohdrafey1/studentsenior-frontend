@@ -189,6 +189,33 @@ const NotesPage = () => {
                     </p>
                 )}
             </div>
+            <div className="bg-white p-6 rounded-lg shadow-md text-center mb-8">
+                <p className="mb-4">
+                    Get solved questions for just ₹29. <br />
+                    <a className="text-sm text-gray-500">
+                        Terms and conditions apply.
+                    </a>
+                </p>
+                <a
+                    href="#"
+                    className="inline-block px-6 py-3 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors duration-200"
+                >
+                    Buy Solved Question Paper
+                </a>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-md text-center">
+                <p className="mb-4">
+                    If you have any past year questions or notes, please share
+                    them with us.
+                </p>
+                <a
+                    href="mailto:your-email@example.com"
+                    className="inline-block px-6 py-3 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition-colors duration-200"
+                >
+                    Click Here to Share
+                </a>
+            </div>
+
             <Footer />
         </div>
     );
