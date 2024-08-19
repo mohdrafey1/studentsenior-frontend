@@ -11,7 +11,10 @@ const PYQPage = () => {
     const [selectedCourse, setSelectedCourse] = useState('');
     const [selectedExamType, setSelectedExamType] = useState('');
 
-    // Sample data for previous year question papers
+    // Pagination states
+    const [currentPage, setCurrentPage] = useState(1);
+    const papersPerPage = 6; // Number of papers per page
+
     const papers = [
         {
             subjectName: 'Engineering Mathematics I',
@@ -61,12 +64,61 @@ const PYQPage = () => {
             branch: 'CSE, EC, BME, EE, DSAI',
             course: 'B.Tech',
             examType: 'Midsem 1',
+            link: 'https://drive.google.com/file/d/1gs9e4wlG-vxAk-xQRTkMCD8w8kFHayy_/view?usp=drive_link',
+        },
+        {
+            subjectName: 'Engineering Mathematics I',
+            subjectCode: 'MT101',
+            semester: '1st',
+            year: '2022-23',
+            branch: 'CSE, EC, BME, EE, DSAI',
+            course: 'B.Tech',
+            examType: 'Midsem 2',
+            link: 'https://drive.google.com/file/d/1rfrN_F5W7MLJJy5hrnaiGvUV2DYaaPsQ/view?usp=drive_link',
+        },
+        {
+            subjectName: 'Basic Electrical Engineering',
+            subjectCode: 'EE102',
+            semester: '1st',
+            year: '2022-23',
+            branch: 'CSE, EC, BME, EE, DSAI',
+            course: 'B.Tech',
+            examType: 'Midsem 2',
+            link: 'https://drive.google.com/file/d/1rivqTXfu8578Ui6ejaD_kGmD_iFHjCtC/view?usp=drive_link',
+        },
+        {
+            subjectName: 'Basics Electronics',
+            subjectCode: 'EC101',
+            semester: '1st',
+            year: '2022-23',
+            branch: 'CSE, EC, BME, EE, DSAI',
+            course: 'B.Tech',
+            examType: 'Midsem 2',
+            link: 'https://drive.google.com/file/d/1lTgjUHNfn-t0hle88YIor1zJvm3KtH1S/view?usp=drive_link',
+        },
+        {
+            subjectName: 'Physics',
+            subjectCode: 'PY101',
+            semester: '1st',
+            year: '2022-23',
+            branch: 'CSE, EC, BME, EE, DSAI',
+            course: 'B.Tech',
+            examType: 'Midsem 2',
+            link: 'https://drive.google.com/file/d/1j0--AIrpl1gQjULTsXObGnkiEObN6sxQ/view?usp=drive_link',
+        },
+        {
+            subjectName: 'Basics Professional Communication',
+            subjectCode: 'LN101',
+            semester: '1st',
+            year: '2022-23',
+            branch: 'CSE, EC, BME, EE, DSAI',
+            course: 'B.Tech',
+            examType: 'Midsem 2',
             link: 'https://drive.google.com/file/d/1Y1gB6BqeJbQUSDPZl6_GkVKVW9PQHFWv/view?usp=drive_link',
         },
         // Add more papers as needed
     ];
 
-    // Extract unique courses, branches, and exam types
     const courses = [...new Set(papers.map((paper) => paper.course))];
     const branches = selectedCourse
         ? [
@@ -81,7 +133,6 @@ const PYQPage = () => {
         : [];
     const examTypes = [...new Set(papers.map((paper) => paper.examType))];
 
-    // Filter papers based on selected criteria
     const filteredPapers = papers.filter(
         (paper) =>
             (selectedYear ? paper.year === selectedYear : true) &&
@@ -100,6 +151,18 @@ const PYQPage = () => {
                       .includes(searchTerm.toLowerCase())
                 : true)
     );
+
+    // Pagination logic
+    const indexOfLastPaper = currentPage * papersPerPage;
+    const indexOfFirstPaper = indexOfLastPaper - papersPerPage;
+    const currentPapers = filteredPapers.slice(
+        indexOfFirstPaper,
+        indexOfLastPaper
+    );
+
+    const totalPages = Math.ceil(filteredPapers.length / papersPerPage);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div className="container bg-sky-100 min-h-screen">
@@ -160,7 +223,7 @@ const PYQPage = () => {
                         className="p-2 border rounded-md w-full sm:w-auto"
                         onChange={(e) => setSelectedBranch(e.target.value)}
                         value={selectedBranch}
-                        disabled={!selectedCourse} // Disable if no course selected
+                        disabled={!selectedCourse}
                     >
                         <option value="">All Branches</option>
                         {branches.map((branch) => (
@@ -183,9 +246,9 @@ const PYQPage = () => {
                     </select>
                 </div>
 
-                {filteredPapers.length > 0 ? (
+                {currentPapers.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        {filteredPapers.map((paper, index) => (
+                        {currentPapers.map((paper, index) => (
                             <div
                                 key={index}
                                 className="bg-white p-4 rounded-lg shadow-md"
@@ -217,9 +280,9 @@ const PYQPage = () => {
                 ) : (
                     <div className="text-center p-4 bg-white rounded-lg shadow-md">
                         <p className="text-xl font-semibold text-gray-700">
-                            No papers found matching the criteria. Please try
-                            adjusting your filters.
-                            <br /> If You any Pyq, Please Provide us{' '}
+                            No papers found matching the criteria. Try adjusting
+                            your filters.
+                            <br /> If You have any PYQ paper, Please Provide us{' '}
                             <a
                                 href="https://docs.google.com/forms/d/e/1FAIpQLSebji3Hfr-6Volc7KJwk4entnuXH803AAVF1QnHYGPK7AtjPw/viewform?usp=sf_link"
                                 className="text-blue-500"
@@ -228,6 +291,27 @@ const PYQPage = () => {
                                 Click
                             </a>
                         </p>
+                    </div>
+                )}
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                    <div className="flex justify-center mt-6">
+                        <ul className="flex">
+                            {[...Array(totalPages).keys()].map((number) => (
+                                <li
+                                    key={number + 1}
+                                    className={`px-3 py-1 mx-1 border rounded-md cursor-pointer ${
+                                        currentPage === number + 1
+                                            ? 'bg-sky-500 text-white'
+                                            : 'bg-white text-gray-700'
+                                    }`}
+                                    onClick={() => paginate(number + 1)}
+                                >
+                                    {number + 1}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 )}
             </div>
@@ -247,18 +331,16 @@ const PYQPage = () => {
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md text-center">
                 <p className="mb-4">
-                    If you have any past year questions or notes, please share
-                    them with us.
+                    If you have any PYQs or notes, please share them with us.
                 </p>
                 <a
                     href="https://docs.google.com/forms/d/e/1FAIpQLSebji3Hfr-6Volc7KJwk4entnuXH803AAVF1QnHYGPK7AtjPw/viewform?usp=sf_link"
-                    className="inline-block px-6 py-3 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition-colors duration-200"
+                    className="inline-block px-6 py-3 bg-sky-500 text-white font-bold rounded-lg hover transition-colors duration-200"
                     target="_blank"
                 >
-                    Click Here to Share
+                    Click Here To Share PYQs
                 </a>
             </div>
-
             <Footer />
         </div>
     );
