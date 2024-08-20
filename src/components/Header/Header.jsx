@@ -4,15 +4,21 @@ import '../../App.css';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [pathData, setPathData] = useState('M4 6h16M4 12h16M4 18h16');
 
     const toggleMenu = () => {
+        if(!isMenuOpen){
+            setPathData("M4 4 L20 20 M4 20 L20 4");
+               }else{
+                setPathData("M4 6h16M4 12h16M4 18h16");
+               }
         setIsMenuOpen(!isMenuOpen);
     };
 
     return (
         <header className="p-4">
             <div className="container mx-auto flex justify-between items-center">
-                <h1 className="text-3xl mx-5 font-bold">Student Senior</h1>
+                <h1 className="text-3xl mx-5 font-bold"><span style={{color:'red', fontSize:'40px'}}>S</span>tudent <span style={{color:'red'}}>S</span>enior</h1>
                 <div className="lg:hidden">
                     <button
                         onClick={toggleMenu}
@@ -29,7 +35,7 @@ const Header = () => {
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                                 strokeWidth="2"
-                                d="M4 6h16M4 12h16M4 18h16"
+                                d={pathData}
                             ></path>
                         </svg>
                     </button>

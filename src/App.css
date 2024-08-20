@@ -15,3 +15,15 @@
 .border-radius-38 {
     border-radius: 38px;
 }
+
+::-webkit-scrollbar{
+    background-color: transparent;
+    width: 10px;
+}
+::-webkit-scrollbar-thumb{
+    border-radius: 50px;
+    background-color: rgb(109, 206, 244);;
+}
+body{
+    scroll-behavior: smooth;
+}
