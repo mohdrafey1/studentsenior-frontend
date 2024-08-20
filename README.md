@@ -25,7 +25,7 @@ All resources are based on college:
 To run this project locally, follow these steps:
 
 1. **Clone the Repository**
-   git clone https://github.com/yourusername/studentsenior-frontend.git
+   git clone https://github.com/mohdrafey1/studentsenior-frontend.git
    
 2. **Navigate to the Project Directory**
    cd student-senior
