@@ -36,7 +36,7 @@ const CollegePage = () => {
     ];
 
     return (
-        <>
+        <div style={{scrollBehavior:'smooth'}}>
             <Header />
             <CollegeHero tagline={`${collegeName}`}>
                 <Collegelinks />
@@ -45,7 +45,7 @@ const CollegePage = () => {
             <Testimonials testimonials={testimonials} />
             <CollegeAbout />
             <Footer />
-        </>
+        </div>
     );
 };
 

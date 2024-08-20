@@ -52,6 +52,19 @@ const SeniorsPage = () => {
         },
         {
             id: 4,
+            name: 'Sahil Verma',
+            course: 'B.Tech',
+            branch: 'CSE',
+            year: 'Second Year',
+            image: 'https://sahil-coder.vercel.app/static/media/profile.35b092a4ac0286a8cf38.png',
+            domain: 'Web Developer',
+            hobbies: 'Coding , Listening Song',
+            whatsapp: 'https://wa.me/987654321',
+            telegram: 'https://t.me/username2',
+            instagram: 'https://instagram.com/username2',
+        },
+        {
+            id: 5,
             name: 'Najmus Sahar',
             course: 'B.Tech',
             branch: 'CSE',
@@ -64,7 +77,7 @@ const SeniorsPage = () => {
             instagram: 'https://instagram.com/username2',
         },
         {
-            id: 5,
+            id: 6,
             name: 'Mohd Rafey',
             course: 'B.Tech',
             branch: 'CSE',
@@ -76,19 +89,7 @@ const SeniorsPage = () => {
             telegram: 'https://t.me/username',
             instagram: 'https://instagram.com/username',
         },
-        {
-            id: 6,
-            name: 'Muskan Khatoon',
-            course: 'B.Tech',
-            branch: 'CSE',
-            year: 'Third Year',
-            image: girlimg,
-            domain: 'UI/UX Design',
-            hobbies: 'Designing, Traveling',
-            whatsapp: 'https://wa.me/987654321',
-            telegram: 'https://t.me/username2',
-            instagram: 'https://instagram.com/username2',
-        },
+
     ];
 
     const courseBranches = {
@@ -153,7 +154,7 @@ const SeniorsPage = () => {
                                 <img
                                     src={senior.image}
                                     alt={senior.name}
-                                    className="w-full h-48 rounded-lg mb-4"
+                                    className="w-full h-48 rounded-lg mb-4 "
                                 />
                                 <h2 className="text-xl font-bold mb-2">
                                     {senior.name}

@@ -34,6 +34,17 @@ const seniors = [
             { icon: 'youtube', link: '#' },
         ],
     },
+    {
+        name: 'Sahil Verma',
+        job: 'Web Developer',
+        image: 'https://sahil-coder.vercel.app/static/media/profile.35b092a4ac0286a8cf38.png',
+        socials: [
+            { icon: 'facebook-f', link: '#' },
+            { icon: 'twitter', link: '#' },
+            { icon: 'instagram', link: '#' },
+            { icon: 'youtube', link: '#' },
+        ],
+    },
     // Add more seniors as needed
 ];
 
@@ -52,7 +63,7 @@ const FeaturedSeniors = () => {
             </div>
             <div className="container mt-4">
                 <div className="main-card">
-                    <div className="cards flex flex-wrap gap-6 w-full justify-center">
+                    <div className="cards flex flex-wrap gap-6 w-full justify-center ">
                         {seniors.map((senior, index) => (
                             <div
                                 key={index}
