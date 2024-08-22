@@ -1,11 +1,11 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { createSitemapPlugin } from 'vite-plugin-sitemap';
+import SitemapPlugin from 'vite-plugin-sitemap';
 
 export default defineConfig({
     plugins: [
         react(),
-        createSitemapPlugin({
+        SitemapPlugin({
             hostname: 'https://studentsenior.com',
             outDir: 'dist',
             dynamicRoutes: [
