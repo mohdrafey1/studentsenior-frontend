@@ -71,7 +71,6 @@ const CommunityPage = () => {
         setEditingPostId(null);
         setEditedContent('');
     };
-
     return (
         <div className="container bg-sky-100 min-h-screen min-w-full">
             <Header />

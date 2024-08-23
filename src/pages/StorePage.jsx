@@ -49,7 +49,6 @@ const StorePage = () => {
         const updatedProducts = products.filter((product) => product.id !== id);
         setProducts(updatedProducts);
     };
-
     return (
         <div className="container bg-sky-100 min-h-screen min-w-full">
             <Header />
