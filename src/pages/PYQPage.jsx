@@ -274,7 +274,7 @@ const PYQPage = () => {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
-        <div className="container bg-sky-100 min-h-screen">
+        <div className="container bg-sky-100 min-h-screen min-w-full" >
             <Header />
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-4 md:p-8 bg-sky-100">

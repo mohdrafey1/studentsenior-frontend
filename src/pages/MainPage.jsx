@@ -65,13 +65,13 @@ const MainPage = () => {
                                 onChange={handleCollegeChange}
                             >
                                 <option value="">Select Your College</option>
-                                <option value="Integral University">
+                                <option value="Integral-University">
                                     Integral University
                                 </option>
-                                <option value="Lucknow University">
+                                <option value="Lucknow-University">
                                     Lucknow University
                                 </option>
-                                <option value="Kmc University">
+                                <option value="Kmc-University">
                                     Kmc University
                                 </option>
                             </select>

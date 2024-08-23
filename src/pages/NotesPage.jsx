@@ -88,7 +88,7 @@ const NotesPage = () => {
     );
 
     return (
-        <div className="container bg-sky-100">
+        <div className="container bg-sky-100 min-w-full">
             <Header />
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5 bg-sky-100 min-h-screen">
