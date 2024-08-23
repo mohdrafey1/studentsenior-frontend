@@ -46,8 +46,8 @@ const WhatsAppGroupPage = () => {
     );
 
     return (
-        <div className="container bg-sky-100 min-h-screen">
-            <Header />
+        <div className="container bg-sky-100 min-h-screen min-w-full">
+            <Header/>
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5">
                 <h1 className="text-3xl font-bold mb-5 text-center">
@@ -77,11 +77,12 @@ const WhatsAppGroupPage = () => {
                                     href={group.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="px-4 py-2 bg-sky-300 hover:bg-sky-600 text-white rounded-md"
+                                    className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-md"
                                 >
                                     Join Group &nbsp;
                                     <i className="fa-brands fa-whatsapp"></i>
                                 </a>
+                                
                             </div>
                         </div>
                     ))}
