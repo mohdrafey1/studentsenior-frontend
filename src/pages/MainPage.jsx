@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header/Header';
 import Hero from '../components/Hero/Hero';
@@ -11,7 +11,24 @@ import UnderConstructionBanner from '../others/UnderConstructionBanner';
 
 const MainPage = () => {
     const [selectedCollege, setSelectedCollege] = useState('');
+    const [colleges, setColleges] = useState([]);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Fetch colleges data from the backend
+        const fetchColleges = async () => {
+            try {
+                const response = await fetch(
+                    'https://panel.studentsenior.com/api/colleges'
+                );
+                const data = await response.json();
+                setColleges(data);
+            } catch (error) {
+                console.error('Error fetching colleges:', error);
+            }
+        };
+        fetchColleges();
+    }, []);
 
     const handleCollegeChange = (event) => {
         setSelectedCollege(event.target.value);
@@ -65,15 +82,17 @@ const MainPage = () => {
                                 onChange={handleCollegeChange}
                             >
                                 <option value="">Select Your College</option>
-                                <option value="Integral-University">
-                                    Integral University
-                                </option>
-                                <option value="Lucknow-University">
-                                    Lucknow University
-                                </option>
-                                <option value="Kmc-University">
-                                    Kmc University
-                                </option>
+                                {colleges.map((college) => (
+                                    <option
+                                        key={college._id}
+                                        value={college.name.replace(
+                                            /\s+/g,
+                                            '-'
+                                        )}
+                                    >
+                                        {college.name}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <button
