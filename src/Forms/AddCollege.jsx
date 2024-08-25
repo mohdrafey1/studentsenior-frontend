@@ -10,17 +10,20 @@ function AddCollege() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8080/api/colleges', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name,
-                    location,
-                    description,
-                }),
-            });
+            const response = await fetch(
+                'https://panel.studentsenior.com/api/colleges',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name,
+                        location,
+                        description,
+                    }),
+                }
+            );
 
             if (response.ok) {
                 setMessage(
