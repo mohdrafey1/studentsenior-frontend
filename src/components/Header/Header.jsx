@@ -49,7 +49,7 @@ const Header = () => {
                 </div>
                  <div className='root' onClick={toggleMenu} id='rr'>
                     <div className='menu' id='menu' onClick={""}>
-                <nav
+                <nav 
                     className={`${
                         isMenuOpen ? 'menu-m.active' : 'menu-m'
                     } absolute top-0 left-0 w-4/5 h-screen bg-white lg:bg-transparent lg:relative lg:top-auto lg:left-auto lg:w-auto lg:h-auto lg:flex lg:items-center `}
