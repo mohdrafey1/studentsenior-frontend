@@ -54,7 +54,7 @@ const Header = () => {
                         isMenuOpen ? 'menu-m.active' : 'menu-m'
                     } absolute top-0 left-0 w-4/5 h-screen bg-white lg:bg-transparent lg:relative lg:top-auto lg:left-auto lg:w-auto lg:h-auto lg:flex lg:items-center `}
                 id='toggle'
-                >
+                > 
                   <div className='myclass '><h1 className="text-3xl mx-5 font-bold p-4 "><span style={{color:'red', fontSize:'40px'}}>S</span>tudent <span style={{color:'red'}}>S</span>enior</h1></div><br/>
                     <ul className="text-xl flex flex-col items-center lg:flex-row lg:space-x-4">
                        
