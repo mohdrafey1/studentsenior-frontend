@@ -173,7 +173,12 @@ const PYQPage = () => {
                                     Exam Type: {paper.examType}
                                 </p>
                                 <p className="mb-2">Course : {paper.course}</p>
-                                <p className="mb-2">Branch : {paper.branch}</p>
+                                <p className="mb-2">
+                                    Branch:{' '}
+                                    {Array.isArray(paper.branch)
+                                        ? paper.branch.join(', ')
+                                        : paper.branch}
+                                </p>
                                 <a
                                     href={paper.link}
                                     className="text-blue-500 hover:underline"
