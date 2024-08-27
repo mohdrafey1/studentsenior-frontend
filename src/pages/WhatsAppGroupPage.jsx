@@ -9,33 +9,39 @@ const WhatsAppGroupPage = () => {
     const groups = [
         {
             title: 'Data Structures and Algorithms (DSA) Enthusiasts',
-            link: 'https://chat.whatsapp.com/exampleDSA',
+            link: 'https://chat.whatsapp.com/F48cpgS15mn7RFps9kKh1G ',
             info: 'Join this group to discuss DSA concepts, share resources, and practice problems together.',
             domain: 'DSA',
         },
         {
             title: 'Full Stack Development',
-            link: 'https://chat.whatsapp.com/exampleFullStack',
+            link: 'https://chat.whatsapp.com/DhBBIpCEwMbA8A87ZOBhtn',
             info: 'This group is for Full Stack developers to collaborate, share projects, and discuss the latest in web development.',
             domain: 'Full Stack',
         },
         {
             title: 'Machine Learning and AI',
-            link: 'https://chat.whatsapp.com/exampleML',
+            link: 'https://chat.whatsapp.com/HUhoxD25y1FGYQsxVynzKY',
             info: 'Connect with others interested in Machine Learning and AI. Share your projects, get help with algorithms, and stay updated on trends.',
             domain: 'Machine Learning',
         },
         {
             title: 'Cybersecurity and Ethical Hacking',
-            link: 'https://chat.whatsapp.com/exampleCybersecurity',
+            link: 'https://chat.whatsapp.com/DIANFqAHq2y6rlzUC6sSao',
             info: 'A group for those interested in cybersecurity and ethical hacking. Discuss vulnerabilities, tools, and best practices.',
             domain: 'Cybersecurity',
         },
         {
             title: 'UI/UX Design',
-            link: 'https://chat.whatsapp.com/exampleUIUX',
+            link: 'https://chat.whatsapp.com/IYUPXDPywLu0TcZUK3K4E2 ',
             info: 'Join this group to discuss UI/UX design principles, share your designs, and get feedback from peers.',
             domain: 'UI/UX Design',
+        },
+        {
+            title: 'MERN Stack',
+            link: 'https://chat.whatsapp.com/GdvrCeXx43JHmWczQQurrU',
+            info: 'Join this group to discuss MERN principles, share your thoughts, and get feedback from peers.',
+            domain: 'MERN Stack',
         },
     ];
 
@@ -47,7 +53,7 @@ const WhatsAppGroupPage = () => {
 
     return (
         <div className="container bg-sky-100 min-h-screen min-w-full">
-            <Header/>
+            <Header />
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5">
                 <h1 className="text-3xl font-bold mb-5 text-center">
@@ -82,7 +88,6 @@ const WhatsAppGroupPage = () => {
                                     Join Group &nbsp;
                                     <i className="fa-brands fa-whatsapp"></i>
                                 </a>
-                                
                             </div>
                         </div>
                     ))}
