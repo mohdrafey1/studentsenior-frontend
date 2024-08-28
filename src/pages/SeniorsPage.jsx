@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import SeniorModal from '../components/SeniorModal/SeniorModal';
-import girlimg from '../assets/womenn.jpg';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
@@ -69,7 +68,7 @@ const SeniorsPage = () => {
             course: 'B.Tech',
             branch: 'CSE',
             year: 'Third Year',
-            image: girlimg,
+            image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1/student_senior/j5rfnsnq570tjzz0snto',
             domain: 'UI/UX Design',
             hobbies: 'Designing, Traveling',
             whatsapp: 'https://wa.me/987654321',
@@ -82,14 +81,13 @@ const SeniorsPage = () => {
             course: 'B.Tech',
             branch: 'CSE',
             year: 'Final Year',
-            image: girlimg,
+            image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1724859258/student_senior/o8wuwteyunixuecsrccc.jpg',
             domain: 'Web Development',
             hobbies: 'Coding, Reading',
             whatsapp: 'https://wa.me/123456789',
             telegram: 'https://t.me/username',
             instagram: 'https://instagram.com/username',
         },
-
     ];
 
     const courseBranches = {

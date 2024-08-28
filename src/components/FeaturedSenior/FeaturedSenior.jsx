@@ -34,7 +34,6 @@ const seniors = [
             { icon: 'youtube', link: '#' },
         ],
     },
-    // Add more seniors as needed
 ];
 
 const FeaturedSeniors = () => {

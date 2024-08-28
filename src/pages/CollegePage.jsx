@@ -11,38 +11,14 @@ import Collegelinks from '../components/Links/CollegeLinks';
 const CollegePage = () => {
     const { collegeName } = useParams();
 
-    const seniors = [
-        {
-            name: 'Mohd Rafey',
-            role: 'Web Designer',
-            image: '/assets/womenn.jpg',
-        },
-        {
-            name: 'Najmus Sahar',
-            role: 'UI Designer',
-            image: '/assets/womenn.jpg',
-        },
-        {
-            name: 'Muskan Khatoon',
-            role: 'Web Developer',
-            image: '/assets/womenn.jpg',
-        },
-    ];
-
-    const testimonials = [
-        { name: 'John Doe', quote: 'Great experience, highly recommend!' },
-        { name: 'Jane Smith', quote: 'My senior helped me a lot!' },
-        { name: 'Alex Johnson', quote: 'The guidance was perfect!' },
-    ];
-
     return (
-        <div style={{scrollBehavior:'smooth'}}>
+        <div style={{ scrollBehavior: 'smooth' }}>
             <Header />
             <CollegeHero tagline={`${collegeName}`}>
                 <Collegelinks />
             </CollegeHero>
-            <FeaturedSeniors seniors={seniors} />
-            <Testimonials testimonials={testimonials} />
+            <FeaturedSeniors />
+            <Testimonials />
             <CollegeAbout />
             <Footer />
         </div>

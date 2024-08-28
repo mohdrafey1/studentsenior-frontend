@@ -17,6 +17,7 @@ const MainPage = () => {
     useEffect(() => {
         // Fetch colleges data from the backend
         const fetchColleges = async () => {
+            console.log('Fetching colleges...');
             try {
                 const response = await fetch(
                     'https://panel.studentsenior.com/api/colleges'
