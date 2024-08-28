@@ -44,30 +44,6 @@ const MainPage = () => {
         }
     };
 
-    const seniors = [
-        {
-            name: 'Mohd Rafey',
-            role: 'Web Designer',
-            image: '../assets/womenn.jpg',
-        },
-        {
-            name: 'Najmus Sahar',
-            role: 'UI Designer',
-            image: '/assets/womenn.jpg',
-        },
-        {
-            name: 'Muskan Khatoon',
-            role: 'Web Developer',
-            image: '/assets/womenn.jpg',
-        },
-    ];
-
-    const testimonials = [
-        { name: 'John Doe', quote: 'Great experience, highly recommend!' },
-        { name: 'Jane Smith', quote: 'My senior helped me a lot!' },
-        { name: 'Alex Johnson', quote: 'The guidance was perfect!' },
-    ];
-
     return (
         <>
             <UnderConstructionBanner />
@@ -105,8 +81,8 @@ const MainPage = () => {
                     </div>
                 </div>
             </Hero>
-            <FeaturedSeniors seniors={seniors} />
-            <Testimonials testimonials={testimonials} />
+            <FeaturedSeniors />
+            <Testimonials />
             <About />
             <Footer />
         </>
