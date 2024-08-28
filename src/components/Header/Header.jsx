@@ -66,28 +66,28 @@ const Header = () => {
                  <ul className="laptop-scr text-xl flex flex-col items-center lg:flex-row lg:space-x-4">
                        
                             <Link to="/" onClick={toggleMenu}>
-                            <li className="ihover">
+                            <li className="ihover rounded-3xl">
                                 Home
                                 </li>
                             </Link>
                         
                         
                             <Link to="/become-a-senior" onClick={toggleMenu}>
-                            <li className="ihover">
+                            <li className="ihover rounded-3xl">
                                 Add Senior Profile
                                 </li>
                             </Link>
                        
                         
                             <Link to="/add-college" onClick={toggleMenu}>
-                            <li className="ihover">
+                            <li className="ihover rounded-3xl">
                                 Add Your College
                                 </li>
                             </Link>
                         
                        
                             <Link to="/about" onClick={toggleMenu}>
-                                <li className="ihover">
+                                <li className="ihover rounded-3xl">
                                 About
                             </li>
                             </Link>
