@@ -199,4 +199,15 @@ body {
         display: none;
     }
 
+    .mobile-card {
+        
+        overflow-x: scroll;
+        padding: 4px;
+        margin: 0 0 4px 4px;
+    }
+    .card{
+        min-width: calc(100% - 8px);
+        margin: 4px;
+    }
+
 }

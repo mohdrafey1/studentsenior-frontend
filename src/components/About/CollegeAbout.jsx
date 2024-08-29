@@ -2,7 +2,7 @@ import React from 'react';
 
 const CollegeAbout = () => {
     return (
-        <section className="container flex justify-center">
+        <section className="flex justify-center ">
             <div className="text-center mx-4/5 max-w-7xl p-8">
                 <h3 className="text-3xl font-bold mb-6">About Us</h3>
                 <p className="text-gray-500 text-xl">

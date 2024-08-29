@@ -5,13 +5,15 @@ const Testimonials = () => {
 
     const scrollLeft = () => {
         const carousel = carouselRef.current;
-        const cardWidth = carousel.querySelector('.card').offsetWidth;
-        carousel.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+        const cardWidth = carousel.querySelector('.card').offsetWidth+4;
+        console.log(cardWidth);
+        carousel.scrollBy({ left: - cardWidth, behavior: 'smooth' });
     };
 
     const scrollRight = () => {
         const carousel = carouselRef.current;
-        const cardWidth = carousel.querySelector('.card').offsetWidth;
+        const cardWidth = carousel.querySelector('.card').offsetWidth+4;
+         console.log(cardWidth);
         carousel.scrollBy({ left: cardWidth, behavior: 'smooth' });
     };
 
@@ -42,7 +44,7 @@ const Testimonials = () => {
                     ></i>
                     <ul
                         ref={carouselRef}
-                        className="carousel flex overflow-x-hidden scroll-smooth no-scrollbar"
+                        className="carousel flex overflow-x-hidden scroll-smooth no-scrollbar "
                     >
                         {[
                             {
@@ -78,7 +80,7 @@ const Testimonials = () => {
                         ].map((review, index) => (
                             <li
                                 key={index}
-                                className="card w-[100%] sm:w-[45%] md:w-[31%] p-6 sm:p-8 mx-2 bg-white rounded-lg flex-shrink-0"
+                                className="card box-border w-[100%] sm:w-[45%] md:w-[31%] p-6 sm:p-8 m-0.5 bg-white rounded-lg flex-shrink-0"
                             >
                                 <div className="img mb-4">
                                     <img
