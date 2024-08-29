@@ -1,50 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 
 const WhatsAppGroupPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
+    const [groups, setGroupLink] = useState([]);
+    
+    useEffect(()=>{
 
-    const groups = [
-        {
-            title: 'Data Structures and Algorithms (DSA) Enthusiasts',
-            link: 'https://chat.whatsapp.com/F48cpgS15mn7RFps9kKh1G ',
-            info: 'Join this group to discuss DSA concepts, share resources, and practice problems together.',
-            domain: 'DSA',
-        },
-        {
-            title: 'Full Stack Development',
-            link: 'https://chat.whatsapp.com/DhBBIpCEwMbA8A87ZOBhtn',
-            info: 'This group is for Full Stack developers to collaborate, share projects, and discuss the latest in web development.',
-            domain: 'Full Stack',
-        },
-        {
-            title: 'Machine Learning and AI',
-            link: 'https://chat.whatsapp.com/HUhoxD25y1FGYQsxVynzKY',
-            info: 'Connect with others interested in Machine Learning and AI. Share your projects, get help with algorithms, and stay updated on trends.',
-            domain: 'Machine Learning',
-        },
-        {
-            title: 'Cybersecurity and Ethical Hacking',
-            link: 'https://chat.whatsapp.com/DIANFqAHq2y6rlzUC6sSao',
-            info: 'A group for those interested in cybersecurity and ethical hacking. Discuss vulnerabilities, tools, and best practices.',
-            domain: 'Cybersecurity',
-        },
-        {
-            title: 'UI/UX Design',
-            link: 'https://chat.whatsapp.com/IYUPXDPywLu0TcZUK3K4E2 ',
-            info: 'Join this group to discuss UI/UX design principles, share your designs, and get feedback from peers.',
-            domain: 'UI/UX Design',
-        },
-        {
-            title: 'MERN Stack',
-            link: 'https://chat.whatsapp.com/GdvrCeXx43JHmWczQQurrU',
-            info: 'Join this group to discuss MERN principles, share your thoughts, and get feedback from peers.',
-            domain: 'MERN Stack',
-        },
-    ];
-
+        const Fetchlink = async () => {
+            try{
+      const response = await fetch('https://panel.studentsenior.com/api/whatsappgroup');
+      const data = await response.json();
+      setGroupLink(data);
+            }catch(error){
+    console.log("Error fetching whatsapp links : ",error);
+            }
+        }
+        Fetchlink();
+    }, []);
     const filteredGroups = groups.filter(
         (group) =>
             group.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -69,9 +44,9 @@ const WhatsAppGroupPage = () => {
                     />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    {filteredGroups.map((group, index) => (
+                    {filteredGroups.map((group) => (
                         <div
-                            key={index}
+                            key={group._id}
                             className="bg-white p-5 shadow-md rounded-md"
                         >
                             <h2 className="text-xl font-bold mb-2 text-center">
