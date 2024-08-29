@@ -38,8 +38,8 @@ const seniors = [
 
 const FeaturedSeniors = () => {
     return (
-        <section className="container mx-auto p-4">
-            <div className="flex flex-col md:flex-row justify-center items-center text-2xl text-center">
+        <section className="container mx-auto ">
+            <div className="flex flex-col md:flex-row justify-center items-center text-2xl text-center p-4">
                 <h3>10 Thousands of Students Learned</h3>
                 <div className="text-sky-500 ml-2">
                     <i className="fa-solid fa-star"></i>
@@ -51,11 +51,11 @@ const FeaturedSeniors = () => {
             </div>
             <div className="container mt-4">
                 <div className="main-card">
-                    <div className="cards flex flex-wrap gap-6 w-full justify-center ">
+                    <div className="mobile-card cards flex gap-6 w-full lg:justify-center md:justify-center">
                         {seniors.map((senior, index) => (
                             <div
                                 key={index}
-                                className="card w-full sm:w-1/2 md:w-1/3 lg:w-1/4 bg-white rounded-lg p-8 shadow-lg transform transition-transform duration-400 hover:-translate-y-4"
+                                className="card w-full sm:w-full lg:w-1/4 bg-white rounded-lg p-8 shadow-lg transform transition-transform duration-400 hover:-translate-y-4"
                             >
                                 <div className="content flex flex-col justify-center items-center text-center">
                                     <div className="img h-32 w-32 rounded-full p-1 bg-sky-300 mb-4">
