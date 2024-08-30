@@ -11,28 +11,30 @@ import UnderConstructionBanner from '../others/UnderConstructionBanner';
 
 const MainPage = () => {
     const [selectedCollege, setSelectedCollege] = useState('');
-    const [colleges, setColleges] = useState([]);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        // Fetch colleges data from the backend
-        const fetchColleges = async () => {
-            console.log('Fetching colleges...');
-            try {
-                const response = await fetch(
-                    'https://panel.studentsenior.com/api/colleges'
-                );
-                const data = await response.json();
-                setColleges(data);
-            } catch (error) {
-                console.error('Error fetching colleges:', error);
-            }
-        };
-        fetchColleges();
-    }, []);
+    
+    const colleges = [
+        {
+        "id": "66cb9952a9c088fc11800714",
+        "name": "Integral University",
+         },
+        {
+        "id": "66cba84ce0e3a7e528642837",
+        "name": "MPGI Kanpur",
+         },
+        {
+        "id": "66d08aff784c9f07a53507b9",
+        "name": "GCET Noida",
+        }
+        ];
+   
 
     const handleCollegeChange = (event) => {
         setSelectedCollege(event.target.value);
+        const selectedOption = event.target.options[event.target.selectedIndex]; // Get the selected option
+        const dataKey = selectedOption.getAttribute('data'); // Get the data-key attribute
+        
+        localStorage.setItem("id",dataKey);
     };
 
     const handleCollegeSelect = () => {
@@ -41,6 +43,7 @@ const MainPage = () => {
                 .replace(/\s+/g, '')
                 .toLowerCase();
             navigate(`/college/${formattedCollegeName}`);
+
         }
     };
 
@@ -61,11 +64,13 @@ const MainPage = () => {
                                 <option value="">Select Your College</option>
                                 {colleges.map((college) => (
                                     <option
-                                        key={college._id}
+                                        
+                                        key={college.id}
                                         value={college.name.replace(
                                             /\s+/g,
                                             '-'
                                         )}
+                                        data={college.id}
                                     >
                                         {college.name}
                                     </option>

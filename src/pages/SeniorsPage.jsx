@@ -55,7 +55,7 @@ const SeniorsPage = () => {
             course: 'B.Tech',
             branch: 'CSE',
             year: 'Second Year',
-            image: 'https://sahil-coder.vercel.app/static/media/profile.35b092a4ac0286a8cf38.png',
+            image: 'https://avatars.githubusercontent.com/u/69185813?v=4',
             domain: 'Web Developer',
             hobbies: 'Coding , Listening Song',
             whatsapp: 'https://wa.me/987654321',
@@ -147,12 +147,12 @@ const SeniorsPage = () => {
                         {filteredSeniors.map((senior) => (
                             <div
                                 key={senior.id}
-                                className="p-5 bg-white shadow-md rounded-lg text-center"
+                                className=" p-3 bg-white shadow-md rounded-lg text-center"
                             >
                                 <img
                                     src={senior.image}
                                     alt={senior.name}
-                                    className="w-full h-48 rounded-lg mb-4 "
+                                    className="w-48 h-48 rounded-lg mx-auto my-2"
                                 />
                                 <h2 className="text-xl font-bold mb-2">
                                     {senior.name}

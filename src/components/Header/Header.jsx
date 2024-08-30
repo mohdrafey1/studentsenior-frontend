@@ -50,7 +50,7 @@ const Header = () => {
                     </button>
                 </div>
                  <div className='root' onClick={toggleMenu} id='rr'>
-                    <div className='menu' id='menu' onTouchStart={null}>
+                    <div className='menu' id='menu'onTouchStartCapture={toggleMenu}>
                 <nav 
                     className={`${
                         isMenuOpen ? 'menu-m.active mt-4' : 'menu-m'
