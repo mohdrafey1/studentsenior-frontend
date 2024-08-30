@@ -158,9 +158,9 @@ const NotesPage = () => {
                             <span className="sr-only">Loading...</span>
                         </div>
                     </div><br />
-                    {!isLoading && filteredNotes.length == 0  ? (<p className="text-center text-gray-500 mt-5">
+                    {!isLoading && filteredNotes.length == 0 ? (<p className="text-center text-gray-500 mt-5">
                         No notes found for the selected filters.
-                    </p>):null}
+                    </p>) : null}
                 </>
                 )}
             </div>
