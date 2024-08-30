@@ -3,7 +3,6 @@ import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 
-
 const NotesPage = () => {
     const [initialNotes, setInitialNotes] = useState([]);
     const [showForm, setShowForm] = useState(false);
@@ -172,7 +171,7 @@ const NotesPage = () => {
                     </a>
                 </p>
                 <a
-                    href="#"
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSebji3Hfr-6Volc7KJwk4entnuXH803AAVF1QnHYGPK7AtjPw/viewform?usp=sf_link"
                     className="inline-block px-6 py-3 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors duration-200"
                 >
                     Buy Solved Question Paper

@@ -46,7 +46,7 @@ const App = () => {
                 />
                 <Route path="/become-a-senior" element={<AddSenior />} />
                 <Route path="/add-college" element={<AddCollege />} />
-                <Route path="/about" element={<AboutPage />} />
+                <Route path="/about-us" element={<AboutPage />} />
             </Routes>
         </Router>
     );

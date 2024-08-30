@@ -12,29 +12,29 @@ import UnderConstructionBanner from '../others/UnderConstructionBanner';
 const MainPage = () => {
     const [selectedCollege, setSelectedCollege] = useState('');
     const navigate = useNavigate();
-    
+
     const colleges = [
         {
-        "id": "66cb9952a9c088fc11800714",
-        "name": "Integral University",
-         },
+            "id": "66cb9952a9c088fc11800714",
+            "name": "Integral University",
+        },
         {
-        "id": "66cba84ce0e3a7e528642837",
-        "name": "MPGI Kanpur",
-         },
+            "id": "66cba84ce0e3a7e528642837",
+            "name": "MPGI Kanpur",
+        },
         {
-        "id": "66d08aff784c9f07a53507b9",
-        "name": "GCET Noida",
+            "id": "66d08aff784c9f07a53507b9",
+            "name": "GCET Noida",
         }
-        ];
-   
+    ];
+
 
     const handleCollegeChange = (event) => {
         setSelectedCollege(event.target.value);
         const selectedOption = event.target.options[event.target.selectedIndex]; // Get the selected option
         const dataKey = selectedOption.getAttribute('data'); // Get the data-key attribute
-        
-        localStorage.setItem("id",dataKey);
+
+        localStorage.setItem("id", dataKey);
     };
 
     const handleCollegeSelect = () => {
@@ -64,7 +64,7 @@ const MainPage = () => {
                                 <option value="">Select Your College</option>
                                 {colleges.map((college) => (
                                     <option
-                                        
+
                                         key={college.id}
                                         value={college.name.replace(
                                             /\s+/g,
