@@ -12,7 +12,42 @@ const PYQPage = () => {
     const [selectedExamType, setSelectedExamType] = useState('');
     const [pyqs, setPyqs] = useState([]);
     const [isLoading, setisLoading] = useState(true);
+    const [collegeId, setcollegeId] = useState('');
 
+
+    const colleges = [
+        {
+            "id": "66cb9952a9c088fc11800714",
+            "name": "Integral University",
+        },
+        {
+            "id": "66cba84ce0e3a7e528642837",
+            "name": "MPGI Kanpur",
+        },
+        {
+            "id": "66d08aff784c9f07a53507b9",
+            "name": "GCET Noida",
+        }
+    ];
+
+    const saveToLocalStorage = () => {
+        colleges.forEach((data) => {
+            const formattedCollegeName = data.name
+                .replace(/\s+/g, '-')
+                .toLowerCase();
+            // Save to localStorage
+            localStorage.setItem(formattedCollegeName, data.id);
+        });
+    }
+    const getCollegeId = () => {
+        const currentURL = window.location.href;
+        const regex = /college\/([^\/]+)\//;
+        const match = currentURL.match(regex);
+        if (match) {
+            setcollegeId(match[1]);
+        }
+        return match[1];
+    }
 
     // Pagination states
     const [currentPage, setCurrentPage] = useState(1);
@@ -26,8 +61,8 @@ const PYQPage = () => {
                 );
                 setisLoading(false);
                 const data = await response.json();
-                const collegeId = localStorage.getItem("id");
-                const selectedColleges = data.filter(item => item.college === collegeId);
+                const collegeid = localStorage.getItem(getCollegeId());
+                const selectedColleges = data.filter(item => item.college === collegeid);
                 if (selectedColleges.length > 0) {
                     setPyqs(selectedColleges); // Add an array of matching objects to the state
                 }
@@ -38,6 +73,7 @@ const PYQPage = () => {
         };
 
         fetchPYQs();
+        saveToLocalStorage();
     }, []);
 
     const courses = [...new Set(pyqs.map((paper) => paper.course))];
@@ -233,8 +269,8 @@ const PYQPage = () => {
                             <li
                                 key={number + 1}
                                 className={`px-3 py-1 m-1 border rounded-md cursor-pointer ${currentPage === number + 1
-                                        ? 'bg-sky-500 text-white'
-                                        : 'bg-white text-gray-700'
+                                    ? 'bg-sky-500 text-white'
+                                    : 'bg-white text-gray-700'
                                     }`}
                                 onClick={() => paginate(number + 1)}
                             >
