@@ -7,7 +7,7 @@ export default defineConfig({
         react(),
         SitemapPlugin({
             hostname: 'https://studentsenior.com',
-            outDir: 'dist',
+            outDir: 'dist', // Make sure 'dist' is correctly set
             dynamicRoutes: [
                 '/college/integral-university',
                 '/college/integral-university/pyq',
@@ -16,6 +16,7 @@ export default defineConfig({
                 '/college/integral-university/whatsappgroups',
                 '/about-us',
             ],
+            generateRobotsTxt: false, // Disable the auto-generation of robots.txt
         }),
     ],
 });
