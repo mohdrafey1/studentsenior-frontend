@@ -16,6 +16,7 @@ export default defineConfig({
                 '/college/integral-university/whatsappgroups',
                 '/about-us',
             ],
+            robots: [{ userAgent: '*', allow: '/' }], // Add this line to auto-generate robots.txt
         }),
     ],
 });
