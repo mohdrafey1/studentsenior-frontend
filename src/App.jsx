@@ -1,5 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {
+    BrowserRouter as Router,
+    Route,
+    Routes,
+    Navigate,
+} from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import CollegePage from './pages/CollegePage';
 import SeniorsPage from './pages/SeniorsPage';
@@ -12,8 +17,13 @@ import NotesPage from './pages/NotesPage';
 import AddSenior from './Forms/AddSenior';
 import AddCollege from './Forms/AddCollege';
 import AboutPage from './pages/AboutPage';
+import Signup from './pages/Signup';
+import SignIn from './pages/Signin';
+import Profile from './pages/Profile';
+import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
+    const user = false;
     return (
         <Router>
             <Routes>
@@ -47,6 +57,14 @@ const App = () => {
                 <Route path="/become-a-senior" element={<AddSenior />} />
                 <Route path="/add-college" element={<AddCollege />} />
                 <Route path="/about-us" element={<AboutPage />} />
+                <Route
+                    path="/sign-in"
+                    element={user ? <Navigate to="/" /> : <SignIn />}
+                />
+                <Route path="/sign-up" element={<Signup />} />
+                <Route element={<PrivateRoute />}>
+                    <Route path="/profile" element={<Profile />} />
+                </Route>
             </Routes>
         </Router>
     );
