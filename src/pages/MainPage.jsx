@@ -27,6 +27,20 @@ const MainPage = () => {
             "name": "GCET Noida",
         }
     ];
+    useEffect(() => {
+        saveToLocalStorage();
+    }
+        , [])
+    const saveToLocalStorage = () => {
+        colleges.forEach((data) => {
+            const formattedCollegeName = data.name
+                .replace(/\s+/g, '-')
+                .toLowerCase();
+            // Save to localStorage
+            localStorage.setItem(formattedCollegeName, data.id);
+        });
+       
+    }
 
 
     const handleCollegeChange = (event) => {

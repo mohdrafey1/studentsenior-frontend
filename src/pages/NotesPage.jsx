@@ -10,6 +10,8 @@ const NotesPage = () => {
     const [selectedCourse, setSelectedCourse] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [isLoading, setisLoading] = useState(true);
+    const [collegeId, setcollegeId] = useState('');
+
 
     useEffect(() => {
         const FetchNotes = async () => {
@@ -17,8 +19,8 @@ const NotesPage = () => {
                 const response = await fetch('https://panel.studentsenior.com/api/notes');
                 setisLoading(false);
                 const data = await response.json();
-                const collegeId = localStorage.getItem("id");
-                const selectedColleges = data.filter(item => item.college === collegeId);
+                const collegeid = localStorage.getItem(getCollegeId());
+                const selectedColleges = data.filter(item => item.college === collegeid);
                 if (selectedColleges.length > 0) {
                     setInitialNotes(selectedColleges); // Add an array of matching objects to the state
                 }
@@ -27,8 +29,43 @@ const NotesPage = () => {
             }
         }
         FetchNotes();
+        saveToLocalStorage();
 
     }, []);
+
+    const colleges = [
+        {
+            "id": "66cb9952a9c088fc11800714",
+            "name": "Integral University",
+        },
+        {
+            "id": "66cba84ce0e3a7e528642837",
+            "name": "MPGI Kanpur",
+        },
+        {
+            "id": "66d08aff784c9f07a53507b9",
+            "name": "GCET Noida",
+        }
+    ];
+
+    const saveToLocalStorage = () => {
+        colleges.forEach((data) => {
+            const formattedCollegeName = data.name
+                .replace(/\s+/g, '-')
+                .toLowerCase();
+            // Save to localStorage
+            localStorage.setItem(formattedCollegeName, data.id);
+        });
+    }
+    const getCollegeId = () => {
+        const currentURL = window.location.href;
+        const regex = /college\/([^\/]+)\//;
+        const match = currentURL.match(regex);
+        if (match) {
+            setcollegeId(match[1]);
+        }
+        return match[1];
+    }
 
     const courses = [...new Set(initialNotes.map((note) => note.course))];
     const branches = selectedCourse
