@@ -14,11 +14,9 @@ const Header = () => {
             setPathData('M4 4 L20 20 M4 20 L20 4');
             document.getElementById('rr').style.visibility = 'visible';
             document.getElementById('menu').classList.add('active');
-            // document.body.style.overflow = 'hidden';
         } else {
             document.getElementById('menu').classList.remove('active');
             document.getElementById('rr').style.visibility = 'hidden';
-            // document.body.style.overflow = 'auto';
             setPathData('M4 6h16M4 12h16M4 18h16');
         }
 
@@ -109,13 +107,14 @@ const Header = () => {
                                             onClick={toggleMenu}
                                         >
                                             <li className="ihover rounded-3xl">
+                                                <center>
                                                 <img
                                                     src={
                                                         currentUser.profilePicture
                                                     }
                                                     alt="profile"
                                                     className="h-7 w-7 rounded-full object-cover"
-                                                />
+                                                /></center>
                                             </li>
                                         </Link>
                                     </>

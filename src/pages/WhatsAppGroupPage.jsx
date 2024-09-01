@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
+import AddGroup from '../Forms/AddGrup';
 
 const WhatsAppGroupPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [groups, setGroupLink] = useState([]);
     const [isLoading, setisLoading] = useState(true);
     const [collegeId, setcollegeId] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
 
     useEffect(() => {
 
@@ -41,6 +46,10 @@ const WhatsAppGroupPage = () => {
         {
             "id": "66d08aff784c9f07a53507b9",
             "name": "GCET Noida",
+        },
+        {
+            "id": "66d40833ec7d66559acbf24c",
+            "name": "KMC UNIVERSITY",
         }
     ];
 
@@ -58,7 +67,6 @@ const WhatsAppGroupPage = () => {
         const match = currentURL.match(regex);
         if (match) {
             setcollegeId(match[1]);
-            // console.log(match[1]);
         }
         return match[1];
     }
@@ -77,17 +85,24 @@ const WhatsAppGroupPage = () => {
                 <h1 className="text-3xl font-bold mb-5 text-center">
                     WhatsApp Groups
                 </h1>
-                <div className="mb-5">
+                <div className="mb-5 flex w-full sm:w-1/2 mx-auto">
                     <input
                         type="text"
                         placeholder="Search by title or domain..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="p-2 border rounded-md w-full sm:w-1/2 mx-auto block"
+                        className="p-2 border rounded-md w-3/4 block"
                     />
+                    <button 
+                    className='px-4 py-1 mx-2 bg-blue-500 text-white rounded-md mb-2 sm:mb-0'
+                    onClick={openModal}
+                    >Add Group</button>
+
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    {groups.length > 0 ? (filteredGroups.map((group) => (
+              
+                    {groups.length > 0 ? (   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    {filteredGroups.map((group) => (
+                   
                         <div
                             key={group._id}
                             className="bg-white p-5 shadow-md rounded-md"
@@ -108,8 +123,9 @@ const WhatsAppGroupPage = () => {
                                 </a>
                             </div>
                         </div>
-                    ))) : (<>
-                        <div className={`${isLoading ? 'block' : 'hidden'} text-center w-screen`}>
+                        
+                    ))}</div>) : (<>
+                        <div className={`${isLoading ? 'block' : 'hidden'} text-center w-full`}>
                             <div role="status">
                                 <svg aria-hidden="true" className="inline w-20 h-20 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
@@ -118,13 +134,13 @@ const WhatsAppGroupPage = () => {
                                 <span className="sr-only">Loading...</span>
                             </div>
                         </div>
-                        {!isLoading && groups.length == 0 ? <p className="text-center text-gray-500 mt-5 w-screen">
+                        {!isLoading && groups.length == 0 ? <p className="text-center text-gray-500 mt-5 w-full">
                             No Whatsapp Group Found.
                         </p> : null}
                     </>
                     )}
-                </div>
             </div>
+            <AddGroup isOpen={isModalOpen} onClose={closeModal} colleges={colleges} />
             <Footer />
         </div>
     );
