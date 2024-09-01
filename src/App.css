@@ -44,7 +44,7 @@ body {
 }
 
 .card {
-    min-width: calc(33%);
+    min-width: calc(33% - 2rem);
 }
 
 @media screen and (max-width:1024px) {
