@@ -146,6 +146,8 @@ body {
     }
 
     .ihover {
+        display: flex;
+        justify-content: center;
         min-width: 35vh;
 
         text-align: center;
