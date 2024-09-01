@@ -15,34 +15,45 @@ function AboutPage() {
                             <li>
                                 A one-stop platform for students to select
                                 courses, access previous year's question papers
-                                (PYQs), and download comprehensive notes,
+                                <strong> (PYQs)</strong>, and download
+                                <strong> Comprehensive notes</strong>,
                                 simplifying exam preparation.
                             </li>
                             <li>
-                                Connecting students with experienced senior
-                                students for guidance, support, and mentorship
-                                through live chats and community forums,
-                                ensuring informed decisions and academic
-                                success.
+                                Connecting students with experienced{' '}
+                                <strong>Seniors Students</strong> for guidance,
+                                support, and mentorship through{' '}
+                                <strong>live chats</strong> and
+                                <strong> community forums</strong>, ensuring
+                                informed decisions and academic success.
                             </li>
                             <li>
-                                A college-focused marketplace where students can
-                                select their institution, buy, and sell used
-                                stationery, books, and resources, fostering a
-                                sustainable and cost-effective community.
+                                A college-focused <strong>Marketplace</strong>{' '}
+                                where students can select their institution,{' '}
+                                <strong>
+                                    buy, and sell used stationery, books, and
+                                    resources,
+                                </strong>
+                                fostering a sustainable and cost-effective
+                                community.
                             </li>
                             <li>
                                 A course-centric platform connecting students
-                                with relevant internship opportunities, allowing
-                                them to select their course and apply for
-                                internships, kickstarting their professional
+                                with relevant{' '}
+                                <strong>internship opportunities</strong>,
+                                allowing them to select their course and apply
+                                for internships, kickstarting their professional
                                 journey.
                             </li>
                             <li>
                                 A college discovery platform where students can
                                 select their institution and access direct links
-                                to official websites, admissions, and essential
-                                college resources effortlessly.
+                                to <strong>official websites</strong>,
+                                admissions, and{' '}
+                                <strong>
+                                    {' '}
+                                    essential college resources effortlessly.{' '}
+                                </strong>
                             </li>
                         </ul>
                     </div>
@@ -100,13 +111,13 @@ function AboutPage() {
                             {[
                                 {
                                     name: 'Mohd Rafey',
-                                    role: 'Founder & CEO',
+                                    role: 'Founder',
                                     description:
                                         'As the visionary behind the platform, Mohd Rafey is committed to leveraging technology and community to drive student success and enhance the academic experience.',
                                     image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214937/student_senior/u3tqpo9vbzq8wlrnfoab.jpg',
                                 },
                                 {
-                                    name: 'Vaishnavi Baranawal',
+                                    name: 'Vaishnavi Baranwal',
                                     role: 'Manager',
                                     description:
                                         'With a knack for project management and technology integration, Vaishnavi ensures that all operations run smoothly, leading the team towards continuous innovation.',
