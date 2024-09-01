@@ -33,9 +33,8 @@ const Header = () => {
                 <div className="lg:hidden">
                     <button
                         onClick={toggleMenu}
-                        className={`focus:outline-none relative z-20 rounded-lg p-2 ${
-                            isMenuOpen ? 'bg-sky-400' : 'transparent'
-                        }`}
+                        className={`focus:outline-none relative z-20 rounded-lg p-2 ${isMenuOpen ? 'bg-sky-400' : 'transparent'
+                            }`}
                     >
                         <svg
                             className="w-6 h-6"
@@ -56,9 +55,8 @@ const Header = () => {
                 <div className="root" onClick={toggleMenu} id="rr">
                     <div className="menu" id="menu" onTouchStart={null}>
                         <nav
-                            className={`${
-                                isMenuOpen ? 'menu-m.active mt-4' : 'menu-m'
-                            } absolute rounded-tr-3xl  top-0 left-0 w-4/5 h-screen bg-white lg:bg-transparent lg:relative lg:top-auto lg:left-auto lg:w-auto lg:h-auto lg:flex lg:items-center `}
+                            className={`${isMenuOpen ? 'menu-m.active mt-4' : 'menu-m'
+                                } absolute rounded-tr-3xl  top-0 left-0 w-4/5 h-screen bg-white lg:bg-transparent lg:relative lg:top-auto lg:left-auto lg:w-auto lg:h-auto lg:flex lg:items-center `}
                             id="toggle"
                         >
                             <div className="myclass">
@@ -108,13 +106,13 @@ const Header = () => {
                                         >
                                             <li className="ihover rounded-3xl">
                                                 <center>
-                                                <img
-                                                    src={
-                                                        currentUser.profilePicture
-                                                    }
-                                                    alt="profile"
-                                                    className="h-7 w-7 rounded-full object-cover"
-                                                /></center>
+                                                    <img
+                                                        src={
+                                                            currentUser.profilePicture
+                                                        }
+                                                        alt="profile"
+                                                        className="h-7 w-7 rounded-full object-cover"
+                                                    /></center>
                                             </li>
                                         </Link>
                                     </>
