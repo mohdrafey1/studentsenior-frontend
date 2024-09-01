@@ -20,21 +20,21 @@ const PYQPage = () => {
 
     const colleges = [
         {
-            "id": "66cb9952a9c088fc11800714",
-            "name": "Integral University",
+            id: '66cb9952a9c088fc11800714',
+            name: 'Integral University',
         },
         {
-            "id": "66cba84ce0e3a7e528642837",
-            "name": "MPGI Kanpur",
+            id: '66cba84ce0e3a7e528642837',
+            name: 'MPGI Kanpur',
         },
         {
-            "id": "66d08aff784c9f07a53507b9",
-            "name": "GCET Noida",
+            id: '66d08aff784c9f07a53507b9',
+            name: 'GCET Noida',
         },
         {
-            "id": "66d40833ec7d66559acbf24c",
-            "name": "KMC UNIVERSITY",
-        }
+            id: '66d40833ec7d66559acbf24c',
+            name: 'KMC UNIVERSITY',
+        },
     ];
 
     const saveToLocalStorage = () => {
@@ -335,7 +335,7 @@ const PYQPage = () => {
                     Buy Solved Question Paper
                 </a>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md text-center">
+            <div className="bg-white p-6 rounded-lg shadow-md text-center mb-8">
                 <p className="mb-4">
                     If you have any PYQs or notes, please share them with us.
                 </p>

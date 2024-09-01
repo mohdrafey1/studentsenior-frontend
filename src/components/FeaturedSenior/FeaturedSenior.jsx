@@ -4,7 +4,7 @@ const seniors = [
     {
         name: 'Mohd Rafey',
         job: 'Devops + Web Dev',
-        image: 'https://media.licdn.com/dms/image/v2/D5603AQHkxOjh4TJwzA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1707034601913?e=1729123200&v=beta&t=7f0kL83DurSdKPGfMnXwixqxkywwjW7Qg0MYsZHDN_Y',
+        image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214937/student_senior/u3tqpo9vbzq8wlrnfoab.jpg',
         socials: [
             { icon: 'facebook-f', link: '#' },
             { icon: 'twitter', link: '#' },
@@ -15,7 +15,7 @@ const seniors = [
     {
         name: 'Najmus Sahar',
         job: 'Frontend Developer',
-        image: 'https://media.licdn.com/dms/image/v2/D4D03AQHsGr8kzHfnAw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1721041561276?e=1729123200&v=beta&t=RopWIpm73YuuZsZ_eRL6tzuBKLtQdYtpfzA2SjlQ8uA',
+        image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214975/student_senior/zbiisemkblddgqjfcjwz.jpg',
         socials: [
             { icon: 'facebook-f', link: '#' },
             { icon: 'twitter', link: '#' },
@@ -26,7 +26,7 @@ const seniors = [
     {
         name: 'Muskan Khatoon',
         job: 'Web Developer',
-        image: 'https://media.licdn.com/dms/image/v2/D4E03AQFuTaTBMWzUEQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1720321562388?e=1729123200&v=beta&t=Y-gGbgYgJwan__XQN828C0kAkAVMFegCzGLpEdLmX3o',
+        image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214982/student_senior/fx2cxp3l89hk0v2tfmlg.jpg',
         socials: [
             { icon: 'facebook-f', link: '#' },
             { icon: 'twitter', link: '#' },
