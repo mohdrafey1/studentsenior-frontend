@@ -173,6 +173,22 @@ export default function Profile() {
                         onChange={handleChange}
                     />
                     <input
+                        defaultValue={currentUser.college}
+                        type="text"
+                        id="college"
+                        placeholder="College Name"
+                        className="bg-slate-100 rounded-lg p-3"
+                        onChange={handleChange}
+                    />
+                    <input
+                        defaultValue={currentUser.phone}
+                        type="number"
+                        id="phone"
+                        placeholder="Please Enter 10 digit Mobile No"
+                        className="bg-slate-100 rounded-lg p-3"
+                        onChange={handleChange}
+                    />
+                    <input
                         type="password"
                         id="password"
                         placeholder="Password"

@@ -61,6 +61,20 @@ export default function SignUp() {
                         onChange={handleChange}
                     />
                     <input
+                        type="text"
+                        placeholder="College Name"
+                        id="college"
+                        className="bg-slate-100 p-3 rounded-lg"
+                        onChange={handleChange}
+                    />
+                    <input
+                        type="number"
+                        placeholder="Please Enter 10 digit Mobile No"
+                        id="phone"
+                        className="bg-slate-100 p-3 rounded-lg"
+                        onChange={handleChange}
+                    />
+                    <input
                         type="password"
                         placeholder="Password"
                         id="password"
