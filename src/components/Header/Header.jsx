@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import '../../App.css';
 
@@ -7,6 +7,7 @@ const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [pathData, setPathData] = useState('M4 6h16M4 12h16M4 18h16');
 
+    const location = useLocation();
     const { currentUser } = useSelector((state) => state.user);
     const toggleMenu = () => {
         if (!isMenuOpen) {
@@ -101,19 +102,37 @@ const Header = () => {
                                         About Us
                                     </li>
                                 </Link>
-                                <Link to="/profile">
-                                    {currentUser ? (
-                                        <img
-                                            src={currentUser.profilePicture}
-                                            alt="profile"
-                                            className="h-7 w-7 rounded-full object-cover"
-                                        />
-                                    ) : (
-                                        <li className="ihover rounded-3xl">
-                                            Sign In
-                                        </li>
-                                    )}
-                                </Link>
+                                {currentUser ? (
+                                    <>
+                                        <Link
+                                            to="/profile"
+                                            onClick={toggleMenu}
+                                        >
+                                            <li className="ihover rounded-3xl">
+                                                <img
+                                                    src={
+                                                        currentUser.profilePicture
+                                                    }
+                                                    alt="profile"
+                                                    className="h-7 w-7 rounded-full object-cover"
+                                                />
+                                            </li>
+                                        </Link>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Link
+                                            to="/sign-in"
+                                            onClick={toggleMenu}
+                                            state={{ from: location }}
+                                            replace
+                                        >
+                                            <li className="ihover rounded-3xl">
+                                                Login
+                                            </li>
+                                        </Link>
+                                    </>
+                                )}
                             </ul>
                         </nav>
                     </div>

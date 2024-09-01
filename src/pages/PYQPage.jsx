@@ -3,6 +3,7 @@ import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import { useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
 
 const PYQPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -15,6 +16,7 @@ const PYQPage = () => {
     const [isLoading, setisLoading] = useState(true);
     const [collegeId, setcollegeId] = useState('');
     const { isAuthenticated } = useSelector((state) => state.user);
+    const location = useLocation();
 
     const colleges = [
         {
@@ -237,9 +239,13 @@ const PYQPage = () => {
                                     </a>
                                 ) : (
                                     <p className="text-red-500">
-                                        <a href="/sign-in">
+                                        <Link
+                                            to="/sign-in"
+                                            state={{ from: location }}
+                                            replace
+                                        >
                                             Please log in to view the PDF.
-                                        </a>
+                                        </Link>
                                     </p>
                                 )}
                             </div>

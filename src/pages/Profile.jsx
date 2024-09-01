@@ -186,7 +186,7 @@ export default function Profile() {
                 <div className="flex justify-between mt-5">
                     <span
                         onClick={handleDeleteAccount}
-                        className="text-red-700 cursor-pointer"
+                        className="text-gray-400 cursor-pointer"
                     >
                         <button disabled>Delete Account</button>
                     </span>

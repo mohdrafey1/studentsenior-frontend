@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
     signInStart,
     signInSuccess,
@@ -13,9 +13,10 @@ import Header from '../components/Header/Header';
 export default function SignIn() {
     const [formData, setFormData] = useState({});
     const { loading, error } = useSelector((state) => state.user);
-
     const navigate = useNavigate();
+    const location = useLocation();
     const dispatch = useDispatch();
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value });
     };
@@ -37,11 +38,14 @@ export default function SignIn() {
                 return;
             }
             dispatch(signInSuccess(data));
-            navigate('/');
+            // Navigate to the correct route after successful login
+            const from = location.state?.from?.pathname || '/'; // Default to home if `from` is not set
+            navigate(from, { replace: true });
         } catch (error) {
             dispatch(signInFailure(error));
         }
     };
+
     return (
         <>
             <Header />
@@ -73,7 +77,7 @@ export default function SignIn() {
                     <OAuth />
                 </form>
                 <div className="flex gap-2 mt-5">
-                    <p>Dont Have an account?</p>
+                    <p>Don't Have an account?</p>
                     <Link to="/sign-up">
                         <span className="text-blue-500">Sign up</span>
                     </Link>
