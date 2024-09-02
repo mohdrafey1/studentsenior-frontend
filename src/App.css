@@ -44,12 +44,13 @@ body {
 }
 
 .card {
-    min-width: calc(33% - 2rem);
+    min-width: calc(33% );
 }
 
+.cards{
+ width: calc(33% - 16px);   
+}
 @media screen and (max-width:1024px) {
-
-
 
     .root {
         position: fixed;
@@ -123,7 +124,10 @@ body {
 
         display: none;
     }
-
+    .cards{
+        width: calc(50% - 10px);   
+       }
+    
 }
 
 /* Responsive For Mobile Screen */
@@ -216,5 +220,7 @@ body {
         min-width: calc(100% - 8px);
         margin: 4px;
     }
-
+    .cards{
+        width: calc(99% );   
+       }
 }

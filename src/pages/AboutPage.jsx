@@ -107,7 +107,7 @@ function AboutPage() {
                         <h2 className="text-3xl font-bold text-center mb-8">
                             Meet Our Team
                         </h2>
-                        <div className="grid md:grid-cols-3 gap-8">
+                        <div className="w-full flex flex-wrap gap-5 justify-center">
                             {[
                                 {
                                     name: 'Mohd Rafey',
@@ -147,7 +147,7 @@ function AboutPage() {
                             ].map((member, index) => (
                                 <div
                                     key={index}
-                                    className="bg-white p-6 shadow-md rounded-lg text-center hover:shadow-xl transition-shadow duration-300"
+                                    className="bg-white p-6 shadow-md rounded-lg text-center hover:shadow-xl transition-shadow duration-300 cards"
                                 >
                                     <img
                                         src={member.image}

@@ -6,14 +6,12 @@ const Testimonials = () => {
     const scrollLeft = () => {
         const carousel = carouselRef.current;
         const cardWidth = carousel.querySelector('.card').offsetWidth+4;
-        console.log(cardWidth);
         carousel.scrollBy({ left: - cardWidth, behavior: 'smooth' });
     };
 
     const scrollRight = () => {
         const carousel = carouselRef.current;
         const cardWidth = carousel.querySelector('.card').offsetWidth+4;
-         console.log(cardWidth);
         carousel.scrollBy({ left: cardWidth, behavior: 'smooth' });
     };
 
