@@ -78,7 +78,7 @@ const Testimonials = () => {
                         ].map((review, index) => (
                             <li
                                 key={index}
-                                className="card box-border w-[100%] sm:w-[45%] md:w-[31%] p-6 sm:p-8 m-0.5 bg-white rounded-lg flex-shrink-0"
+                                className="card card-testimonial box-border w-[100%] sm:w-[45%] md:w-[31%] p-6 sm:p-8 m-0.5 bg-white rounded-lg flex-shrink-0"
                             >
                                 <div className="img mb-4">
                                     <img
