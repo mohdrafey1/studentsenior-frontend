@@ -23,8 +23,8 @@
 
 ::-webkit-scrollbar-thumb {
     border-radius: 50px;
-    background-color: rgb(109, 206, 244);
-    ;
+    background: linear-gradient(to bottom, #0ea5e9,#fff);
+    box-shadow: inset 2px 0px 4px #000;
 }
 
 body {
@@ -52,7 +52,16 @@ body {
 .cards{
  width: calc(33% - 16px);   
 }
-
+.heading-class{
+background:linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+color: transparent;
+background-clip: text;
+}
+.heading-m{
+    background: linear-gradient(to right,#FF0000, #0000FF);
+    color: transparent;
+background-clip: text;
+}
 @media screen and (max-width:1024px) {
 
     .root {
