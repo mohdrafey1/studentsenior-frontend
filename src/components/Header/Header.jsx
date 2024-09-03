@@ -27,8 +27,9 @@ const Header = () => {
         <header className="p-4">
             <div className="container mx-auto flex justify-between items-center">
                 <h1 className="text-3xl mx-5 font-bold">
-                    <span style={{ color: 'red', fontSize: '40px' }}>S</span>
-                    tudent <span style={{ color: 'red' }}>S</span>enior
+                <span className='heading-m'>
+               <span style={{fontSize: '40px' }}>S</span>
+                    tudent </span>  <span className='heading-m'>Senior</span>
                 </h1>
                 <div className="lg:hidden">
                     <button
