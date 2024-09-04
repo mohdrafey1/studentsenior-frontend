@@ -135,7 +135,7 @@ function AboutPage() {
                                     role: 'Backend Developer',
                                     description:
                                         'Muskan specializes in developing robust backend systems, ensuring data integrity, and optimizing performance to support a seamless user experience.',
-                                    image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214982/student_senior/fx2cxp3l89hk0v2tfmlg.jpg',
+                                    image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725429901/student_senior/qehp7dr9wnfthnwphqke.jpg',
                                 },
                                 {
                                     name: 'Sahil Verma',

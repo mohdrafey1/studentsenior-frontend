@@ -42,7 +42,7 @@ const SeniorsPage = () => {
             course: 'B.Tech',
             branch: 'CSE',
             year: 'Third Year',
-            image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214982/student_senior/fx2cxp3l89hk0v2tfmlg.jpg',
+            image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725429901/student_senior/qehp7dr9wnfthnwphqke.jpg',
             domain: 'Web Development',
             hobbies: 'Coding, Reading',
             whatsapp: 'https://wa.me/123456789',

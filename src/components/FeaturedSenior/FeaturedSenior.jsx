@@ -26,7 +26,7 @@ const seniors = [
     {
         name: 'Muskan Khatoon',
         job: 'Web Developer',
-        image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214982/student_senior/fx2cxp3l89hk0v2tfmlg.jpg',
+        image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725429901/student_senior/qehp7dr9wnfthnwphqke.jpg',
         socials: [
             { icon: 'facebook-f', link: '#' },
             { icon: 'twitter', link: '#' },
