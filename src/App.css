@@ -18,13 +18,12 @@
 
 ::-webkit-scrollbar {
     background-color: transparent;
-    width: 10px;
+    width: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
     border-radius: 50px;
-    background: linear-gradient(to bottom, #0ea5e9,#fff);
-    box-shadow: inset 2px 0px 4px #000;
+    background-color: #2196f3;
 }
 
 body {
@@ -142,12 +141,20 @@ background-clip: text;
     .cards{
         width: calc(50% - 10px);   
        }
+       ::-webkit-scrollbar {
+        background-color: transparent;
+        width: 5px;
+    }
     
 }
 
 /* Responsive For Mobile Screen */
 @media screen and (max-width:767px) {
 
+    ::-webkit-scrollbar {
+        background-color: transparent;
+        width: 4px;
+    }
     .root {
         position: fixed;
         top: 0;
