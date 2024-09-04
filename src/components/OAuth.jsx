@@ -3,7 +3,7 @@ import { app } from '../firebase';
 import { useDispatch } from 'react-redux';
 import { signInSuccess } from '../redux/user/userSlice';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { API_BASE_URL } from '../config/apiConfiguration';
+import { API_BASE_URL, API_KEY } from '../config/apiConfiguration';
 
 export default function OAuth() {
     const dispatch = useDispatch();
@@ -21,6 +21,7 @@ export default function OAuth() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'x-api-key': API_KEY,
                 },
                 body: JSON.stringify({
                     name: result.user.displayName,

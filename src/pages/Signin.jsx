@@ -7,7 +7,7 @@ import {
 } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import OAuth from '../components/OAuth';
-import { API_BASE_URL } from '../config/apiConfiguration.js';
+import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 import Header from '../components/Header/Header';
 
 export default function SignIn() {
@@ -29,6 +29,7 @@ export default function SignIn() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'x-api-key': API_KEY,
                 },
                 body: JSON.stringify(formData),
             });

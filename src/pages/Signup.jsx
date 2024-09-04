@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import OAuth from '../components/OAuth';
-import { API_BASE_URL } from '../config/apiConfiguration.js'; //correction
+import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js'; //correction
 import Header from '../components/Header/Header';
 
 export default function SignUp() {
@@ -22,6 +22,7 @@ export default function SignUp() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'x-api-key': API_KEY,
                 },
                 body: JSON.stringify(formData),
             });

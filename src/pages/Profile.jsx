@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useRef, useState, useEffect } from 'react';
-import { API_BASE_URL } from '../config/apiConfiguration.js';
+import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 import {
     getDownloadURL,
     getStorage,
@@ -71,6 +71,7 @@ export default function Profile() {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'x-api-key': API_KEY,
                     },
                     credentials: 'include',
                     body: JSON.stringify(formData),
@@ -95,6 +96,9 @@ export default function Profile() {
                 `${API_BASE_URL}/api/user/delete/${currentUser._id}`,
                 {
                     method: 'DELETE',
+                    headers: {
+                        'x-api-key': API_KEY,
+                    },
                 }
             );
             const data = await res.json();
