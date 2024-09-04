@@ -4,6 +4,7 @@ import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
+import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 
 const PYQPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -63,9 +64,13 @@ const PYQPage = () => {
     useEffect(() => {
         const fetchPYQs = async () => {
             try {
-                const response = await fetch(
-                    'https://panel.studentsenior.com/api/pyqs'
-                );
+                const response = await fetch(`${API_BASE_URL}/api/pyqs`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': API_KEY,
+                    },
+                });
                 setisLoading(false);
                 const data = await response.json();
                 const collegeid = localStorage.getItem(getCollegeId());

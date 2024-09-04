@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useRef, useState, useEffect } from 'react';
-import API_BASE_URL from '../config/apiConfiguration.js';
+import { API_BASE_URL } from '../config/apiConfiguration.js';
 import {
     getDownloadURL,
     getStorage,
