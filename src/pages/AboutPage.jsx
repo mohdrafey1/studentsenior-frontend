@@ -116,13 +116,7 @@ function AboutPage() {
                                         'As the visionary behind the platform, Mohd Rafey is committed to leveraging technology and community to drive student success and enhance the academic experience.',
                                     image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214937/student_senior/u3tqpo9vbzq8wlrnfoab.jpg',
                                 },
-                                {
-                                    name: 'Vaishnavi Baranwal',
-                                    role: 'Manager',
-                                    description:
-                                        'With a knack for project management and technology integration, Vaishnavi ensures that all operations run smoothly, leading the team towards continuous innovation.',
-                                    image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725217498/student_senior/lpynwmrs8uvoo2vapfum.jpg',
-                                },
+                                
                                 {
                                     name: 'Najmus Sahar',
                                     role: 'Community Manager',
