@@ -116,28 +116,34 @@ function AboutPage() {
                                         'As the visionary behind the platform, Mohd Rafey is committed to leveraging technology and community to drive student success and enhance the academic experience.',
                                     image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214937/student_senior/u3tqpo9vbzq8wlrnfoab.jpg',
                                 },
-                                
-                                {
-                                    name: 'Najmus Sahar',
-                                    role: 'Community Manager',
-                                    description:
-                                        'Najmus is focused on building a supportive community, fostering engagement, and enhancing user experience through active communication and feedback loops.',
-                                    image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214975/student_senior/zbiisemkblddgqjfcjwz.jpg',
-                                },
-                                {
-                                    name: 'Muskan Khatoon',
-                                    role: 'Backend Developer',
-                                    description:
-                                        'Muskan specializes in developing robust backend systems, ensuring data integrity, and optimizing performance to support a seamless user experience.',
-                                    image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725429901/student_senior/qehp7dr9wnfthnwphqke.jpg',
-                                },
-                                {
-                                    name: 'Sahil Verma',
-                                    role: 'UI/UX Designer',
-                                    description:
-                                        'Sahil crafts intuitive and visually appealing designs, making sure that every interaction on the platform is user-friendly and engaging.',
-                                    image: 'https://avatars.githubusercontent.com/u/69185813?v=4',
-                                },
+                                // {
+                                //     name: 'Vaishnavi Baranwal',
+                                //     role: 'Manager',
+                                //     description:
+                                //         'With a knack for project management and technology integration, Vaishnavi ensures that all operations run smoothly, leading the team towards continuous innovation.',
+                                //     image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725217498/student_senior/lpynwmrs8uvoo2vapfum.jpg',
+                                // },
+                                // {
+                                //     name: 'Najmus Sahar',
+                                //     role: 'Community Manager',
+                                //     description:
+                                //         'Najmus is focused on building a supportive community, fostering engagement, and enhancing user experience through active communication and feedback loops.',
+                                //     image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214975/student_senior/zbiisemkblddgqjfcjwz.jpg',
+                                // },
+                                // {
+                                //     name: 'Muskan Khatoon',
+                                //     role: 'Backend Developer',
+                                //     description:
+                                //         'Muskan specializes in developing robust backend systems, ensuring data integrity, and optimizing performance to support a seamless user experience.',
+                                //     image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725429901/student_senior/qehp7dr9wnfthnwphqke.jpg',
+                                // },
+                                // {
+                                //     name: 'Sahil Verma',
+                                //     role: 'UI/UX Designer',
+                                //     description:
+                                //         'Sahil crafts intuitive and visually appealing designs, making sure that every interaction on the platform is user-friendly and engaging.',
+                                //     image: 'https://avatars.githubusercontent.com/u/69185813?v=4',
+                                // },
                             ].map((member, index) => (
                                 <div
                                     key={index}
