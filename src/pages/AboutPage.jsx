@@ -109,13 +109,13 @@ function AboutPage() {
                         </h2>
                         <div className="w-full flex flex-wrap gap-5 justify-center">
                             {[
-                                {
-                                    name: 'Mohd Rafey',
-                                    role: 'Founder',
-                                    description:
-                                        'As the visionary behind the platform, Mohd Rafey is committed to leveraging technology and community to drive student success and enhance the academic experience.',
-                                    image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214937/student_senior/u3tqpo9vbzq8wlrnfoab.jpg',
-                                },
+                                // {
+                                //     name: 'Mohd Rafey',
+                                //     role: 'Founder',
+                                //     description:
+                                //         'As the visionary behind the platform, Mohd Rafey is committed to leveraging technology and community to drive student success and enhance the academic experience.',
+                                //     image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214937/student_senior/u3tqpo9vbzq8wlrnfoab.jpg',
+                                // },
                                 // {
                                 //     name: 'Vaishnavi Baranwal',
                                 //     role: 'Manager',
