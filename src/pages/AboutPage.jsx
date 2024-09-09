@@ -9,7 +9,7 @@ function AboutPage() {
             <div className="bg-gradient-to-t from-sky-500 to-white">
                 {/* Hero Section */}
                 <section className="relative py-10">
-                    <div className="container mx-auto px-6 text-center relative z-10">
+                    <div className="container mx-auto px-6 text-center relative">
                         <h1 className="text-4xl font-bold mb-6">About Us</h1>
                         <ul className="space-y-4 text-base max-w-5xl mx-auto text-start">
                             <li>
@@ -102,7 +102,7 @@ function AboutPage() {
                 </section>
 
                 {/* Team Section */}
-                <section className="py-16 px-6 max-w-7xl mx-auto">
+                {/* <section className="py-16 px-6 max-w-7xl mx-auto">
                     <div className="container mx-auto">
                         <h2 className="text-3xl font-bold text-center mb-8">
                             Meet Our Team
@@ -165,7 +165,7 @@ function AboutPage() {
                             ))}
                         </div>
                     </div>
-                </section>
+                </section> */}
             </div>
             <Footer />
         </>
