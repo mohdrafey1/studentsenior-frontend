@@ -22,7 +22,6 @@ const Header = () => {
 
         setIsMenuOpen(!isMenuOpen);
     };
-
     return (
         <header className="p-4">
             <div className="container mx-auto flex justify-between items-center">
@@ -32,7 +31,7 @@ const Header = () => {
                <span style={{fontSize: '40px' }}>S</span>
                     tudent </span>  <span className='heading-m'>Senior</span>
                 </h1>
-                </Link>
+                </Link >
                 <div className="lg:hidden">
                     <button
                         onClick={toggleMenu}
