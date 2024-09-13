@@ -203,8 +203,9 @@ const WhatsAppGroupPage = () => {
                 ) : (
                     <>
                         <div
-                            className={`${isLoading ? 'block' : 'hidden'
-                                } text-center w-full`}
+                            className={`${
+                                isLoading ? 'block' : 'hidden'
+                            } text-center w-full`}
                         >
                             <div role="status">
                                 <svg
