@@ -94,7 +94,7 @@ const WhatsAppGroupPage = () => {
         setText('Wait ...');
         try {
             const resp = await fetch(
-                'https://panel.studentsenior.com/api/whatsappgroup',
+                `${API_BASE_URL}/api/whatsappgroup`,
                 {
                     method: 'POST',
                     headers: {
