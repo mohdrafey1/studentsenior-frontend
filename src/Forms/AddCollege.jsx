@@ -47,7 +47,7 @@ function AddCollege() {
         <>
             <Header />
             <div className="container mx-auto p-4 bg-white min-h-full ">
-                <div className='big-screen w-full h-full lg:flex bg-white shadow-md rounded-lg mt-3 mb-3 '>
+                <div className='big-screen w-full h-full  lg:flex self-center bg-white shadow-md rounded-lg mt-3 mb-3 '>
                     <div className='illustration w-full'>
                         <iframe className='w-full h-full' controls src="https://lottie.host/embed/13b6a2bb-8ee5-485e-a88d-ed9c5b3f6977/b9HuPP23fO.json"></iframe>
                     </div>
