@@ -6,11 +6,24 @@ import { VitePWA } from 'vite-plugin-pwa';
 export default defineConfig({
     plugins: [
         react(),
+        SitemapPlugin({
+            hostname: 'https://studentsenior.com',
+            outDir: 'dist',
+            dynamicRoutes: [
+                '/college/integral-university',
+                '/college/integral-university/pyq',
+                '/college/integral-university/seniors',
+                '/college/integral-university/notes',
+                '/college/integral-university/whatsappgroups',
+                '/about-us',
+            ],
+            generateRobotsTxt: false,
+        }),
         VitePWA({
             registerType: 'autoUpdate',
             manifest: {
                 name: 'Student Senior',
-                short_name: 'studentsenior',
+                short_name: 'Student Senior',
                 description: 'Your College Resource on One Click',
                 start_url: '/',
                 display: 'standalone',
@@ -29,19 +42,6 @@ export default defineConfig({
                     },
                 ],
             },
-        }),
-        SitemapPlugin({
-            hostname: 'https://studentsenior.com',
-            outDir: 'dist',
-            dynamicRoutes: [
-                '/college/integral-university',
-                '/college/integral-university/pyq',
-                '/college/integral-university/seniors',
-                '/college/integral-university/notes',
-                '/college/integral-university/whatsappgroups',
-                '/about-us',
-            ],
-            generateRobotsTxt: false,
         }),
     ],
 });

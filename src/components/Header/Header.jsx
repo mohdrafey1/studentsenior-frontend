@@ -25,18 +25,21 @@ const Header = () => {
     return (
         <header className="p-4">
             <div className="container mx-auto flex justify-between items-center">
-                <Link to="/" >
+                <Link to="/">
                     <h1 className="text-3xl mx-5 font-bold">
-                        <span className='heading-m'>
+                        <span className="heading-m pt-1">
                             <span style={{ fontSize: '40px' }}>S</span>
-                            tudent </span>  <span className='heading-m'>Senior</span>
+                            tudent{' '}
+                        </span>{' '}
+                        <span className="heading-m">Senior</span>
                     </h1>
-                </Link >
+                </Link>
                 <div className="lg:hidden">
                     <button
                         onClick={toggleMenu}
-                        className={`focus:outline-none relative z-20 rounded-lg p-2 ${isMenuOpen ? 'bg-sky-400' : 'transparent'
-                            }`}
+                        className={`focus:outline-none relative z-20 rounded-lg p-2 ${
+                            isMenuOpen ? 'bg-sky-400' : 'transparent'
+                        }`}
                     >
                         <svg
                             className="w-6 h-6"
@@ -57,8 +60,9 @@ const Header = () => {
                 <div className="root" onClick={toggleMenu} id="rr">
                     <div className="menu" id="menu" onTouchStart={null}>
                         <nav
-                            className={`${isMenuOpen ? 'menu-m.active mt-4' : 'menu-m'
-                                } absolute rounded-tr-3xl  top-0 left-0 w-4/5 h-screen bg-white lg:bg-transparent lg:relative lg:top-auto lg:left-auto lg:w-auto lg:h-auto lg:flex lg:items-center `}
+                            className={`${
+                                isMenuOpen ? 'menu-m.active mt-4' : 'menu-m'
+                            } absolute rounded-tr-3xl  top-0 left-0 w-4/5 h-screen bg-white lg:bg-transparent lg:relative lg:top-auto lg:left-auto lg:w-auto lg:h-auto lg:flex lg:items-center `}
                             id="toggle"
                         >
                             <div className="myclass">
@@ -114,7 +118,8 @@ const Header = () => {
                                                         }
                                                         alt="profile"
                                                         className="h-7 w-7 rounded-full object-cover"
-                                                    /></center>
+                                                    />
+                                                </center>
                                             </li>
                                         </Link>
                                     </>
