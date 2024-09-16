@@ -31,14 +31,28 @@ export default defineConfig({
                 theme_color: '#000000',
                 icons: [
                     {
-                        src: '/image192.png',
+                        src: '/assets/image192.png',
                         sizes: '192x192',
                         type: 'image/png',
                     },
                     {
-                        src: '/image512.png',
+                        src: '/assets/image512.png',
                         sizes: '512x512',
                         type: 'image/png',
+                    },
+                ],
+                screenshots: [
+                    {
+                        src: '/assets/ss360.png',
+                        sizes: '360x640',
+                        type: 'image/png',
+                        label: 'Screenshot of app in action',
+                    },
+                    {
+                        src: '/assets/ss1280.png',
+                        sizes: '1280x800',
+                        type: 'image/png',
+                        label: 'Wide screenshot',
                     },
                 ],
             },
