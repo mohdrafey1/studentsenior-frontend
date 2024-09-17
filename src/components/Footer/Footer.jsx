@@ -16,37 +16,52 @@ const Footer = () => {
                         &copy; 2024 Student Senior. All rights reserved.
                     </p>
                 </div>
-                <div className="flex space-x-6">
+                <div className="flex items-center space-x-6">
                     <a
-                        href="https://twitter.com"
-                        aria-label="Twitter"
+                        target="_blank"
+                        href="https://studentsenior.com/install"
+                        aria-label="install"
                         className="hover:text-gray-400"
                     >
-                        <i className="fa-brands fa-twitter text-2xl"></i>
+                        <p className="bg-white text-black rounded-3xl px-1 font-bold">
+                            Install
+                        </p>
                     </a>
                     <a
-                        href="https://linkedin.com"
+                        target="_blank"
+                        href="https://t.me/studentsenior12"
+                        aria-label="Telegram"
+                        className="hover:text-gray-400"
+                    >
+                        <i className="fa-brands fa-telegram text-2xl"></i>
+                    </a>
+                    <a
+                        target="_blank"
+                        href="https://www.linkedin.com/in/mohd-rafey/"
                         aria-label="LinkedIn"
                         className="hover:text-gray-400"
                     >
                         <i className="fa-brands fa-linkedin text-2xl"></i>
                     </a>
                     <a
-                        href="https://instagram.com"
+                        target="_blank"
+                        href="https://www.instagram.com/studentsenior12?igsh=c2NkZWRpNm9pdTVy"
                         aria-label="Instagram"
                         className="hover:text-gray-400"
                     >
                         <i className="fa-brands fa-instagram text-2xl"></i>
                     </a>
                     <a
-                        href="https://youtube.com"
+                        target="_blank"
+                        href="https://youtube.com/extraelements"
                         aria-label="YouTube"
                         className="hover:text-gray-400"
                     >
                         <i className="fa-brands fa-youtube text-2xl"></i>
                     </a>
                     <a
-                        href="https://whatsapp.com"
+                        target="_blank"
+                        href="https://api.whatsapp.com/send?phone=919455346151"
                         aria-label="WhatsApp"
                         className="hover:text-gray-400"
                     >
