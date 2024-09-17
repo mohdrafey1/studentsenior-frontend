@@ -21,6 +21,7 @@ import Signup from './pages/Signup';
 import SignIn from './pages/Signin';
 import Profile from './pages/Profile';
 import PrivateRoute from './components/PrivateRoute';
+import InstallPage from './pages/InstallPage';
 
 const App = () => {
     const user = false;
@@ -65,6 +66,7 @@ const App = () => {
                 <Route element={<PrivateRoute />}>
                     <Route path="/profile" element={<Profile />} />
                 </Route>
+                <Route path="/install" element={<InstallPage />} />
             </Routes>
         </Router>
     );
