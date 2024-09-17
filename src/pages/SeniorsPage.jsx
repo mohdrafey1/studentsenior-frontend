@@ -1,100 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SeniorModal from '../components/SeniorModal/SeniorModal';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
+import { API_BASE_URL, API_KEY } from '../config/apiConfiguration';
 
 const SeniorsPage = () => {
     const [selectedCourse, setSelectedCourse] = useState('');
     const [selectedBranch, setSelectedBranch] = useState('');
     const [selectedSenior, setSelectedSenior] = useState(null);
-
-    const seniors = [
-        {
-            id: 1,
-            name: 'Mohd Rafey',
-            course: 'B.Tech',
-            branch: 'CSE',
-            year: 'Third Year',
-            image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214937/student_senior/u3tqpo9vbzq8wlrnfoab.jpg',
-            domain: 'Devops + Web Dev',
-            hobbies: 'Coding, Reading',
-            whatsapp: 'https://wa.me/123456789',
-            telegram: 'https://t.me/username',
-            instagram: 'https://instagram.com/username',
-        },
-        {
-            id: 2,
-            name: 'Najmus Sahar',
-            course: 'B.Tech',
-            branch: 'CSE',
-            year: 'Third Year',
-            image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214975/student_senior/zbiisemkblddgqjfcjwz.jpg',
-            domain: 'UI/UX Design',
-            hobbies: 'Designing, Traveling',
-            whatsapp: 'https://wa.me/987654321',
-            telegram: 'https://t.me/username2',
-            instagram: 'https://instagram.com/username2',
-        },
-        {
-            id: 3,
-            name: 'Muskan Khatoon',
-            course: 'B.Tech',
-            branch: 'CSE',
-            year: 'Third Year',
-            image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725429901/student_senior/qehp7dr9wnfthnwphqke.jpg',
-            domain: 'Web Development',
-            hobbies: 'Coding, Reading',
-            whatsapp: 'https://wa.me/123456789',
-            telegram: 'https://t.me/username',
-            instagram: 'https://instagram.com/username',
-        },
-        {
-            id: 4,
-            name: 'Sahil Verma',
-            course: 'B.Tech',
-            branch: 'CSE',
-            year: 'Second Year',
-            image: 'https://avatars.githubusercontent.com/u/69185813?v=4',
-            domain: 'Web Developer',
-            hobbies: 'Coding , Listening Song',
-            whatsapp: 'https://wa.me/987654321',
-            telegram: 'https://t.me/username2',
-            instagram: 'https://instagram.com/username2',
-        },
-        {
-            id: 5,
-            name: 'Najmus Sahar',
-            course: 'B.Tech',
-            branch: 'CSE',
-            year: 'Third Year',
-            image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1/student_senior/j5rfnsnq570tjzz0snto',
-            domain: 'UI/UX Design',
-            hobbies: 'Designing, Traveling',
-            whatsapp: 'https://wa.me/987654321',
-            telegram: 'https://t.me/username2',
-            instagram: 'https://instagram.com/username2',
-        },
-        {
-            id: 6,
-            name: 'Mohd Rafey',
-            course: 'B.Tech',
-            branch: 'CSE',
-            year: 'Final Year',
-            image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1724859258/student_senior/o8wuwteyunixuecsrccc.jpg',
-            domain: 'Web Development',
-            hobbies: 'Coding, Reading',
-            whatsapp: 'https://wa.me/123456789',
-            telegram: 'https://t.me/username',
-            instagram: 'https://instagram.com/username',
-        },
-    ];
+    const [seniors, setSeniors] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
     const courseBranches = {
         'B.Tech': ['CSE', 'ECE', 'Mechanical'],
         BBA: ['Marketing', 'Finance', 'HR'],
         MBA: ['Operations', 'Finance', 'Marketing'],
     };
+
+    // Fetch seniors from the backend
+    useEffect(() => {
+        const fetchSeniors = async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/seniors`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': API_KEY,
+                    },
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    setSeniors(data);
+                } else {
+                    setError(data.description || 'Error fetching seniors');
+                }
+            } catch (err) {
+                setError('Error fetching seniors');
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchSeniors();
+    }, []);
 
     // Filter seniors based on selected course and branch
     const filteredSeniors = seniors.filter(
@@ -142,15 +94,20 @@ const SeniorsPage = () => {
                         </select>
                     </div>
                 </div>
-                {filteredSeniors.length > 0 ? (
+
+                {loading ? (
+                    <div className="text-center">Loading...</div>
+                ) : error ? (
+                    <div className="text-center text-red-500">{error}</div>
+                ) : filteredSeniors.length > 0 ? (
                     <div className="grid w-full sm:w-4/5 mx-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                         {filteredSeniors.map((senior) => (
                             <div
-                                key={senior.id}
-                                className=" p-3 bg-white shadow-md rounded-lg text-center"
+                                key={senior._id}
+                                className="p-3 bg-white shadow-md rounded-lg text-center"
                             >
                                 <img
-                                    src={senior.image}
+                                    src={senior.profilePicture}
                                     alt={senior.name}
                                     className="w-48 h-48 rounded-lg mx-auto my-2"
                                 />
@@ -175,6 +132,7 @@ const SeniorsPage = () => {
                         No seniors found matching the selected filters.
                     </div>
                 )}
+
                 {selectedSenior && (
                     <SeniorModal
                         senior={selectedSenior}
