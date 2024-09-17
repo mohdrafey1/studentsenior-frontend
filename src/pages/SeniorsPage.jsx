@@ -15,8 +15,8 @@ const SeniorsPage = () => {
 
     const courseBranches = {
         'B.Tech': ['CSE', 'ECE', 'Mechanical'],
-        BBA: ['Marketing', 'Finance', 'HR'],
-        MBA: ['Operations', 'Finance', 'Marketing'],
+        'BBA': ['Marketing', 'Finance', 'HR'],
+        'MBA': ['Operations', 'Finance', 'Marketing'],
     };
 
     // Fetch seniors from the backend
