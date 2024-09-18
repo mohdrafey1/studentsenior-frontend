@@ -28,7 +28,7 @@ const App = () => {
     const user = false;
     const userData = localStorage.getItem("persist:root");
     const object = JSON.parse(userData);
-    const  currentUser = object.user;
+    const currentUser = object.user;
     return (
         <Router>
             <Routes>
@@ -59,7 +59,7 @@ const App = () => {
                     path="/college/:collegeName/notes"
                     element={<NotesPage />}
                 />
-                {/* <Route path="/become-a-senior" element={<SeniorModal senior={currentUser}/>} /> */}
+                {/* <Route path="/become-a-senior" element={<SeniorModal senior={currentUser} onEdit={true}/>}  /> */}
                 <Route path="/add-college" element={<AddCollege />} />
                 <Route path="/about-us" element={<AboutPage />} />
                 <Route
