@@ -22,9 +22,13 @@ import SignIn from './pages/Signin';
 import Profile from './pages/Profile';
 import PrivateRoute from './components/PrivateRoute';
 import InstallPage from './pages/InstallPage';
+import SeniorModal from './components/SeniorModal/SeniorModal';
 
 const App = () => {
     const user = false;
+    const userData = localStorage.getItem("persist:root");
+    const object = JSON.parse(userData);
+    const currentUser = object.user;
     return (
         <Router>
             <Routes>
@@ -55,7 +59,7 @@ const App = () => {
                     path="/college/:collegeName/notes"
                     element={<NotesPage />}
                 />
-                <Route path="/become-a-senior" element={<AddSenior />} />
+                {/* <Route path="/become-a-senior" element={<SeniorModal senior={currentUser} onEdit={true}/>}  /> */}
                 <Route path="/add-college" element={<AddCollege />} />
                 <Route path="/about-us" element={<AboutPage />} />
                 <Route

@@ -73,7 +73,6 @@ animation: scale 0.5s ease-in-out;
     100%{
         scale: 1;
         width: 100%;
-
     }
 }
 
