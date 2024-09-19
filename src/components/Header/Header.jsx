@@ -84,10 +84,7 @@ const Header = () => {
                                     <li className="ihover rounded-3xl">Home</li>
                                 </Link>
 
-                                <Link
-                                    to="/become-a-senior"
-                                    onClick={toggleMenu}
-                                >
+                                <Link to="/becomesenior" onClick={toggleMenu}>
                                     <li className="ihover rounded-3xl">
                                         Add Senior Profile
                                     </li>

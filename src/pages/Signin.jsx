@@ -31,6 +31,7 @@ export default function SignIn() {
                     'Content-Type': 'application/json',
                     'x-api-key': API_KEY,
                 },
+                credentials: 'include',
                 body: JSON.stringify(formData),
             });
             const data = await res.json();

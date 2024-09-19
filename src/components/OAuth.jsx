@@ -23,6 +23,7 @@ export default function OAuth() {
                     'Content-Type': 'application/json',
                     'x-api-key': API_KEY,
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                     name: result.user.displayName,
                     email: result.user.email,

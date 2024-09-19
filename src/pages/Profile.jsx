@@ -114,10 +114,18 @@ export default function Profile() {
 
     const handleSignOut = async () => {
         try {
-            await fetch(`${API_BASE_URL}/api/auth/signout`);
-            dispatch(signOut());
+            const response = await fetch(`${API_BASE_URL}/api/auth/signout`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                dispatch(signOut());
+            } else {
+                console.error('Signout failed:', response.statusText);
+            }
         } catch (error) {
-            console.log(error);
+            console.error('Signout error:', error);
         }
     };
     return (
