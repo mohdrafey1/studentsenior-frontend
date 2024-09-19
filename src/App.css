@@ -64,10 +64,12 @@ background-clip: text;
 .big-screen{
 animation: scale 0.5s ease-in-out;
 }
-
+.animate{
+animation: scale 0.5s ease-in-out;
+}
 @keyframes scale {
     0%{
-        scale: 0.7;
+        scale: 0.8;
         width: 50%;
     }
     100%{
