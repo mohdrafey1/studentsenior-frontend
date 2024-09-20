@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration';
 
 function AddCollege() {
-    const [name, setName] = useState('');
-    const [location, setLocation] = useState('');
-    const [description, setDescription] = useState('');
+
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isSuccess, setIsSucsess] = useState(false);
@@ -39,23 +38,18 @@ function AddCollege() {
             );
             setIsLoading(false);
             if (response.ok) {
-                // setMessage(
-                //     'Your college has been submitted and will be added once approved.'
-                // );
                 setResponseMessage("Your college has been submitted and will be added once approved.");
                setIsSucsess(true);
                 setName('');
                 setLocation('');
                 setDescription('');
             } else {
-                // setMessage('Failed to submit college. Please try again.');
                 const errorData = await response.json();
                setResponseMessage(`Failed to add senior : ${errorData.message}`);
                setIsSucsess(true);
             }
         } catch (error) {
             console.error('Error:', error);
-            // setMessage('An error occurred while submitting the college.');
             setResponseMessage("An error occurred while submitting the college.");
                setIsSucsess(true);
         }
@@ -93,9 +87,9 @@ function AddCollege() {
                 </div>
             </div>
 
-            <div className="container mx-auto p-4 bg-sky-100 min-h-screen lg:min-h-full min-w-full">
+            <div className="container mx-auto p-4 bg-sky-100 min-h-max lg:min-h-full min-w-full">
             <Header />
-                <div className='big-screen w-full h-full  lg:flex self-center bg-white shadow-md rounded-lg mt-3 mb-3 '>
+                <div className='big-screen w-full  lg:flex self-center bg-white shadow-md rounded-lg mt-4 mb-4 '>
                     <div className='illustration w-full'>
                         <iframe className='w-full h-full' controls src="https://lottie.host/embed/13b6a2bb-8ee5-485e-a88d-ed9c5b3f6977/b9HuPP23fO.json"></iframe>
                     </div>
@@ -173,6 +167,7 @@ function AddCollege() {
                     </div>
                 </div>
             </div>
+            <Footer/>
         </>
     );
 }

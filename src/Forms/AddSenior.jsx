@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../redux/user/userSlice.js';
 import Header from '../components/Header/Header';
@@ -9,6 +9,7 @@ import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 const AddSeniorPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isSuccess, setIsSucsess] = useState(false);
+    const [isLoggedOut, setIsLoggedOut] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     let [responseMesaage, setResponseMessage] = useState('');
@@ -83,8 +84,9 @@ const AddSeniorPage = () => {
                 setIsSucsess(true);
             } else if (response.status === 401) {
                 setIsLoading(false);
-                alert('Your session has expired. Please Login Again.');
-                handleLogout();
+                setIsLoggedOut(true);
+                dispatch(signOut());
+
             } else {
                 setIsLoading(false);
                 const errorData = await response.json();
@@ -105,10 +107,10 @@ const AddSeniorPage = () => {
                     <div class="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>
                 </div>
             </div>
+
             <div
-                className={`${
-                    isSuccess ? 'block' : 'hidden'
-                } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
+                className={`${isSuccess ? 'block' : 'hidden'
+                    } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
             >
                 <div
                     role="alert"
@@ -137,6 +139,44 @@ const AddSeniorPage = () => {
                             ></path>
                         </svg>
                     </button>
+                </div>
+            </div>
+            <div
+                className={`${isLoggedOut ? 'block' : 'hidden'
+                    } text-center fixed bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
+            >
+                <div
+                    role="alert"
+                    className="mt-3 relative flex flex-col max-w-sm p-4 text-sm text-white bg-black rounded-md"
+                >
+                    <p className="flex justify-center text-2xl">Logged Out</p>
+                    <p className="ml-4 p-3">You have been signed out , Login Again</p>
+
+                    <button
+                        className="flex items-center justify-center transition-all w-8 h-8 rounded-md text-white hover:bg-white/20 active:bg-white/10 absolute top-1.5 right-1.5"
+                        type="button"
+                        onClick={closeDialog}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            className="h-5 w-5"
+                            stroke-width="2"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M6 18L18 6M6 6l12 12"
+                            ></path>
+                        </svg>
+                    </button>
+                    <button
+                        className='bg-white text-black p-2 rounded-md w-full'
+                        onClick={handleLogout}
+                    >Log In</button>
+
                 </div>
             </div>
             <div>
@@ -202,14 +242,20 @@ const AddSeniorPage = () => {
                                         <label className="block text-gray-700 font-bold mb-2">
                                             Year
                                         </label>
-                                        <input
-                                            type="text"
+                                        <select
                                             name="year"
                                             value={senior.year}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-2 border rounded-md"
                                             required
-                                        />
+                                        >
+                                            <option>Select Your Year</option>
+                                            <option value="1st Year">1st Year</option>
+                                            <option value="2nd Year">2nd Year</option>
+                                            <option value="3rd Year">3rd Year</option>
+                                            <option value="4th Year">4th Year</option>
+
+                                        </select>
                                     </div>
                                     <div className="mb-4">
                                         <label className="block text-gray-700 font-bold mb-2">
@@ -291,6 +337,7 @@ const AddSeniorPage = () => {
                 </div>
                 {/* <Footer /> */}
             </div>
+            <Footer />
         </div>
     );
 };
