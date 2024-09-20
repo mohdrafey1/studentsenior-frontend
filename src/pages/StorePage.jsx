@@ -190,7 +190,7 @@ const StorePage = () => {
                 handleLogout();
             } else {
                 const errorData = await response.json();
-                alert(`Failed to Delete product: ${errorData.message}`);
+                // alert(`Failed to Delete product: ${errorData.message}`);
             }
         } catch (err) {
             console.error('Error deleting product:', err);
