@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { signOut } from '../redux/user/userSlice.js';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import EditSeniorModal from '../components/SeniorModal/EditSeniorModal';
@@ -21,6 +24,8 @@ const SeniorPage = () => {
         { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
     ];
 
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
 
@@ -50,6 +55,11 @@ const SeniorPage = () => {
         setIsDetailModalOpen(true);
     };
 
+    const handleLogout = () => {
+        dispatch(signOut());
+        navigate('/sign-in');
+    };
+
     const handleDelete = async (seniorId) => {
         try {
             const response = await fetch(
@@ -62,6 +72,12 @@ const SeniorPage = () => {
             );
             if (response.ok) {
                 fetchSeniors();
+            } else if (response.status === 401) {
+                alert('Your session has expired. Please Login Again.');
+                handleLogout();
+            } else {
+                const errorData = await response.json();
+                // alert(`Failed to delete senior: ${errorData.message}`);
             }
         } catch (err) {
             console.error('Error deleting senior:', err);
@@ -73,7 +89,7 @@ const SeniorPage = () => {
     }, []);
 
     return (
-        <div className='bg-sky-100'>
+        <div className="bg-sky-100">
             <Header />
             <CollegeLinks />
             <div className="container mx-auto px-4 py-8">
@@ -165,6 +181,11 @@ const SeniorPage = () => {
                                 alert('Senior updated successfully');
                                 setIsEditModalOpen(false);
                                 fetchSeniors(); // Refresh the seniors list after the update
+                            } else if (response.status === 401) {
+                                alert(
+                                    'Your session has expired. Please Login Again.'
+                                );
+                                handleLogout();
                             } else {
                                 const errorData = await response.json();
                                 alert(

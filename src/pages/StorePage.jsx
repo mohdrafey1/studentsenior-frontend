@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { signOut } from '../redux/user/userSlice.js';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import AddProductModal from '../components/StoreModal/AddProductModal';
@@ -9,6 +12,8 @@ import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 
 const StorePage = () => {
     const [products, setProducts] = useState([]);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [newProduct, setNewProduct] = useState({
         name: '',
         price: '',
@@ -75,6 +80,11 @@ const StorePage = () => {
         }
     };
 
+    const handleLogout = () => {
+        dispatch(signOut());
+        navigate('/sign-in');
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
@@ -98,8 +108,15 @@ const StorePage = () => {
                 body: formData,
             });
             if (response.ok) {
-                fetchProducts(); // Refresh products list
+                fetchProducts();
                 setIsModalOpen(false);
+            } else if (response.status === 401) {
+                setIsModalOpen(false);
+                alert('Your session has expired. Please log in again.');
+                handleLogout();
+            } else {
+                const errorData = await response.json();
+                alert(`Failed to add product: ${errorData.message}`);
             }
         } catch (err) {
             console.error('Error adding product:', err);
@@ -135,6 +152,13 @@ const StorePage = () => {
                 fetchProducts(); // Refresh products list
                 setIsModalOpen(false);
                 setEditingProduct(null);
+            } else if (response.status === 401) {
+                setIsModalOpen(false);
+                alert('Your session has expired. Please log in again.');
+                handleLogout();
+            } else {
+                const errorData = await response.json();
+                alert(`Failed to Update product: ${errorData.message}`);
             }
         } catch (err) {
             console.error('Error updating product:', err);
@@ -160,6 +184,13 @@ const StorePage = () => {
             );
             if (response.ok) {
                 fetchProducts();
+            } else if (response.status === 401) {
+                setIsModalOpen(false);
+                alert('Your session has expired. Please log in again.');
+                handleLogout();
+            } else {
+                const errorData = await response.json();
+                alert(`Failed to Delete product: ${errorData.message}`);
             }
         } catch (err) {
             console.error('Error deleting product:', err);
