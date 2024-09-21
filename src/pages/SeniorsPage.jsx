@@ -18,7 +18,7 @@ const SeniorPage = () => {
     const [selectedSenior, setSelectedSenior] = useState(null);
     const [isLoggedOut, setIsLoggedOut] = useState(false);
     const [selectedYear, setSelectedYear] = useState('');
-    const [selectedBranch, setSelectedBranch] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const colleges = [
         { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
         { id: '66cba84ce0e3a7e528642837', name: 'MPGI Kanpur' },
@@ -32,6 +32,7 @@ const SeniorPage = () => {
     const ownerId = currentUser?._id;
 
     const fetchSeniors = async () => {
+        setIsLoading(true);
         try {
             const response = await fetch(`${API_BASE_URL}/api/seniors`, {
                 method: 'GET',
@@ -42,6 +43,7 @@ const SeniorPage = () => {
             });
             const data = await response.json();
             setSeniors(data);
+            setIsLoading(false);
         } catch (err) {
             console.error('Error fetching seniors:', err);
         }
@@ -152,7 +154,6 @@ const SeniorPage = () => {
                             className="p-2 border rounded-md mb-2 lg:mb-0"
                             onChange={(e) => {
                                 setSelectedYear(e.target.value);
-                                setSelectedBranch(''); // Reset branch when course changes
                             }}
                             value={selectedYear}
                         >
@@ -161,55 +162,88 @@ const SeniorPage = () => {
                             <option value="2nd Year">2nd Year</option>
                             <option value="3rd Year">3rd Year</option>
                             <option value="4th Year">4th Year</option>
+                            <option value="5th Year">5th Year</option>
                         </select>
                       
                     </div>
                 </div>
-                {filteredSeniors.length > 0 ? (
-                    <div className="grid w-full sm:w-4/5 mx-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        {filteredSeniors.map((senior) => (
-                            <div key={senior._id} className=" p-3 bg-white shadow-md rounded-lg text-center">
-                                <img
-                                    src={senior.profilePicture}
-                                    alt={senior.name}
-                                      className="w-48 h-48 rounded-lg mx-auto my-2"
-                                />
-                                <h3 className="text-lg font-bold mb-2">{senior.name}</h3>
-                                <p>Course: {senior.branch}</p>
-                                <p>Year: {senior.year}</p>
-                                <p>Domain: {senior.domain}</p>
-                                <div className="flex justify-center mt-4">
-                                    <button
-                                        className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-                                        onClick={() => handleDetail(senior)}
-                                    >
-                                        View Details
-                                    </button>
-                                    {senior.owner === ownerId && (
-                                        <>
-                                            <button
-                                                className="bg-yellow-500 text-white px-4 py-2 rounded mr-2"
-                                                onClick={() => handleEdit(senior)}
-                                            >
-                                                Edit
-                                            </button>
-                                            <button
-                                                className="bg-red-500 text-white px-4 py-2 rounded"
-                                                onClick={() =>
-                                                    handleDelete(senior._id)
-                                                }
-                                            >
-                                                Delete
-                                            </button>
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    null
-                )}
+                <div className="flex justify-center items-center py-10">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl">
+    {filteredSeniors.length > 0 ? (
+      filteredSeniors.map((senior) => (
+        <div
+          key={senior._id}
+          className="bg-white shadow-md rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl dark:bg-gray-800  w-full sm:w-auto h-full"
+        >
+          <img
+            src={senior.profilePicture}
+            alt={senior.name}
+            className="w-full h-44 object-cover transition-transform duration-300 hover:scale-110"
+          />
+          <div className="p-6">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+              {senior.name}
+            </h3>
+            <p className="text-red-500 font-medium mb-1 text-sm">Course: {senior.branch}</p>
+            <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Year: {senior.year}</p>
+            <p className="text-gray-500 dark:text-gray-300 text-xs mb-4">Domain: {senior.domain}</p>
+            <div className="flex justify-between items-center">
+              <button
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
+                onClick={() => handleDetail(senior)}
+              >
+                View
+              </button>
+              {senior.owner === ownerId && (
+                <div className="flex space-x-2">
+                  <button
+                    className="bg-yellow-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-yellow-600"
+                    onClick={() => handleEdit(senior)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600"
+                    onClick={() => handleDelete(senior._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      ))
+    ) : (
+      <div className="col-span-4 flex justify-center items-center py-10 w-full">
+        {isLoading ? (
+          <div className="text-center">
+            <svg
+              aria-hidden="true"
+              className="inline w-16 h-16 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+              viewBox="0 0 100 101"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                fill="currentColor"
+              />
+              <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="currentFill"
+              />
+            </svg>
+            <p className="text-gray-500 mt-3">Loading...</p>
+          </div>
+        ) : (
+          <p className="text-gray-500 text-center">No Seniors Found.</p>
+        )}
+      </div>
+    )}
+  </div>
+</div>
+
                 {isEditModalOpen && (
                     <EditSeniorModal
                         editingSenior={editingSenior}
