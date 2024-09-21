@@ -38,7 +38,7 @@ const AddProductModal = ({
                         className="mb-4 p-2 border w-full"
                     />
                     <input
-                        type="text"
+                        type="Number"
                         name="whatsapp"
                         value={newProduct.whatsapp}
                         onChange={handleInputChange}
@@ -46,7 +46,7 @@ const AddProductModal = ({
                         className="mb-4 p-2 border w-full"
                     />
                     <input
-                        type="text"
+                        type="Number"
                         name="telegram"
                         value={newProduct.telegram}
                         onChange={handleInputChange}
