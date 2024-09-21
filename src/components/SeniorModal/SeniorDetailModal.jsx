@@ -9,13 +9,14 @@ const SeniorDetailModal = ({ senior, setIsDetailModalOpen }) => {
     ];
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-                <h2 className="text-2xl font-bold mb-4">Senior Details</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+            {/* Modal Container */}
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg m-4 dark:bg-gray-800">
+                {/* Header Section */}
                 <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-bold">{senior.name}</h3>
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white ">Senior Details</h2>
                     <button
-                        className="text-gray-500 hover:text-gray-700"
+                        className=" text-gray-900 dark:text-white  transition"
                         onClick={() => setIsDetailModalOpen(false)}
                     >
                         <svg
@@ -34,66 +35,59 @@ const SeniorDetailModal = ({ senior, setIsDetailModalOpen }) => {
                         </svg>
                     </button>
                 </div>
-                <div className="mb-4">
+
+                {/* Image Section */}
+                <div className="mb-4 flex justify-center">
                     <img
                         src={senior.profilePicture}
                         alt={senior.name}
-                        className="w-full h-80 object-cover rounded"
+                        className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 object-cover rounded-full shadow-sm"
                     />
                 </div>
+
+                {/* Senior Info Section */}
                 <div className="mb-4">
-                    <p>
-                        <strong>Course:</strong> {senior.branch}
-                    </p>
-                    <p>
-                        <strong>Year:</strong> {senior.year}
-                    </p>
-                    <p>
-                        <strong>Domain:</strong> {senior.domain}
-                    </p>
+                    <h3 className="text-lg sm:text-xl font-bold  text-gray-900 dark:text-white  mb-2 text-center">{senior.name}</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <p className=" text-gray-900 dark:text-white  text-base ">
+                            <strong>Course:</strong> {senior.branch}
+                        </p>
+                        <p className=" text-gray-900 dark:text-white  text-base ">
+                            <strong>Year:</strong> {senior.year}
+                        </p>
+                        <p className=" text-gray-900 dark:text-white  text-base ">
+                            <strong>Domain:</strong> {senior.domain}
+                        </p>
+                        <p className=" text-gray-900 dark:text-white  text-base ">
+                            <strong>College:</strong>{' '}
+                            {colleges.find(college => college.id === senior.college)?.name}
+                        </p>
+
+                    </div>
                 </div>
-                <div className="mb-4">
-                    <p>
-                        <a
-                            target="_blank"
-                            href={`https://api.whatsapp.com/send?phone=${senior.whatsapp}`}
-                            aria-label="WhatsApp"
-                            className="hover:text-gray-400"
-                        >
-                            Whatsapp
-                            <i className="fa-brands fa-whatsapp ml-2 text-2xl"></i>
-                        </a>
-                    </p>
-                    <p>
+
+                {/* Social Media Links */}
+                <div className="flex justify-center space-x-4 mb-6">
+                    <a
+                        target="_blank"
+                        href={`https://api.whatsapp.com/send?phone=${senior.whatsapp}`}
+                        aria-label="WhatsApp"
+                        className="text-green-600 hover:text-green-500 transition"
+                    >
+                        <i className="fa-brands fa-whatsapp text-2xl sm:text-3xl"></i>
+                    </a>
+                    {senior.telegram && (
                         <a
                             target="_blank"
                             href={`https://t.me/+91${senior.telegram}`}
                             aria-label="Telegram"
-                            className="hover:text-gray-400"
+                            className="text-blue-600 hover:text-blue-500 transition"
                         >
-                            Telegram
-                            <i className="fa-brands fa-telegram text-2xl"></i>
+                            <i className="fa-brands fa-telegram text-2xl sm:text-3xl"></i>
                         </a>
-                    </p>
+                    )}
                 </div>
-                <div>
-                    <p>
-                        College:{' '}
-                        {
-                            colleges.find(
-                                (college) => college.id === senior.college
-                            )?.name
-                        }
-                    </p>
-                </div>
-                <div className="mt-6 flex justify-end">
-                    <button
-                        className="bg-gray-500 text-white px-4 py-2 rounded"
-                        onClick={() => setIsDetailModalOpen(false)}
-                    >
-                        Close
-                    </button>
-                </div>
+
             </div>
         </div>
     );
