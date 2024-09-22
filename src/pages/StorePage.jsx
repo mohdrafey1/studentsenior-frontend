@@ -233,9 +233,9 @@ const StorePage = () => {
                                         className="bg-white shadow-md lg:h-2/5 max-h-80 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
                                     />
                                     <div className='p-4'>
-                                        <h5 class="text-lg tracking-tight text-gray-700 dark:text-gray-300">{product.name}</h5>
+                                        <h5 className="text-lg tracking-tight text-gray-700 dark:text-gray-300">{product.name}</h5>
                                         <p>
-                                            <span class="text-2xl font-bold text-gray-700 dark:text-gray-300"> ₹{product.price}</span>
+                                            <span className="text-2xl font-bold text-gray-700 dark:text-gray-300"> ₹{product.price}</span>
                                         </p>
                                         <p className="text-gray-800 dark:text-gray-400 mt-2">
                                             College: {colleges.find((college) => college.id === product.college)?.name}
@@ -265,7 +265,7 @@ const StorePage = () => {
                                         <div className="flex justify-end mt-4">
                                             {product.owner === ownerId && (
                                                 <>
-                                                    <button className="bg-yellow-500 text-white px-4 py-2 rounded mr-2 transition hover:bg-yellow-600" onClick={() => handleEdit(product._id)}>
+                                                    <button className="bg-yellow-500 text-white px-4 py-2 rounded mr-2 transition hover:bg-yellow-600" onClick={() => handleEdit(product)}>
                                                         Edit
                                                     </button>
                                                     <button className="bg-red-500 text-white px-4 py-2 rounded transition hover:bg-red-600" onClick={() => handleDelete(product._id)}>
