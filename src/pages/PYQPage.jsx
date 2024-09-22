@@ -137,6 +137,7 @@ const PYQPage = () => {
                 <h1 className="text-3xl font-bold mb-5 text-center">
                     Previous Year Questions (PYQ)
                 </h1>
+                <p className='italic text-center'>"PYQs help you understand the pattern and develop effective strategies for better preparation."</p><br/>
                 <div className="flex flex-wrap justify-center gap-4 mb-6">
                     <input
                         type="text"

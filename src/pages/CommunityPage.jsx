@@ -79,6 +79,7 @@ const CommunityPage = () => {
                 <h1 className="text-3xl font-bold text-center mb-5">
                     Community
                 </h1>
+                <p className='italic text-center'>"Connect, share, and ask your questions and doubts through the community."</p><br/>
                 <div className="mb-5 text-center">
                     <textarea
                         value={newPostContent}

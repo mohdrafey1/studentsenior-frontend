@@ -211,6 +211,7 @@ const StorePage = () => {
             <div className="container mx-auto px-4 py-5">
                 <div className="flex flex-col justify-center items-center">
                     <h1 className="text-3xl font-bold mb-5">Product Store</h1>
+                    <p className='italic text-center'>"Buy and sell your stationery and gadgets easily to your juniors."</p><br/>
                 </div>
                 <div className="flex justify-end mb-4">
                     <button
@@ -257,14 +258,14 @@ const StorePage = () => {
                                                 <i className="fa-brands fa-telegram text-2xl sm:text-3xl"></i>
                                             </a>
                                         </div>
-
-
+                                        <br/>
+                                        
                                         <p className="text-gray-600 italic overflow-hidden dark:text-gray-200">{product.description}</p>
 
                                         <div className="flex justify-end mt-4">
                                             {product.owner === ownerId && (
                                                 <>
-                                                    <button className="bg-yellow-500 text-white px-4 py-2 rounded mr-2 transition hover:bg-yellow-600">
+                                                    <button className="bg-yellow-500 text-white px-4 py-2 rounded mr-2 transition hover:bg-yellow-600" onClick={() => handleEdit(product._id)}>
                                                         Edit
                                                     </button>
                                                     <button className="bg-red-500 text-white px-4 py-2 rounded transition hover:bg-red-600" onClick={() => handleDelete(product._id)}>
