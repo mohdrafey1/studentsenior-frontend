@@ -213,7 +213,7 @@ const StorePage = () => {
                     <h1 className="text-3xl font-bold mb-5">Product Store</h1>
                     <p className='italic text-center'>"Buy and sell your stationery and gadgets easily to your juniors."</p><br/>
                 </div>
-                <div className="flex justify-end mb-4">
+                <div className="flex justify-center mb-4">
                     <button
                         className="bg-blue-500 text-white px-4 py-2 rounded"
                         onClick={() => setIsModalOpen(true)}
@@ -259,7 +259,7 @@ const StorePage = () => {
                                             </a>
                                         </div>
                                         <br/>
-                                        
+
                                         <p className="text-gray-600 italic overflow-hidden dark:text-gray-200">{product.description}</p>
 
                                         <div className="flex justify-end mt-4">
