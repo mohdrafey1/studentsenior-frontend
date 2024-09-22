@@ -94,8 +94,8 @@ const SeniorPage = () => {
         fetchSeniors();
     }, []);
 
-      // Filter seniors based on selected course and branch
-      const filteredSeniors = seniors.filter(
+    // Filter seniors based on selected course and branch
+    const filteredSeniors = seniors.filter(
         (senior) =>
             (selectedYear ? senior.year === selectedYear : true)
     );
@@ -162,7 +162,7 @@ const SeniorPage = () => {
                             <option value="3rd Year">3rd Year</option>
                             <option value="4th Year">4th Year</option>
                         </select>
-                      
+
                     </div>
                 </div>
                 {filteredSeniors.length > 0 ? (
@@ -172,7 +172,7 @@ const SeniorPage = () => {
                                 <img
                                     src={senior.profilePicture}
                                     alt={senior.name}
-                                      className="w-48 h-48 rounded-lg mx-auto my-2"
+                                    className="w-48 h-48 rounded-lg mx-auto my-2"
                                 />
                                 <h3 className="text-lg font-bold mb-2">{senior.name}</h3>
                                 <p>Course: {senior.branch}</p>
@@ -278,7 +278,7 @@ const SeniorPage = () => {
                         setIsDetailModalOpen={setIsDetailModalOpen}
                     />
                 )}
-                
+
             </div>
             <Footer />
         </div>
