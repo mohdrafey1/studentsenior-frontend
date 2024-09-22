@@ -75,7 +75,7 @@ const OpportunitiesPage = () => {
 
     return (
         <div className="container bg-sky-100 min-h-screen min-w-full">
-            <Header/>
+            <Header />
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5">
                 <h1 className="text-3xl font-bold mb-5 text-center">

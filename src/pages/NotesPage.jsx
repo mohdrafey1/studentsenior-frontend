@@ -81,12 +81,12 @@ const NotesPage = () => {
     const courses = [...new Set(initialNotes.map((note) => note.course))];
     const branches = selectedCourse
         ? [
-              ...new Set(
-                  initialNotes
-                      .filter((note) => note.course === selectedCourse)
-                      .map((note) => note.branch)
-              ),
-          ]
+            ...new Set(
+                initialNotes
+                    .filter((note) => note.course === selectedCourse)
+                    .map((note) => note.branch)
+            ),
+        ]
         : [];
 
     const filteredNotes = initialNotes.filter(
@@ -197,9 +197,8 @@ const NotesPage = () => {
                 ) : (
                     <>
                         <div
-                            className={`${
-                                isLoading ? 'block' : 'hidden'
-                            } text-center`}
+                            className={`${isLoading ? 'block' : 'hidden'
+                                } text-center`}
                         >
                             <div role="status">
                                 <svg
