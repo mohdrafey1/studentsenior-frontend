@@ -31,7 +31,7 @@ const EditProductModal = ({
         : '';
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 overflow-y-auto">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg mx-4 md:mx-0 md:w-3/4 lg:w-1/2 overflow-y-auto max-h-screen">
                 <h2 className="text-2xl font-bold mb-6 text-center">Edit Product</h2>
                 <form onSubmit={handleUpdate} encType="multipart/form-data" className="space-y-4">

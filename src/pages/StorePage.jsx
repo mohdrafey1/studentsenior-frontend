@@ -13,6 +13,7 @@ import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 const StorePage = () => {
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoading2, setIsLoading2] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [newProduct, setNewProduct] = useState({
@@ -89,6 +90,8 @@ const StorePage = () => {
     };
 
     const handleSubmit = async (e) => {
+        setIsLoading2(true);
+
         e.preventDefault();
         const formData = new FormData();
         formData.append('name', newProduct.name);
@@ -110,9 +113,13 @@ const StorePage = () => {
                 credentials: 'include',
                 body: formData,
             });
+            setIsLoading2(false);
+
             if (response.ok) {
                 fetchProducts();
                 setIsModalOpen(false);
+                alert('Your request has been received, and the item will be displayed once it has been approved.');
+
             } else if (response.status === 401) {
                 setIsModalOpen(false);
                 alert('Your session has expired. Please log in again.');
@@ -127,6 +134,7 @@ const StorePage = () => {
     };
 
     const handleUpdate = async (e) => {
+        setIsLoading2(true);
         e.preventDefault();
         const formData = new FormData();
         formData.append('name', editingProduct.name);
@@ -151,10 +159,14 @@ const StorePage = () => {
                     body: formData,
                 }
             );
+            setIsLoading2(false);
+
             if (response.ok) {
                 fetchProducts(); // Refresh products list
                 setIsModalOpen(false);
                 setEditingProduct(null);
+                alert('Your request has been updated.');
+
             } else if (response.status === 401) {
                 setIsModalOpen(false);
                 alert('Your session has expired. Please log in again.');
@@ -174,6 +186,7 @@ const StorePage = () => {
     };
 
     const handleDelete = async (productId) => {
+        setIsLoading2(true);
         try {
             const response = await fetch(
                 `${API_BASE_URL}/api/store/${productId}`,
@@ -185,8 +198,11 @@ const StorePage = () => {
                     credentials: 'include',
                 }
             );
+            setIsLoading2(false);
             if (response.ok) {
                 fetchProducts();
+                alert('Your request has been deleted successfully');
+               
             } else if (response.status === 401) {
                 setIsModalOpen(false);
                 alert('Your session has expired. Please log in again.');
@@ -206,6 +222,11 @@ const StorePage = () => {
 
     return (
         <div className='bg-sky-100'>
+            <div className={`${isLoading2 ? 'block' : 'hidden'} text-center `}>
+                <div class="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-50">
+                    <div class="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>
+                </div>
+            </div>
             <Header />
             <CollegeLinks />
             <div className="container mx-auto px-4 py-5">
