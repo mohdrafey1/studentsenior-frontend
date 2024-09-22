@@ -18,7 +18,7 @@ const AddProductModal = ({
                 >
                     &#x2715;
                 </button>
-                
+
                 <h2 className="text-2xl font-bold mb-6 text-center">Add Product</h2>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <input
@@ -79,7 +79,7 @@ const AddProductModal = ({
                             </option>
                         ))}
                     </select>
-                    
+
                     <div className="mb-2">
                         <label
                             htmlFor="dropzone-file"
@@ -114,7 +114,7 @@ const AddProductModal = ({
                         />
                         Available
                     </label>
-                    
+
                     <button
                         type="submit"
                         className=" bg-blue-500 text-white px-4 py-2 rounded-md w-full hover:bg-blue-600 transition"

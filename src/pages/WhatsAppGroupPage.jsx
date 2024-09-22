@@ -142,7 +142,7 @@ const WhatsAppGroupPage = () => {
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5">
                 <h1 className="text-3xl font-bold mb-5 text-center">WhatsApp Groups</h1>
-                <p className='italic text-center'>"Join WhatsApp groups to connect with like-minded people and stay updated."</p><br/>
+                <p className='italic text-center'>"Join WhatsApp groups to connect with like-minded people and stay updated."</p><br />
                 <div className="mb-5 flex w-full sm:w-1/2 mx-auto">
                     <input
                         type="text"
