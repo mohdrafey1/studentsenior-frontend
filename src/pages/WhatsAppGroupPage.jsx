@@ -7,10 +7,9 @@ import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 const WhatsAppGroupPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [groups, setGroupLink] = useState([]);
-    const [isLoading, setisLoading] = useState(true);
-    const [collegeId, setcollegeId] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [showAlert, setshowAlert] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
     const [text, setText] = useState('Submit');
     const [groupData, setGroupData] = useState({
         college: '',
@@ -30,10 +29,11 @@ const WhatsAppGroupPage = () => {
             link: '',
         });
     };
+
     const closeModal = () => setIsModalOpen(false);
 
     useEffect(() => {
-        const Fetchlink = async () => {
+        const fetchLink = async () => {
             try {
                 const response = await fetch(
                     `${API_BASE_URL}/api/whatsappgroup`,
@@ -45,7 +45,7 @@ const WhatsAppGroupPage = () => {
                         },
                     }
                 );
-                setisLoading(false);
+                setIsLoading(false);
                 const data = await response.json();
                 const collegeid = localStorage.getItem(getCollegeId());
                 const selectedColleges = data.filter(
@@ -55,30 +55,18 @@ const WhatsAppGroupPage = () => {
                     setGroupLink(selectedColleges);
                 }
             } catch (error) {
-                console.log('Error fetching whatsapp links : ', error);
+                console.log('Error fetching WhatsApp links: ', error);
             }
         };
-        Fetchlink();
+        fetchLink();
         saveToLocalStorage();
     }, []);
 
     const colleges = [
-        {
-            id: '66cb9952a9c088fc11800714',
-            name: 'Integral University',
-        },
-        {
-            id: '66cba84ce0e3a7e528642837',
-            name: 'MPGI Kanpur',
-        },
-        {
-            id: '66d08aff784c9f07a53507b9',
-            name: 'GCET Noida',
-        },
-        {
-            id: '66d40833ec7d66559acbf24c',
-            name: 'KMC UNIVERSITY',
-        },
+        { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
+        { id: '66cba84ce0e3a7e528642837', name: 'MPGI Kanpur' },
+        { id: '66d08aff784c9f07a53507b9', name: 'GCET Noida' },
+        { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
     ];
 
     const handleChange = (e) => {
@@ -109,7 +97,7 @@ const WhatsAppGroupPage = () => {
             }
 
             const result = await resp.json();
-            setshowAlert(true);
+            setShowAlert(true);
             setIsModalOpen(false);
             setText('Submit');
 
@@ -128,9 +116,7 @@ const WhatsAppGroupPage = () => {
 
     const saveToLocalStorage = () => {
         colleges.forEach((data) => {
-            const formattedCollegeName = data.name
-                .replace(/\s+/g, '-')
-                .toLowerCase();
+            const formattedCollegeName = data.name.replace(/\s+/g, '-').toLowerCase();
             localStorage.setItem(formattedCollegeName, data.id);
         });
     };
@@ -140,9 +126,8 @@ const WhatsAppGroupPage = () => {
         const regex = /college\/([^\/]+)\//;
         const match = currentURL.match(regex);
         if (match) {
-            setcollegeId(match[1]);
+            return match[1];
         }
-        return match[1];
     };
 
     const filteredGroups = groups.filter(
@@ -156,9 +141,8 @@ const WhatsAppGroupPage = () => {
             <Header />
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5">
-                <h1 className="text-3xl font-bold mb-5 text-center">
-                    WhatsApp Groups
-                </h1>
+                <h1 className="text-3xl font-bold mb-5 text-center">WhatsApp Groups</h1>
+                <p className='italic text-center'>"Join WhatsApp groups to connect with like-minded people and stay updated."</p><br/>
                 <div className="mb-5 flex w-full sm:w-1/2 mx-auto">
                     <input
                         type="text"
@@ -178,13 +162,8 @@ const WhatsAppGroupPage = () => {
                 {groups.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                         {filteredGroups.map((group) => (
-                            <div
-                                key={group._id}
-                                className="bg-white p-5 shadow-md rounded-md"
-                            >
-                                <h2 className="text-xl font-bold mb-2 text-center">
-                                    {group.title}
-                                </h2>
+                            <div key={group._id} className="bg-white p-5 shadow-md rounded-md">
+                                <h2 className="text-xl font-bold mb-2 text-center">{group.title}</h2>
                                 <p className="mb-3 text-center">{group.info}</p>
                                 <div className="flex justify-center">
                                     <a
@@ -201,155 +180,122 @@ const WhatsAppGroupPage = () => {
                         ))}
                     </div>
                 ) : (
-                    <>
-                        <div
-                            className={`${isLoading ? 'block' : 'hidden'
-                                } text-center w-full`}
-                        >
-                            <div role="status">
-                                <svg
-                                    aria-hidden="true"
-                                    className="inline w-20 h-20 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                                    viewBox="0 0 100 101"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                        fill="currentColor"
-                                    />
-                                    <path
-                                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                        fill="currentFill"
-                                    />
-                                </svg>
-                                <span className="sr-only">Loading...</span>
-                            </div>
+                    <div className={`${isLoading ? 'block' : 'hidden'} text-center w-full`}>
+                        <div role="status">
+                            <svg
+                                aria-hidden="true"
+                                className="inline w-20 h-20 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                                viewBox="0 0 100 101"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                    fill="currentColor"
+                                />
+                                <path
+                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 66.0814 12.1905 70.7824 14.1209C75.4835 16.0514 79.4052 18.4618 82.9602 21.2794C85.969 23.7307 88.6364 26.7018 90.9726 30.1997C92.0551 32.5764 93.4383 36.4742 93.9676 39.0409Z"
+                                    fill="currentFill"
+                                />
+                            </svg>
+                            <span className="sr-only">Loading...</span>
                         </div>
-                        {!isLoading && groups.length === 0 && (
-                            <p className="text-center text-gray-500 mt-5 w-full">
-                                No WhatsApp Group Found.
-                            </p>
-                        )}
-                    </>
+                    </div>
                 )}
             </div>
             <Footer />
 
-            {/* Success Alert */}
-            {showAlert && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div
-                        className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative m-4"
-                        role="alert"
-                    >
-                        <strong className="font-bold">Success!</strong>
-                        <span className="block sm:inline">
-                            Group submitted successfully and is pending
-                            approval.
-                        </span>
-                        <br />
-                        <button
-                            className="bg-green-700 px-3 py-1 rounded-lg text-white"
-                            onClick={() => setshowAlert(false)}
-                        >
-                            Close
-                        </button>
-                    </div>
-                </div>
-            )}
-
-            {/* Add Group Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg m-4">
-                        <h2 className="mb-6 text-2xl font-bold">
-                            Add New Group
-                        </h2>
-                        <form className="space-y-4" onSubmit={handleSubmit}>
-                            <div className="space-y-2">
-                                <label className="block text-lg">
-                                    College Name:
-                                </label>
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="bg-white rounded-lg p-5 w-full max-w-lg">
+                        <h2 className="text-xl font-bold mb-4">Add WhatsApp Group</h2>
+                        <form onSubmit={handleSubmit}>
+                            <div className="mb-4">
+                                <label className="block mb-2" htmlFor="college">College</label>
                                 <select
                                     name="college"
+                                    id="college"
                                     value={groupData.college}
                                     onChange={handleChange}
-                                    className="w-full p-2 border border-gray-300 rounded-lg"
+                                    className="p-2 border rounded-md w-full"
                                     required
                                 >
-                                    <option value="">Select a College</option>
-                                    {colleges.map((college, index) => (
-                                        <option key={index} value={college.id}>
+                                    <option value="">Select College</option>
+                                    {colleges.map((college) => (
+                                        <option key={college.id} value={college.name}>
                                             {college.name}
                                         </option>
                                     ))}
                                 </select>
                             </div>
-                            <div className="space-y-2">
-                                <label className="block text-lg">
-                                    Group Name:
-                                </label>
+                            <div className="mb-4">
+                                <label className="block mb-2" htmlFor="title">Title</label>
                                 <input
                                     type="text"
                                     name="title"
+                                    id="title"
                                     value={groupData.title}
                                     onChange={handleChange}
-                                    className="w-full p-2 border border-gray-300 rounded-lg"
+                                    className="p-2 border rounded-md w-full"
                                     required
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <label className="block text-lg">
-                                    Group Info:
-                                </label>
-                                <input
-                                    type="text"
+                            <div className="mb-4">
+                                <label className="block mb-2" htmlFor="info">Info</label>
+                                <textarea
                                     name="info"
+                                    id="info"
                                     value={groupData.info}
                                     onChange={handleChange}
-                                    className="w-full p-2 border border-gray-300 rounded-lg"
+                                    className="p-2 border rounded-md w-full"
                                     required
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <label className="block text-lg">Domain:</label>
+                            <div className="mb-4">
+                                <label className="block mb-2" htmlFor="domain">Domain</label>
                                 <input
                                     type="text"
                                     name="domain"
+                                    id="domain"
                                     value={groupData.domain}
                                     onChange={handleChange}
-                                    className="w-full p-2 border border-gray-300 rounded-lg"
+                                    className="p-2 border rounded-md w-full"
                                     required
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <label className="block text-lg">Link:</label>
+                            <div className="mb-4">
+                                <label className="block mb-2" htmlFor="link">Link</label>
                                 <input
                                     type="url"
                                     name="link"
+                                    id="link"
                                     value={groupData.link}
                                     onChange={handleChange}
-                                    className="w-full p-2 border border-gray-300 rounded-lg"
+                                    className="p-2 border rounded-md w-full"
                                     required
                                 />
                             </div>
-                            <div className="flex justify-end space-x-2">
+                            <div className="flex justify-between">
                                 <button
                                     type="button"
-                                    className="px-4 py-2 bg-gray-500 text-white rounded-lg"
                                     onClick={closeModal}
+                                    className="px-4 py-2 bg-gray-300 rounded-md"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
                                 >
                                     {text}
                                 </button>
                             </div>
                         </form>
+                        {showAlert && (
+                            <div className="mt-4 p-2 bg-green-200 text-green-800 rounded-md">
+                                Group added successfully!
+                            </div>
+                        )}
                     </div>
                 </div>
             )}

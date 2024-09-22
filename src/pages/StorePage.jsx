@@ -229,7 +229,7 @@ const StorePage = () => {
           <img
             src={product.image.url}
             alt={product.name}
-            className="bg-white shadow-md lg:h-2/5 max-h-1/3 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
+            className="bg-white shadow-md lg:h-2/5 max-h-80 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
           />
        <div className='p-4'>
        <h5 class="text-lg tracking-tight text-gray-700 dark:text-gray-300">{product.name}</h5>
