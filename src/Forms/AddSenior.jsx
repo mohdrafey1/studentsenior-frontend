@@ -86,7 +86,6 @@ const AddSeniorPage = () => {
                 setIsLoading(false);
                 setIsLoggedOut(true);
                 dispatch(signOut());
-
             } else {
                 setIsLoading(false);
                 const errorData = await response.json();
@@ -109,8 +108,9 @@ const AddSeniorPage = () => {
             </div>
 
             <div
-                className={`${isSuccess ? 'block' : 'hidden'
-                    } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
+                className={`${
+                    isSuccess ? 'block' : 'hidden'
+                } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
             >
                 <div
                     role="alert"
@@ -142,15 +142,18 @@ const AddSeniorPage = () => {
                 </div>
             </div>
             <div
-                className={`${isLoggedOut ? 'block' : 'hidden'
-                    } text-center fixed bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
+                className={`${
+                    isLoggedOut ? 'block' : 'hidden'
+                } text-center fixed bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
             >
                 <div
                     role="alert"
                     className="mt-3 relative flex flex-col max-w-sm p-4 text-sm text-white bg-black rounded-md"
                 >
                     <p className="flex justify-center text-2xl">Logged Out</p>
-                    <p className="ml-4 p-3">You have been signed out , Login Again</p>
+                    <p className="ml-4 p-3">
+                        You have been signed out , Login Again
+                    </p>
 
                     <button
                         className="flex items-center justify-center transition-all w-8 h-8 rounded-md text-white hover:bg-white/20 active:bg-white/10 absolute top-1.5 right-1.5"
@@ -173,10 +176,11 @@ const AddSeniorPage = () => {
                         </svg>
                     </button>
                     <button
-                        className='bg-white text-black p-2 rounded-md w-full'
+                        className="bg-white text-black p-2 rounded-md w-full"
                         onClick={handleLogout}
-                    >Log In</button>
-
+                    >
+                        Log In
+                    </button>
                 </div>
             </div>
             <div>
@@ -250,12 +254,18 @@ const AddSeniorPage = () => {
                                             required
                                         >
                                             <option>Select Your Year</option>
-                                            <option value="1st Year">1st Year</option>
-                                            <option value="2nd Year">2nd Year</option>
-                                            <option value="3rd Year">3rd Year</option>
-                                            <option value="4th Year">4th Year</option>
-                                            <option value="5th Year">5th Year</option>
-
+                                            <option value="2nd Year">
+                                                2nd Year
+                                            </option>
+                                            <option value="3rd Year">
+                                                3rd Year
+                                            </option>
+                                            <option value="4th Year">
+                                                4th Year
+                                            </option>
+                                            <option value="5th Year">
+                                                5th Year
+                                            </option>
                                         </select>
                                     </div>
                                     <div className="mb-4">

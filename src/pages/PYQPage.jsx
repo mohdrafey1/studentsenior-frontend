@@ -93,12 +93,12 @@ const PYQPage = () => {
     const courses = [...new Set(pyqs.map((paper) => paper.course))];
     const branches = selectedCourse
         ? [
-            ...new Set(
-                pyqs
-                    .filter((paper) => paper.course === selectedCourse)
-                    .flatMap((paper) => paper.branch)
-            ),
-        ]
+              ...new Set(
+                  pyqs
+                      .filter((paper) => paper.course === selectedCourse)
+                      .flatMap((paper) => paper.branch)
+              ),
+          ]
         : [];
     const examTypes = [...new Set(pyqs.map((paper) => paper.examType))];
 
@@ -111,8 +111,8 @@ const PYQPage = () => {
             (selectedExamType ? paper.examType === selectedExamType : true) &&
             (searchTerm
                 ? paper.subjectName
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase())
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase())
                 : true)
         );
     });
@@ -137,7 +137,11 @@ const PYQPage = () => {
                 <h1 className="text-3xl font-bold mb-5 text-center">
                     Previous Year Questions (PYQ)
                 </h1>
-                <p className='italic text-center'>"PYQs help you understand the pattern and develop effective strategies for better preparation."</p><br/>
+                <p className="italic text-center">
+                    "Find here PYQs which help you understand the pattern and
+                    develop effective strategies for better preparation."
+                </p>
+                <br />
                 <div className="flex flex-wrap justify-center gap-4 mb-6">
                     <input
                         type="text"
@@ -265,8 +269,9 @@ const PYQPage = () => {
                 ) : (
                     <>
                         <div
-                            className={`${isLoading ? 'block' : 'hidden'
-                                } text-center`}
+                            className={`${
+                                isLoading ? 'block' : 'hidden'
+                            } text-center`}
                         >
                             <div role="status">
                                 <svg
@@ -314,10 +319,11 @@ const PYQPage = () => {
                         {[...Array(totalPages).keys()].map((number) => (
                             <li
                                 key={number + 1}
-                                className={`px-3 py-1 m-1 border rounded-md cursor-pointer ${currentPage === number + 1
+                                className={`px-3 py-1 m-1 border rounded-md cursor-pointer ${
+                                    currentPage === number + 1
                                         ? 'bg-sky-500 text-white'
                                         : 'bg-white text-gray-700'
-                                    }`}
+                                }`}
                                 onClick={() => paginate(number + 1)}
                             >
                                 {number + 1}

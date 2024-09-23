@@ -97,23 +97,25 @@ const SeniorPage = () => {
     }, []);
 
     // Filter seniors based on selected course and branch
-    const filteredSeniors = seniors.filter(
-        (senior) =>
-            (selectedYear ? senior.year === selectedYear : true)
+    const filteredSeniors = seniors.filter((senior) =>
+        selectedYear ? senior.year === selectedYear : true
     );
-
 
     return (
         <div className="bg-sky-100">
             <div
-                className={`${isLoggedOut ? 'block' : 'hidden'} text-center fixed bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
+                className={`${
+                    isLoggedOut ? 'block' : 'hidden'
+                } text-center fixed bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
             >
                 <div
                     role="alert"
                     className="mt-3 relative flex flex-col max-w-sm p-4 text-sm text-white bg-black rounded-md"
                 >
                     <p className="flex justify-center text-2xl">Logged Out</p>
-                    <p className="ml-4 p-3">You have been signed out, Login Again</p>
+                    <p className="ml-4 p-3">
+                        You have been signed out, Login Again
+                    </p>
 
                     <button
                         className="flex items-center justify-center transition-all w-8 h-8 rounded-md text-white hover:bg-white/20 active:bg-white/10 absolute top-1.5 right-1.5"
@@ -149,7 +151,10 @@ const SeniorPage = () => {
             <div className="container mx-auto p-5">
                 <div className="flex flex-col justify-center items-center">
                     <h1 className="text-3xl font-bold mb-5">Seniors</h1>
-                    <p className='italic text-center'>Reach out to seniors for mentorship and expert guidance on your journey</p>
+                    <p className="italic text-center">
+                        Reach out to seniors for mentorship and expert guidance
+                        on your journey
+                    </p>
                     <br />
                     <div className="flex flex-wrap justify-center text-center space-x-4 mb-5">
                         <select
@@ -160,13 +165,11 @@ const SeniorPage = () => {
                             value={selectedYear}
                         >
                             <option value="">All Years</option>
-                            <option value="1st Year">1st Year</option>
                             <option value="2nd Year">2nd Year</option>
                             <option value="3rd Year">3rd Year</option>
                             <option value="4th Year">4th Year</option>
                             <option value="5th Year">5th Year</option>
                         </select>
-
                     </div>
                 </div>
                 <div className="flex justify-center items-center py-10">
@@ -180,19 +183,27 @@ const SeniorPage = () => {
                                     <img
                                         src={senior.profilePicture}
                                         alt={senior.name}
-                                        className="w-full h-44 object-cover transition-transform duration-300 hover:scale-110"
+                                        className="w-full h-60 transition-transform duration-300 hover:scale-110"
                                     />
-                                    <div className="p-6">
+                                    <div className="px-6 py-4">
                                         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                                             {senior.name}
                                         </h3>
-                                        <p className="text-red-500 font-medium mb-1 text-sm">Course: {senior.branch}</p>
-                                        <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Year: {senior.year}</p>
-                                        <p className="text-gray-500 dark:text-gray-300 text-xs mb-4">Domain: {senior.domain}</p>
+                                        <p className="text-red-500 font-medium mb-1 text-sm">
+                                            Course: {senior.branch}
+                                        </p>
+                                        <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">
+                                            Year: {senior.year}
+                                        </p>
+                                        <p className="text-gray-500 dark:text-gray-300 text-xs mb-4">
+                                            Domain: {senior.domain}
+                                        </p>
                                         <div className="flex justify-between items-center">
                                             <button
                                                 className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
-                                                onClick={() => handleDetail(senior)}
+                                                onClick={() =>
+                                                    handleDetail(senior)
+                                                }
                                             >
                                                 View
                                             </button>
@@ -200,13 +211,19 @@ const SeniorPage = () => {
                                                 <div className="flex space-x-2">
                                                     <button
                                                         className="bg-yellow-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-yellow-600"
-                                                        onClick={() => handleEdit(senior)}
+                                                        onClick={() =>
+                                                            handleEdit(senior)
+                                                        }
                                                     >
                                                         Edit
                                                     </button>
                                                     <button
                                                         className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600"
-                                                        onClick={() => handleDelete(senior._id)}
+                                                        onClick={() =>
+                                                            handleDelete(
+                                                                senior._id
+                                                            )
+                                                        }
                                                     >
                                                         Delete
                                                     </button>
@@ -236,10 +253,14 @@ const SeniorPage = () => {
                                                 fill="currentFill"
                                             />
                                         </svg>
-                                        <p className="text-gray-200  dark:text-gray-600 mt-3">Loading...</p>
+                                        <p className="text-gray-200  dark:text-gray-600 mt-3">
+                                            Loading...
+                                        </p>
                                     </div>
                                 ) : (
-                                    <p className="text-gray-200  dark:text-gray-600 text-center">No Seniors Found.</p>
+                                    <p className="text-gray-200  dark:text-gray-600 text-center">
+                                        No Seniors Found.
+                                    </p>
                                 )}
                             </div>
                         )}
@@ -314,7 +335,6 @@ const SeniorPage = () => {
                         setIsDetailModalOpen={setIsDetailModalOpen}
                     />
                 )}
-
             </div>
             <Footer />
         </div>
