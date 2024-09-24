@@ -173,34 +173,34 @@ const SeniorPage = () => {
                     </div>
                 </div>
                 <div className="flex justify-center items-center py-10">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl">
-                        {filteredSeniors.length > 0 ? (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-6 w-full max-w-7xl">
+                {filteredSeniors.length > 0 ? (
                             filteredSeniors.map((senior) => (
                                 <div
                                     key={senior._id}
-                                    className="bg-white shadow-md rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl dark:bg-gray-800  w-full sm:w-auto h-full"
+                                    className="bg-white shadow-md rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl dark:bg-gray-800  w-full  h-full"
                                 >
                                     <img
                                         src={senior.profilePicture}
                                         alt={senior.name}
-                                        className="w-full h-60 transition-transform duration-300 hover:scale-110"
+                                        className="w-full h-40 lg:h-60 transition-transform duration-300 hover:scale-110"
                                     />
-                                    <div className="px-6 py-4">
-                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                                    <div className="px-3 lg:px-6 py-2 lg:py-4">
+                                        <h3 className="text-sm lg:text-xl font-bold text-gray-900 dark:text-white mb-2">
                                             {senior.name}
                                         </h3>
-                                        <p className="text-red-500 font-medium mb-1 text-sm">
+                                        <p className="text-red-500 font-medium mb-1 text-xs lg:text-sm">
                                             Course: {senior.branch}
                                         </p>
-                                        <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">
+                                        <p className="text-gray-600 dark:text-gray-400 text-xs lg:text-sm mb-1">
                                             Year: {senior.year}
                                         </p>
-                                        <p className="text-gray-500 dark:text-gray-300 text-xs mb-4">
+                                        <p className="text-gray-500 dark:text-gray-300 text-xs lg:text-sm mb-4">
                                             Domain: {senior.domain}
                                         </p>
                                         <div className="flex justify-between items-center">
                                             <button
-                                                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
+                                                className="bg-blue-600 text-white px-2 lg:px-3 py-1 lg:py-1 rounded-lg text-xs lg:text-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
                                                 onClick={() =>
                                                     handleDetail(senior)
                                                 }
@@ -210,7 +210,7 @@ const SeniorPage = () => {
                                             {senior.owner === ownerId && (
                                                 <div className="flex space-x-2">
                                                     <button
-                                                        className="bg-yellow-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-yellow-600"
+                                                        className="bg-yellow-500 text-white px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm hover:bg-yellow-600"
                                                         onClick={() =>
                                                             handleEdit(senior)
                                                         }
@@ -218,7 +218,7 @@ const SeniorPage = () => {
                                                         Edit
                                                     </button>
                                                     <button
-                                                        className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600"
+                                                        className="bg-red-500 text-white px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm hover:bg-red-600"
                                                         onClick={() =>
                                                             handleDelete(
                                                                 senior._id
