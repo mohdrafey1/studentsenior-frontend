@@ -9,6 +9,7 @@ import AddProductModal from '../components/StoreModal/AddProductModal';
 import EditProductModal from '../components/StoreModal/EditProductModal';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
+import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 
 const StorePage = () => {
     const [products, setProducts] = useState([]);
@@ -202,7 +203,7 @@ const StorePage = () => {
             if (response.ok) {
                 fetchProducts();
                 alert('Your request has been deleted successfully');
-               
+
             } else if (response.status === 401) {
                 setIsModalOpen(false);
                 alert('Your session has expired. Please log in again.');
@@ -232,7 +233,7 @@ const StorePage = () => {
             <div className="container mx-auto px-4 py-5">
                 <div className="flex flex-col justify-center items-center">
                     <h1 className="text-3xl font-bold mb-5">Product Store</h1>
-                    <p className='italic text-center'>"Buy and sell your stationery and gadgets easily to your juniors."</p><br/>
+                    <p className='italic text-center'>"Buy and sell your stationery and gadgets easily to your juniors."</p><br />
                 </div>
                 <div className="flex justify-center mb-4">
                     <button
@@ -279,7 +280,7 @@ const StorePage = () => {
                                                 <i className="fa-brands fa-telegram text-2xl sm:text-3xl"></i>
                                             </a>
                                         </div>
-                                        <br/>
+                                        <br />
 
                                         <p className="text-gray-600 italic overflow-hidden dark:text-gray-200">{product.description}</p>
 
@@ -351,6 +352,7 @@ const StorePage = () => {
                     ))}
             </div>
             <Footer />
+            <Collegelink2 />
         </div>
 
     );

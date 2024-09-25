@@ -45,34 +45,42 @@ body {
 .card {
     min-width: calc(33% - 2rem);
 }
+
 .card-testimonial {
     min-width: calc(33%);
 }
-.cards{
- width: calc(33% - 16px);   
+
+.cards {
+    width: calc(33% - 16px);
 }
-.heading-class{
-background:linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
-color: transparent;
-background-clip: text;
-}
-.heading-m{
-    background: linear-gradient(to right,#FF0000, #0000FF);
+
+.heading-class {
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
     color: transparent;
-background-clip: text;
+    background-clip: text;
 }
-.big-screen{
-animation: scale 0.5s ease-in-out;
+
+.heading-m {
+    background: linear-gradient(to right, #FF0000, #0000FF);
+    color: transparent;
+    background-clip: text;
 }
-.animate{
-animation: scale 0.5s ease-in-out;
+
+.big-screen {
+    animation: scale 0.5s ease-in-out;
 }
+
+.animate {
+    animation: scale 0.5s ease-in-out;
+}
+
 @keyframes scale {
-    0%{
+    0% {
         scale: 0.8;
         width: 50%;
     }
-    100%{
+
+    100% {
         scale: 1;
         width: 100%;
     }
@@ -152,17 +160,20 @@ animation: scale 0.5s ease-in-out;
 
         display: none;
     }
+
     .card-testimonial {
         min-width: calc(50%);
     }
-    .cards{
-        width: calc(50% - 10px);   
-       }
-       ::-webkit-scrollbar {
+
+    .cards {
+        width: calc(50% - 10px);
+    }
+
+    ::-webkit-scrollbar {
         background-color: transparent;
         width: 5px;
     }
-    
+
 }
 
 /* Responsive For Mobile Screen */
@@ -172,6 +183,7 @@ animation: scale 0.5s ease-in-out;
         background-color: transparent;
         width: 4px;
     }
+
     .root {
         position: fixed;
         top: 0;
@@ -246,7 +258,7 @@ animation: scale 0.5s ease-in-out;
     .menu-m.active {
 
         display: none;
-    } 
+    }
 
     .mobile-card {
         overflow-x: scroll;
@@ -260,8 +272,9 @@ animation: scale 0.5s ease-in-out;
         min-width: calc(100% - 8px);
         margin: 4px;
     }
-    .cards{
-        width: calc(99% );   
-       }
-    
+
+    .cards {
+        width: calc(99%);
+    }
+
 }

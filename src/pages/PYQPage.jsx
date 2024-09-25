@@ -5,6 +5,7 @@ import Footer from '../components/Footer/Footer';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
+import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 
 const PYQPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -93,12 +94,12 @@ const PYQPage = () => {
     const courses = [...new Set(pyqs.map((paper) => paper.course))];
     const branches = selectedCourse
         ? [
-              ...new Set(
-                  pyqs
-                      .filter((paper) => paper.course === selectedCourse)
-                      .flatMap((paper) => paper.branch)
-              ),
-          ]
+            ...new Set(
+                pyqs
+                    .filter((paper) => paper.course === selectedCourse)
+                    .flatMap((paper) => paper.branch)
+            ),
+        ]
         : [];
     const examTypes = [...new Set(pyqs.map((paper) => paper.examType))];
 
@@ -111,8 +112,8 @@ const PYQPage = () => {
             (selectedExamType ? paper.examType === selectedExamType : true) &&
             (searchTerm
                 ? paper.subjectName
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase())
                 : true)
         );
     });
@@ -269,9 +270,8 @@ const PYQPage = () => {
                 ) : (
                     <>
                         <div
-                            className={`${
-                                isLoading ? 'block' : 'hidden'
-                            } text-center`}
+                            className={`${isLoading ? 'block' : 'hidden'
+                                } text-center`}
                         >
                             <div role="status">
                                 <svg
@@ -319,11 +319,10 @@ const PYQPage = () => {
                         {[...Array(totalPages).keys()].map((number) => (
                             <li
                                 key={number + 1}
-                                className={`px-3 py-1 m-1 border rounded-md cursor-pointer ${
-                                    currentPage === number + 1
+                                className={`px-3 py-1 m-1 border rounded-md cursor-pointer ${currentPage === number + 1
                                         ? 'bg-sky-500 text-white'
                                         : 'bg-white text-gray-700'
-                                }`}
+                                    }`}
                                 onClick={() => paginate(number + 1)}
                             >
                                 {number + 1}
@@ -359,6 +358,7 @@ const PYQPage = () => {
                 </a>
             </div>
             <Footer />
+            <Collegelink2 />
         </div>
     );
 };

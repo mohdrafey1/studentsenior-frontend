@@ -102,15 +102,14 @@ const AddSeniorPage = () => {
     return (
         <div className="bg-sky-100">
             <div className={`${isLoading ? 'block' : 'hidden'} text-center `}>
-                <div class="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-75">
-                    <div class="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-75">
+                    <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>
                 </div>
             </div>
 
             <div
-                className={`${
-                    isSuccess ? 'block' : 'hidden'
-                } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
+                className={`${isSuccess ? 'block' : 'hidden'
+                    } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
             >
                 <div
                     role="alert"
@@ -130,11 +129,11 @@ const AddSeniorPage = () => {
                             viewBox="0 0 24 24"
                             stroke="currentColor"
                             className="h-5 w-5"
-                            stroke-width="2"
+                            strokeWidth="2"
                         >
                             <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                                 d="M6 18L18 6M6 6l12 12"
                             ></path>
                         </svg>
@@ -142,9 +141,8 @@ const AddSeniorPage = () => {
                 </div>
             </div>
             <div
-                className={`${
-                    isLoggedOut ? 'block' : 'hidden'
-                } text-center fixed bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
+                className={`${isLoggedOut ? 'block' : 'hidden'
+                    } text-center fixed bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
             >
                 <div
                     role="alert"
@@ -166,11 +164,11 @@ const AddSeniorPage = () => {
                             viewBox="0 0 24 24"
                             stroke="currentColor"
                             className="h-5 w-5"
-                            stroke-width="2"
+                            strokeWidth="2"
                         >
                             <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                                 d="M6 18L18 6M6 6l12 12"
                             ></path>
                         </svg>

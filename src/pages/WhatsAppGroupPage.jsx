@@ -3,6 +3,7 @@ import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
+import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 
 const WhatsAppGroupPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -299,6 +300,7 @@ const WhatsAppGroupPage = () => {
                     </div>
                 </div>
             )}
+            <Collegelink2 />
         </div>
     );
 };

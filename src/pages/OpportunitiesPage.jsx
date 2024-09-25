@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
+import Collegelink2 from '../components/Links/CollegeLink2';
 
 const initialGetOpportunities = [
     {
@@ -81,7 +82,7 @@ const OpportunitiesPage = () => {
                 <h1 className="text-3xl font-bold mb-5 text-center">
                     Opportunities
                 </h1>
-                <p className="italic text-center">"Explore opportunities to work in various positions across different companies."</p><br/>
+                <p className="italic text-center">"Explore opportunities to work in various positions across different companies."</p><br />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Left Column: Get Opportunities */}
                     <div>
@@ -256,6 +257,7 @@ const OpportunitiesPage = () => {
                 </div>
             </div>
             <Footer />
+            <Collegelink2 />
         </div>
     );
 };

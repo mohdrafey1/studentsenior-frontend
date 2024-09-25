@@ -6,7 +6,7 @@ const Collegelinks = () => {
     const { collegeName } = useParams();
 
     return (
-        <section className="forsmallDevices flex justify-center items-center text-center my-10 px-4">
+        <section className="hidden  lg:flex justify-center items-center text-center my-10 px-4">
             <div className="bg-white border-radius-38 flex flex-wrap justify-center items-center text-center px-2 sm:px-10 py-6 gap-10 text-base sm:gap-4 sm:text-lg md:gap-6 md:text-xl lg:gap-7 xl:gap-9">
                 <Link
                     to={`/college/${collegeName}`}
@@ -81,6 +81,7 @@ const Collegelinks = () => {
                     </div>
                 </Link>
             </div>
+
         </section>
     );
 };
