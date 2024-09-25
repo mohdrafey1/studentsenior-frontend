@@ -29,7 +29,7 @@ const Collegelink2 = () => {
                     to={`/college/${collegeName}/seniors`}
                     className="rounded-xl hover:bg-sky-100  px-3 py-2"
                 >
-                    <div className="flex flex-col items-center text-sm">
+                    <div className="flex flex-col items-center text-lg">
                         <i className="fa-solid fa-user-tie"></i>
                         <p>Seniors</p>
                     </div>
@@ -38,7 +38,7 @@ const Collegelink2 = () => {
                     to={`/college/${collegeName}/store`}
                     className="rounded-xl hover:bg-sky-100  px-3 py-2"
                 >
-                    <div className="flex flex-col items-center text-sm">
+                    <div className="flex flex-col items-center text-lg">
                         <i className="fa-solid fa-store"></i>
                         <p>Store</p>
                     </div>
@@ -47,7 +47,7 @@ const Collegelink2 = () => {
                     to={`/college/${collegeName}/community`}
                     className="rounded-xl hover:bg-sky-100  px-3 py-2"
                 >
-                    <div className="flex flex-col items-center text-sm">
+                    <div className="flex flex-col items-center text-lg">
                         <i className="fa-solid fa-users"></i>
                         <p>Community</p>
                     </div>
@@ -56,7 +56,7 @@ const Collegelink2 = () => {
                     onClick={handleMore}
                     className="rounded-xl hover:bg-sky-100  px-3 py-2"
                 >
-                    <div className="flex flex-col items-center text-sm">
+                    <div className="flex flex-col items-center text-lg">
                         <i
                             className={`fa-solid ${
                                 isOpen ? 'fa-window-close' : 'fa-bars'
