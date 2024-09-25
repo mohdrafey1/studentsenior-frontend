@@ -9,6 +9,7 @@ import EditSeniorModal from '../components/SeniorModal/EditSeniorModal';
 import SeniorDetailModal from '../components/SeniorModal/SeniorDetailModal';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
+import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 
 const SeniorPage = () => {
     const [seniors, setSeniors] = useState([]);
@@ -104,9 +105,8 @@ const SeniorPage = () => {
     return (
         <div className="bg-sky-100">
             <div
-                className={`${
-                    isLoggedOut ? 'block' : 'hidden'
-                } text-center fixed bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
+                className={`${isLoggedOut ? 'block' : 'hidden'
+                    } text-center fixed bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
             >
                 <div
                     role="alert"
@@ -173,8 +173,8 @@ const SeniorPage = () => {
                     </div>
                 </div>
                 <div className="flex justify-center items-center py-10">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-6 w-full max-w-7xl">
-                {filteredSeniors.length > 0 ? (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-6 w-full max-w-7xl">
+                        {filteredSeniors.length > 0 ? (
                             filteredSeniors.map((senior) => (
                                 <div
                                     key={senior._id}
@@ -337,6 +337,7 @@ const SeniorPage = () => {
                 )}
             </div>
             <Footer />
+            <Collegelink2 />
         </div>
     );
 };

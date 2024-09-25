@@ -7,6 +7,7 @@ import Testimonials from '../components/Testimonials/Testimonials';
 import CollegeAbout from '../components/About/CollegeAbout';
 import Footer from '../components/Footer/Footer';
 import Collegelinks from '../components/Links/CollegeLinks';
+import Collegelink2 from '../components/Links/CollegeLink2';
 
 const CollegePage = () => {
     const { collegeName } = useParams();
@@ -21,6 +22,7 @@ const CollegePage = () => {
             <Testimonials />
             <CollegeAbout />
             <Footer />
+            <Collegelink2 />
         </div>
     );
 };

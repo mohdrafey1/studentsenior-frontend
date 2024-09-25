@@ -3,6 +3,7 @@ import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
+import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 
 const NotesPage = () => {
     const [initialNotes, setInitialNotes] = useState([]);
@@ -103,7 +104,7 @@ const NotesPage = () => {
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5 bg-sky-100 min-h-full">
                 <h1 className="text-3xl font-bold mb-5 text-center">Notes</h1>
-                <p className="italic text-center">"Get concise and clear notes to boost your exam preparation."</p><br/>
+                <p className="italic text-center">"Get concise and clear notes to boost your exam preparation."</p><br />
                 <div className="flex flex-col justify-center sm:flex-row sm:items-center sm:space-x-4 mb-5">
                     <button
                         onClick={() => setShowForm(!showForm)}
@@ -258,6 +259,7 @@ const NotesPage = () => {
             </div>
 
             <Footer />
+            <Collegelink2 />
         </div>
     );
 };

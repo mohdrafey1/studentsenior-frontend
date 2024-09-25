@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
+import Collegelink2 from '../components/Links/CollegeLink2';
 
 const CommunityPage = () => {
     const [posts, setPosts] = useState([
@@ -79,7 +80,7 @@ const CommunityPage = () => {
                 <h1 className="text-3xl font-bold text-center mb-5">
                     Community
                 </h1>
-                <p className='italic text-center'>"Connect, share, and ask your questions and doubts through the community."</p><br/>
+                <p className='italic text-center'>"Connect, share, and ask your questions and doubts through the community."</p><br />
                 <div className="mb-5 text-center">
                     <textarea
                         value={newPostContent}
@@ -166,6 +167,7 @@ const CommunityPage = () => {
                 </div>
             </div>
             <Footer />
+            <Collegelink2 />
         </div>
     );
 };
