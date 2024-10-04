@@ -34,10 +34,8 @@ const EditProductModal = ({
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 overflow-y-auto mb-8">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg mx-4 md:mx-0 md:w-3/4 lg:w-1/2 overflow-y-auto max-h-screen">
-                <h4 className="text-2xl font-bold mb-4 text-center">
-                    Edit Product
-                </h4>
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg mx-0 md:mx-0 md:w-3/4 lg:w-1/2 overflow-y-auto max-h-screen">
+                <h4 className="text-2xl font-bold text-center">Edit Product</h4>
                 <form
                     onSubmit={handleUpdate}
                     encType="multipart/form-data"
@@ -102,7 +100,7 @@ const EditProductModal = ({
                         <img
                             src={imagePreview || previousImageUrl}
                             alt={editingProduct.name}
-                            className="object-cover rounded-md w-48 h-32" // Fixed size for preview
+                            className="object-cover rounded-md w-48 h-24" // Fixed size for preview
                         />
                     </div>
 
@@ -119,7 +117,7 @@ const EditProductModal = ({
                         </label>
                     </div>
 
-                    <div className="flex justify-between m-6">
+                    <div className="flex justify-between mt-2">
                         <button
                             type="submit"
                             className="bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 transition-all duration-200 ease-in-out"
