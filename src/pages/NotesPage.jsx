@@ -82,12 +82,12 @@ const NotesPage = () => {
     const courses = [...new Set(initialNotes.map((note) => note.course))];
     const branches = selectedCourse
         ? [
-            ...new Set(
-                initialNotes
-                    .filter((note) => note.course === selectedCourse)
-                    .map((note) => note.branch)
-            ),
-        ]
+              ...new Set(
+                  initialNotes
+                      .filter((note) => note.course === selectedCourse)
+                      .map((note) => note.branch)
+              ),
+          ]
         : [];
 
     const filteredNotes = initialNotes.filter(
@@ -104,7 +104,11 @@ const NotesPage = () => {
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5 bg-sky-100 min-h-full">
                 <h1 className="text-3xl font-bold mb-5 text-center">Notes</h1>
-                <p className="italic text-center">"Get concise and clear notes to boost your exam preparation."</p><br />
+                <p className="italic text-center">
+                    "Get concise and clear notes to boost your exam
+                    preparation."
+                </p>
+                <br />
                 <div className="flex flex-col justify-center sm:flex-row sm:items-center sm:space-x-4 mb-5">
                     <button
                         onClick={() => setShowForm(!showForm)}
@@ -118,6 +122,7 @@ const NotesPage = () => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="p-2 border rounded-md w-full sm:w-64 mb-2 sm:mb-0"
+                        disabled
                     />
                     <select
                         value={selectedCourse}
@@ -126,6 +131,7 @@ const NotesPage = () => {
                             setSelectedBranch(''); // Reset branch when course changes
                         }}
                         className="p-2 border rounded-md mb-2 sm:mb-0"
+                        disabled
                     >
                         <option value="">All Courses</option>
                         {courses.map((course, index) => (
@@ -199,8 +205,9 @@ const NotesPage = () => {
                 ) : (
                     <>
                         <div
-                            className={`${isLoading ? 'block' : 'hidden'
-                                } text-center`}
+                            className={`${
+                                isLoading ? 'block' : 'hidden'
+                            } text-center`}
                         >
                             <div role="status">
                                 <svg
