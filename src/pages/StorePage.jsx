@@ -119,8 +119,9 @@ const StorePage = () => {
             if (response.ok) {
                 fetchProducts();
                 setIsModalOpen(false);
-                alert('Your request has been received, and the item will be displayed once it has been approved.');
-
+                alert(
+                    'Your request has been received, and the item will be displayed once it has been approved.'
+                );
             } else if (response.status === 401) {
                 setIsModalOpen(false);
                 alert('Your session has expired. Please log in again.');
@@ -167,7 +168,6 @@ const StorePage = () => {
                 setIsModalOpen(false);
                 setEditingProduct(null);
                 alert('Your request has been updated.');
-
             } else if (response.status === 401) {
                 setIsModalOpen(false);
                 alert('Your session has expired. Please log in again.');
@@ -203,7 +203,6 @@ const StorePage = () => {
             if (response.ok) {
                 fetchProducts();
                 alert('Your request has been deleted successfully');
-
             } else if (response.status === 401) {
                 setIsModalOpen(false);
                 alert('Your session has expired. Please log in again.');
@@ -222,10 +221,10 @@ const StorePage = () => {
     }, []);
 
     return (
-        <div className='bg-sky-100'>
+        <div className="bg-sky-100">
             <div className={`${isLoading2 ? 'block' : 'hidden'} text-center `}>
-                <div class="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-50">
-                    <div class="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-50">
+                    <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>
                 </div>
             </div>
             <Header />
@@ -233,7 +232,11 @@ const StorePage = () => {
             <div className="container mx-auto px-4 py-5">
                 <div className="flex flex-col justify-center items-center">
                     <h1 className="text-3xl font-bold mb-5">Product Store</h1>
-                    <p className='italic text-center'>"Buy and sell your stationery and gadgets easily to your juniors."</p><br />
+                    <p className="italic text-center">
+                        "Buy and sell your stationery and gadgets easily to your
+                        juniors."
+                    </p>
+                    <br />
                 </div>
                 <div className="flex justify-center mb-4">
                     <button
@@ -248,19 +251,34 @@ const StorePage = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl h-full ">
                         {products.length > 0 ? (
                             products.map((product) => (
-                                <div key={product._id} className="border lg:h-3/4 h-max border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
+                                <div
+                                    key={product._id}
+                                    className="border lg:h-3/4 h-max border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
+                                >
                                     <img
                                         src={product.image.url}
                                         alt={product.name}
                                         className="bg-white shadow-md lg:h-2/5 max-h-80 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
                                     />
-                                    <div className='p-4'>
-                                        <h5 className="text-lg tracking-tight text-gray-700 dark:text-gray-300">{product.name}</h5>
+                                    <div className="p-4">
+                                        <h5 className="text-lg tracking-tight text-gray-700 dark:text-gray-300">
+                                            {product.name}
+                                        </h5>
                                         <p>
-                                            <span className="text-2xl font-bold text-gray-700 dark:text-gray-300"> ₹{product.price}</span>
+                                            <span className="text-2xl font-bold text-gray-700 dark:text-gray-300">
+                                                {' '}
+                                                ₹{product.price}
+                                            </span>
                                         </p>
                                         <p className="text-gray-800 dark:text-gray-400 mt-2">
-                                            College: {colleges.find((college) => college.id === product.college)?.name}
+                                            College:{' '}
+                                            {
+                                                colleges.find(
+                                                    (college) =>
+                                                        college.id ===
+                                                        product.college
+                                                )?.name
+                                            }
                                         </p>
                                         <div className="flex items-center mt-2 gap-3">
                                             <a
@@ -280,17 +298,30 @@ const StorePage = () => {
                                                 <i className="fa-brands fa-telegram text-2xl sm:text-3xl"></i>
                                             </a>
                                         </div>
-                                        <br />
 
-                                        <p className="text-gray-600 italic overflow-hidden dark:text-gray-200">{product.description}</p>
+                                        <p className="text-gray-600 italic overflow-hidden dark:text-gray-200">
+                                            {product.description}
+                                        </p>
 
                                         <div className="flex justify-end mt-4">
                                             {product.owner === ownerId && (
                                                 <>
-                                                    <button className="bg-yellow-500 text-white px-4 py-2 rounded mr-2 transition hover:bg-yellow-600" onClick={() => handleEdit(product)}>
+                                                    <button
+                                                        className="bg-yellow-500 text-white px-4 py-2 rounded mr-2 transition hover:bg-yellow-600"
+                                                        onClick={() =>
+                                                            handleEdit(product)
+                                                        }
+                                                    >
                                                         Edit
                                                     </button>
-                                                    <button className="bg-red-500 text-white px-4 py-2 rounded transition hover:bg-red-600" onClick={() => handleDelete(product._id)}>
+                                                    <button
+                                                        className="bg-red-500 text-white px-4 py-2 rounded transition hover:bg-red-600"
+                                                        onClick={() =>
+                                                            handleDelete(
+                                                                product._id
+                                                            )
+                                                        }
+                                                    >
                                                         Delete
                                                     </button>
                                                 </>
@@ -319,10 +350,14 @@ const StorePage = () => {
                                                 fill="currentFill"
                                             />
                                         </svg>
-                                        <p className="text-gray-200  dark:text-gray-600 mt-3">Loading...</p>
+                                        <p className="text-gray-200  dark:text-gray-600 mt-3">
+                                            Loading...
+                                        </p>
                                     </div>
                                 ) : (
-                                    <p className="text-gray-200  dark:text-gray-600 text-center">No Product Found.</p>
+                                    <p className="text-gray-200  dark:text-gray-600 text-center">
+                                        No Product Found.
+                                    </p>
                                 )}
                             </div>
                         )}
@@ -354,7 +389,6 @@ const StorePage = () => {
             <Footer />
             <Collegelink2 />
         </div>
-
     );
 };
 
