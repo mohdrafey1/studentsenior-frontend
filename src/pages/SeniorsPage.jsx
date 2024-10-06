@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../redux/user/userSlice.js';
 import Header from '../components/Header/Header';
@@ -10,8 +10,10 @@ import SeniorDetailModal from '../components/SeniorModal/SeniorDetailModal';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
+import { capitalizeWords } from '../utils/Capitalize.js';
 
 const SeniorPage = () => {
+    const { collegeName } = useParams();
     const [seniors, setSeniors] = useState([]);
     const [editingSenior, setEditingSenior] = useState(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -105,8 +107,9 @@ const SeniorPage = () => {
     return (
         <div className="bg-sky-100">
             <div
-                className={`${isLoggedOut ? 'block' : 'hidden'
-                    } text-center fixed bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
+                className={`${
+                    isLoggedOut ? 'block' : 'hidden'
+                } text-center fixed bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
             >
                 <div
                     role="alert"
@@ -150,7 +153,9 @@ const SeniorPage = () => {
             <CollegeLinks />
             <div className="container mx-auto p-5">
                 <div className="flex flex-col justify-center items-center">
-                    <h1 className="text-3xl font-bold mb-5">Seniors</h1>
+                    <h1 className="text-3xl font-bold mb-5">
+                        Seniors - {capitalizeWords(collegeName)}
+                    </h1>
                     <p className="italic text-center">
                         Reach out to seniors for mentorship and expert guidance
                         on your journey

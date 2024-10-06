@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
+import { capitalizeWords } from '../utils/Capitalize.js';
 
 const NotesPage = () => {
+    const { collegeName } = useParams();
     const [initialNotes, setInitialNotes] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [selectedBranch, setSelectedBranch] = useState('');
@@ -103,7 +106,9 @@ const NotesPage = () => {
             <Header />
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5 bg-sky-100 min-h-full">
-                <h1 className="text-3xl font-bold mb-5 text-center">Notes</h1>
+                <h1 className="text-3xl font-bold mb-5 text-center">
+                    Notes - {capitalizeWords(collegeName)}
+                </h1>
                 <p className="italic text-center">
                     "Get concise and clear notes to boost your exam
                     preparation."

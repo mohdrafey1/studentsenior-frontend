@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
+import { capitalizeWords } from '../utils/Capitalize.js';
 
 const WhatsAppGroupPage = () => {
+    const { collegeName } = useParams();
     const [searchTerm, setSearchTerm] = useState('');
     const [groups, setGroupLink] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -82,16 +85,13 @@ const WhatsAppGroupPage = () => {
         e.preventDefault();
         setText('Wait ...');
         try {
-            const resp = await fetch(
-                `${API_BASE_URL}/api/whatsappgroup`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(groupData),
-                }
-            );
+            const resp = await fetch(`${API_BASE_URL}/api/whatsappgroup`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(groupData),
+            });
 
             if (!resp.ok) {
                 throw new Error('Network response was not ok');
@@ -117,7 +117,9 @@ const WhatsAppGroupPage = () => {
 
     const saveToLocalStorage = () => {
         colleges.forEach((data) => {
-            const formattedCollegeName = data.name.replace(/\s+/g, '-').toLowerCase();
+            const formattedCollegeName = data.name
+                .replace(/\s+/g, '-')
+                .toLowerCase();
             localStorage.setItem(formattedCollegeName, data.id);
         });
     };
@@ -142,8 +144,14 @@ const WhatsAppGroupPage = () => {
             <Header />
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5">
-                <h1 className="text-3xl font-bold mb-5 text-center">WhatsApp Groups</h1>
-                <p className='italic text-center'>"Join WhatsApp groups to connect with like-minded people and stay updated."</p><br />
+                <h1 className="text-3xl font-bold mb-5 text-center">
+                    WhatsApp Groups - {capitalizeWords(collegeName)}
+                </h1>
+                <p className="italic text-center">
+                    "Join WhatsApp groups to connect with like-minded people and
+                    stay updated."
+                </p>
+                <br />
                 <div className="mb-5 flex w-full sm:w-1/2 mx-auto">
                     <input
                         type="text"
@@ -163,8 +171,13 @@ const WhatsAppGroupPage = () => {
                 {groups.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                         {filteredGroups.map((group) => (
-                            <div key={group._id} className="bg-white p-5 shadow-md rounded-md">
-                                <h2 className="text-xl font-bold mb-2 text-center">{group.title}</h2>
+                            <div
+                                key={group._id}
+                                className="bg-white p-5 shadow-md rounded-md"
+                            >
+                                <h2 className="text-xl font-bold mb-2 text-center">
+                                    {group.title}
+                                </h2>
                                 <p className="mb-3 text-center">{group.info}</p>
                                 <div className="flex justify-center">
                                     <a
@@ -181,7 +194,11 @@ const WhatsAppGroupPage = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className={`${isLoading ? 'block' : 'hidden'} text-center w-full`}>
+                    <div
+                        className={`${
+                            isLoading ? 'block' : 'hidden'
+                        } text-center w-full`}
+                    >
                         <div role="status">
                             <svg
                                 aria-hidden="true"
@@ -209,10 +226,14 @@ const WhatsAppGroupPage = () => {
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white rounded-lg p-5 w-full max-w-lg">
-                        <h2 className="text-xl font-bold mb-4">Add WhatsApp Group</h2>
+                        <h2 className="text-xl font-bold mb-4">
+                            Add WhatsApp Group
+                        </h2>
                         <form onSubmit={handleSubmit}>
                             <div className="mb-4">
-                                <label className="block mb-2" htmlFor="college">College</label>
+                                <label className="block mb-2" htmlFor="college">
+                                    College
+                                </label>
                                 <select
                                     name="college"
                                     id="college"
@@ -223,14 +244,19 @@ const WhatsAppGroupPage = () => {
                                 >
                                     <option value="">Select College</option>
                                     {colleges.map((college) => (
-                                        <option key={college.id} value={college.name}>
+                                        <option
+                                            key={college.id}
+                                            value={college.name}
+                                        >
                                             {college.name}
                                         </option>
                                     ))}
                                 </select>
                             </div>
                             <div className="mb-4">
-                                <label className="block mb-2" htmlFor="title">Title</label>
+                                <label className="block mb-2" htmlFor="title">
+                                    Title
+                                </label>
                                 <input
                                     type="text"
                                     name="title"
@@ -242,7 +268,9 @@ const WhatsAppGroupPage = () => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block mb-2" htmlFor="info">Info</label>
+                                <label className="block mb-2" htmlFor="info">
+                                    Info
+                                </label>
                                 <textarea
                                     name="info"
                                     id="info"
@@ -253,7 +281,9 @@ const WhatsAppGroupPage = () => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block mb-2" htmlFor="domain">Domain</label>
+                                <label className="block mb-2" htmlFor="domain">
+                                    Domain
+                                </label>
                                 <input
                                     type="text"
                                     name="domain"
@@ -265,7 +295,9 @@ const WhatsAppGroupPage = () => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block mb-2" htmlFor="link">Link</label>
+                                <label className="block mb-2" htmlFor="link">
+                                    Link
+                                </label>
                                 <input
                                     type="url"
                                     name="link"

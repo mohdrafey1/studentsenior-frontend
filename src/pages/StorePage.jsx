@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../redux/user/userSlice.js';
 import Header from '../components/Header/Header';
@@ -10,8 +10,10 @@ import EditProductModal from '../components/StoreModal/EditProductModal';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
+import { capitalizeWords } from '../utils/Capitalize.js';
 
 const StorePage = () => {
+    const { collegeName } = useParams();
     const [products, setProducts] = useState([]);
     const [affiliateproducts, setAffiliateProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -256,7 +258,9 @@ const StorePage = () => {
             <CollegeLinks />
             <div className="container mx-auto px-4 py-5">
                 <div className="flex flex-col justify-center items-center">
-                    <h1 className="text-3xl font-bold mb-5">Product Store</h1>
+                    <h1 className="text-3xl font-bold mb-5">
+                        Product Store - {capitalizeWords(collegeName)}
+                    </h1>
                     <p className="italic text-center">
                         "Buy and sell your stationery and gadgets easily to your
                         juniors."
