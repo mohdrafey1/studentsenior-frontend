@@ -16,7 +16,7 @@ const CommunityPage = () => {
     const [editingPostId, setEditingPostId] = useState(null);
     const [editedContent, setEditedContent] = useState('');
     const [likedComments, setLikedComments] = useState([]);
-    const [showComment ,setshowComment] = useState(false);
+    const [showComment, setshowComment] = useState(false);
     const [showCom, setshowCom] = useState('');
 
     const currentUser = useSelector((state) => state.user.currentUser);
@@ -54,7 +54,6 @@ const CommunityPage = () => {
             );
             const data = await response.json();
             setPosts(LatestFirst(data));
-
         } catch (err) {
             console.error('Error fetching posts:', err);
         }
@@ -214,7 +213,6 @@ const CommunityPage = () => {
         const storedLikes =
             JSON.parse(localStorage.getItem('likedComments')) || [];
         setLikedComments(storedLikes);
-
     }, []);
 
     const likeComment = async (postId, commentId) => {
@@ -278,7 +276,7 @@ const CommunityPage = () => {
         }
 
         return reversedArray;
-    }
+    };
 
     return (
         <div className="container bg-sky-100 min-h-screen min-w-full">
@@ -321,7 +319,7 @@ const CommunityPage = () => {
                         Add Post
                     </button>
                 </div>
-                <div className='flex flex-wrap gap-4 justify-center'>
+                <div className="flex flex-wrap gap-4 justify-center">
                     {posts.map((post) => (
                         <div
                             key={post._id}
@@ -384,43 +382,112 @@ const CommunityPage = () => {
                             ) : null}
 
                             <div className="mt-3">
-                                <p className="mt-3">{post.content}</p>
+                                <div className="bg-sky-100 px-4 rounded-lg my-4 text-lg overflow-y-scroll h-48">
+                                    <p className="mt-3">{post.content}</p>
+                                </div>
                                 <button
-                                    className={`mt-1 px-3 border-2 border-sky-500 rounded-lg ${post.likes.map((like) => like === ownerId ? "text-white bg-sky-500" : "text-black ")}`}
-
+                                    className={`mt-1 px-3 border-2 border-sky-500 rounded-lg ${
+                                        post.likes.includes(ownerId)
+                                            ? 'text-white bg-sky-500'
+                                            : 'text-black'
+                                    }`}
                                     onClick={() => likePost(post._id)}
                                 >
-                                    Like {post.likes.map((like) => like.length > 0 ? "(" + post.likes.length + ")":null)}
-
+                                    <i class="fa-regular fa-heart"></i> (
+                                    {post.likes.length})
                                 </button>
                             </div>
 
                             <div className="mt-1">
                                 <h3 className="text-lg font-semibold">
-                                    Comments {post.comments.length > 0 ? "(" + post.comments.length + ")" : null} {post.comments.length > 0 ? (
-                                        <button className=' text-sm p-1 rounded-md text-sky-500' onClick={() => {setshowCom(post.comments); setshowComment(true);}}>Show All</button>
-                                    ):null}
+                                    Comments{' '}
+                                    {post.comments.length > 0
+                                        ? '(' + post.comments.length + ')'
+                                        : null}{' '}
+                                    {post.comments.length > 0 ? (
+                                        <button
+                                            className=" text-sm p-1 rounded-md text-sky-500"
+                                            onClick={() => {
+                                                setshowCom(post.comments);
+                                                setshowComment(true);
+                                            }}
+                                        >
+                                            Show All
+                                        </button>
+                                    ) : null}
                                 </h3>
                                 <ul>
                                     {post.comments.length > 0 && (
-                                        <li key={post.comments[post.comments.length - 1]._id}>
-                                            <p className='line-clamp-1'>{post.comments[post.comments.length - 1].content}</p>
+                                        <li
+                                            key={
+                                                post.comments[
+                                                    post.comments.length - 1
+                                                ]._id
+                                            }
+                                        >
+                                            <p className="line-clamp-1">
+                                                {
+                                                    post.comments[
+                                                        post.comments.length - 1
+                                                    ].content
+                                                }
+                                            </p>
                                             <div className="flex items-center justify-between mt-2">
                                                 <button
-                                                    className={`text-blue-500 ${likedComments.includes(post.comments[post.comments.length - 1]._id)
-                                                        ? 'opacity-50 cursor-not-allowed'
-                                                        : ''
-                                                        }`}
-                                                    onClick={() => likeComment(post._id, post.comments[post.comments.length - 1]._id)}
-                                                    disabled={likedComments.includes(post.comments[post.comments.length - 1]._id)} // Disable if already liked
+                                                    className={`text-blue-500 ${
+                                                        likedComments.includes(
+                                                            post.comments[
+                                                                post.comments
+                                                                    .length - 1
+                                                            ]._id
+                                                        )
+                                                            ? 'opacity-50 cursor-not-allowed'
+                                                            : ''
+                                                    }`}
+                                                    onClick={() =>
+                                                        likeComment(
+                                                            post._id,
+                                                            post.comments[
+                                                                post.comments
+                                                                    .length - 1
+                                                            ]._id
+                                                        )
+                                                    }
+                                                    disabled={likedComments.includes(
+                                                        post.comments[
+                                                            post.comments
+                                                                .length - 1
+                                                        ]._id
+                                                    )} // Disable if already liked
                                                 >
-                                                    Like ({post.comments[post.comments.length - 1].likes})
+                                                    <i class="fa-regular fa-heart"></i>{' '}
+                                                    (
+                                                    {
+                                                        post.comments[
+                                                            post.comments
+                                                                .length - 1
+                                                        ].likes
+                                                    }
+                                                    )
                                                 </button>
-                                                {post.comments[post.comments.length - 1].author._id === ownerId && (
+                                                {post.comments[
+                                                    post.comments.length - 1
+                                                ].author._id === ownerId && (
                                                     <>
                                                         <button
                                                             className="text-red-500"
-                                                            onClick={() => deleteComment(post._id, post.comments[post.comments.length - 1]._id)}
+                                                            onClick={() =>
+                                                                deleteComment(
+                                                                    post._id,
+                                                                    post
+                                                                        .comments[
+                                                                        post
+                                                                            .comments
+                                                                            .length -
+                                                                            1
+                                                                    ]._id
+                                                                )
+                                                            }
                                                         >
                                                             Delete
                                                         </button>
@@ -429,53 +496,78 @@ const CommunityPage = () => {
                                             </div>
                                         </li>
                                     )}
-
-
                                 </ul>
                                 {showComment ? (
-    <div className="text-center">
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-95 px-2 py-5 lg:p-5">
-            <p className="absolute right-0 top-0 px-4 py-2 m-4 bg-red-300 cursor-pointer rounded-lg " onClick={() => setshowComment(false)}>
-                X
-            </p>
-            <ul className="lg:w-1/3 m-4 bg-slate-300 p-4 rounded-lg text-left overflow-scroll max-h-full my-4">
-                {showCom.length > 0 ? (
-                    showCom.map(comment => (
-                        <li key={comment._id}
-                        className='bg-slate-200 p-3 my-1 rounded-lg'
-                        >
-                            {comment.content}
-                            <div className="flex items-center justify-between mt-2">
-                                <button
-                                    className={`text-blue-500 ${likedComments.includes(comment._id)
-                                        ? 'opacity-50 cursor-not-allowed'
-                                        : ''
-                                    }`}
-                                    onClick={() => likeComment(post._id, comment._id)}
-                                    disabled={likedComments.includes(comment._id)} // Disable if already liked
-                                >
-                                    Like ({comment.likes})
-                                </button>
-                                {comment.author._id === ownerId && (
-                                    <button
-                                        className="text-red-500"
-                                        onClick={() => deleteComment(post._id, comment._id)}
-                                    >
-                                        Delete
-                                    </button>
-                                )}
-                            </div>
-                        </li>
-                    ))
-                ) : (
-                    <li>No comments available.</li> // Message when there are no comments
-                )}
-            </ul>
-        </div>
-    </div>
-) : null}
-
-
+                                    <div className="text-center">
+                                        <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-95 px-2 py-5 lg:p-5">
+                                            <p
+                                                className="absolute right-0 top-0 px-4 py-2 m-4 bg-red-300 cursor-pointer rounded-lg "
+                                                onClick={() =>
+                                                    setshowComment(false)
+                                                }
+                                            >
+                                                X
+                                            </p>
+                                            <ul className="lg:w-1/3 m-4 bg-slate-300 p-4 rounded-lg text-left overflow-scroll max-h-full my-4">
+                                                {showCom.length > 0 ? (
+                                                    showCom.map((comment) => (
+                                                        <li
+                                                            key={comment._id}
+                                                            className="bg-slate-200 p-3 my-1 rounded-lg"
+                                                        >
+                                                            {comment.content}
+                                                            <div className="flex items-center justify-between mt-2">
+                                                                <button
+                                                                    className={`text-blue-500 ${
+                                                                        likedComments.includes(
+                                                                            comment._id
+                                                                        )
+                                                                            ? 'opacity-50 cursor-not-allowed'
+                                                                            : ''
+                                                                    }`}
+                                                                    onClick={() =>
+                                                                        likeComment(
+                                                                            post._id,
+                                                                            comment._id
+                                                                        )
+                                                                    }
+                                                                    disabled={likedComments.includes(
+                                                                        comment._id
+                                                                    )} // Disable if already liked
+                                                                >
+                                                                    Like (
+                                                                    {
+                                                                        comment.likes
+                                                                    }
+                                                                    )
+                                                                </button>
+                                                                {comment.author
+                                                                    ._id ===
+                                                                    ownerId && (
+                                                                    <button
+                                                                        className="text-red-500"
+                                                                        onClick={() =>
+                                                                            deleteComment(
+                                                                                post._id,
+                                                                                comment._id
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        Delete
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                        </li>
+                                                    ))
+                                                ) : (
+                                                    <li>
+                                                        No comments available.
+                                                    </li> // Message when there are no comments
+                                                )}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                ) : null}
 
                                 <div className="mt-3">
                                     <textarea
