@@ -1,93 +1,319 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import Collegelink2 from '../components/Links/CollegeLink2';
+import { API_BASE_URL, API_KEY } from '../config/apiConfiguration';
 
 const CommunityPage = () => {
-    const [posts, setPosts] = useState([
-        {
-            id: 1,
-            author: 'Mohd Rafey',
-            content: 'How to get started with Web Development?',
-            upvotes: 10,
-            downvotes: 2,
-            comments: [
-                'Start with HTML, CSS, and JavaScript!',
-                'Practice daily!',
-            ],
-        },
-        {
-            id: 2,
-            author: 'Najmus Sahar',
-            content: 'What are the best resources for learning UI/UX Design?',
-            upvotes: 15,
-            downvotes: 1,
-            comments: ['Check out DesignLab!', 'Look into Coursera courses.'],
-        },
-        {
-            id: 3,
-            author: 'Muskan Khatoon',
-            content: 'What are the best resources for learning UI/UX Design?',
-            upvotes: 15,
-            downvotes: 1,
-            comments: ['Check out DesignLab!', 'Look into Coursera courses.'],
-        },
-    ]);
-
+    const { collegeName } = useParams();
+    const [posts, setPosts] = useState([]);
     const [newPostContent, setNewPostContent] = useState('');
+    const [isAnonymous, setIsAnonymous] = useState(false);
+    const [commentContent, setCommentContent] = useState({});
     const [editingPostId, setEditingPostId] = useState(null);
     const [editedContent, setEditedContent] = useState('');
+    const [likedComments, setLikedComments] = useState([]);
+    const [showComment ,setshowComment] = useState(false);
+    const [showCom, setshowCom] = useState('');
 
-    const addPost = () => {
-        if (newPostContent.trim()) {
-            const newPost = {
-                id: posts.length + 1,
-                author: 'You',
-                content: newPostContent,
-                upvotes: 0,
-                downvotes: 0,
-                comments: [],
-            };
-            setPosts([...posts, newPost]);
-            setNewPostContent('');
+    const currentUser = useSelector((state) => state.user.currentUser);
+    const ownerId = currentUser?._id;
+
+    const colleges = [
+        { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
+        { id: '66cba84ce0e3a7e528642837', name: 'MPGI Kanpur' },
+        { id: '66d08aff784c9f07a53507b9', name: 'GCET Noida' },
+        { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
+    ];
+
+    const capitalizeWords = (str) => {
+        return str
+            .split('-')
+            .map(
+                (word) =>
+                    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+            )
+            .join(' ');
+    };
+
+    // Fetch posts from backend API
+    const fetchPosts = async () => {
+        try {
+            const response = await fetch(
+                `${API_BASE_URL}/api/community/posts`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': API_KEY,
+                    },
+                }
+            );
+            const data = await response.json();
+            setPosts(LatestFirst(data));
+
+        } catch (err) {
+            console.error('Error fetching posts:', err);
         }
     };
 
-    const deletePost = (postId) => {
-        setPosts(posts.filter((post) => post.id !== postId));
+    useEffect(() => {
+        fetchPosts();
+    }, []);
+
+    // Add a new post with the extracted college
+    const addPost = async () => {
+        if (newPostContent.trim()) {
+            const selectedCollegeObject = colleges.find(
+                (college) =>
+                    college.name.toLowerCase().replace(/\s+/g, '-') ===
+                    collegeName
+            );
+
+            const college = selectedCollegeObject
+                ? selectedCollegeObject.id
+                : null;
+
+            if (college) {
+                try {
+                    const response = await fetch(
+                        `${API_BASE_URL}/api/community/posts`,
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'x-api-key': API_KEY,
+                            },
+                            credentials: 'include',
+                            body: JSON.stringify({
+                                content: newPostContent,
+                                isAnonymous,
+                                college,
+                            }),
+                        }
+                    );
+
+                    if (response.ok) {
+                        fetchPosts();
+                        setNewPostContent('');
+                    }
+                } catch (err) {
+                    console.error('Error adding post:', err);
+                }
+            } else {
+                console.error('College not found');
+            }
+        }
     };
 
-    const startEditingPost = (postId, content) => {
-        setEditingPostId(postId);
-        setEditedContent(content);
+    // Delete a post
+    const deletePost = async (postId) => {
+        try {
+            const response = await fetch(
+                `${API_BASE_URL}/api/community/posts/${postId}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': API_KEY,
+                    },
+                    credentials: 'include',
+                }
+            );
+
+            if (response.ok) {
+                fetchPosts();
+            }
+        } catch (err) {
+            console.error('Error deleting post:', err);
+        }
     };
 
-    const editPost = (postId) => {
-        setPosts(
-            posts.map((post) =>
-                post.id === postId ? { ...post, content: editedContent } : post
-            )
-        );
-        setEditingPostId(null);
-        setEditedContent('');
+    // Edit a post
+    const editPost = async (postId) => {
+        if (editedContent.trim()) {
+            try {
+                const response = await fetch(
+                    `${API_BASE_URL}/api/community/posts/${postId}`,
+                    {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-api-key': API_KEY,
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify({ content: editedContent }),
+                    }
+                );
+
+                if (response.ok) {
+                    setEditingPostId(null);
+                    fetchPosts();
+                    setEditedContent('');
+                }
+            } catch (err) {
+                console.error('Error editing post:', err);
+            }
+        }
     };
+
+    // Add a new comment to a post
+    const addComment = async (postId) => {
+        const content = commentContent[postId];
+        if (content && content.trim()) {
+            try {
+                const response = await fetch(
+                    `${API_BASE_URL}/api/community/posts/${postId}/comments`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-api-key': API_KEY,
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify({ content }),
+                    }
+                );
+
+                if (response.ok) {
+                    fetchPosts();
+                    setCommentContent({ ...commentContent, [postId]: '' }); // Clear the comment input for that post
+                }
+            } catch (err) {
+                console.error('Error adding comment:', err);
+            }
+        }
+    };
+
+    const likePost = async (postId) => {
+        try {
+            const response = await fetch(
+                `${API_BASE_URL}/api/community/posts/${postId}/like`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': API_KEY,
+                    },
+                    credentials: 'include',
+                }
+            );
+
+            if (response.ok) {
+                fetchPosts(); // Reload posts to reflect the updated likes
+            }
+        } catch (err) {
+            console.error('Error liking/unliking post:', err);
+        }
+    };
+
+    useEffect(() => {
+        const storedLikes =
+            JSON.parse(localStorage.getItem('likedComments')) || [];
+        setLikedComments(storedLikes);
+
+    }, []);
+
+    const likeComment = async (postId, commentId) => {
+        if (!likedComments.includes(commentId)) {
+            try {
+                const response = await fetch(
+                    `${API_BASE_URL}/api/community/posts/${postId}/comments/${commentId}/like`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-api-key': API_KEY,
+                        },
+                        credentials: 'include',
+                    }
+                );
+
+                if (response.ok) {
+                    fetchPosts();
+
+                    // Update the likedComments in both state and localStorage
+                    const updatedLikes = [...likedComments, commentId];
+                    setLikedComments(updatedLikes);
+                    localStorage.setItem(
+                        'likedComments',
+                        JSON.stringify(updatedLikes)
+                    );
+                }
+            } catch (err) {
+                console.error('Error liking comment:', err);
+            }
+        }
+    };
+
+    // Delete a comment
+    const deleteComment = async (postId, commentId) => {
+        try {
+            const response = await fetch(
+                `${API_BASE_URL}/api/community/posts/${postId}/comments/${commentId}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': API_KEY,
+                    },
+                    credentials: 'include',
+                }
+            );
+
+            if (response.ok) {
+                fetchPosts();
+            }
+        } catch (err) {
+            console.error('Error deleting comment:', err);
+        }
+    };
+    const LatestFirst = (data) => {
+        let reversedArray = [];
+        for (let i = data.length - 1; i >= 0; i--) {
+            reversedArray.push(data[i]);
+        }
+
+        return reversedArray;
+    }
+
     return (
         <div className="container bg-sky-100 min-h-screen min-w-full">
             <Header />
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5">
                 <h1 className="text-3xl font-bold text-center mb-5">
-                    Community
+                    Community - {capitalizeWords(collegeName)}
                 </h1>
-                <p className='italic text-center'>"Connect, share, and ask your questions and doubts through the community."</p><br />
+                <p className="italic text-center">
+                    "Connect, share, and ask your questions and doubts through
+                    the community."
+                </p>
+                <br />
                 <div className="mb-5 text-center">
                     <textarea
                         value={newPostContent}
                         onChange={(e) => setNewPostContent(e.target.value)}
-                        className="w-full p-3 border rounded-md"
+                        className="p-3 border rounded-md w-full  lg:w-1/2"
                         placeholder="Share something with the community..."
                     />
+                    <div>
+                        <p>Post As Anonymous</p>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={isAnonymous}
+                                onChange={(e) =>
+                                    setIsAnonymous(e.target.checked)
+                                }
+                                className="sr-only peer "
+                            />
+                            <div className="w-9 h-5 bg-gray-200 hover:bg-gray-300 peer-focus:outline-0 peer-focus:ring-transparent rounded-full peer transition-all ease-in-out duration-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600 hover:peer-checked:bg-indigo-700"></div>
+                        </label>
+                    </div>
                     <button
                         onClick={addPost}
                         className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
@@ -95,37 +321,45 @@ const CommunityPage = () => {
                         Add Post
                     </button>
                 </div>
-                <div>
+                <div className='flex flex-wrap gap-4 justify-center'>
                     {posts.map((post) => (
                         <div
-                            key={post.id}
-                            className="bg-white p-5 rounded-md shadow-md mb-4"
+                            key={post._id}
+                            className="block max-w-sm p-6 w-full bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100"
                         >
                             <div className="flex justify-between">
                                 <h2 className="text-xl font-semibold">
-                                    {post.author}
+                                    {post.isAnonymous
+                                        ? 'Anonymous'
+                                        : post.author.username}
                                 </h2>
                                 <div className="space-x-2">
-                                    <button
-                                        onClick={() =>
-                                            startEditingPost(
-                                                post.id,
-                                                post.content
-                                            )
-                                        }
-                                        className="text-blue-500"
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        onClick={() => deletePost(post.id)}
-                                        className="text-red-500"
-                                    >
-                                        Delete
-                                    </button>
+                                    {post.author._id === ownerId && (
+                                        <>
+                                            <button
+                                                onClick={() => {
+                                                    setEditingPostId(post._id);
+                                                    setEditedContent(
+                                                        post.content
+                                                    );
+                                                }}
+                                                className="text-blue-500 px-2 border-2 border-sky-500 rounded-lg"
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() =>
+                                                    deletePost(post._id)
+                                                }
+                                                className="text-red-500 px-2 border-2 border-sky-500 rounded-lg"
+                                            >
+                                                Delete
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
                             </div>
-                            {editingPostId === post.id ? (
+                            {editingPostId === post._id ? (
                                 <div className="mt-3">
                                     <textarea
                                         value={editedContent}
@@ -135,39 +369,140 @@ const CommunityPage = () => {
                                         className="w-full p-2 border rounded-md"
                                     />
                                     <button
-                                        onClick={() => editPost(post.id)}
-                                        className="mt-2 px-4 py-2 bg-green-500 text-white rounded-md"
+                                        onClick={() => editPost(post._id)}
+                                        className="mt-2 mx-2 px-4 py-2 bg-green-500 text-white rounded-md"
                                     >
                                         Save
                                     </button>
+                                    <button
+                                        onClick={() => setEditingPostId(null)}
+                                        className="mt-2 mx-2 px-4 py-2 bg-gray-500 text-white rounded-md"
+                                    >
+                                        Cancel
+                                    </button>
                                 </div>
-                            ) : (
+                            ) : null}
+
+                            <div className="mt-3">
                                 <p className="mt-3">{post.content}</p>
-                            )}
-                            <div className="mt-3 flex space-x-4">
-                                <button className="text-green-500">
-                                    Upvote ({post.upvotes})
-                                </button>
-                                <button className="text-red-500">
-                                    Downvote ({post.downvotes})
+                                <button
+                                    className={`mt-1 px-3 border-2 border-sky-500 rounded-lg ${post.likes.map((like) => like === ownerId ? "text-white bg-sky-500" : "text-black ")}`}
+
+                                    onClick={() => likePost(post._id)}
+                                >
+                                    Like {post.likes.map((like) => like.length > 0 ? "(" + post.likes.length + ")":null)}
+
                                 </button>
                             </div>
-                            <div className="mt-3">
+
+                            <div className="mt-1">
                                 <h3 className="text-lg font-semibold">
-                                    Comments
+                                    Comments {post.comments.length > 0 ? "(" + post.comments.length + ")" : null} {post.comments.length > 0 ? (
+                                        <button className=' text-sm p-1 rounded-md text-sky-500' onClick={() => {setshowCom(post.comments); setshowComment(true);}}>Show All</button>
+                                    ):null}
                                 </h3>
-                                <ul className="list-disc ml-5">
-                                    {post.comments.map((comment, index) => (
-                                        <li key={index}>{comment}</li>
-                                    ))}
+                                <ul>
+                                    {post.comments.length > 0 && (
+                                        <li key={post.comments[post.comments.length - 1]._id}>
+                                            <p className='line-clamp-1'>{post.comments[post.comments.length - 1].content}</p>
+                                            <div className="flex items-center justify-between mt-2">
+                                                <button
+                                                    className={`text-blue-500 ${likedComments.includes(post.comments[post.comments.length - 1]._id)
+                                                        ? 'opacity-50 cursor-not-allowed'
+                                                        : ''
+                                                        }`}
+                                                    onClick={() => likeComment(post._id, post.comments[post.comments.length - 1]._id)}
+                                                    disabled={likedComments.includes(post.comments[post.comments.length - 1]._id)} // Disable if already liked
+                                                >
+                                                    Like ({post.comments[post.comments.length - 1].likes})
+                                                </button>
+                                                {post.comments[post.comments.length - 1].author._id === ownerId && (
+                                                    <>
+                                                        <button
+                                                            className="text-red-500"
+                                                            onClick={() => deleteComment(post._id, post.comments[post.comments.length - 1]._id)}
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </li>
+                                    )}
+
+
                                 </ul>
+                                {showComment ? (
+    <div className="text-center">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-95 px-2 py-5 lg:p-5">
+            <p className="absolute right-0 top-0 px-4 py-2 m-4 bg-red-300 cursor-pointer rounded-lg " onClick={() => setshowComment(false)}>
+                X
+            </p>
+            <ul className="lg:w-1/3 m-4 bg-slate-300 p-4 rounded-lg text-left overflow-scroll max-h-full my-4">
+                {showCom.length > 0 ? (
+                    showCom.map(comment => (
+                        <li key={comment._id}
+                        className='bg-slate-200 p-3 my-1 rounded-lg'
+                        >
+                            {comment.content}
+                            <div className="flex items-center justify-between mt-2">
+                                <button
+                                    className={`text-blue-500 ${likedComments.includes(comment._id)
+                                        ? 'opacity-50 cursor-not-allowed'
+                                        : ''
+                                    }`}
+                                    onClick={() => likeComment(post._id, comment._id)}
+                                    disabled={likedComments.includes(comment._id)} // Disable if already liked
+                                >
+                                    Like ({comment.likes})
+                                </button>
+                                {comment.author._id === ownerId && (
+                                    <button
+                                        className="text-red-500"
+                                        onClick={() => deleteComment(post._id, comment._id)}
+                                    >
+                                        Delete
+                                    </button>
+                                )}
+                            </div>
+                        </li>
+                    ))
+                ) : (
+                    <li>No comments available.</li> // Message when there are no comments
+                )}
+            </ul>
+        </div>
+    </div>
+) : null}
+
+
+
+                                <div className="mt-3">
+                                    <textarea
+                                        value={commentContent[post._id] || ''}
+                                        onChange={(e) =>
+                                            setCommentContent({
+                                                ...commentContent,
+                                                [post._id]: e.target.value,
+                                            })
+                                        }
+                                        className="w-full p-2 border rounded-md"
+                                        placeholder="Add a comment..."
+                                    />
+                                    <button
+                                        onClick={() => addComment(post._id)}
+                                        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+                                    >
+                                        Comment
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
-            <Footer />
             <Collegelink2 />
+            <Footer />
         </div>
     );
 };
