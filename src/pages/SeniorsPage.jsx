@@ -153,7 +153,7 @@ const SeniorPage = () => {
             <CollegeLinks />
             <div className="container mx-auto p-5">
                 <div className="flex flex-col justify-center items-center">
-                    <h1 className="text-3xl font-bold mb-5">
+                    <h1 className="text-3xl font-bold mb-5 text-center">
                         Seniors - {capitalizeWords(collegeName)}
                     </h1>
                     <p className="italic text-center">

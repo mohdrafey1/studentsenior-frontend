@@ -26,12 +26,12 @@ const Collegelink2 = () => {
                     </div>
                 </Link>
                 <Link
-                    to={`/college/${collegeName}/seniors`}
+                                to={`/college/${collegeName}/pyq`}
                     className="rounded-xl hover:bg-sky-100  px-3 py-2"
                 >
                     <div className="flex flex-col items-center text-sm">
-                        <i className="fa-solid fa-user-tie"></i>
-                        <p>Seniors</p>
+                        <i className="fa-solid fa-bolt"></i>
+                        <p>PYQ</p>
                     </div>
                 </Link>
                 <Link
@@ -82,12 +82,12 @@ const Collegelink2 = () => {
                     >
                         <li className="flex justify-center mb-2">
                             <Link
-                                to={`/college/${collegeName}/pyq`}
+                                to={`/college/${collegeName}/seniors`}
                                 className="rounded-lg hover:bg-sky-100 px-4 py-2 text-center w-11/12"
                             >
                                 <div className="flex items-center justify-center space-x-2 text-lg font-bold">
-                                    <i className="fa-solid fa-bolt"></i>
-                                    <p>PYQ</p>
+                                    <i className="fa-solid fa-user-tie"></i>
+                                    <p>Senior</p>
                                 </div>
                             </Link>
                         </li>
