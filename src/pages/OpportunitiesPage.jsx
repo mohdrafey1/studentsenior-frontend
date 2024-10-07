@@ -121,14 +121,14 @@ const OpportunitiesPage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Left Column: Get Opportunities */}
                     <div>
-                        <div className="flex justify-between items-center mb-5">
+                        {/* <div className="flex justify-between items-center mb-5">
                             <button
                                 onClick={() => setShowGetForm(!showGetForm)}
                                 className="px-4 py-2 bg-blue-500 text-white rounded-md"
                             >
                                 {showGetForm ? 'Close Form' : 'Get Opportunity'}
                             </button>
-                        </div>
+                        </div> */}
 
                         {showGetForm && (
                             <div className="mb-5 p-5 bg-white shadow-md rounded-md">
@@ -238,7 +238,7 @@ const OpportunitiesPage = () => {
 
                     {/* Right Column: Give Opportunities */}
                     <div>
-                        <div className="flex justify-between items-center mb-5">
+                        {/* <div className="flex justify-between items-center mb-5">
                             <button
                                 onClick={() => setShowGiveForm(!showGiveForm)}
                                 className="px-4 py-2 bg-green-500 text-white rounded-md"
@@ -247,7 +247,7 @@ const OpportunitiesPage = () => {
                                     ? 'Close Form'
                                     : 'Give Opportunity'}
                             </button>
-                        </div>
+                        </div> */}
 
                         {showGiveForm && (
                             <div className="mb-5 p-5 bg-white shadow-md rounded-md">
