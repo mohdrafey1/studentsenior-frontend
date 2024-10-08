@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Pagination } from '@nextui-org/react';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
@@ -320,21 +321,14 @@ const PYQPage = () => {
                 )}
 
                 <div className="flex justify-center mt-6 ">
-                    <ul className="flex flex-wrap justify-center">
-                        {[...Array(totalPages).keys()].map((number) => (
-                            <li
-                                key={number + 1}
-                                className={`px-3 py-1 m-1 border rounded-md cursor-pointer ${
-                                    currentPage === number + 1
-                                        ? 'bg-sky-500 text-white'
-                                        : 'bg-white text-gray-700'
-                                }`}
-                                onClick={() => paginate(number + 1)}
-                            >
-                                {number + 1}
-                            </li>
-                        ))}
-                    </ul>
+                    <Pagination
+                        showControls
+                        color="success"
+                        total={totalPages}
+                        initialPage={1}
+                        onChange={paginate}
+                        className="pagination"
+                    />
                 </div>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md text-center mb-8">
