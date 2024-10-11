@@ -291,10 +291,12 @@ const CommunityPage = () => {
     };
     const LatestFirst = (data) => {
         let reversedArray = [];
+        const collegeId = localStorage.getItem('id');
         for (let i = data.length - 1; i >= 0; i--) {
-            reversedArray.push(data[i]);
+            if (data[i].college._id === collegeId) {
+                reversedArray.push(data[i]);
+            }
         }
-
         return reversedArray;
     };
 
