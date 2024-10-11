@@ -354,14 +354,21 @@ const CommunityPage = () => {
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                         <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
                             <h2 className="text-xl mb-4">Create New Post</h2>
-                            <CKEditor
-                                editor={ClassicEditor}
-                                data={newPostContent}
-                                onChange={(event, editor) => {
-                                    const data = editor.getData();
-                                    setNewPostContent(data);
+                            <div
+                                style={{
+                                    maxHeight: '500px',
+                                    overflowY: 'auto',
                                 }}
-                            />
+                            >
+                                <CKEditor
+                                    editor={ClassicEditor}
+                                    data={newPostContent}
+                                    onChange={(event, editor) => {
+                                        const data = editor.getData();
+                                        setNewPostContent(data);
+                                    }}
+                                />{' '}
+                            </div>
                             <div className="mt-4 flex gap-4">
                                 <p>Post As Anonymous</p>
                                 <label className="relative inline-flex items-center cursor-pointer">
@@ -424,24 +431,33 @@ const CommunityPage = () => {
                                                                 <h2 className="text-xl mb-4">
                                                                     Edit Post
                                                                 </h2>
-                                                                <CKEditor
-                                                                    editor={
-                                                                        ClassicEditor
-                                                                    }
-                                                                    data={
-                                                                        editedContent
-                                                                    }
-                                                                    onChange={(
-                                                                        event,
-                                                                        editor
-                                                                    ) => {
-                                                                        const data =
-                                                                            editor.getData();
-                                                                        setEditedContent(
-                                                                            data
-                                                                        );
+                                                                <div
+                                                                    style={{
+                                                                        maxHeight:
+                                                                            '500px',
+                                                                        overflowY:
+                                                                            'auto',
                                                                     }}
-                                                                />
+                                                                >
+                                                                    <CKEditor
+                                                                        editor={
+                                                                            ClassicEditor
+                                                                        }
+                                                                        data={
+                                                                            editedContent
+                                                                        }
+                                                                        onChange={(
+                                                                            event,
+                                                                            editor
+                                                                        ) => {
+                                                                            const data =
+                                                                                editor.getData();
+                                                                            setEditedContent(
+                                                                                data
+                                                                            );
+                                                                        }}
+                                                                    />
+                                                                </div>
                                                                 <div className="flex justify-end mt-4">
                                                                     <button
                                                                         onClick={
@@ -507,7 +523,7 @@ const CommunityPage = () => {
                                     ) : null}
 
                                     <div className="mt-3">
-                                        <div className="bg-sky-100 px-4 rounded-lg my-4 text-lg overflow-y-scroll h-48">
+                                        <div className="bg-sky-100 px-4 rounded-lg my-4 text-lg overflow-x-hidden overflow-y-scroll h-48">
                                             <p className="mt-3">
                                                 <div
                                                     className="post-content"
@@ -669,7 +685,22 @@ const CommunityPage = () => {
                                                                         className="bg-slate-200 p-3 my-1 rounded-lg"
                                                                     >
                                                                         {
-                                                                            comment.content
+                                                                            <>
+                                                                                <strong>
+                                                                                    <span>
+                                                                                        {
+                                                                                            comment
+                                                                                                .author
+                                                                                                .username
+                                                                                        }
+                                                                                    </span>
+                                                                                </strong>
+                                                                                <p>
+                                                                                    {
+                                                                                        comment.content
+                                                                                    }
+                                                                                </p>
+                                                                            </>
                                                                         }
                                                                         <div className="flex items-center justify-between mt-2">
                                                                             <button
