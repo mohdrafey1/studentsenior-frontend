@@ -45,11 +45,23 @@ const SeniorPage = () => {
                 },
             });
             const data = await response.json();
-            setSeniors(data);
+            setSeniors(collegeBased(data));
             setIsLoading(false);
         } catch (err) {
             console.error('Error fetching seniors:', err);
         }
+    };
+    
+    const collegeBased = (data) => {
+        let returnArray = [];
+        const collegeId = localStorage.getItem('id');
+        for (let i = 0; i <= data.length - 1; i++) {
+            if (data[i].college === collegeId) {
+                returnArray.push(data[i]);
+            }
+        }
+
+        return returnArray;
     };
 
     const handleEdit = (senior) => {

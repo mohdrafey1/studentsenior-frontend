@@ -18,6 +18,7 @@ const StorePage = () => {
     const [affiliateproducts, setAffiliateProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isLoading2, setIsLoading2] = useState(false);
+    const [isLoading3, setIsLoading3] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [newProduct, setNewProduct] = useState({
@@ -55,15 +56,26 @@ const StorePage = () => {
                 },
             });
             const data = await response.json();
-            setProducts(data);
+            setProducts(LatestFirst(data));
             setIsLoading(false);
         } catch (err) {
             console.error('Error fetching products:', err);
         }
     };
 
+    const LatestFirst = (data) => { 
+        let reversedArray = [];
+        const collegeId = localStorage.getItem('id');
+        for (let i = data.length - 1; i >= 0; i--) {
+            if (data[i].college === collegeId) {
+                reversedArray.push(data[i]);
+            }
+        }
+        return reversedArray;
+    };
+
     const fetchAffiliateProducts = async () => {
-        setIsLoading(true);
+        setIsLoading3(true);
         try {
             const response = await fetch(
                 `${API_BASE_URL}/api/store/affiliate`,
@@ -79,7 +91,7 @@ const StorePage = () => {
             console.log(data);
 
             setAffiliateProducts(data);
-            setIsLoading(false);
+            setIsLoading3(false);
         } catch (err) {
             console.error('Error fetching products:', err);
         }
@@ -278,19 +290,19 @@ const StorePage = () => {
 
                 <div className="flex justify-center items-center py-1">
                     <div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl h-full ">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl h-fit ">
                             {products.length > 0 ? (
                                 products.map((product) => (
                                     <div
                                         key={product._id}
-                                        className="border lg:h-3/4 h-max border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
+                                        className="border lg:max-h-min h-min my-3 border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
                                     >
                                         <img
                                             src={product.image.url}
                                             alt={product.name}
-                                            className="bg-white shadow-md lg:h-2/5 max-h-80 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
+                                            className="bg-white shadow-md lg:h-2/5 max-h-60 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
                                         />
-                                        <div className="p-4">
+                                        <div className="p-4 ">
                                             <h5 className="text-lg tracking-tight text-gray-700 dark:text-gray-300">
                                                 {product.name}
                                             </h5>
@@ -300,6 +312,7 @@ const StorePage = () => {
                                                     ₹{product.price}
                                                 </span>
                                             </p>
+                                            <div className='overflow-scroll h-28'>
                                             <p className="text-gray-800 dark:text-gray-400 mt-2">
                                                 College:{' '}
                                                 {
@@ -332,6 +345,7 @@ const StorePage = () => {
                                             <p className="text-gray-600 italic overflow-hidden dark:text-gray-200">
                                                 {product.description}
                                             </p>
+                                            </div>
 
                                             <div className="flex justify-end mt-4">
                                                 {product.owner === ownerId && (
@@ -387,24 +401,31 @@ const StorePage = () => {
                                             </p>
                                         </div>
                                     ) : (
+                                        <div>
                                         <p className="text-gray-200  dark:text-gray-600 text-center">
-                                            No Product Found.
+                                            No Product Found in {capitalizeWords(collegeName)}.
                                         </p>
+                                        <br/>
+                                        </div>
                                     )}
                                 </div>
                             )}
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl h-full ">
+                        <h1 className="text-3xl font-bold mb-5 text-center">
+                        Affiliate Product
+                    </h1>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl min-h-screen">
+                            
                             {affiliateproducts.length > 0 ? (
                                 affiliateproducts.map((product) => (
                                     <div
                                         key={product._id}
-                                        className="border lg:h-3/4 h-max border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
+                                        className="border lg:min-h-min h-96 border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
                                     >
                                         <img
                                             src={product.image}
                                             alt={product.name}
-                                            className="bg-white shadow-md lg:h-2/5 max-h-80 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
+                                            className="bg-white shadow-md lg:h-2/5 h-52 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
                                         />
                                         <div className="p-4">
                                             <h5 className="text-lg tracking-tight text-gray-700 dark:text-gray-300">
@@ -427,7 +448,7 @@ const StorePage = () => {
                                             >
                                                 <button
                                                     type="button"
-                                                    class="text-white w-full mt-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                                                    className="text-white w-full mt-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                                                 >
                                                     Buy Now
                                                 </button>
@@ -437,7 +458,7 @@ const StorePage = () => {
                                 ))
                             ) : (
                                 <div className="col-span-4 flex justify-center items-center w-full">
-                                    {isLoading ? (
+                                    {isLoading3 ? (
                                         <div className="text-center">
                                             <svg
                                                 aria-hidden="true"
