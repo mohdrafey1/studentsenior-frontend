@@ -53,11 +53,9 @@ const SeniorPage = () => {
     };
     
     const collegeBased = (data) => {
-        console.log(data);
         let returnArray = [];
         const collegeId = localStorage.getItem('id');
         for (let i = 0; i <= data.length - 1; i++) {
-            console.log(data[i].college+" == "+ collegeId);
             if (data[i].college === collegeId) {
                 returnArray.push(data[i]);
             }
