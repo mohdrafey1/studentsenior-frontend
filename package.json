@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^43.2.0",
+    "@ckeditor/ckeditor5-react": "^9.3.0",
     "@nextui-org/pagination": "^2.0.36",
     "@nextui-org/react": "^2.4.8",
     "@reduxjs/toolkit": "^2.2.7",

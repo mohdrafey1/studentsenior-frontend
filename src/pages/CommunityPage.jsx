@@ -7,15 +7,19 @@ import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import Collegelink2 from '../components/Links/CollegeLink2';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 const CommunityPage = () => {
     const { collegeName } = useParams();
     const [posts, setPosts] = useState([]);
     const [newPostContent, setNewPostContent] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const [commentContent, setCommentContent] = useState({});
     const [editingPostId, setEditingPostId] = useState(null);
     const [editedContent, setEditedContent] = useState('');
+    const [showEditModal, setShowEditModal] = useState(false);
     const [likedComments, setLikedComments] = useState([]);
     const [showComment, setshowComment] = useState(false);
     const [showCom, setshowCom] = useState('');
@@ -73,6 +77,29 @@ const CommunityPage = () => {
         navigate('/sign-in');
     };
 
+    const openModal = () => {
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+    };
+
+    const openEditModal = (post) => {
+        console.log(post);
+        console.log(post._id);
+
+        setEditingPostId(post._id);
+        setEditedContent(post.content);
+        setShowEditModal(true);
+    };
+
+    const closeEditModal = () => {
+        setEditingPostId(null);
+        setEditedContent('');
+        setShowEditModal(false);
+    };
+
     // Add a new post with the extracted college
     const addPost = async () => {
         if (newPostContent.trim()) {
@@ -108,6 +135,7 @@ const CommunityPage = () => {
                     if (response.ok) {
                         fetchPosts();
                         setNewPostContent('');
+                        closeModal();
                     } else if (response.status === 401) {
                         alert('Your session has expired. Please log in again.');
                         handleLogout();
@@ -148,11 +176,11 @@ const CommunityPage = () => {
     };
 
     // Edit a post
-    const editPost = async (postId) => {
-        if (editedContent.trim()) {
+    const editPost = async () => {
+        if (editedContent.trim() && editingPostId) {
             try {
                 const response = await fetch(
-                    `${API_BASE_URL}/api/community/posts/${postId}`,
+                    `${API_BASE_URL}/api/community/posts/${editingPostId}`,
                     {
                         method: 'PUT',
                         headers: {
@@ -168,6 +196,7 @@ const CommunityPage = () => {
                     setEditingPostId(null);
                     fetchPosts();
                     setEditedContent('');
+                    closeEditModal();
                 }
             } catch (err) {
                 console.error('Error editing post:', err);
@@ -314,33 +343,56 @@ const CommunityPage = () => {
                 </p>
                 <br />
                 <div className="mb-5 text-center">
-                    <textarea
-                        value={newPostContent}
-                        onChange={(e) => setNewPostContent(e.target.value)}
-                        className="p-3 border rounded-md w-full  lg:w-1/2"
-                        placeholder="Share something with the community..."
-                    />
-                    <div>
-                        <p>Post As Anonymous</p>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                                type="checkbox"
-                                checked={isAnonymous}
-                                onChange={(e) =>
-                                    setIsAnonymous(e.target.checked)
-                                }
-                                className="sr-only peer "
-                            />
-                            <div className="w-9 h-5 bg-gray-200 hover:bg-gray-300 peer-focus:outline-0 peer-focus:ring-transparent rounded-full peer transition-all ease-in-out duration-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600 hover:peer-checked:bg-indigo-700"></div>
-                        </label>
-                    </div>
                     <button
-                        onClick={addPost}
+                        onClick={openModal}
                         className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
                     >
                         Add Post
                     </button>
                 </div>
+                {showModal && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                            <h2 className="text-xl mb-4">Create New Post</h2>
+                            <CKEditor
+                                editor={ClassicEditor}
+                                data={newPostContent}
+                                onChange={(event, editor) => {
+                                    const data = editor.getData();
+                                    setNewPostContent(data);
+                                }}
+                            />
+                            <div className="mt-4 flex gap-4">
+                                <p>Post As Anonymous</p>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={isAnonymous}
+                                        onChange={(e) =>
+                                            setIsAnonymous(e.target.checked)
+                                        }
+                                        className="sr-only peer "
+                                    />
+                                    <div className="w-9 h-6 bg-gray-200 hover:bg-gray-300 peer-focus:outline-0 peer-focus:ring-transparent rounded-full peer transition-all ease-in-out duration-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600 hover:peer-checked:bg-indigo-700"></div>
+                                </label>
+                            </div>
+                            <div className="flex justify-end mt-4">
+                                <button
+                                    onClick={closeModal}
+                                    className="mr-2 px-4 py-2 bg-gray-300 text-black rounded-md"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={addPost}
+                                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                >
+                                    Submit Post
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
                 {posts.length > 0 ? (
                     <div>
                         <div className="flex flex-wrap gap-4 justify-center">
@@ -359,18 +411,59 @@ const CommunityPage = () => {
                                             {post.author._id === ownerId && (
                                                 <>
                                                     <button
-                                                        onClick={() => {
-                                                            setEditingPostId(
-                                                                post._id
-                                                            );
-                                                            setEditedContent(
-                                                                post.content
-                                                            );
-                                                        }}
+                                                        onClick={() =>
+                                                            openEditModal(post)
+                                                        }
                                                         className="text-blue-500 px-2 border-2 border-sky-500 rounded-lg"
                                                     >
                                                         Edit
                                                     </button>
+                                                    {showEditModal && (
+                                                        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                                                            <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                                                                <h2 className="text-xl mb-4">
+                                                                    Edit Post
+                                                                </h2>
+                                                                <CKEditor
+                                                                    editor={
+                                                                        ClassicEditor
+                                                                    }
+                                                                    data={
+                                                                        editedContent
+                                                                    }
+                                                                    onChange={(
+                                                                        event,
+                                                                        editor
+                                                                    ) => {
+                                                                        const data =
+                                                                            editor.getData();
+                                                                        setEditedContent(
+                                                                            data
+                                                                        );
+                                                                    }}
+                                                                />
+                                                                <div className="flex justify-end mt-4">
+                                                                    <button
+                                                                        onClick={
+                                                                            closeEditModal
+                                                                        }
+                                                                        className="mr-2 px-4 py-2 bg-gray-300 text-black rounded-md"
+                                                                    >
+                                                                        Cancel
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={
+                                                                            editPost
+                                                                        }
+                                                                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                                                    >
+                                                                        Save
+                                                                        Changes
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                     <button
                                                         onClick={() =>
                                                             deletePost(post._id)
@@ -416,7 +509,12 @@ const CommunityPage = () => {
                                     <div className="mt-3">
                                         <div className="bg-sky-100 px-4 rounded-lg my-4 text-lg overflow-y-scroll h-48">
                                             <p className="mt-3">
-                                                {post.content}
+                                                <div
+                                                    className="post-content"
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: post.content,
+                                                    }}
+                                                />
                                             </p>
                                         </div>
                                         <button
