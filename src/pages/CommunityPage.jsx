@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { signOut } from '../redux/user/userSlice.js';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
@@ -19,6 +20,8 @@ const CommunityPage = () => {
     const [showComment, setshowComment] = useState(false);
     const [showCom, setshowCom] = useState('');
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
@@ -65,6 +68,11 @@ const CommunityPage = () => {
         fetchPosts();
     }, []);
 
+    const handleLogout = () => {
+        dispatch(signOut());
+        navigate('/sign-in');
+    };
+
     // Add a new post with the extracted college
     const addPost = async () => {
         if (newPostContent.trim()) {
@@ -100,6 +108,12 @@ const CommunityPage = () => {
                     if (response.ok) {
                         fetchPosts();
                         setNewPostContent('');
+                    } else if (response.status === 401) {
+                        alert('Your session has expired. Please log in again.');
+                        handleLogout();
+                    } else {
+                        const errorData = await response.json();
+                        alert(`Failed to add product: ${errorData.message}`);
                     }
                 } catch (err) {
                     console.error('Error adding post:', err);
@@ -267,18 +281,22 @@ const CommunityPage = () => {
             if (response.ok) {
                 fetchPosts();
             }
-            setshowCom(prevCom => prevCom.filter(comment => comment._id !== commentId));
-            console.log(showCom)
+            setshowCom((prevCom) =>
+                prevCom.filter((comment) => comment._id !== commentId)
+            );
+            console.log(showCom);
         } catch (err) {
             console.error('Error deleting comment:', err);
         }
     };
     const LatestFirst = (data) => {
         let reversedArray = [];
+        const collegeId = localStorage.getItem('id');
         for (let i = data.length - 1; i >= 0; i--) {
-            reversedArray.push(data[i]);
+            if (data[i].college._id === collegeId) {
+                reversedArray.push(data[i]);
+            }
         }
-
         return reversedArray;
     };
 
@@ -323,264 +341,358 @@ const CommunityPage = () => {
                         Add Post
                     </button>
                 </div>
-               {posts.length > 0 ? ( 
-                <div>
-                     <div className="flex flex-wrap gap-4 justify-center">
-                    {posts.map((post) => (
-                        <div
-                            key={post._id}
-                            className="block max-w-sm p-6 w-full bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100"
-                        >
-                            <div className="flex justify-between">
-                                <h2 className="text-xl font-semibold">
-                                    {post.isAnonymous
-                                        ? 'Anonymous'
-                                        : post.author.username}
-                                </h2>
-                                <div className="space-x-2">
-                                    {post.author._id === ownerId && (
-                                        <>
-                                            <button
-                                                onClick={() => {
-                                                    setEditingPostId(post._id);
+                {posts.length > 0 ? (
+                    <div>
+                        <div className="flex flex-wrap gap-4 justify-center">
+                            {posts.map((post) => (
+                                <div
+                                    key={post._id}
+                                    className="block max-w-sm p-6 w-full bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100"
+                                >
+                                    <div className="flex justify-between">
+                                        <h2 className="text-xl font-semibold">
+                                            {post.isAnonymous
+                                                ? 'Anonymous'
+                                                : post.author.username}
+                                        </h2>
+                                        <div className="space-x-2">
+                                            {post.author._id === ownerId && (
+                                                <>
+                                                    <button
+                                                        onClick={() => {
+                                                            setEditingPostId(
+                                                                post._id
+                                                            );
+                                                            setEditedContent(
+                                                                post.content
+                                                            );
+                                                        }}
+                                                        className="text-blue-500 px-2 border-2 border-sky-500 rounded-lg"
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    <button
+                                                        onClick={() =>
+                                                            deletePost(post._id)
+                                                        }
+                                                        className="text-red-500 px-2 border-2 border-sky-500 rounded-lg"
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </>
+                                            )}
+                                        </div>
+                                    </div>
+                                    {editingPostId === post._id ? (
+                                        <div className="mt-3">
+                                            <textarea
+                                                value={editedContent}
+                                                onChange={(e) =>
                                                     setEditedContent(
-                                                        post.content
-                                                    );
-                                                }}
-                                                className="text-blue-500 px-2 border-2 border-sky-500 rounded-lg"
+                                                        e.target.value
+                                                    )
+                                                }
+                                                className="w-full p-2 border rounded-md"
+                                            />
+                                            <button
+                                                onClick={() =>
+                                                    editPost(post._id)
+                                                }
+                                                className="mt-2 mx-2 px-4 py-2 bg-green-500 text-white rounded-md"
                                             >
-                                                Edit
+                                                Save
                                             </button>
                                             <button
                                                 onClick={() =>
-                                                    deletePost(post._id)
+                                                    setEditingPostId(null)
                                                 }
-                                                className="text-red-500 px-2 border-2 border-sky-500 rounded-lg"
+                                                className="mt-2 mx-2 px-4 py-2 bg-gray-500 text-white rounded-md"
                                             >
-                                                Delete
+                                                Cancel
                                             </button>
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-                            {editingPostId === post._id ? (
-                                <div className="mt-3">
-                                    <textarea
-                                        value={editedContent}
-                                        onChange={(e) =>
-                                            setEditedContent(e.target.value)
-                                        }
-                                        className="w-full p-2 border rounded-md"
-                                    />
-                                    <button
-                                        onClick={() => editPost(post._id)}
-                                        className="mt-2 mx-2 px-4 py-2 bg-green-500 text-white rounded-md"
-                                    >
-                                        Save
-                                    </button>
-                                    <button
-                                        onClick={() => setEditingPostId(null)}
-                                        className="mt-2 mx-2 px-4 py-2 bg-gray-500 text-white rounded-md"
-                                    >
-                                        Cancel
-                                    </button>
-                                </div>
-                            ) : null}
+                                        </div>
+                                    ) : null}
 
-                            <div className="mt-3">
-                                <div className="bg-sky-100 px-4 rounded-lg my-4 text-lg overflow-y-scroll h-48">
-                                    <p className="mt-3">{post.content}</p>
-                                </div>
-                                <button
-                                    className={`mt-1 px-3 border-2 border-sky-500 rounded-lg ${post.likes.includes(ownerId)
-                                            ? 'text-white bg-sky-500'
-                                            : 'text-black'
-                                        }`}
-                                    onClick={() => likePost(post._id)}
-                                >
-                                    <i className="fa-regular fa-heart"></i> (
-                                    {post.likes.length})
-                                </button>
-                            </div>
-
-                            <div className="mt-1">
-                                <h3 className="text-lg font-semibold">
-                                    Comments{' '}
-                                    {post.comments.length > 0
-                                        ? `(${post.comments.length})`
-                                        : null}{' '}
-                                    {post.comments.length > 0 && (
-                                        <button
-                                            className="text-sm p-1 rounded-md text-sky-500"
-                                            onClick={() => {
-                                                setshowCom(post.comments);
-                                                setshowComment(true);
-                                            }}
-                                        >
-                                            Show All
-                                        </button>
-                                    )}
-                                </h3>
-
-                                <ul>
-                                    {post.comments.length > 0 && (
-                                        <li key={post.comments[post.comments.length - 1]._id}>
-                                            <p className="line-clamp-1">
-                                                {post.comments[post.comments.length - 1].content}
+                                    <div className="mt-3">
+                                        <div className="bg-sky-100 px-4 rounded-lg my-4 text-lg overflow-y-scroll h-48">
+                                            <p className="mt-3">
+                                                {post.content}
                                             </p>
-                                            <div className="flex items-center justify-between mt-2">
+                                        </div>
+                                        <button
+                                            className={`mt-1 px-3 border-2 border-sky-500 rounded-lg ${
+                                                post.likes.includes(ownerId)
+                                                    ? 'text-white bg-sky-500'
+                                                    : 'text-black'
+                                            }`}
+                                            onClick={() => likePost(post._id)}
+                                        >
+                                            <i className="fa-regular fa-heart"></i>{' '}
+                                            ({post.likes.length})
+                                        </button>
+                                    </div>
+
+                                    <div className="mt-1">
+                                        <h3 className="text-lg font-semibold">
+                                            Comments{' '}
+                                            {post.comments.length > 0
+                                                ? `(${post.comments.length})`
+                                                : null}{' '}
+                                            {post.comments.length > 0 && (
                                                 <button
-                                                    className={`text-blue-500 ${likedComments.includes(
-                                                        post.comments[post.comments.length - 1]._id
-                                                    )
-                                                            ? 'opacity-50 cursor-not-allowed'
-                                                            : ''
-                                                        }`}
-                                                    onClick={() =>
-                                                        likeComment(
-                                                            post._id,
-                                                            post.comments[post.comments.length - 1]._id
-                                                        )
-                                                    }
-                                                    disabled={likedComments.includes(
-                                                        post.comments[post.comments.length - 1]._id
-                                                    )}
+                                                    className="text-sm p-1 rounded-md text-sky-500"
+                                                    onClick={() => {
+                                                        setshowCom(
+                                                            post.comments
+                                                        );
+                                                        setshowComment(true);
+                                                    }}
                                                 >
-                                                    <i className="fa-regular fa-heart"></i> (
-                                                    {post.comments[post.comments.length - 1].likes})
+                                                    Show All
                                                 </button>
-                                                {post.comments[post.comments.length - 1].author._id ===
-                                                    ownerId && (
+                                            )}
+                                        </h3>
+
+                                        <ul>
+                                            {post.comments.length > 0 && (
+                                                <li
+                                                    key={
+                                                        post.comments[
+                                                            post.comments
+                                                                .length - 1
+                                                        ]._id
+                                                    }
+                                                >
+                                                    <p className="line-clamp-1">
+                                                        {
+                                                            post.comments[
+                                                                post.comments
+                                                                    .length - 1
+                                                            ].content
+                                                        }
+                                                    </p>
+                                                    <div className="flex items-center justify-between mt-2">
                                                         <button
-                                                            className="text-red-500"
+                                                            className={`text-blue-500 ${
+                                                                likedComments.includes(
+                                                                    post
+                                                                        .comments[
+                                                                        post
+                                                                            .comments
+                                                                            .length -
+                                                                            1
+                                                                    ]._id
+                                                                )
+                                                                    ? 'opacity-50 cursor-not-allowed'
+                                                                    : ''
+                                                            }`}
                                                             onClick={() =>
-                                                                deleteComment(
+                                                                likeComment(
                                                                     post._id,
-                                                                    post.comments[post.comments.length - 1]._id
+                                                                    post
+                                                                        .comments[
+                                                                        post
+                                                                            .comments
+                                                                            .length -
+                                                                            1
+                                                                    ]._id
                                                                 )
                                                             }
+                                                            disabled={likedComments.includes(
+                                                                post.comments[
+                                                                    post
+                                                                        .comments
+                                                                        .length -
+                                                                        1
+                                                                ]._id
+                                                            )}
                                                         >
-                                                            Delete
+                                                            <i className="fa-regular fa-heart"></i>{' '}
+                                                            (
+                                                            {
+                                                                post.comments[
+                                                                    post
+                                                                        .comments
+                                                                        .length -
+                                                                        1
+                                                                ].likes
+                                                            }
+                                                            )
                                                         </button>
-                                                    )}
-                                            </div>
-                                        </li>
-                                    )}
-                                </ul>
+                                                        {post.comments[
+                                                            post.comments
+                                                                .length - 1
+                                                        ].author._id ===
+                                                            ownerId && (
+                                                            <button
+                                                                className="text-red-500"
+                                                                onClick={() =>
+                                                                    deleteComment(
+                                                                        post._id,
+                                                                        post
+                                                                            .comments[
+                                                                            post
+                                                                                .comments
+                                                                                .length -
+                                                                                1
+                                                                        ]._id
+                                                                    )
+                                                                }
+                                                            >
+                                                                Delete
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </li>
+                                            )}
+                                        </ul>
 
-                                {showComment && (
-                                    <div className="text-center">
-                                        <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-95 px-2 py-5 lg:p-5">
-                                            <p
-                                                className="absolute right-0 top-0 px-4 py-2 m-4 bg-red-300 cursor-pointer rounded-lg"
-                                                onClick={() => setshowComment(false)}
-                                            >
-                                                X
-                                            </p>
-                                            <ul className="lg:w-1/3 m-4 bg-slate-300 p-4 rounded-lg text-left overflow-scroll max-h-full my-4">
-                                                {showCom.length > 0 ? (
-                                                    showCom.map((comment) => (
-                                                        <li key={comment._id} className="bg-slate-200 p-3 my-1 rounded-lg">
-                                                            {comment.content}
-                                                            <div className="flex items-center justify-between mt-2">
-                                                                <button
-                                                                    className={`text-blue-500 ${likedComments.includes(comment._id)
-                                                                            ? 'opacity-50 cursor-not-allowed'
-                                                                            : ''
-                                                                        }`}
-                                                                    onClick={() =>
-                                                                        likeComment(post._id, comment._id)
-                                                                    }
-                                                                    disabled={likedComments.includes(comment._id)}
-                                                                >
-                                                                    Like ({comment.likes})
-                                                                </button>
-                                                                {comment.author._id === ownerId && (
-                                                                    <button
-                                                                        className="text-red-500"
-                                                                        onClick={() =>
-                                                                            // showCom._id.
-                                                                            deleteComment(post._id, comment._id)
+                                        {showComment && (
+                                            <div className="text-center">
+                                                <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-95 px-2 py-5 lg:p-5">
+                                                    <p
+                                                        className="absolute right-0 top-0 px-4 py-2 m-4 bg-red-300 cursor-pointer rounded-lg"
+                                                        onClick={() =>
+                                                            setshowComment(
+                                                                false
+                                                            )
+                                                        }
+                                                    >
+                                                        X
+                                                    </p>
+                                                    <ul className="lg:w-1/3 m-4 bg-slate-300 p-4 rounded-lg text-left overflow-scroll max-h-full my-4">
+                                                        {showCom.length > 0 ? (
+                                                            showCom.map(
+                                                                (comment) => (
+                                                                    <li
+                                                                        key={
+                                                                            comment._id
                                                                         }
+                                                                        className="bg-slate-200 p-3 my-1 rounded-lg"
                                                                     >
-                                                                        Delete
-                                                                    </button>
-                                                                )}
-                                                            </div>
-                                                        </li>
-                                                    ))
-                                                ) : (
-                                                    <li>No comments available.</li>
-                                                )}
-                                            </ul>
+                                                                        {
+                                                                            comment.content
+                                                                        }
+                                                                        <div className="flex items-center justify-between mt-2">
+                                                                            <button
+                                                                                className={`text-blue-500 ${
+                                                                                    likedComments.includes(
+                                                                                        comment._id
+                                                                                    )
+                                                                                        ? 'opacity-50 cursor-not-allowed'
+                                                                                        : ''
+                                                                                }`}
+                                                                                onClick={() =>
+                                                                                    likeComment(
+                                                                                        post._id,
+                                                                                        comment._id
+                                                                                    )
+                                                                                }
+                                                                                disabled={likedComments.includes(
+                                                                                    comment._id
+                                                                                )}
+                                                                            >
+                                                                                Like
+                                                                                (
+                                                                                {
+                                                                                    comment.likes
+                                                                                }
+
+                                                                                )
+                                                                            </button>
+                                                                            {comment
+                                                                                .author
+                                                                                ._id ===
+                                                                                ownerId && (
+                                                                                <button
+                                                                                    className="text-red-500"
+                                                                                    onClick={() =>
+                                                                                        // showCom._id.
+                                                                                        deleteComment(
+                                                                                            post._id,
+                                                                                            comment._id
+                                                                                        )
+                                                                                    }
+                                                                                >
+                                                                                    Delete
+                                                                                </button>
+                                                                            )}
+                                                                        </div>
+                                                                    </li>
+                                                                )
+                                                            )
+                                                        ) : (
+                                                            <li>
+                                                                No comments
+                                                                available.
+                                                            </li>
+                                                        )}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        <div className="mt-3">
+                                            <textarea
+                                                value={
+                                                    commentContent[post._id] ||
+                                                    ''
+                                                }
+                                                onChange={(e) =>
+                                                    setCommentContent({
+                                                        ...commentContent,
+                                                        [post._id]:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                                className="w-full p-2 border rounded-md"
+                                                placeholder="Add a comment..."
+                                            />
+                                            <button
+                                                onClick={() =>
+                                                    addComment(post._id)
+                                                }
+                                                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+                                            >
+                                                Comment
+                                            </button>
                                         </div>
                                     </div>
-                                )}
-
-                                <div className="mt-3">
-                                    <textarea
-                                        value={commentContent[post._id] || ''}
-                                        onChange={(e) =>
-                                            setCommentContent({
-                                                ...commentContent,
-                                                [post._id]: e.target.value,
-                                            })
-                                        }
-                                        className="w-full p-2 border rounded-md"
-                                        placeholder="Add a comment..."
-                                    />
-                                    <button
-                                        onClick={() => addComment(post._id)}
-                                        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
-                                    >
-                                        Comment
-                                    </button>
                                 </div>
-                            </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
-                </div>
-               ) : (
-                            <div className="col-span-4 flex justify-center items-center py-10 w-full">
-                                {loading ? (
-                                    <div className="text-center">
-                                        <svg
-                                            aria-hidden="true"
-                                            className="inline w-16 h-16 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                                            viewBox="0 0 100 101"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                                fill="currentColor"
-                                            />
-                                            <path
-                                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                                fill="currentFill"
-                                            />
-                                        </svg>
-                                        <p className="text-gray-200  dark:text-gray-600 mt-3">
-                                            Loading...
-                                        </p>
-                                    </div>
-                                ) : (
-                                    <p className="text-gray-200  dark:text-gray-600 text-center">
-                                        No Post to show.
-                                    </p>
-                                )}
+                    </div>
+                ) : (
+                    <div className="col-span-4 flex justify-center items-center py-10 w-full">
+                        {loading ? (
+                            <div className="text-center">
+                                <svg
+                                    aria-hidden="true"
+                                    className="inline w-16 h-16 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                                    viewBox="0 0 100 101"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                        fill="currentColor"
+                                    />
+                                    <path
+                                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                        fill="currentFill"
+                                    />
+                                </svg>
+                                <p className="text-gray-200  dark:text-gray-600 mt-3">
+                                    Loading...
+                                </p>
                             </div>
+                        ) : (
+                            <p className="text-gray-200  dark:text-gray-600 text-center">
+                                No Post to show.
+                            </p>
                         )}
-
-
-
-
-
-
-
-               
-                
+                    </div>
+                )}
             </div>
             <Collegelink2 />
             <Footer />
