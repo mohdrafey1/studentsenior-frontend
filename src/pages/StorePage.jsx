@@ -411,9 +411,11 @@ const StorePage = () => {
                                 </div>
                             )}
                         </div>
+                        <br/>
                         <h1 className="text-3xl font-bold mb-5 text-center">
                         Affiliate Product
                     </h1>
+                    <br/>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl min-h-screen">
                             
                             {affiliateproducts.length > 0 ? (
