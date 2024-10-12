@@ -20,7 +20,7 @@ const MainPage = () => {
         },
         {
             id: '66cba84ce0e3a7e528642837',
-            name: 'MPGI Kanpur',
+            name: 'MPEC Kanpur',
         },
         {
             id: '66d08aff784c9f07a53507b9',

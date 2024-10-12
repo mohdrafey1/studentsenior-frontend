@@ -36,7 +36,7 @@ const StorePage = () => {
 
     const colleges = [
         { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
-        { id: '66cba84ce0e3a7e528642837', name: 'MPGI Kanpur' },
+        { id: '66cba84ce0e3a7e528642837', name: 'MPEC Kanpur' },
         { id: '66d08aff784c9f07a53507b9', name: 'GCET Noida' },
         { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
     ];
@@ -88,7 +88,6 @@ const StorePage = () => {
                 }
             );
             const data = await response.json();
-            console.log(data);
 
             setAffiliateProducts(data);
             setIsLoading3(false);
