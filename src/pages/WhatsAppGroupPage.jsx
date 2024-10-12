@@ -73,6 +73,16 @@ const WhatsAppGroupPage = () => {
         { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
     ];
 
+    const selectedCollegeObject = colleges.find(
+        (college) =>
+            college.name.toLowerCase().replace(/\s+/g, '-') === collegeName
+    );
+
+    const collegeId = selectedCollegeObject.id;
+    const selectedCollegeName = selectedCollegeObject
+        ? selectedCollegeObject.name
+        : null;
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setGroupData((prevData) => ({
@@ -90,7 +100,7 @@ const WhatsAppGroupPage = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(groupData),
+                body: JSON.stringify({ ...groupData, college: collegeId }),
             });
 
             if (!resp.ok) {
@@ -99,6 +109,7 @@ const WhatsAppGroupPage = () => {
 
             const result = await resp.json();
             setShowAlert(true);
+            alert('College Submitted Successfully , Available Once Approved');
             setIsModalOpen(false);
             setText('Submit');
 
@@ -111,6 +122,7 @@ const WhatsAppGroupPage = () => {
                 link: '',
             });
         } catch (error) {
+            alert('Something Went Wrong');
             console.error(error);
         }
     };
@@ -230,7 +242,7 @@ const WhatsAppGroupPage = () => {
                             Add WhatsApp Group
                         </h2>
                         <form onSubmit={handleSubmit}>
-                            <div className="mb-4">
+                            {/* <div className="mb-4">
                                 <label className="block mb-2" htmlFor="college">
                                     College
                                 </label>
@@ -242,17 +254,20 @@ const WhatsAppGroupPage = () => {
                                     className="p-2 border rounded-md w-full"
                                     required
                                 >
-                                    <option value="">Select College</option>
+                                    <option value={collegeId}>
+                                        {selectedCollegeName}
+                                    </option>
                                     {colleges.map((college) => (
                                         <option
                                             key={college.id}
-                                            value={college.name}
+                                            value={college.id}
+                                            disabled
                                         >
                                             {college.name}
                                         </option>
                                     ))}
                                 </select>
-                            </div>
+                            </div> */}
                             <div className="mb-4">
                                 <label className="block mb-2" htmlFor="title">
                                     Title
