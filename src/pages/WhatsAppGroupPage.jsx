@@ -79,9 +79,6 @@ const WhatsAppGroupPage = () => {
     );
 
     const collegeId = selectedCollegeObject.id;
-    const selectedCollegeName = selectedCollegeObject
-        ? selectedCollegeObject.name
-        : null;
 
     const handleChange = (e) => {
         const { name, value } = e.target;

@@ -66,7 +66,7 @@ const EditProductModal = ({
                         </div>
                     ))}
 
-                    <div>
+                    {/* <div>
                         <label className="block text-sm font-semibold mb-0">
                             Select Your College
                         </label>
@@ -83,7 +83,7 @@ const EditProductModal = ({
                                 </option>
                             ))}
                         </select>
-                    </div>
+                    </div> */}
 
                     <div className="flex items-center justify-center space-y-4">
                         <input
