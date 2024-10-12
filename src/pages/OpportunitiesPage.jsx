@@ -39,7 +39,7 @@ const OpportunitiesPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const colleges = [
         { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
-        { id: '66cba84ce0e3a7e528642837', name: 'MPGI Kanpur' },
+        { id: '66cba84ce0e3a7e528642837', name: 'MPEC Kanpur' },
         { id: '66d08aff784c9f07a53507b9', name: 'GCET Noida' },
         { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
     ];
@@ -69,7 +69,8 @@ const OpportunitiesPage = () => {
                 }
             );
             const data = await response.json();
-            setGetOpportunities(data);
+            setGetOpportunities(collegeBased(data));
+            
         } catch (error) {
             console.log('Error Fetching Get Opportunities: ', error);
         } finally {
@@ -80,6 +81,17 @@ const OpportunitiesPage = () => {
     useEffect(() => {
         fetchGetOpportunities();
     }, []);
+
+    const collegeBased = (data) =>{
+        let returnArray = [];
+     for(let i= data.length -1; i>=0;i--){
+        const collegeId = localStorage.getItem('id');
+       if(data[i].college._id === collegeId){
+       returnArray.push(data[i]);
+       }
+     }
+     return returnArray;
+    }
 
     const handleGetOpportunitySubmit = async (e) => {
         e.preventDefault();
@@ -212,7 +224,7 @@ const OpportunitiesPage = () => {
                 }
             );
             const data = await response.json();
-            setGiveOpportunities(data);
+            setGiveOpportunities(collegeBased(data));
         } catch (error) {
             console.log('Error Fetching give Opportunities: ', error);
         } finally {
