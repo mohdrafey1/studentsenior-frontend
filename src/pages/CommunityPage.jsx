@@ -160,7 +160,6 @@ const CommunityPage = () => {
                 {
                     method: 'DELETE',
                     headers: {
-                        'Content-Type': 'application/json',
                         'x-api-key': API_KEY,
                     },
                     credentials: 'include',
