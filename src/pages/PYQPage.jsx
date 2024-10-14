@@ -82,7 +82,7 @@ const PYQPage = () => {
                     (item) => item.college === collegeid
                 );
                 if (selectedColleges.length > 0) {
-                    setPyqs(selectedColleges); // Add an array of matching objects to the state
+                    setPyqs(LatestFirst(selectedColleges)); // Add an array of matching objects to the state
                 }
                 // setPyqs(data);
             } catch (error) {
@@ -93,6 +93,14 @@ const PYQPage = () => {
         fetchPYQs();
         saveToLocalStorage();
     }, []);
+
+    const LatestFirst = (data) => {
+        let reversedArray = [];
+        for (let i = data.length - 1; i >= 0; i--) {
+            reversedArray.push(data[i]);
+        }
+        return reversedArray;
+    };
 
     const courses = [...new Set(pyqs.map((paper) => paper.course))];
     const branches = selectedCourse

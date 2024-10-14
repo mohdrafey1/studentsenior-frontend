@@ -264,7 +264,7 @@ body {
         overflow-x: scroll;
         padding: 4px;
         margin: 0 0 4px 4px;
-        scroll-snap-type: x proximity;
+
     }
 
     .card {

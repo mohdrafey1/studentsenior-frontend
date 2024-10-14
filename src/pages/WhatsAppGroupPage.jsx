@@ -56,7 +56,7 @@ const WhatsAppGroupPage = () => {
                     (item) => item.college === collegeid
                 );
                 if (selectedColleges.length > 0) {
-                    setGroupLink(selectedColleges);
+                    setGroupLink(LatestFirst(selectedColleges));
                 }
             } catch (error) {
                 console.log('Error fetching WhatsApp links: ', error);
@@ -65,6 +65,14 @@ const WhatsAppGroupPage = () => {
         fetchLink();
         saveToLocalStorage();
     }, []);
+
+    const LatestFirst = (data) => {
+        let reversedArray = [];
+        for (let i = data.length - 1; i >= 0; i--) {
+                reversedArray.push(data[i]);
+        }
+        return reversedArray;
+    };
 
     const colleges = [
         { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
