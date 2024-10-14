@@ -421,7 +421,7 @@ const StorePage = () => {
                                 affiliateproducts.map((product) => (
                                     <div
                                         key={product._id}
-                                        className="border lg:min-h-min h-96 border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
+                                        className="border lg:h-96  border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
                                     >
                                         <img
                                             src={product.image}
