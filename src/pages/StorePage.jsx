@@ -301,7 +301,7 @@ const StorePage = () => {
                                 products.map((product) => (
                                     <div
                                         key={product._id}
-                                        className="border  h-80 lg:h-min my-3 border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
+                                        className="border  h-96 lg:h-min my-3 border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
                                     >
                                         <img
                                             src={product.image.url}
@@ -353,7 +353,7 @@ const StorePage = () => {
                                                 </p>
                                             </div>
 
-                                            <div className="flex justify-end mt-4">
+                                            <div className="flex justify-center mt-4">
                                                 {product.owner === ownerId && (
                                                     <>
                                                         <button
@@ -446,25 +446,22 @@ const StorePage = () => {
                                                 </span>
                                             </p>
 
-                                            <div className='overflow-y-scroll h-24 lg:h-32'>
-                                           
-                                            <p className="text-gray-600  italic text-[9px] lg:text-base dark:text-gray-200">
-                                                {product.description}
-                                            </p>
-                                            <a
-                                                target="blank"
-                                                href={product.link}
-                                            >
-                                                <button
-                                                    type="button"
-                                                    className="text-white w-3/4 mx-4 my-3 p-1 lg:text-lg text-sm bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                                            <div className="overflow-y-scroll h-24 lg:h-32">
+                                                <p className="text-gray-600  italic text-[9px] lg:text-base dark:text-gray-200">
+                                                    {product.description}
+                                                </p>
+                                                <a
+                                                    target="blank"
+                                                    href={product.link}
                                                 >
-                                                    Buy Now
-                                                </button>
-                                            </a>
-
-                                            
-                                                </div>
+                                                    <button
+                                                        type="button"
+                                                        className="text-white w-3/4 mx-4 my-3 p-1 lg:text-lg text-sm bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                                                    >
+                                                        Buy Now
+                                                    </button>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 ))
