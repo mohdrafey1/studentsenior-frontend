@@ -12,7 +12,7 @@ const AddProductModal = ({
     const [imagePreview, setImagePreview] = useState('');
 
     const onFileChange = (e) => {
-        handleFileChange
+        handleFileChange;
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -34,7 +34,9 @@ const AddProductModal = ({
                     &#x2715;
                 </button>
 
-                <h2 className="text-2xl font-bold mb-6 text-center">Add Product</h2>
+                <h2 className="text-2xl font-bold mb-6 text-center">
+                    Add Product
+                </h2>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <input
                         type="text"
@@ -80,7 +82,7 @@ const AddProductModal = ({
                         placeholder="Telegram (Optional)"
                         className="mb-4 w-full p-2 border border-gray-300 rounded-lg"
                     />
-                    <select
+                    {/* <select
                         name="college"
                         value={newProduct.college}
                         onChange={handleInputChange}
@@ -93,44 +95,45 @@ const AddProductModal = ({
                                 {college.name}
                             </option>
                         ))}
-                    </select>
-                    <div className='flex'>
-                        
-                    <div className=" m-3">
-                        <label
-                            htmlFor="dropzone-file"
-                            className="flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-                        >
-                            <div className="flex flex-col items-center justify-center p-3 text-center">
-                                <p className="mb-2 text-sm text-gray-500">
-                                    <span className="font-semibold">Click to upload</span>
-                                </p>
-                                <p className="text-xs text-gray-500">
-                                     (MAX 2MB)
-                                </p>
-                            </div>
-                            <input
-                                type="file"
-                                id="dropzone-file"
-                                name="image"
-                                onChange={(e) => {
-                                    handleFileChange(e);
-                                    if (onFileChange) {
-                                        onFileChange(e);
-                                    }
-                                }}
-                                className="hidden"
-                                required
+                    </select> */}
+                    <div className="flex">
+                        <div className=" m-3">
+                            <label
+                                htmlFor="dropzone-file"
+                                className="flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                            >
+                                <div className="flex flex-col items-center justify-center p-3 text-center">
+                                    <p className="mb-2 text-sm text-gray-500">
+                                        <span className="font-semibold">
+                                            Click to upload
+                                        </span>
+                                    </p>
+                                    <p className="text-xs text-gray-500">
+                                        (MAX 2MB)
+                                    </p>
+                                </div>
+                                <input
+                                    type="file"
+                                    id="dropzone-file"
+                                    name="image"
+                                    onChange={(e) => {
+                                        handleFileChange(e);
+                                        if (onFileChange) {
+                                            onFileChange(e);
+                                        }
+                                    }}
+                                    className="hidden"
+                                    required
+                                />
+                            </label>
+                        </div>
+                        <div className="flex flex-col items-center justify-center bg-red-100 rounded-md ">
+                            <img
+                                src={imagePreview}
+                                alt="Select Image"
+                                className="object-cover rounded-md w-full sm:w-64 h-24 sm:h-32 md:w-80 lg:w-80"
                             />
-                        </label>
-                    </div>
-                    <div className="flex flex-col items-center justify-center bg-red-100 rounded-md ">
-                        <img
-                            src={imagePreview}
-                            alt="Select Image"
-                            className="object-cover rounded-md w-full sm:w-64 h-24 sm:h-32 md:w-80 lg:w-80"
-                            />
-                    </div>
+                        </div>
                     </div>
                     <label className="flex items-center mb-4">
                         <input

@@ -41,6 +41,13 @@ const StorePage = () => {
         { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
     ];
 
+    const selectedCollegeObject = colleges.find(
+        (college) =>
+            college.name.toLowerCase().replace(/\s+/g, '-') === collegeName
+    );
+
+    const collegeId = selectedCollegeObject.id;
+
     const currentUser = useSelector((state) => state.user.currentUser);
 
     const ownerId = currentUser?._id;
@@ -63,7 +70,7 @@ const StorePage = () => {
         }
     };
 
-    const LatestFirst = (data) => { 
+    const LatestFirst = (data) => {
         let reversedArray = [];
         const collegeId = localStorage.getItem('id');
         for (let i = data.length - 1; i >= 0; i--) {
@@ -137,7 +144,7 @@ const StorePage = () => {
         formData.append('description', newProduct.description);
         formData.append('whatsapp', newProduct.whatsapp);
         formData.append('telegram', newProduct.telegram);
-        formData.append('college', newProduct.college);
+        formData.append('college', collegeId);
         formData.append('image', newProduct.image);
         formData.append('available', newProduct.available);
         // formData.append('owner', ownerId);
@@ -181,7 +188,7 @@ const StorePage = () => {
         formData.append('description', editingProduct.description);
         formData.append('whatsapp', editingProduct.whatsapp);
         formData.append('telegram', editingProduct.telegram);
-        formData.append('college', editingProduct.college);
+        formData.append('college', collegeId);
         formData.append('image', editingProduct.image);
         formData.append('available', editingProduct.available);
         formData.append('status', 'true');
@@ -311,39 +318,39 @@ const StorePage = () => {
                                                     ₹{product.price}
                                                 </span>
                                             </p>
-                                            <div className='overflow-scroll h-28'>
-                                            <p className="text-gray-800 dark:text-gray-400 mt-2">
-                                                College:{' '}
-                                                {
-                                                    colleges.find(
-                                                        (college) =>
-                                                            college.id ===
-                                                            product.college
-                                                    )?.name
-                                                }
-                                            </p>
-                                            <div className="flex items-center mt-2 gap-3">
-                                                <a
-                                                    target="_blank"
-                                                    href={`https://wa.me/${product.whatsapp}`}
-                                                    aria-label="WhatsApp"
-                                                    className="text-green-600 hover:text-green-500 transition"
-                                                >
-                                                    <i className="fa-brands fa-whatsapp text-2xl sm:text-3xl"></i>
-                                                </a>
-                                                <a
-                                                    target="_blank"
-                                                    href={`https://t.me/+91${product.telegram}`}
-                                                    aria-label="Telegram"
-                                                    className="text-blue-600 hover:text-blue-500 transition"
-                                                >
-                                                    <i className="fa-brands fa-telegram text-2xl sm:text-3xl"></i>
-                                                </a>
-                                            </div>
+                                            <div className="overflow-scroll h-28">
+                                                <p className="text-gray-800 dark:text-gray-400 mt-2">
+                                                    College:{' '}
+                                                    {
+                                                        colleges.find(
+                                                            (college) =>
+                                                                college.id ===
+                                                                product.college
+                                                        )?.name
+                                                    }
+                                                </p>
+                                                <div className="flex items-center mt-2 gap-3">
+                                                    <a
+                                                        target="_blank"
+                                                        href={`https://wa.me/${product.whatsapp}`}
+                                                        aria-label="WhatsApp"
+                                                        className="text-green-600 hover:text-green-500 transition"
+                                                    >
+                                                        <i className="fa-brands fa-whatsapp text-2xl sm:text-3xl"></i>
+                                                    </a>
+                                                    <a
+                                                        target="_blank"
+                                                        href={`https://t.me/+91${product.telegram}`}
+                                                        aria-label="Telegram"
+                                                        className="text-blue-600 hover:text-blue-500 transition"
+                                                    >
+                                                        <i className="fa-brands fa-telegram text-2xl sm:text-3xl"></i>
+                                                    </a>
+                                                </div>
 
-                                            <p className="text-gray-600 italic overflow-hidden dark:text-gray-200">
-                                                {product.description}
-                                            </p>
+                                                <p className="text-gray-600 italic overflow-hidden dark:text-gray-200">
+                                                    {product.description}
+                                                </p>
                                             </div>
 
                                             <div className="flex justify-end mt-4">
@@ -401,22 +408,22 @@ const StorePage = () => {
                                         </div>
                                     ) : (
                                         <div>
-                                        <p className="text-gray-200  dark:text-gray-600 text-center">
-                                            No Product Found in {capitalizeWords(collegeName)}.
-                                        </p>
-                                        <br/>
+                                            <p className="text-gray-200  dark:text-gray-600 text-center">
+                                                No Product Found in{' '}
+                                                {capitalizeWords(collegeName)}.
+                                            </p>
+                                            <br />
                                         </div>
                                     )}
                                 </div>
                             )}
                         </div>
-                        <br/>
+                        <br />
                         <h1 className="text-3xl font-bold mb-5 text-center">
-                        Affiliate Product
-                    </h1>
-                    <br/>
+                            Affiliate Product
+                        </h1>
+                        <br />
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl min-h-screen">
-                            
                             {affiliateproducts.length > 0 ? (
                                 affiliateproducts.map((product) => (
                                     <div
