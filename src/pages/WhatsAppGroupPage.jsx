@@ -178,7 +178,7 @@ const WhatsAppGroupPage = () => {
                         className="p-2 border rounded-md w-3/4 block"
                     />
                     <button
-                        className="px-2 py-1 mx-2 bg-blue-500 text-white rounded-md mb-2 sm:mb-0"
+                        className="px-2 py-1 m-1.5 text-xs bg-blue-500 text-white rounded-md mb-2 sm:mb-0"
                         onClick={openModal}
                     >
                         Add Group
@@ -186,16 +186,16 @@ const WhatsAppGroupPage = () => {
                 </div>
 
                 {groups.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2 lg:gap-6">
                         {filteredGroups.map((group) => (
                             <div
                                 key={group._id}
                                 className="bg-white p-5 shadow-md rounded-md"
                             >
-                                <h2 className="text-xl font-bold mb-2 text-center">
+                                <h2 className="text-lg lg:text-xl font-bold mb-2 text-center">
                                     {group.title}
                                 </h2>
-                                <p className="mb-3 text-center">{group.info}</p>
+                                <p className="mb-3 text-center text-sm lg:text-base">{group.info}</p>
                                 <div className="flex justify-center">
                                     <a
                                         href={group.link}

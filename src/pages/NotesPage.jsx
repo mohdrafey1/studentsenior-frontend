@@ -176,22 +176,22 @@ const NotesPage = () => {
                     </div>
                 )}
                 {filteredNotes.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2 lg:gap-6">
                         {filteredNotes.map((note) => (
                             <div
                                 key={note._id}
                                 className="bg-white p-5 shadow-md rounded-md"
                             >
-                                <h2 className="text-xl font-bold mb-2">
+                                <h2 className="text-base lg:text-xl font-bold mb-2">
                                     {note.subjectName}
                                 </h2>
-                                <p className="mb-1">
+                                <p className="mb-1 lg:text-base text-sm">
                                     <strong>By:</strong> {note.by.username}
                                 </p>
-                                <p className="mb-1">
+                                <p className="mb-1 lg:text-base text-sm">
                                     <strong>For:</strong> {note.target}
                                 </p>
-                                <p className="mb-1">
+                                <p className="mb-1 lg:text-base text-sm">
                                     <strong>Description:</strong>{' '}
                                     {note.description}
                                 </p>
@@ -200,7 +200,7 @@ const NotesPage = () => {
                                     href={note.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-white bg-blue-500 p-2 mt-2 rounded-md hover:bg-blue-600"
+                                    className="text-white bg-blue-500 p-2 mt-2 rounded-md hover:bg-blue-600 lg:text-base text-sm"
                                 >
                                     View Notes
                                 </a>
