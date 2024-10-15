@@ -231,27 +231,27 @@ const PYQPage = () => {
                 </div>
 
                 {currentPapers.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2 lg:gap-6">
                         {currentPapers.map((paper, index) => (
                             <div
                                 key={index}
                                 className="bg-white p-4 rounded-lg shadow-md"
                             >
-                                <h2 className="text-xl font-bold mb-2">
+                                <h2 className="text-sm lg:text-xl font-bold mb-2">
                                     {paper.subjectName}
                                 </h2>
-                                <p className="mb-2">
+                                <p className="mb-2 text-xs lg:text-base">
                                     Subject Code: {paper.subjectCode}
                                 </p>
-                                <p className="mb-2">
+                                <p className="mb-2  text-xs lg:text-base">
                                     Semester: {paper.semester}
                                 </p>
-                                <p className="mb-2">Year: {paper.year}</p>
-                                <p className="mb-2">
+                                <p className="mb-2  text-xs lg:text-base">Year: {paper.year}</p>
+                                <p className="mb-2  text-xs lg:text-base">
                                     Exam Type: {paper.examType}
                                 </p>
-                                <p className="mb-2">Course : {paper.course}</p>
-                                <p className="mb-2">
+                                <p className="mb-2  text-xs lg:text-base">Course : {paper.course}</p>
+                                <p className="mb-2  text-xs lg:text-base">
                                     Branch:{' '}
                                     {Array.isArray(paper.branch)
                                         ? paper.branch.join(', ')
@@ -262,7 +262,7 @@ const PYQPage = () => {
                                         href={paper.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-blue-500 underline"
+                                        className="text-blue-500 underline text-xs lg:text-base"
                                     >
                                         View PDF
                                     </a>
