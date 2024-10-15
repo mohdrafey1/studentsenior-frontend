@@ -296,30 +296,30 @@ const StorePage = () => {
 
                 <div className="flex justify-center items-center py-1">
                     <div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl h-fit ">
+                        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6 w-full max-w-7xl h-fit ">
                             {products.length > 0 ? (
                                 products.map((product) => (
                                     <div
                                         key={product._id}
-                                        className="border lg:max-h-min h-min my-3 border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
+                                        className="border  h-80 lg:h-min my-3 border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
                                     >
                                         <img
                                             src={product.image.url}
                                             alt={product.name}
-                                            className="bg-white shadow-md lg:h-2/5 max-h-60 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
+                                            className="bg-white shadow-md h-36 lg:h-2/5 max-h-60 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
                                         />
                                         <div className="p-4 ">
-                                            <h5 className="text-lg tracking-tight text-gray-700 dark:text-gray-300">
+                                            <h5 className="lg:text-lg text-sm tracking-tight text-gray-700 dark:text-gray-300">
                                                 {product.name}
                                             </h5>
                                             <p>
-                                                <span className="text-2xl font-bold text-gray-700 dark:text-gray-300">
+                                                <span className="text-base lg:text-2xl font-bold text-gray-700 dark:text-gray-300">
                                                     {' '}
                                                     ₹{product.price}
                                                 </span>
                                             </p>
-                                            <div className="overflow-scroll h-28">
-                                                <p className="text-gray-800 dark:text-gray-400 mt-2">
+                                            <div className="overflow-y-scroll h-28">
+                                                <p className="text-gray-800 text-xs lg:text-sm dark:text-gray-400 mt-2">
                                                     College:{' '}
                                                     {
                                                         colleges.find(
@@ -348,7 +348,7 @@ const StorePage = () => {
                                                     </a>
                                                 </div>
 
-                                                <p className="text-gray-600 italic overflow-hidden dark:text-gray-200">
+                                                <p className="text-gray-600 italic overflow-hidden dark:text-gray-200 text-xs lg:text-base">
                                                     {product.description}
                                                 </p>
                                             </div>
@@ -357,7 +357,7 @@ const StorePage = () => {
                                                 {product.owner === ownerId && (
                                                     <>
                                                         <button
-                                                            className="bg-yellow-500 text-white px-4 py-2 rounded mr-2 transition hover:bg-yellow-600"
+                                                            className="bg-yellow-500 text-white px-4 py-2 rounded mr-2 transition hover:bg-yellow-600 text-xs lg:text-base"
                                                             onClick={() =>
                                                                 handleEdit(
                                                                     product
@@ -367,7 +367,7 @@ const StorePage = () => {
                                                             Edit
                                                         </button>
                                                         <button
-                                                            className="bg-red-500 text-white px-4 py-2 rounded transition hover:bg-red-600"
+                                                            className="bg-red-500 text-white px-4 py-2 rounded transition hover:bg-red-600 text-xs lg:text-base"
                                                             onClick={() =>
                                                                 handleDelete(
                                                                     product._id
@@ -423,44 +423,48 @@ const StorePage = () => {
                             Affiliate Product
                         </h1>
                         <br />
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl min-h-screen">
+                        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl min-h-screen">
                             {affiliateproducts.length > 0 ? (
                                 affiliateproducts.map((product) => (
                                     <div
                                         key={product._id}
-                                        className="border lg:h-96  border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
+                                        className="border h-80 lg:h-96  border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
                                     >
                                         <img
                                             src={product.image}
                                             alt={product.name}
-                                            className="bg-white shadow-md lg:h-2/5 h-52 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
+                                            className="bg-white shadow-md lg:h-2/5 h-36 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
                                         />
                                         <div className="p-4">
-                                            <h5 className="text-lg tracking-tight text-gray-700 dark:text-gray-300">
+                                            <h5 className="text-sm lg:text-lg tracking-tight text-gray-700 dark:text-gray-300">
                                                 {product.name}
                                             </h5>
                                             <p>
-                                                <span className="text-2xl font-bold text-gray-700 dark:text-gray-300">
+                                                <span className="text-lg lg:text-2xl font-bold text-gray-700 dark:text-gray-300">
                                                     {' '}
                                                     ₹{product.price}
                                                 </span>
                                             </p>
 
-                                            <p className="text-gray-600 h-20 italic overflow-scroll dark:text-gray-200">
+                                            <div className='overflow-y-scroll h-24 lg:h-32'>
+                                           
+                                            <p className="text-gray-600  italic text-[9px] lg:text-base dark:text-gray-200">
                                                 {product.description}
                                             </p>
-
                                             <a
                                                 target="blank"
                                                 href={product.link}
                                             >
                                                 <button
                                                     type="button"
-                                                    className="text-white w-full mt-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                                                    className="text-white w-3/4 mx-4 my-3 p-1 lg:text-lg text-sm bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                                                 >
                                                     Buy Now
                                                 </button>
                                             </a>
+
+                                            
+                                                </div>
                                         </div>
                                     </div>
                                 ))
