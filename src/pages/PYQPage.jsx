@@ -231,7 +231,7 @@ const PYQPage = () => {
                 </div>
 
                 {currentPapers.length > 0 ? (
-                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2 lg:gap-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3  gap-2 lg:gap-6">
                         {currentPapers.map((paper, index) => (
                             <div
                                 key={index}
