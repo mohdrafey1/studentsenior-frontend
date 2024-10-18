@@ -6,10 +6,19 @@ const seniors = [
         job: 'Devops + Web Dev',
         image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214937/student_senior/u3tqpo9vbzq8wlrnfoab.jpg',
         socials: [
-            { icon: 'facebook-f', link: '#' },
-            { icon: 'twitter', link: '#' },
-            { icon: 'instagram', link: '#' },
-            { icon: 'youtube', link: '#' },
+            {
+                icon: 'linkedin',
+                link: 'https://www.linkedin.com/in/mohd-rafey',
+            },
+            {
+                icon: 'whatsapp',
+                link: 'https://api.whatsapp.com/send?phone=919455346151',
+            },
+            {
+                icon: 'instagram',
+                link: 'https://www.instagram.com/studentsenior12?igsh=c2NkZWRpNm9pdTVy',
+            },
+            { icon: 'youtube', link: 'https://youtube.com/extraelements' },
         ],
     },
     {
@@ -17,10 +26,22 @@ const seniors = [
         job: 'Frontend Developer',
         image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214975/student_senior/zbiisemkblddgqjfcjwz.jpg',
         socials: [
-            { icon: 'facebook-f', link: '#' },
-            { icon: 'twitter', link: '#' },
-            { icon: 'instagram', link: '#' },
-            { icon: 'youtube', link: '#' },
+            {
+                icon: 'linkedin',
+                link: 'https://www.linkedin.com/in/najmus-sahar-02494b319',
+            },
+            {
+                icon: 'whatsapp',
+                link: 'https://api.whatsapp.com/send?phone=919264969397',
+            },
+            {
+                icon: 'instagram',
+                link: 'https://www.instagram.com/studentsenior12?igsh=c2NkZWRpNm9pdTVy',
+            },
+            {
+                icon: 'youtube',
+                link: 'https://youtube.com/extraelements',
+            },
         ],
     },
     {
@@ -28,10 +49,22 @@ const seniors = [
         job: 'Web Developer',
         image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725429901/student_senior/qehp7dr9wnfthnwphqke.jpg',
         socials: [
-            { icon: 'facebook-f', link: '#' },
-            { icon: 'twitter', link: '#' },
-            { icon: 'instagram', link: '#' },
-            { icon: 'youtube', link: '#' },
+            {
+                icon: 'linkedin',
+                link: 'https://www.linkedin.com/in/muskan-khatoon-845b66317',
+            },
+            {
+                icon: 'whatsapp',
+                link: 'https://api.whatsapp.com/send?phone=919335250362',
+            },
+            {
+                icon: 'instagram',
+                link: 'https://www.instagram.com/studentsenior12?igsh=c2NkZWRpNm9pdTVy',
+            },
+            {
+                icon: 'youtube',
+                link: 'https://youtube.com/extraelements',
+            },
         ],
     },
 ];
@@ -74,6 +107,7 @@ const FeaturedSeniors = () => {
                                     <div className="media-icons flex gap-2 mt-2">
                                         {senior.socials.map((social, i) => (
                                             <a
+                                                target="_blank"
                                                 key={i}
                                                 href={social.link}
                                                 className="flex items-center justify-center h-9 w-9 text-white bg-sky-300 rounded-full border-2 border-transparent transition-all duration-300 hover:text-red-500 hover:bg-white hover:border-red-500"
