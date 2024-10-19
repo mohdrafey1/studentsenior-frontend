@@ -237,30 +237,32 @@ const PYQPage = () => {
                                 key={index}
                                 className="bg-white p-4 rounded-lg shadow-md"
                             >
-                                <h2 className="text-sm lg:text-xl font-bold mb-2">
-                                    {paper.subjectName}
-                                </h2>
-                                <p className="mb-2 text-xs lg:text-base">
-                                    Subject Code: {paper.subjectCode}
-                                </p>
-                                <p className="mb-2  text-xs lg:text-base">
-                                    Semester: {paper.semester}
-                                </p>
-                                <p className="mb-2  text-xs lg:text-base">
-                                    Year: {paper.year}
-                                </p>
-                                <p className="mb-2  text-xs lg:text-base">
-                                    Exam Type: {paper.examType}
-                                </p>
-                                <p className="mb-2  text-xs lg:text-base">
-                                    Course : {paper.course}
-                                </p>
-                                <p className="mb-2  text-xs lg:text-base">
-                                    Branch:{' '}
-                                    {Array.isArray(paper.branch)
-                                        ? paper.branch.join(', ')
-                                        : paper.branch}
-                                </p>
+                                <div className="h-5/6">
+                                    <h2 className="text-sm lg:text-xl font-bold mb-2">
+                                        {paper.subjectName}
+                                    </h2>
+                                    <p className="mb-2 text-xs lg:text-base">
+                                        Subject Code: {paper.subjectCode}
+                                    </p>
+                                    <p className="mb-2  text-xs lg:text-base">
+                                        Semester: {paper.semester}
+                                    </p>
+                                    <p className="mb-2  text-xs lg:text-base">
+                                        Year: {paper.year}
+                                    </p>
+                                    <p className="mb-2  text-xs lg:text-base">
+                                        Exam Type: {paper.examType}
+                                    </p>
+                                    <p className="mb-2  text-xs lg:text-base">
+                                        Course : {paper.course}
+                                    </p>
+                                    <p className="mb-2  text-xs lg:text-base">
+                                        Branch:{' '}
+                                        {Array.isArray(paper.branch)
+                                            ? paper.branch.join(', ')
+                                            : paper.branch}
+                                    </p>
+                                </div>
                                 {isAuthenticated ? (
                                     <a
                                         href={paper.link}
