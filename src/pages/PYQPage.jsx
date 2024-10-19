@@ -151,12 +151,12 @@ const PYQPage = () => {
                     <span>( </span>
                     {capitalizeWords(collegeName)} <span>)</span>
                 </h1>
-                <p className="italic text-center">
+                {/* <p className="italic text-center">
                     "Find here PYQs which help you understand the pattern and
                     develop effective strategies for better preparation."
                 </p>
-                <br />
-                <div className="flex flex-wrap justify-center gap-4 mb-6">
+                <br /> */}
+                <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-2 sm:gap-4 mb-4">
                     <input
                         type="text"
                         placeholder="Search by Subject Name"
@@ -246,11 +246,15 @@ const PYQPage = () => {
                                 <p className="mb-2  text-xs lg:text-base">
                                     Semester: {paper.semester}
                                 </p>
-                                <p className="mb-2  text-xs lg:text-base">Year: {paper.year}</p>
+                                <p className="mb-2  text-xs lg:text-base">
+                                    Year: {paper.year}
+                                </p>
                                 <p className="mb-2  text-xs lg:text-base">
                                     Exam Type: {paper.examType}
                                 </p>
-                                <p className="mb-2  text-xs lg:text-base">Course : {paper.course}</p>
+                                <p className="mb-2  text-xs lg:text-base">
+                                    Course : {paper.course}
+                                </p>
                                 <p className="mb-2  text-xs lg:text-base">
                                     Branch:{' '}
                                     {Array.isArray(paper.branch)
@@ -262,7 +266,7 @@ const PYQPage = () => {
                                         href={paper.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-blue-500 underline text-xs lg:text-base"
+                                        className="inline-block bg-sky-500 text-white px-4 py-2 rounded-md text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
                                     >
                                         View PDF
                                     </a>
@@ -272,6 +276,7 @@ const PYQPage = () => {
                                             to="/sign-in"
                                             state={{ from: location }}
                                             replace
+                                            className="inline-block bg-red-500 text-white px-4 py-2 rounded-md text-center hover:bg-red-600 transition-colors text-xs lg:text-base"
                                         >
                                             Please log in to view the PDF.
                                         </Link>
