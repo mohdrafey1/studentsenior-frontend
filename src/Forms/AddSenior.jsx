@@ -100,7 +100,7 @@ const AddSeniorPage = () => {
     };
 
     return (
-        <div className="bg-sky-100">
+        <div className="bg-gradient-to-t from-sky-200 to bg-white">
             <div className={`${isLoading ? 'block' : 'hidden'} text-center `}>
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-75">
                     <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>
@@ -184,10 +184,10 @@ const AddSeniorPage = () => {
                 </div>
             </div>
             <div>
-                <Header />
+                {/* <Header /> */}
 
-                <div className="container mx-auto px-4 py-4 sm:block lg:flex ">
-                    <div className="big-screen w-full min-h-screen lg:min-h-full lg:flex self-center bg-white shadow-md rounded-lg mt-3 mb-3 ">
+                <div className="container mx-auto px-4 py-4 sm:block lg:flex">
+                    <div className="big-screen w-full min-h-screen lg:min-h-full lg:flex self-center rounded-lg mt-3 mb-3 ">
                         <div className="illustration w-full">
                             <iframe
                                 className="w-full h-full"

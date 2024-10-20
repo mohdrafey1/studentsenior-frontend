@@ -43,8 +43,8 @@ function InstallPage() {
 
     return (
         <>
-            <Header />
-            <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+            {/* <Header /> */}
+            <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-t from-sky-200 to bg-white">
                 <h1 className="text-3xl font-bold mb-4">Install Our App</h1>
                 <p className="mb-6">
                     Get a better experience by installing the Student Senior
@@ -64,7 +64,7 @@ function InstallPage() {
                     </p>
                 )}
             </div>
-            <Footer />
+            {/* <Footer /> */}
         </>
     );
 }

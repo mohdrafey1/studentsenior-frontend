@@ -102,10 +102,10 @@ const NotesPage = () => {
                 : true)
     );
     return (
-        <div className="container bg-sky-100 min-w-full ">
-            <Header />
+        <div className="container bg-gradient-to-t from-sky-200 to bg-white min-w-full ">
+            {/* <Header /> */}
             <CollegeLinks />
-            <div className="max-w-7xl mx-auto p-5 bg-sky-100 min-h-full">
+            <div className="max-w-7xl mx-auto p-5 min-h-full">
                 <h1 className="text-3xl font-bold mb-5 text-center">
                     Notes - {capitalizeWords(collegeName)}
                 </h1>
@@ -270,7 +270,7 @@ const NotesPage = () => {
                 </a>
             </div>
 
-            <Footer />
+            {/* <Footer /> */}
             <Collegelink2 />
         </div>
     );

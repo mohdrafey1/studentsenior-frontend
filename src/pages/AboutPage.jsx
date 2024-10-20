@@ -5,7 +5,7 @@ import Footer from '../components/Footer/Footer';
 function AboutPage() {
     return (
         <>
-            <Header />
+            {/* <Header /> */}
             <div className="bg-gradient-to-t from-sky-500 to-white">
                 {/* Hero Section */}
                 <section className="relative py-10">
@@ -167,7 +167,7 @@ function AboutPage() {
                     </div>
                 </section> */}
             </div>
-            <Footer />
+            {/* <Footer /> */}
         </>
     );
 }

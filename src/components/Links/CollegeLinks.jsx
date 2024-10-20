@@ -7,7 +7,7 @@ const Collegelinks = () => {
 
     return (
         <section className="hidden  lg:flex justify-center items-center text-center my-10 px-4">
-            <div className="bg-white border-radius-38 flex flex-wrap justify-center items-center text-center px-2 sm:px-10 py-6 gap-10 text-base sm:gap-4 sm:text-lg md:gap-6 md:text-xl lg:gap-7 xl:gap-9">
+            <div className="bg-white border-radius-38 border-2 border-sky-500 flex flex-wrap justify-center items-center text-center px-2 sm:px-10 py-6 gap-10 text-base sm:gap-4 sm:text-lg md:gap-6 md:text-xl lg:gap-7 xl:gap-9">
                 <Link
                     to={`/college/${collegeName}`}
                     className="rounded-xl hover:bg-sky-100 w-28 px-4 py-2"
@@ -81,7 +81,6 @@ const Collegelinks = () => {
                     </div>
                 </Link>
             </div>
-
         </section>
     );
 };

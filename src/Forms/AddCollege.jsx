@@ -93,9 +93,9 @@ function AddCollege() {
                 </div>
             </div>
 
-            <div className="container mx-auto p-4 bg-sky-100 min-h-max lg:min-h-full min-w-full">
-                <Header />
-                <div className="big-screen w-full  lg:flex self-center bg-white shadow-md rounded-lg mt-4 mb-4 ">
+            <div className="container mx-auto p-4 bg-gradient-to-t from-sky-200 to bg-white min-h-max lg:min-h-full min-w-full">
+                {/* <Header /> */}
+                <div className="big-screen w-full  lg:flex self-center rounded-lg mt-4 mb-4 ">
                     <div className="illustration w-full">
                         <iframe
                             className="w-full h-full"
@@ -179,7 +179,7 @@ function AddCollege() {
                     </div>
                 </div>
             </div>
-            <Footer />
+            {/* <Footer /> */}
         </>
     );
 }

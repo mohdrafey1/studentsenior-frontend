@@ -14,14 +14,14 @@ const CollegePage = () => {
 
     return (
         <div style={{ scrollBehavior: 'smooth' }}>
-            <Header />
+            {/* <Header /> */}
             <CollegeHero tagline={`${collegeName}`}>
                 <Collegelinks />
             </CollegeHero>
             <FeaturedSeniors />
             <Testimonials />
             <CollegeAbout />
-            <Footer />
+            {/* <Footer /> */}
             <Collegelink2 />
         </div>
     );

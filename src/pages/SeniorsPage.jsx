@@ -117,7 +117,7 @@ const SeniorPage = () => {
     );
 
     return (
-        <div className="bg-sky-100">
+        <div className="bg-gradient-to-t from-sky-200 to bg-white">
             <div
                 className={`${
                     isLoggedOut ? 'block' : 'hidden'
@@ -161,7 +161,7 @@ const SeniorPage = () => {
                 </div>
             </div>
 
-            <Header />
+            {/* <Header /> */}
             <CollegeLinks />
             <div className="container mx-auto p-5">
                 <div className="flex flex-col justify-center items-center">
@@ -354,7 +354,7 @@ const SeniorPage = () => {
                     />
                 )}
             </div>
-            <Footer />
+            {/* <Footer /> */}
             <Collegelink2 />
         </div>
     );

@@ -64,7 +64,7 @@ const MainPage = () => {
     return (
         <>
             <UnderConstructionBanner />
-            <Header />
+            {/* <Header /> */}
             <Hero>
                 <div className="flex flex-col items-center my-10">
                     <div className="text-black bg-white px-4 py-2 border-radius-38 border-4 border-sky-300 flex flex-col sm:flex-row items-center my-10">
@@ -102,7 +102,7 @@ const MainPage = () => {
             <FeaturedSeniors />
             <Testimonials />
             <About />
-            <Footer />
+            {/* <Footer /> */}
         </>
     );
 };

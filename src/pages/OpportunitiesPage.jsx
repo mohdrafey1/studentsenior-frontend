@@ -70,7 +70,6 @@ const OpportunitiesPage = () => {
             );
             const data = await response.json();
             setGetOpportunities(collegeBased(data));
-            
         } catch (error) {
             console.log('Error Fetching Get Opportunities: ', error);
         } finally {
@@ -82,16 +81,16 @@ const OpportunitiesPage = () => {
         fetchGetOpportunities();
     }, []);
 
-    const collegeBased = (data) =>{
+    const collegeBased = (data) => {
         let returnArray = [];
-     for(let i= data.length -1; i>=0;i--){
-        const collegeId = localStorage.getItem('id');
-       if(data[i].college._id === collegeId){
-       returnArray.push(data[i]);
-       }
-     }
-     return returnArray;
-    }
+        for (let i = data.length - 1; i >= 0; i--) {
+            const collegeId = localStorage.getItem('id');
+            if (data[i].college._id === collegeId) {
+                returnArray.push(data[i]);
+            }
+        }
+        return returnArray;
+    };
 
     const handleGetOpportunitySubmit = async (e) => {
         e.preventDefault();
@@ -354,8 +353,8 @@ const OpportunitiesPage = () => {
     };
 
     return (
-        <div className="container bg-sky-100 min-h-screen min-w-full">
-            <Header />
+        <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full">
+            {/* <Header /> */}
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5">
                 <h1 className="text-3xl font-bold mb-5 text-center">
@@ -786,7 +785,7 @@ const OpportunitiesPage = () => {
                     </div>
                 </div>
             </div>
-            <Footer />
+            {/* <Footer /> */}
             <Collegelink2 />
         </div>
     );

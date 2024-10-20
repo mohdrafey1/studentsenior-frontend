@@ -22,55 +22,68 @@ import SignIn from './pages/Signin';
 import Profile from './pages/Profile';
 import PrivateRoute from './components/PrivateRoute';
 import InstallPage from './pages/InstallPage';
+import Layout from './components/Layout/Layout';
 
 const App = () => {
     const user = false;
-    const userData = localStorage.getItem('persist:root');
-    const object = JSON.parse(userData);
-    const currentUser = object.user;
+    // will implement later
+    // const userData = localStorage.getItem('persist:root');
+    // const object = JSON.parse(userData);
+    // const currentUser = object.user;
+    // console.log(object);
+    // console.log(object.user);
+
     return (
         <Router>
-            <Routes>
-                <Route path="/" element={<MainPage />} />
-                <Route path="/college/:collegeName" element={<CollegePage />} />
-                <Route
-                    path="/college/:collegeName/seniors"
-                    element={<SeniorsPage />}
-                />
-                <Route path="/college/:collegeName/pyq" element={<PYQPage />} />
-                <Route
-                    path="/college/:collegeName/store"
-                    element={<StorePage />}
-                />
-                <Route
-                    path="/college/:collegeName/community"
-                    element={<CommunityPage />}
-                />
-                <Route
-                    path="/college/:collegeName/whatsapp-group"
-                    element={<WhatsAppGroupPage />}
-                />
-                <Route
-                    path="/college/:collegeName/opportunities"
-                    element={<OpportunitiesPage />}
-                />
-                <Route
-                    path="/college/:collegeName/notes"
-                    element={<NotesPage />}
-                />
-                <Route path="/becomesenior" element={<AddSenior />} />
-                <Route path="/add-college" element={<AddCollege />} />
-                <Route path="/about-us" element={<AboutPage />} />
-                <Route
-                    path="/sign-in"
-                    element={user ? <Navigate to="/" /> : <SignIn />}
-                />
-                <Route path="/sign-up" element={<Signup />} />
-                <Route element={<PrivateRoute />}>
-                    <Route path="/profile" element={<Profile />} />
-                </Route>
-                <Route path="/install" element={<InstallPage />} />
-            </Routes>
+            <Layout>
+                <Routes>
+                    <Route path="/" element={<MainPage />} />
+                    <Route
+                        path="/college/:collegeName"
+                        element={<CollegePage />}
+                    />
+                    <Route
+                        path="/college/:collegeName/seniors"
+                        element={<SeniorsPage />}
+                    />
+                    <Route
+                        path="/college/:collegeName/pyq"
+                        element={<PYQPage />}
+                    />
+                    <Route
+                        path="/college/:collegeName/store"
+                        element={<StorePage />}
+                    />
+                    <Route
+                        path="/college/:collegeName/community"
+                        element={<CommunityPage />}
+                    />
+                    <Route
+                        path="/college/:collegeName/whatsapp-group"
+                        element={<WhatsAppGroupPage />}
+                    />
+                    <Route
+                        path="/college/:collegeName/opportunities"
+                        element={<OpportunitiesPage />}
+                    />
+                    <Route
+                        path="/college/:collegeName/notes"
+                        element={<NotesPage />}
+                    />
+                    <Route path="/becomesenior" element={<AddSenior />} />
+                    <Route path="/add-college" element={<AddCollege />} />
+                    <Route path="/about-us" element={<AboutPage />} />
+                    <Route
+                        path="/sign-in"
+                        element={user ? <Navigate to="/" /> : <SignIn />}
+                    />
+                    <Route path="/sign-up" element={<Signup />} />
+                    <Route element={<PrivateRoute />}>
+                        <Route path="/profile" element={<Profile />} />
+                    </Route>
+                    <Route path="/install" element={<InstallPage />} />
+                </Routes>
+            </Layout>
         </Router>
     );
 };

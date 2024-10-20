@@ -266,13 +266,13 @@ const StorePage = () => {
     }, []);
 
     return (
-        <div className="bg-sky-100">
+        <div className="bg-gradient-to-t from-sky-200 to bg-white">
             <div className={`${isLoading2 ? 'block' : 'hidden'} text-center `}>
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-50">
                     <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>
                 </div>
             </div>
-            <Header />
+            {/* <Header /> */}
             <CollegeLinks />
             <div className="container mx-auto px-4 py-5">
                 <div className="flex flex-col justify-center items-center">
@@ -520,7 +520,7 @@ const StorePage = () => {
                         />
                     ))}
             </div>
-            <Footer />
+            {/* <Footer /> */}
             <Collegelink2 />
         </div>
     );

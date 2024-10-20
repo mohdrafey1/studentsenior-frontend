@@ -157,8 +157,8 @@ const WhatsAppGroupPage = () => {
     );
 
     return (
-        <div className="container bg-sky-100 min-h-screen min-w-full">
-            <Header />
+        <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full">
+            {/* <Header /> */}
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5">
                 <h1 className="text-3xl font-bold mb-5 text-center">
@@ -242,7 +242,7 @@ const WhatsAppGroupPage = () => {
                     </div>
                 )}
             </div>
-            <Footer />
+            {/* <Footer /> */}
 
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
