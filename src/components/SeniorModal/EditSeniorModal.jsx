@@ -11,7 +11,9 @@ const EditSeniorModal = ({
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg m-4 dark:bg-gray-800">
-            <h2 className="text-xl font-bold mb-4 text-center  text-gray-900 dark:text-white">Edit Senior</h2>
+                <h2 className="text-xl font-bold mb-4 text-center  text-gray-900 dark:text-white">
+                    Edit Senior
+                </h2>
                 <form onSubmit={handleUpdate}>
                     <div className="mb-4 text-xs">
                         <label className="block text-sm font-bold mb-1 text-gray-900 dark:text-white">
@@ -41,13 +43,19 @@ const EditSeniorModal = ({
                         <label className="block text-sm font-bold mb-1 text-gray-900 dark:text-white">
                             Year
                         </label>
-                        <input
-                            type="text"
+                        <select
                             name="year"
                             value={editingSenior.year}
                             onChange={handleInputChange}
                             className="w-full px-4 py-1.5 border rounded"
-                        />
+                        >
+                            <option>Select Your Year</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                            <option value="5th Year">5th Year</option>
+                        </select>
                     </div>
                     <div className="mb-4 text-xs">
                         <label className="block text-sm font-bold mb-1 text-gray-900 dark:text-white">

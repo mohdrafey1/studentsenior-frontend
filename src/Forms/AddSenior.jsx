@@ -108,8 +108,9 @@ const AddSeniorPage = () => {
             </div>
 
             <div
-                className={`${isSuccess ? 'block' : 'hidden'
-                    } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
+                className={`${
+                    isSuccess ? 'block' : 'hidden'
+                } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
             >
                 <div
                     role="alert"
@@ -141,8 +142,9 @@ const AddSeniorPage = () => {
                 </div>
             </div>
             <div
-                className={`${isLoggedOut ? 'block' : 'hidden'
-                    } text-center fixed bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
+                className={`${
+                    isLoggedOut ? 'block' : 'hidden'
+                } text-center fixed bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
             >
                 <div
                     role="alert"
@@ -196,7 +198,7 @@ const AddSeniorPage = () => {
                         <div className="bg-white p-8 rounded-lg max-w-lg w-full  ">
                             <h1 className="text-3xl font-bold mb-6 text-center">
                                 <span className="heading-class">
-                                    Add Senior
+                                    Add Yourself As a Senior
                                 </span>
                             </h1>
                             <form onSubmit={handleSubmit}>
@@ -252,6 +254,9 @@ const AddSeniorPage = () => {
                                             required
                                         >
                                             <option>Select Your Year</option>
+                                            <option value="1st Year">
+                                                1st Year
+                                            </option>
                                             <option value="2nd Year">
                                                 2nd Year
                                             </option>

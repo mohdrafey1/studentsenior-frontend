@@ -69,7 +69,7 @@ const WhatsAppGroupPage = () => {
     const LatestFirst = (data) => {
         let reversedArray = [];
         for (let i = data.length - 1; i >= 0; i--) {
-                reversedArray.push(data[i]);
+            reversedArray.push(data[i]);
         }
         return reversedArray;
     };
@@ -192,16 +192,20 @@ const WhatsAppGroupPage = () => {
                                 key={group._id}
                                 className="bg-white p-5 shadow-md rounded-md"
                             >
-                                <h2 className="text-lg lg:text-xl font-bold mb-2 text-center">
-                                    {group.title}
-                                </h2>
-                                <p className="mb-3 text-center text-sm lg:text-base">{group.info}</p>
+                                <div className="h-3/4">
+                                    <h2 className="text-lg lg:text-xl font-bold mb-2 text-center">
+                                        {group.title}
+                                    </h2>
+                                    <p className="mb-3 text-center text-sm lg:text-base">
+                                        {group.info}
+                                    </p>
+                                </div>
                                 <div className="flex justify-center">
                                     <a
                                         href={group.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-md"
+                                        className="px-4 py-2 bg-sky-500 hover:bg-green-600 text-white rounded-md"
                                     >
                                         Join Group &nbsp;
                                         <i className="fa-brands fa-whatsapp"></i>

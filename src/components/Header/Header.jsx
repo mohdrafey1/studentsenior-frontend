@@ -86,7 +86,7 @@ const Header = () => {
 
                                 <Link to="/becomesenior" onClick={toggleMenu}>
                                     <li className="ihover rounded-3xl">
-                                        Add Senior Profile
+                                        Join as a Senior
                                     </li>
                                 </Link>
 
