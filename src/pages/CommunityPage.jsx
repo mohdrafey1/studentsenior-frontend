@@ -3,8 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { signOut } from '../redux/user/userSlice.js';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
 import Collegelink2 from '../components/Links/CollegeLink2';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration';
 import { CKEditor } from '@ckeditor/ckeditor5-react';

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header/Header';
 import Hero from '../components/Hero/Hero';
 import FeaturedSeniors from '../components/FeaturedSenior/FeaturedSenior';
 import Testimonials from '../components/Testimonials/Testimonials';
 import About from '../components/About/About';
-import Footer from '../components/Footer/Footer';
 import '../App.css';
 import UnderConstructionBanner from '../others/UnderConstructionBanner';
 
