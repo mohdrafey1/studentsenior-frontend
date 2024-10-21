@@ -8,7 +8,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import OAuth from '../components/OAuth';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
-import Header from '../components/Header/Header';
 
 export default function SignIn() {
     const [formData, setFormData] = useState({});

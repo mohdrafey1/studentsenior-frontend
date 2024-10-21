@@ -1,11 +1,9 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
-import Header from '../components/Header/Header';
+import { useParams } from 'react-router-dom';
 import CollegeHero from '../components/Hero/CollegeHero';
 import FeaturedSeniors from '../components/FeaturedSenior/FeaturedSenior';
 import Testimonials from '../components/Testimonials/Testimonials';
 import CollegeAbout from '../components/About/CollegeAbout';
-import Footer from '../components/Footer/Footer';
 import Collegelinks from '../components/Links/CollegeLinks';
 import Collegelink2 from '../components/Links/CollegeLink2';
 

@@ -142,6 +142,7 @@ const AddProductModal = ({
                             checked={newProduct.available}
                             onChange={handleInputChange}
                             className="mr-2"
+                            required
                         />
                         Available
                     </label>

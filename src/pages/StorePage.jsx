@@ -3,8 +3,6 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../redux/user/userSlice.js';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
 import AddProductModal from '../components/StoreModal/AddProductModal';
 import EditProductModal from '../components/StoreModal/EditProductModal';
 import CollegeLinks from '../components/Links/CollegeLinks';

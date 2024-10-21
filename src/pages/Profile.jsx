@@ -18,7 +18,6 @@ import {
     deleteUserFailure,
     signOut,
 } from '../redux/user/userSlice';
-import Header from '../components/Header/Header';
 
 export default function Profile() {
     const dispatch = useDispatch();
@@ -183,6 +182,7 @@ export default function Profile() {
                         placeholder="Email"
                         className="bg-slate-100 rounded-lg p-3"
                         onChange={handleChange}
+                        readOnly
                     />
                     <input
                         defaultValue={currentUser.college}
