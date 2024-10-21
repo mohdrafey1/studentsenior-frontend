@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../redux/user/userSlice.js';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 
 const AddSeniorPage = () => {
@@ -349,9 +347,7 @@ const AddSeniorPage = () => {
                         </div>
                     </div>
                 </div>
-                {/* <Footer /> */}
             </div>
-            <Footer />
         </div>
     );
 };
