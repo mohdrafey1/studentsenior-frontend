@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
 import Collegelink2 from '../components/Links/CollegeLink2';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -366,7 +364,7 @@ const OpportunitiesPage = () => {
                 </p>
                 <br />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Left Column: Get Opportunities */}
+                    {/* Get Opportunities */}
                     <div>
                         <div className="flex justify-between items-center mb-5">
                             <button
@@ -482,7 +480,7 @@ const OpportunitiesPage = () => {
                                             <strong>Job Name :</strong>{' '}
                                             {opportunity.name}
                                         </h3>
-                                        <div className="bg-gray-100 mb-2 rounded-md h-40">
+                                        <div className="bg-gray-100 mb-2 rounded-md max-h-40 sm:h-40">
                                             <p className="p-2 h-full overflow-scroll">
                                                 {opportunity.description}
                                             </p>
@@ -728,7 +726,7 @@ const OpportunitiesPage = () => {
                                             <strong>Job Name :</strong>{' '}
                                             {opportunity.name}
                                         </h3>
-                                        <div className="bg-gray-100 mb-2 rounded-md h-40">
+                                        <div className="bg-gray-100 mb-2 rounded-md max-h-40 sm:h-40">
                                             <p className="p-2 h-full overflow-scroll">
                                                 {opportunity.description}
                                             </p>
