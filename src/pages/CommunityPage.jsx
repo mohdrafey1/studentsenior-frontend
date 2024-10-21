@@ -520,7 +520,7 @@ const CommunityPage = () => {
                                     ) : null}
 
                                     <div className="mt-3">
-                                        <div className="bg-sky-100 px-4 rounded-lg my-4 text-lg overflow-x-hidden overflow-y-scroll h-48">
+                                        <div className="bg-sky-100 px-4 rounded-lg my-4 text-lg overflow-x-hidden overflow-y-scroll max-h-48 md:h-48">
                                             <p className="mt-3">
                                                 <div
                                                     className="post-content"

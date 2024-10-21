@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../redux/user/userSlice.js';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
 import EditSeniorModal from '../components/SeniorModal/EditSeniorModal';
 import SeniorDetailModal from '../components/SeniorModal/SeniorDetailModal';
 import CollegeLinks from '../components/Links/CollegeLinks';
@@ -19,6 +17,7 @@ const SeniorPage = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
     const [selectedSenior, setSelectedSenior] = useState(null);
+    const [selectedCourse, setSelectedCourse] = useState('');
     const [isLoggedOut, setIsLoggedOut] = useState(false);
     const [selectedYear, setSelectedYear] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -111,10 +110,17 @@ const SeniorPage = () => {
         fetchSeniors();
     }, []);
 
-    // Filter seniors based on selected course and branch
-    const filteredSeniors = seniors.filter((senior) =>
-        selectedYear ? senior.year === selectedYear : true
-    );
+    // Filter seniors based on selected course
+    const filteredSeniors = useMemo(() => {
+        return seniors.filter(
+            (senior) =>
+                (selectedCourse ? senior.branch === selectedCourse : true) &&
+                (selectedYear ? senior.year === selectedYear : true)
+        );
+    }, [seniors, selectedCourse, selectedYear]);
+    const courses = [
+        ...new Set(filteredSeniors.map((senior) => senior.branch)),
+    ];
 
     return (
         <div className="bg-gradient-to-t from-sky-200 to bg-white">
@@ -187,6 +193,20 @@ const SeniorPage = () => {
                             <option value="3rd Year">3rd Year</option>
                             <option value="4th Year">4th Year</option>
                             <option value="5th Year">5th Year</option>
+                        </select>
+                        <select
+                            value={selectedCourse}
+                            onChange={(e) => {
+                                setSelectedCourse(e.target.value);
+                            }}
+                            className="p-2 border rounded-md mb-2 lg:mb-0"
+                        >
+                            <option value="">All Courses</option>
+                            {courses.map((course, index) => (
+                                <option key={index} value={course}>
+                                    {course}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 </div>

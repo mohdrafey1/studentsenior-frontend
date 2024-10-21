@@ -82,7 +82,7 @@ const NotesPage = () => {
         return match[1];
     };
 
-    const courses = [...new Set(initialNotes.map((note) => note.course))];
+    const courses = [...new Set(initialNotes.map((note) => note.target))];
     const branches = selectedCourse
         ? [
               ...new Set(
@@ -95,10 +95,12 @@ const NotesPage = () => {
 
     const filteredNotes = initialNotes.filter(
         (note) =>
-            (selectedBranch ? note.branch === selectedBranch : true) &&
-            (selectedCourse ? note.course === selectedCourse : true) &&
+            (selectedBranch ? note.target === selectedBranch : true) &&
+            (selectedCourse ? note.target === selectedCourse : true) &&
             (searchTerm
-                ? note.title.toLowerCase().includes(searchTerm.toLowerCase())
+                ? note.subjectName
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase())
                 : true)
     );
     return (
@@ -127,7 +129,6 @@ const NotesPage = () => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="p-2 border rounded-md w-full sm:w-64 mb-2 sm:mb-0"
-                        disabled
                     />
                     <select
                         value={selectedCourse}
@@ -136,7 +137,6 @@ const NotesPage = () => {
                             setSelectedBranch(''); // Reset branch when course changes
                         }}
                         className="p-2 border rounded-md mb-2 sm:mb-0"
-                        disabled
                     >
                         <option value="">All Courses</option>
                         {courses.map((course, index) => (
