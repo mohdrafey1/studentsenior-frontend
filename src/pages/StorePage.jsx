@@ -9,6 +9,7 @@ import CollegeLinks from '../components/Links/CollegeLinks';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
+import { toast } from 'react-toastify';
 
 const StorePage = () => {
     const { collegeName } = useParams();
@@ -65,6 +66,7 @@ const StorePage = () => {
             setIsLoading(false);
         } catch (err) {
             console.error('Error fetching products:', err);
+            toast.error('Error fetching products:');
         }
     };
 
@@ -98,6 +100,7 @@ const StorePage = () => {
             setIsLoading3(false);
         } catch (err) {
             console.error('Error fetching products:', err);
+            toast.error('Error fetching products');
         }
     };
 
@@ -161,19 +164,21 @@ const StorePage = () => {
             if (response.ok) {
                 fetchProducts();
                 setIsModalOpen(false);
-                alert(
-                    'Your request has been received, and the item will be displayed once it has been approved.'
+                toast.success(
+                    'Your request has been received, and the item will be displayed once it has been approved.',
+                    { autoClose: 10000 }
                 );
             } else if (response.status === 401) {
                 setIsModalOpen(false);
-                alert('Your session has expired. Please log in again.');
+                toast.error('Your session has expired. Please log in again.');
                 handleLogout();
             } else {
                 const errorData = await response.json();
-                alert(`Failed to add product: ${errorData.message}`);
+                toast.error(`Failed to add product: ${errorData.message}`);
             }
         } catch (err) {
             console.error('Error adding product:', err);
+            toast.error('Error adding product ');
         }
     };
 
@@ -209,17 +214,18 @@ const StorePage = () => {
                 fetchProducts(); // Refresh products list
                 setIsModalOpen(false);
                 setEditingProduct(null);
-                alert('Your request has been updated.');
+                toast.success('Your request has been updated.');
             } else if (response.status === 401) {
                 setIsModalOpen(false);
-                alert('Your session has expired. Please log in again.');
+                toast.error('Your session has expired. Please log in again.');
                 handleLogout();
             } else {
                 const errorData = await response.json();
-                alert(`Failed to Update product: ${errorData.message}`);
+                toast.error(`Failed to Update product: ${errorData.message}`);
             }
         } catch (err) {
             console.error('Error updating product:', err);
+            toast.error('Error updating product');
         }
     };
 
@@ -244,17 +250,18 @@ const StorePage = () => {
             setIsLoading2(false);
             if (response.ok) {
                 fetchProducts();
-                alert('Your request has been deleted successfully');
+                toast.success('Your request has been deleted successfully');
             } else if (response.status === 401) {
                 setIsModalOpen(false);
-                alert('Your session has expired. Please log in again.');
+                toast.error('Your session has expired. Please log in again.');
                 handleLogout();
             } else {
                 const errorData = await response.json();
-                // alert(`Failed to Delete product: ${errorData.message}`);
+                toast.error(`Failed to Delete product: ${errorData.message}`);
             }
         } catch (err) {
             console.error('Error deleting product:', err);
+            toast.error('Error deleting product');
         }
     };
 

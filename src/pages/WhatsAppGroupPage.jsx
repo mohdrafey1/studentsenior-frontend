@@ -6,6 +6,7 @@ import Footer from '../components/Footer/Footer';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
+import { toast } from 'react-toastify';
 
 const WhatsAppGroupPage = () => {
     const { collegeName } = useParams();
@@ -59,7 +60,8 @@ const WhatsAppGroupPage = () => {
                     setGroupLink(LatestFirst(selectedColleges));
                 }
             } catch (error) {
-                console.log('Error fetching WhatsApp links: ', error);
+                console.error('Error fetching WhatsApp links: ', error);
+                toast.error('Error fetching WhatsApp Groups ');
             }
         };
         fetchLink();
@@ -114,7 +116,9 @@ const WhatsAppGroupPage = () => {
 
             const result = await resp.json();
             setShowAlert(true);
-            alert('College Submitted Successfully , Available Once Approved');
+            toast.success(
+                'Group Submitted Successfully , Available Once Approved'
+            );
             setIsModalOpen(false);
             setText('Submit');
 
@@ -127,7 +131,7 @@ const WhatsAppGroupPage = () => {
                 link: '',
             });
         } catch (error) {
-            alert('Something Went Wrong');
+            toast.error('Something Went Wrong');
             console.error(error);
         }
     };

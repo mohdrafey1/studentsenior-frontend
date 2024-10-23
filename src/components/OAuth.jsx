@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { signInSuccess } from '../redux/user/userSlice';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration';
+import { toast } from 'react-toastify';
 
 export default function OAuth() {
     const dispatch = useDispatch();
@@ -40,10 +41,12 @@ export default function OAuth() {
             console.log(data);
             dispatch(signInSuccess(data));
             navigate(from);
+            toast.success('Log in successfull');
         } catch (error) {
             console.log('Could not login with Google', error);
+            toast.error('login failed');
         } finally {
-            setLoading(false); // End loading
+            setLoading(false);
         }
     };
 

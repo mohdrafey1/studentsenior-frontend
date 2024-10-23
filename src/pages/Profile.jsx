@@ -18,6 +18,7 @@ import {
     deleteUserFailure,
     signOut,
 } from '../redux/user/userSlice';
+import { toast } from 'react-toastify';
 
 export default function Profile() {
     const dispatch = useDispatch();
@@ -83,8 +84,10 @@ export default function Profile() {
             }
             dispatch(updateUserSuccess(data));
             setUpdateSuccess(true);
+            toast.success('Profile Updated Successfully');
         } catch (error) {
             dispatch(updateUserFailure(error));
+            toast.error('Something Went Wrong');
         }
     };
 
@@ -120,11 +123,14 @@ export default function Profile() {
 
             if (response.ok) {
                 dispatch(signOut());
+                toast.warning('You are Logout Now');
             } else {
                 console.error('Signout failed:', response.statusText);
+                toast.error('Signout failed');
             }
         } catch (error) {
             console.error('Signout error:', error);
+            toast.error('Signout error');
         }
     };
     return (

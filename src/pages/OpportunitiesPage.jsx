@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { signOut } from '../redux/user/userSlice.js';
+import { toast } from 'react-toastify';
 
 const OpportunitiesPage = () => {
     const { collegeName } = useParams();
@@ -69,7 +70,8 @@ const OpportunitiesPage = () => {
             const data = await response.json();
             setGetOpportunities(collegeBased(data));
         } catch (error) {
-            console.log('Error Fetching Get Opportunities: ', error);
+            console.error('Error Fetching Get Opportunities: ', error);
+            toast.error('Error Fetching Get Opportunities ');
         } finally {
             setIsLoading(false);
         }
@@ -126,21 +128,24 @@ const OpportunitiesPage = () => {
                         email: '',
                     });
                     setShowGetForm(false);
-                    alert(
+                    toast.success(
                         'Get Opportunity Added SuccessFully , Available Once Approved'
                     );
                 } else if (response.status === 401) {
-                    alert('Your session has expired. Please log in again.');
+                    toast.error(
+                        'Your session has expired. Please log in again.'
+                    );
                     handleLogout();
                 } else {
                     const errorData = await response.json();
-                    alert(`${errorData.message}`);
+                    toast.error(`${errorData.message}`);
                 }
             } catch (err) {
                 console.error(err);
+                toast.error(err);
             }
         } else {
-            alert('College not found.');
+            toast.error('College not found.');
         }
     };
 
@@ -176,12 +181,16 @@ const OpportunitiesPage = () => {
                 setEditingOpportunity(null);
                 fetchGetOpportunities();
                 setIsModalOpen(false);
+                toast.success('get opportunity edited successfully');
             } else {
                 const errorData = await response.json();
-                alert(`Failed to update opportunity: ${errorData.message}`);
+                toast.error(
+                    `Failed to update opportunity: ${errorData.message}`
+                );
             }
         } catch (error) {
             console.error('Error updating opportunity:', error);
+            toast.error('Error updating opportunity');
         }
     };
 
@@ -199,11 +208,14 @@ const OpportunitiesPage = () => {
             );
             if (response.ok) {
                 fetchGetOpportunities();
+                toast.success('get opportunity deleted successfully');
             } else {
                 console.error('Failed to delete opportunity');
+                toast.error('Failed to delete opportunity');
             }
         } catch (error) {
             console.error('Error deleting Get Opportunity:', error);
+            toast.error('Error deleting Get Opportunity');
         }
     };
     // Fetch Give Opportunities
@@ -223,7 +235,8 @@ const OpportunitiesPage = () => {
             const data = await response.json();
             setGiveOpportunities(collegeBased(data));
         } catch (error) {
-            console.log('Error Fetching give Opportunities: ', error);
+            console.error('Error Fetching give Opportunities: ', error);
+            toast.error('Error Fetching give Opportunities ');
         } finally {
             setIsLoading(false);
         }
@@ -269,21 +282,23 @@ const OpportunitiesPage = () => {
                         email: '',
                     });
                     setShowGiveForm(false);
-                    alert(
+                    toast.success(
                         'Give Opportunity Added SuccessFully , Available Once Approved'
                     );
                 } else if (response.status === 401) {
-                    alert('Your session has expired. Please log in again.');
+                    toast.error(
+                        'Your session has expired. Please log in again.'
+                    );
                     handleLogout();
                 } else {
                     const errorData = await response.json();
-                    alert(`${errorData.message}`);
+                    toast.error(`${errorData.message}`);
                 }
             } catch (err) {
-                console.error(err);
+                toast.error(err);
             }
         } else {
-            alert('College not found.');
+            toast.error('College not found.');
         }
     };
 
@@ -319,12 +334,16 @@ const OpportunitiesPage = () => {
                 setEditingOpportunity(null);
                 fetchGiveOpportunities();
                 setIsModalOpen(false);
+                toast.success('Give Opportunity Updated Successfully');
             } else {
                 const errorData = await response.json();
-                alert(`Failed to update opportunity: ${errorData.message}`);
+                toast.error(
+                    `Failed to update opportunity: ${errorData.message}`
+                );
             }
         } catch (error) {
             console.error('Error updating opportunity:', error);
+            toast.error('Error updating opportunity');
         }
     };
 
@@ -342,11 +361,13 @@ const OpportunitiesPage = () => {
             );
             if (response.ok) {
                 fetchGiveOpportunities();
+                toast.success('Give Opportunity deleted successfully');
             } else {
-                console.error('Failed to delete opportunity');
+                toast.error('Failed to delete opportunity');
             }
         } catch (error) {
             console.error('Error deleting Give Opportunity:', error);
+            toast.error('Error deleting Give Opportunity');
         }
     };
 

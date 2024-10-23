@@ -8,6 +8,7 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
+import { toast } from 'react-toastify';
 
 const PYQPage = () => {
     const { collegeName } = useParams();
@@ -87,6 +88,7 @@ const PYQPage = () => {
                 // setPyqs(data);
             } catch (error) {
                 console.error('Error fetching PYQs:', error);
+                toast.error('Error fetching PYQs');
             }
         };
 

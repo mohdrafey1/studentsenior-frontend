@@ -7,6 +7,7 @@ import Collegelink2 from '../components/Links/CollegeLink2';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { toast } from 'react-toastify';
 
 const CommunityPage = () => {
     const { collegeName } = useParams();
@@ -63,6 +64,7 @@ const CommunityPage = () => {
             setLoading(false);
         } catch (err) {
             console.error('Error fetching posts:', err);
+            toast.error('Error fetching posts');
         }
     };
 
@@ -84,9 +86,6 @@ const CommunityPage = () => {
     };
 
     const openEditModal = (post) => {
-        console.log(post);
-        console.log(post._id);
-
         setEditingPostId(post._id);
         setEditedContent(post.content);
         setShowEditModal(true);
@@ -134,18 +133,25 @@ const CommunityPage = () => {
                         fetchPosts();
                         setNewPostContent('');
                         closeModal();
+                        toast.success('Post Added Successfully');
                     } else if (response.status === 401) {
-                        alert('Your session has expired. Please log in again.');
+                        toast.error(
+                            'Your session has expired. Please log in again.'
+                        );
                         handleLogout();
                     } else {
                         const errorData = await response.json();
-                        alert(`Failed to add product: ${errorData.message}`);
+                        toast.error(
+                            `Failed to add product: ${errorData.message}`
+                        );
                     }
                 } catch (err) {
                     console.error('Error adding post:', err);
+                    toast.error('Error adding post');
                 }
             } else {
                 console.error('College not found');
+                toast.error('College not found');
             }
         }
     };
@@ -166,9 +172,11 @@ const CommunityPage = () => {
 
             if (response.ok) {
                 fetchPosts();
+                toast.success('Post Deleted Successfully');
             }
         } catch (err) {
             console.error('Error deleting post:', err);
+            toast.error('Error deleting post');
         }
     };
 
@@ -194,9 +202,11 @@ const CommunityPage = () => {
                     fetchPosts();
                     setEditedContent('');
                     closeEditModal();
+                    toast.success('Post Updated Successfully');
                 }
             } catch (err) {
                 console.error('Error editing post:', err);
+                toast.error('Error editing post');
             }
         }
     };
@@ -221,10 +231,12 @@ const CommunityPage = () => {
 
                 if (response.ok) {
                     fetchPosts();
-                    setCommentContent({ ...commentContent, [postId]: '' }); // Clear the comment input for that post
+                    setCommentContent({ ...commentContent, [postId]: '' });
+                    toast.success('Comment Added !');
                 }
             } catch (err) {
                 console.error('Error adding comment:', err);
+                toast.error('Error adding comment ');
             }
         }
     };
@@ -244,10 +256,11 @@ const CommunityPage = () => {
             );
 
             if (response.ok) {
-                fetchPosts(); // Reload posts to reflect the updated likes
+                fetchPosts();
             }
         } catch (err) {
             console.error('Error liking/unliking post:', err);
+            toast.error('Error liking/unliking post');
         }
     };
 
@@ -285,6 +298,7 @@ const CommunityPage = () => {
                 }
             } catch (err) {
                 console.error('Error liking comment:', err);
+                toast.error('Error liking comment');
             }
         }
     };
@@ -306,6 +320,9 @@ const CommunityPage = () => {
 
             if (response.ok) {
                 fetchPosts();
+                toast.success('Comment Deleted Successfully');
+            } else {
+                toast.error('Error Deleting Comment');
             }
             setshowCom((prevCom) =>
                 prevCom.filter((comment) => comment._id !== commentId)
@@ -313,6 +330,7 @@ const CommunityPage = () => {
             console.log(showCom);
         } catch (err) {
             console.error('Error deleting comment:', err);
+            toast.error('Error deleting comment ');
         }
     };
     const LatestFirst = (data) => {

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import OAuth from '../components/OAuth';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js'; //correction
+import { toast } from 'react-toastify';
 
 export default function SignUp() {
     const [formData, setFormData] = useState({});
@@ -32,10 +33,12 @@ export default function SignUp() {
                 setError(true);
                 return;
             }
+            toast.success('Registeration successfull, Please Log In');
             navigate('/sign-in');
         } catch (error) {
             setLoading(false);
             setError(true);
+            toast.error('Something Went Wrong');
         }
     };
     return (

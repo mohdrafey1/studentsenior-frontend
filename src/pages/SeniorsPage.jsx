@@ -9,6 +9,7 @@ import CollegeLinks from '../components/Links/CollegeLinks';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
+import { toast } from 'react-toastify';
 
 const SeniorPage = () => {
     const { collegeName } = useParams();
@@ -48,6 +49,7 @@ const SeniorPage = () => {
             setIsLoading(false);
         } catch (err) {
             console.error('Error fetching seniors:', err);
+            toast.error('Error fetching seniors ');
         }
     };
 
@@ -94,15 +96,17 @@ const SeniorPage = () => {
             );
             if (response.ok) {
                 fetchSeniors();
+                toast.success('Senior deleted successfully!');
             } else if (response.status === 401) {
                 setIsLoggedOut(true);
                 dispatch(signOut());
             } else {
                 const errorData = await response.json();
-                alert(`Failed to delete senior: ${errorData.message}`);
+                toast.error(`Failed to delete senior: ${errorData.message}`);
             }
         } catch (err) {
             console.error('Error deleting senior:', err);
+            toast.error('An error occurred while deleting the senior.');
         }
     };
 
@@ -319,7 +323,6 @@ const SeniorPage = () => {
                         handleUpdate={async (e) => {
                             e.preventDefault();
 
-                            // Create a JSON object to send as the payload
                             const payload = {
                                 name: editingSenior.name,
                                 branch: editingSenior.branch,
@@ -336,31 +339,34 @@ const SeniorPage = () => {
                                     {
                                         method: 'PUT',
                                         headers: {
-                                            'Content-Type': 'application/json', // Send JSON data
+                                            'Content-Type': 'application/json',
                                             'x-api-key': API_KEY,
                                         },
                                         credentials: 'include',
-                                        body: JSON.stringify(payload), // Convert payload to JSON string
+                                        body: JSON.stringify(payload),
                                     }
                                 );
 
                                 if (response.ok) {
-                                    alert('Senior updated successfully');
+                                    toast.success(
+                                        'Senior updated successfully'
+                                    );
                                     setIsEditModalOpen(false);
-                                    fetchSeniors(); // Refresh the seniors list after the update
+                                    fetchSeniors();
                                 } else if (response.status === 401) {
-                                    alert(
+                                    toast.error(
                                         'Your session has expired. Please Login Again.'
                                     );
                                     handleLogout();
                                 } else {
                                     const errorData = await response.json();
-                                    alert(
+                                    toast.error(
                                         `Failed to update senior: ${errorData.message}`
                                     );
                                 }
                             } catch (err) {
                                 console.error('Error updating senior:', err);
+                                toast.error('Error updating senior:', err);
                             }
                         }}
                         setIsModalOpen={setIsEditModalOpen}

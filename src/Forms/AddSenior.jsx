@@ -251,7 +251,9 @@ const AddSeniorPage = () => {
                                             className="w-full px-4 lg:px-10 py-2 border rounded-md"
                                             required
                                         >
-                                            <option>Select Your Year</option>
+                                            <option value="">
+                                                Select Your Year
+                                            </option>
                                             <option value="1st Year">
                                                 1st Year
                                             </option>
@@ -306,7 +308,9 @@ const AddSeniorPage = () => {
                                             className="w-full px-4 py-2 border rounded-md"
                                             required
                                         >
-                                            <option>Select Your College</option>
+                                            <option value="">
+                                                Select Your College
+                                            </option>
                                             {colleges.map((college) => (
                                                 <option
                                                     key={college.id}

@@ -8,6 +8,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import OAuth from '../components/OAuth';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
+import { toast } from 'react-toastify';
 
 export default function SignIn() {
     const [formData, setFormData] = useState({});
@@ -39,11 +40,13 @@ export default function SignIn() {
                 return;
             }
             dispatch(signInSuccess(data));
+            toast.success('Sign In successful');
             // Navigate to the correct route after successful login
             const from = location.state?.from?.pathname || '/'; // Default to home if `from` is not set
             navigate(from, { replace: true });
         } catch (error) {
             dispatch(signInFailure(error));
+            toast.error('Sign In Failed');
         }
     };
 
