@@ -29,6 +29,7 @@ function AddCollege() {
                 'Content-Type': 'application/json',
                 'x-api-key': API_KEY,
             },
+            credentials: 'include',
             body: JSON.stringify(pushData),
         });
         setIsLoading(false);

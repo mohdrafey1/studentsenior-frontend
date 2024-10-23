@@ -5,13 +5,13 @@ const Testimonials = () => {
 
     const scrollLeft = () => {
         const carousel = carouselRef.current;
-        const cardWidth = carousel.querySelector('.card').offsetWidth+4;
-        carousel.scrollBy({ left: - cardWidth, behavior: 'smooth' });
+        const cardWidth = carousel.querySelector('.card').offsetWidth + 4;
+        carousel.scrollBy({ left: -cardWidth, behavior: 'smooth' });
     };
 
     const scrollRight = () => {
         const carousel = carouselRef.current;
-        const cardWidth = carousel.querySelector('.card').offsetWidth+4;
+        const cardWidth = carousel.querySelector('.card').offsetWidth + 4;
         carousel.scrollBy({ left: cardWidth, behavior: 'smooth' });
     };
 
@@ -46,32 +46,32 @@ const Testimonials = () => {
                     >
                         {[
                             {
-                                name: 'Mohd Rafey',
+                                name: 'Iqra Khan',
                                 text: 'I extend my heartfelt gratitude to my senior for their invaluable guidance and unwavering support. Thank you!',
                                 image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1/student_senior/o75dfiierdwluartngkm',
                             },
                             {
-                                name: 'Joenas Brauers',
+                                name: 'Salman Khan',
                                 text: "I'm deeply grateful to my senior for their exceptional guidance and unwavering support, which have been pivotal in my growth. Thank you!",
                                 image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1/student_senior/j5rfnsnq570tjzz0snto',
                             },
                             {
-                                name: 'Lariach French',
+                                name: 'Rohit Sharma',
                                 text: "Grateful for my senior's exceptional guidance and support. Their mentorship has been a catalyst for my growth. Thank you sincerely!",
                                 image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1724859258/student_senior/o8wuwteyunixuecsrccc.jpg',
                             },
                             {
-                                name: 'James Khosravi',
+                                name: 'Rishabh',
                                 text: 'Thank you to my senior for their invaluable guidance and unwavering support, shaping my growth and instilling confidence. A mentor par excellence!',
                                 image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1/student_senior/o75dfiierdwluartngkm',
                             },
                             {
-                                name: 'Kristina Zasiadko',
+                                name: 'Mohd Siraj',
                                 text: 'I am deeply grateful to my senior for their guidance and support, which have been instrumental in my professional development. Thank you sincerely!',
                                 image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1/student_senior/j5rfnsnq570tjzz0snto',
                             },
                             {
-                                name: 'Donald Horton',
+                                name: 'smriti Mandhana',
                                 text: "Grateful for my senior's exceptional guidance and support, shaping my growth. Their wisdom, patience, and encouragement have been invaluable. Thank you!",
                                 image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1724859258/student_senior/o8wuwteyunixuecsrccc.jpg',
                             },
