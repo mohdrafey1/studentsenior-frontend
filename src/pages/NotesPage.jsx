@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
 import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';

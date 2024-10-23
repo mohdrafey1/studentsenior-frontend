@@ -46,12 +46,12 @@ const Testimonials = () => {
                     >
                         {[
                             {
-                                name: 'Iqra Khan',
+                                name: 'Amir Khan',
                                 text: 'I extend my heartfelt gratitude to my senior for their invaluable guidance and unwavering support. Thank you!',
                                 image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1/student_senior/o75dfiierdwluartngkm',
                             },
                             {
-                                name: 'Salman Khan',
+                                name: 'Iqra Khan',
                                 text: "I'm deeply grateful to my senior for their exceptional guidance and unwavering support, which have been pivotal in my growth. Thank you!",
                                 image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1/student_senior/j5rfnsnq570tjzz0snto',
                             },
@@ -66,12 +66,12 @@ const Testimonials = () => {
                                 image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1/student_senior/o75dfiierdwluartngkm',
                             },
                             {
-                                name: 'Mohd Siraj',
+                                name: 'Smriti Mandhana',
                                 text: 'I am deeply grateful to my senior for their guidance and support, which have been instrumental in my professional development. Thank you sincerely!',
                                 image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1/student_senior/j5rfnsnq570tjzz0snto',
                             },
                             {
-                                name: 'smriti Mandhana',
+                                name: 'Mohd Rafey',
                                 text: "Grateful for my senior's exceptional guidance and support, shaping my growth. Their wisdom, patience, and encouragement have been invaluable. Thank you!",
                                 image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1724859258/student_senior/o8wuwteyunixuecsrccc.jpg',
                             },
