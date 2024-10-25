@@ -1,75 +1,65 @@
 import React, { useState } from 'react';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
-import { API_BASE_URL, API_KEY } from '../config/apiConfiguration';
+import useApiRequest from '../hooks/useApiRequest';
+import { api } from '../config/apiConfiguration.js';
 
 function AddCollege() {
-    const [message, setMessage] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [isSuccess, setIsSucsess] = useState(false);
-    let [responseMesaage, setResponseMessage] = useState('');
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [responseMessage, setResponseMessage] = useState('');
     const [pushData, setPushData] = useState({
         name: '',
         location: '',
         description: '',
     });
 
+    const { apiRequest, loading } = useApiRequest();
+    const url = api.college;
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setPushData({ ...pushData, [name]: value });
-        console.log(pushData);
     };
 
     const handleSubmit = async (e) => {
-        setIsLoading(true);
         e.preventDefault();
-        const response = await fetch(`${API_BASE_URL}/api/colleges`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': API_KEY,
-            },
-            credentials: 'include',
-            body: JSON.stringify(pushData),
-        });
-        setIsLoading(false);
-        if (response.ok) {
+        try {
+            await apiRequest(url, 'POST', pushData);
             setResponseMessage(
                 'Your college has been submitted and will be added once approved.'
             );
-            setIsSucsess(true);
-            // setName('');
-            // setLocation('');
-            // setDescription('');
-        } else {
-            const errorData = await response.json();
-            setResponseMessage(`Failed to add senior : ${errorData.message}`);
-            setIsSucsess(true);
+            setIsSuccess(true);
+        } catch (error) {
+            const errorData = error.response
+                ? await error.response.json()
+                : { message: error.message };
+            setResponseMessage(`Failed to add college: ${errorData.message}`);
+            setIsSuccess(true);
         }
     };
+
     const closeDialog = () => {
-        setIsSucsess(false);
+        setIsSuccess(false);
         window.location.href = '../';
     };
 
     return (
         <>
-            <div className={`${isLoading ? 'block' : 'hidden'} text-center `}>
+            {loading && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-75">
                     <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>
                 </div>
-            </div>
+            )}
+
             <div
                 className={`${
                     isSuccess ? 'block' : 'hidden'
-                } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
+                } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full w-full z-50 items-center`}
             >
                 <div
                     role="alert"
                     className="mt-3 relative flex flex-col max-w-sm p-3 text-sm text-white bg-black rounded-md"
                 >
                     <p className="flex justify-center text-2xl">Attention</p>
-                    <p className="ml-4 p-3">{responseMesaage}</p>
+                    <p className="ml-4 p-3">{responseMessage}</p>
 
                     <button
                         className="flex items-center justify-center transition-all w-8 h-8 rounded-md text-white hover:bg-white/10 active:bg-white/10 absolute top-1.5 right-1.5"
@@ -171,11 +161,6 @@ function AddCollege() {
                             >
                                 Submit College
                             </button>
-                            {message && (
-                                <div className="mt-4 text-center text-green-600 font-semibold">
-                                    {message}
-                                </div>
-                            )}
                         </form>
                     </div>
                 </div>
