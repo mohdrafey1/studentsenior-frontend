@@ -4,7 +4,7 @@ import { app } from '../firebase';
 import { useDispatch } from 'react-redux';
 import { signInSuccess } from '../redux/user/userSlice';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { API_BASE_URL, API_KEY } from '../config/apiConfiguration';
+import { api, API_KEY } from '../config/apiConfiguration';
 import { toast } from 'react-toastify';
 
 export default function OAuth() {
@@ -13,17 +13,17 @@ export default function OAuth() {
     const location = useLocation();
     const from = location.state?.from?.pathname || '/';
 
-    const [loading, setLoading] = useState(false); // Add loading state
+    const [loading, setLoading] = useState(false);
 
     const handleGoogleClick = async () => {
-        setLoading(true); // Start loading
+        setLoading(true);
 
         try {
             const provider = new GoogleAuthProvider();
             const auth = getAuth(app);
 
             const result = await signInWithPopup(auth, provider);
-            const res = await fetch(`${API_BASE_URL}/api/auth/google`, {
+            const res = await fetch(`${api.auth.google}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ export default function OAuth() {
             type="button"
             onClick={handleGoogleClick}
             className="bg-red-700 text-white rounded-lg p-3 uppercase hover:opacity-95"
-            disabled={loading} // Disable the button while loading
+            disabled={loading}
         >
             {loading ? (
                 <div className="flex items-center justify-center">

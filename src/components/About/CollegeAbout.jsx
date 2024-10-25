@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { API_BASE_URL, API_KEY } from '../../config/apiConfiguration';
+import { api, API_KEY } from '../../config/apiConfiguration';
 import { capitalizeWords } from '../../utils/Capitalize.js';
 import { useParams } from 'react-router-dom';
 
@@ -8,9 +8,11 @@ const CollegeAbout = () => {
     const [des, setDes] = useState('');
     const { collegeName } = useParams();
 
+    const url = api.college;
+
     const fetchCollege = async () => {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/colleges`, {
+            const response = await fetch(url, {
                 headers: {
                     'Content-Type': 'application/json',
                     'x-api-key': API_KEY,

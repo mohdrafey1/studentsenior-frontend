@@ -4,7 +4,6 @@ const UnderConstructionBanner = () => {
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
-        // Check local storage to see if the message has been dismissed
         const hasDismissed = localStorage.getItem('underConstructionDismissed');
         if (!hasDismissed) {
             setIsVisible(true);
@@ -12,7 +11,6 @@ const UnderConstructionBanner = () => {
     }, []);
 
     const handleClose = () => {
-        // Set local storage to remember that the user has seen the message
         localStorage.setItem('underConstructionDismissed', 'true');
         setIsVisible(false);
     };
@@ -24,10 +22,13 @@ const UnderConstructionBanner = () => {
                     <div className="flex justify-between items-center">
                         <p>
                             🚧{' '}
-                            <strong>We're currently under construction!</strong>
+                            <strong>
+                                Welcome to the Student Senior Platform!
+                            </strong>
                             Our website is evolving, and some features might not
                             be fully functional yet. We're working hard to
-                            improve and expand our offerings. In the meantime,
+                            improve and expand our offerings. If any issue occur
+                            please contact us .
                         </p>
                         <button
                             onClick={handleClose}

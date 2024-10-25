@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { signOut } from '../redux/user/userSlice.js';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Collegelink2 from '../components/Links/CollegeLink2';
-import { API_BASE_URL, API_KEY } from '../config/apiConfiguration';
+import { api, API_KEY } from '../config/apiConfiguration';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { toast } from 'react-toastify';
+import { capitalizeWords } from '../utils/Capitalize.js';
+import useApiRequest from '../hooks/useApiRequest';
 
 const CommunityPage = () => {
     const { collegeName } = useParams();
@@ -22,9 +23,13 @@ const CommunityPage = () => {
     const [likedComments, setLikedComments] = useState([]);
     const [showComment, setshowComment] = useState(false);
     const [showCom, setshowCom] = useState('');
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const [isloading, setIsLoading] = useState(true);
+    const [loadingStates, setLoadingStates] = useState({
+        deletePost: {},
+        likePost: {},
+        addComment: {},
+        deleteComment: {},
+    });
 
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
@@ -36,32 +41,22 @@ const CommunityPage = () => {
         { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
     ];
 
-    const capitalizeWords = (str) => {
-        return str
-            .split('-')
-            .map(
-                (word) =>
-                    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-            )
-            .join(' ');
-    };
+    const { apiRequest, loading } = useApiRequest();
+    const url = api.community;
 
     // Fetch posts from backend API
     const fetchPosts = async () => {
         try {
-            const response = await fetch(
-                `${API_BASE_URL}/api/community/posts`,
-                {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': API_KEY,
-                    },
-                }
-            );
+            const response = await fetch(`${url}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': API_KEY,
+                },
+            });
             const data = await response.json();
             setPosts(LatestFirst(data));
-            setLoading(false);
+            setIsLoading(false);
         } catch (err) {
             console.error('Error fetching posts:', err);
             toast.error('Error fetching posts');
@@ -71,11 +66,6 @@ const CommunityPage = () => {
     useEffect(() => {
         fetchPosts();
     }, []);
-
-    const handleLogout = () => {
-        dispatch(signOut());
-        navigate('/sign-in');
-    };
 
     const openModal = () => {
         setShowModal(true);
@@ -112,42 +102,18 @@ const CommunityPage = () => {
 
             if (college) {
                 try {
-                    const response = await fetch(
-                        `${API_BASE_URL}/api/community/posts`,
-                        {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'x-api-key': API_KEY,
-                            },
-                            credentials: 'include',
-                            body: JSON.stringify({
-                                content: newPostContent,
-                                isAnonymous,
-                                college,
-                            }),
-                        }
-                    );
+                    await apiRequest(url, 'POST', {
+                        content: newPostContent,
+                        isAnonymous,
+                        college,
+                    });
 
-                    if (response.ok) {
-                        fetchPosts();
-                        setNewPostContent('');
-                        closeModal();
-                        toast.success('Post Added Successfully');
-                    } else if (response.status === 401) {
-                        toast.error(
-                            'Your session has expired. Please log in again.'
-                        );
-                        handleLogout();
-                    } else {
-                        const errorData = await response.json();
-                        toast.error(
-                            `Failed to add product: ${errorData.message}`
-                        );
-                    }
+                    fetchPosts();
+                    setNewPostContent('');
+                    closeModal();
+                    toast.success('Post Added Successfully');
                 } catch (err) {
                     console.error('Error adding post:', err);
-                    toast.error('Error adding post');
                 }
             } else {
                 console.error('College not found');
@@ -158,25 +124,21 @@ const CommunityPage = () => {
 
     // Delete a post
     const deletePost = async (postId) => {
+        setLoadingStates((prev) => ({
+            ...prev,
+            deletePost: { ...prev.deletePost, [postId]: true },
+        }));
         try {
-            const response = await fetch(
-                `${API_BASE_URL}/api/community/posts/${postId}`,
-                {
-                    method: 'DELETE',
-                    headers: {
-                        'x-api-key': API_KEY,
-                    },
-                    credentials: 'include',
-                }
-            );
-
-            if (response.ok) {
-                fetchPosts();
-                toast.success('Post Deleted Successfully');
-            }
+            await apiRequest(`${url}/${postId}`, 'DELETE');
+            fetchPosts();
+            toast.success('Post Deleted Successfully');
         } catch (err) {
             console.error('Error deleting post:', err);
-            toast.error('Error deleting post');
+        } finally {
+            setLoadingStates((prev) => ({
+                ...prev,
+                deletePost: { ...prev.deletePost, [postId]: false },
+            }));
         }
     };
 
@@ -184,29 +146,16 @@ const CommunityPage = () => {
     const editPost = async () => {
         if (editedContent.trim() && editingPostId) {
             try {
-                const response = await fetch(
-                    `${API_BASE_URL}/api/community/posts/${editingPostId}`,
-                    {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-api-key': API_KEY,
-                        },
-                        credentials: 'include',
-                        body: JSON.stringify({ content: editedContent }),
-                    }
-                );
-
-                if (response.ok) {
-                    setEditingPostId(null);
-                    fetchPosts();
-                    setEditedContent('');
-                    closeEditModal();
-                    toast.success('Post Updated Successfully');
-                }
+                await apiRequest(`${url}/${editingPostId}`, 'PUT', {
+                    content: editedContent,
+                });
+                setEditingPostId(null);
+                fetchPosts();
+                setEditedContent('');
+                closeEditModal();
+                toast.success('Post Updated Successfully');
             } catch (err) {
                 console.error('Error editing post:', err);
-                toast.error('Error editing post');
             }
         }
     };
@@ -215,52 +164,44 @@ const CommunityPage = () => {
     const addComment = async (postId) => {
         const content = commentContent[postId];
         if (content && content.trim()) {
+            setLoadingStates((prev) => ({
+                ...prev,
+                addComment: { ...prev.addComment, [postId]: true },
+            }));
             try {
-                const response = await fetch(
-                    `${API_BASE_URL}/api/community/posts/${postId}/comments`,
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-api-key': API_KEY,
-                        },
-                        credentials: 'include',
-                        body: JSON.stringify({ content }),
-                    }
-                );
-
-                if (response.ok) {
-                    fetchPosts();
-                    setCommentContent({ ...commentContent, [postId]: '' });
-                    toast.success('Comment Added !');
-                }
+                await apiRequest(`${url}/${postId}/comments`, 'POST', {
+                    content,
+                });
+                fetchPosts();
+                setCommentContent({ ...commentContent, [postId]: '' });
+                toast.success('Comment Added !');
             } catch (err) {
                 console.error('Error adding comment:', err);
-                toast.error('Error adding comment ');
+            } finally {
+                setLoadingStates((prev) => ({
+                    ...prev,
+                    addComment: { ...prev.addComment, [postId]: false },
+                }));
             }
         }
     };
 
     const likePost = async (postId) => {
+        setLoadingStates((prev) => ({
+            ...prev,
+            likePost: { ...prev.likePost, [postId]: true },
+        }));
         try {
-            const response = await fetch(
-                `${API_BASE_URL}/api/community/posts/${postId}/like`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': API_KEY,
-                    },
-                    credentials: 'include',
-                }
-            );
-
-            if (response.ok) {
-                fetchPosts();
-            }
+            await apiRequest(`${url}/${postId}/like`, 'POST');
+            await fetchPosts();
         } catch (err) {
             console.error('Error liking/unliking post:', err);
             toast.error('Error liking/unliking post');
+        } finally {
+            setLoadingStates((prev) => ({
+                ...prev,
+                likePost: { ...prev.likePost, [postId]: false },
+            }));
         }
     };
 
@@ -273,29 +214,19 @@ const CommunityPage = () => {
     const likeComment = async (postId, commentId) => {
         if (!likedComments.includes(commentId)) {
             try {
-                const response = await fetch(
-                    `${API_BASE_URL}/api/community/posts/${postId}/comments/${commentId}/like`,
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-api-key': API_KEY,
-                        },
-                        credentials: 'include',
-                    }
+                await apiRequest(
+                    `${url}/${postId}/comments/${commentId}/like`,
+                    'POST'
                 );
+                fetchPosts();
 
-                if (response.ok) {
-                    fetchPosts();
-
-                    // Update the likedComments in both state and localStorage
-                    const updatedLikes = [...likedComments, commentId];
-                    setLikedComments(updatedLikes);
-                    localStorage.setItem(
-                        'likedComments',
-                        JSON.stringify(updatedLikes)
-                    );
-                }
+                // Update the likedComments in both state and localStorage
+                const updatedLikes = [...likedComments, commentId];
+                setLikedComments(updatedLikes);
+                localStorage.setItem(
+                    'likedComments',
+                    JSON.stringify(updatedLikes)
+                );
             } catch (err) {
                 console.error('Error liking comment:', err);
                 toast.error('Error liking comment');
@@ -305,32 +236,30 @@ const CommunityPage = () => {
 
     // Delete a comment
     const deleteComment = async (postId, commentId) => {
+        setLoadingStates((prev) => ({
+            ...prev,
+            deleteComment: { ...prev.deleteComment, [postId]: true },
+        }));
         try {
-            const response = await fetch(
-                `${API_BASE_URL}/api/community/posts/${postId}/comments/${commentId}`,
-                {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': API_KEY,
-                    },
-                    credentials: 'include',
-                }
+            await apiRequest(
+                `${url}/${postId}/comments/${commentId}`,
+                'DELETE'
             );
 
-            if (response.ok) {
-                fetchPosts();
-                toast.success('Comment Deleted Successfully');
-            } else {
-                toast.error('Error Deleting Comment');
-            }
-            setshowCom((prevCom) =>
-                prevCom.filter((comment) => comment._id !== commentId)
-            );
-            console.log(showCom);
+            fetchPosts();
+            toast.success('Comment Deleted Successfully');
+            // setshowCom((prevCom) =>
+            //     prevCom.filter((comment) => comment._id !== commentId)
+            // );
+            // console.log(showCom);
         } catch (err) {
             console.error('Error deleting comment:', err);
             toast.error('Error deleting comment ');
+        } finally {
+            setLoadingStates((prev) => ({
+                ...prev,
+                deleteComment: { ...prev.deleteComment, [postId]: false },
+            }));
         }
     };
     const LatestFirst = (data) => {
@@ -408,8 +337,13 @@ const CommunityPage = () => {
                                 <button
                                     onClick={addPost}
                                     className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                    disabled={loading}
                                 >
-                                    Submit Post
+                                    {loading ? (
+                                        <i className="fa fa-spinner fa-spin"></i>
+                                    ) : (
+                                        'Add Post'
+                                    )}
                                 </button>
                             </div>
                         </div>
@@ -487,9 +421,15 @@ const CommunityPage = () => {
                                                                             editPost
                                                                         }
                                                                         className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                                                        disabled={
+                                                                            loading
+                                                                        }
                                                                     >
-                                                                        Save
-                                                                        Changes
+                                                                        {loading ? (
+                                                                            <i className="fa fa-spinner fa-spin"></i>
+                                                                        ) : (
+                                                                            'Update Post'
+                                                                        )}
                                                                     </button>
                                                                 </div>
                                                             </div>
@@ -500,42 +440,26 @@ const CommunityPage = () => {
                                                             deletePost(post._id)
                                                         }
                                                         className="text-red-500 px-2 border-2 border-sky-500 rounded-lg"
+                                                        disabled={
+                                                            loadingStates
+                                                                .deletePost[
+                                                                post._id
+                                                            ]
+                                                        }
                                                     >
-                                                        Delete
+                                                        {loadingStates
+                                                            .deletePost[
+                                                            post._id
+                                                        ] ? (
+                                                            <i className="fa fa-spinner fa-spin"></i>
+                                                        ) : (
+                                                            'Delete'
+                                                        )}
                                                     </button>
                                                 </>
                                             )}
                                         </div>
                                     </div>
-                                    {editingPostId === post._id ? (
-                                        <div className="mt-3">
-                                            <textarea
-                                                value={editedContent}
-                                                onChange={(e) =>
-                                                    setEditedContent(
-                                                        e.target.value
-                                                    )
-                                                }
-                                                className="w-full p-2 border rounded-md"
-                                            />
-                                            <button
-                                                onClick={() =>
-                                                    editPost(post._id)
-                                                }
-                                                className="mt-2 mx-2 px-4 py-2 bg-green-500 text-white rounded-md"
-                                            >
-                                                Save
-                                            </button>
-                                            <button
-                                                onClick={() =>
-                                                    setEditingPostId(null)
-                                                }
-                                                className="mt-2 mx-2 px-4 py-2 bg-gray-500 text-white rounded-md"
-                                            >
-                                                Cancel
-                                            </button>
-                                        </div>
-                                    ) : null}
 
                                     <div className="mt-3">
                                         <div className="bg-sky-100 px-4 rounded-lg my-4 text-lg overflow-x-hidden overflow-y-scroll max-h-48 md:h-48">
@@ -555,9 +479,21 @@ const CommunityPage = () => {
                                                     : 'text-black'
                                             }`}
                                             onClick={() => likePost(post._id)}
+                                            disabled={
+                                                loadingStates.likePost[post._id]
+                                            }
                                         >
-                                            <i className="fa-regular fa-heart"></i>{' '}
-                                            ({post.likes.length})
+                                            {loadingStates.likePost[
+                                                post._id
+                                            ] ? (
+                                                <i className="fa fa-spinner fa-spin"></i>
+                                            ) : (
+                                                <>
+                                                    {' '}
+                                                    <i className="fa-regular fa-heart"></i>
+                                                    ({post.likes.length}){' '}
+                                                </>
+                                            )}
                                         </button>
                                     </div>
 
@@ -667,8 +603,21 @@ const CommunityPage = () => {
                                                                         ]._id
                                                                     )
                                                                 }
+                                                                disabled={
+                                                                    loadingStates
+                                                                        .deleteComment[
+                                                                        post._id
+                                                                    ]
+                                                                }
                                                             >
-                                                                Delete
+                                                                {loadingStates
+                                                                    .deleteComment[
+                                                                    post._id
+                                                                ] ? (
+                                                                    <i className="fa fa-spinner fa-spin"></i>
+                                                                ) : (
+                                                                    <i class="fa-solid fa-trash"></i>
+                                                                )}
                                                             </button>
                                                         )}
                                                     </div>
@@ -797,8 +746,19 @@ const CommunityPage = () => {
                                                     addComment(post._id)
                                                 }
                                                 className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+                                                disabled={
+                                                    loadingStates.addComment[
+                                                        post._id
+                                                    ]
+                                                }
                                             >
-                                                Comment
+                                                {loadingStates.addComment[
+                                                    post._id
+                                                ] ? (
+                                                    <i className="fa fa-spinner fa-spin"></i>
+                                                ) : (
+                                                    'Comment'
+                                                )}
                                             </button>
                                         </div>
                                     </div>
@@ -808,7 +768,7 @@ const CommunityPage = () => {
                     </div>
                 ) : (
                     <div className="col-span-4 flex justify-center items-center py-10 w-full">
-                        {loading ? (
+                        {isloading ? (
                             <div className="text-center">
                                 <svg
                                     aria-hidden="true"
@@ -839,7 +799,6 @@ const CommunityPage = () => {
                 )}
             </div>
             <Collegelink2 />
-            {/* <Footer /> */}
         </div>
     );
 };
