@@ -7,6 +7,7 @@ const EditSeniorModal = ({
     handleUpdate,
     setIsModalOpen,
     colleges,
+    loading,
 }) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -132,8 +133,13 @@ const EditSeniorModal = ({
                         <button
                             type="submit"
                             className="bg-blue-500 text-white px-4 py-1.5 rounded"
+                            disabled={loading}
                         >
-                            Update
+                            {loading ? (
+                                <i className="fa fa-spinner fa-spin"></i>
+                            ) : (
+                                <p>Update</p>
+                            )}
                         </button>
                     </div>
                 </form>

@@ -9,7 +9,7 @@ export const api = {
         signout: `${API_BASE_URL}/api/auth/signout`,
     },
 
-    user: `${API_BASE_URL}/api/update`,
+    user: `${API_BASE_URL}/api/user/update`,
 
     college: `${API_BASE_URL}/api/colleges`,
 

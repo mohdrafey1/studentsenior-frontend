@@ -616,7 +616,7 @@ const CommunityPage = () => {
                                                                 ] ? (
                                                                     <i className="fa fa-spinner fa-spin"></i>
                                                                 ) : (
-                                                                    <i class="fa-solid fa-trash"></i>
+                                                                    <i className="fa-solid fa-trash"></i>
                                                                 )}
                                                             </button>
                                                         )}

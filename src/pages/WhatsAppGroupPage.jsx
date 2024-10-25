@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
-import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
+import { api, API_KEY } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
+import useApiRequest from '../hooks/useApiRequest.js';
 
 const WhatsAppGroupPage = () => {
     const { collegeName } = useParams();
@@ -14,7 +13,6 @@ const WhatsAppGroupPage = () => {
     const [groups, setGroupLink] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [showAlert, setShowAlert] = useState(false);
     const [text, setText] = useState('Submit');
     const [groupData, setGroupData] = useState({
         college: '',
@@ -23,6 +21,9 @@ const WhatsAppGroupPage = () => {
         domain: '',
         link: '',
     });
+
+    const { apiRequest, loading } = useApiRequest();
+    const url = api.group;
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -40,16 +41,13 @@ const WhatsAppGroupPage = () => {
     useEffect(() => {
         const fetchLink = async () => {
             try {
-                const response = await fetch(
-                    `${API_BASE_URL}/api/whatsappgroup`,
-                    {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-api-key': API_KEY,
-                        },
-                    }
-                );
+                const response = await fetch(`${url}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': API_KEY,
+                    },
+                });
                 setIsLoading(false);
                 const data = await response.json();
                 const collegeid = localStorage.getItem(getCollegeId());
@@ -102,36 +100,13 @@ const WhatsAppGroupPage = () => {
         e.preventDefault();
         setText('Wait ...');
         try {
-            const resp = await fetch(`${API_BASE_URL}/api/whatsappgroup`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ ...groupData, college: collegeId }),
-            });
-
-            if (!resp.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const result = await resp.json();
-            setShowAlert(true);
+            await apiRequest(url, 'POST', { ...groupData, college: collegeId });
             toast.success(
                 'Group Submitted Successfully , Available Once Approved'
             );
             setIsModalOpen(false);
             setText('Submit');
-
-            // Reset the groupData state
-            setGroupData({
-                college: '',
-                title: '',
-                info: '',
-                domain: '',
-                link: '',
-            });
         } catch (error) {
-            toast.error('Something Went Wrong');
             console.error(error);
         }
     };
@@ -246,7 +221,6 @@ const WhatsAppGroupPage = () => {
                     </div>
                 )}
             </div>
-            {/* <Footer /> */}
 
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -255,32 +229,6 @@ const WhatsAppGroupPage = () => {
                             Add WhatsApp Group
                         </h2>
                         <form onSubmit={handleSubmit}>
-                            {/* <div className="mb-4">
-                                <label className="block mb-2" htmlFor="college">
-                                    College
-                                </label>
-                                <select
-                                    name="college"
-                                    id="college"
-                                    value={groupData.college}
-                                    onChange={handleChange}
-                                    className="p-2 border rounded-md w-full"
-                                    required
-                                >
-                                    <option value={collegeId}>
-                                        {selectedCollegeName}
-                                    </option>
-                                    {colleges.map((college) => (
-                                        <option
-                                            key={college.id}
-                                            value={college.id}
-                                            disabled
-                                        >
-                                            {college.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div> */}
                             <div className="mb-4">
                                 <label className="block mb-2" htmlFor="title">
                                     Title
@@ -352,11 +300,6 @@ const WhatsAppGroupPage = () => {
                                 </button>
                             </div>
                         </form>
-                        {showAlert && (
-                            <div className="mt-4 p-2 bg-green-200 text-green-800 rounded-md">
-                                Group added successfully!
-                            </div>
-                        )}
                     </div>
                 </div>
             )}

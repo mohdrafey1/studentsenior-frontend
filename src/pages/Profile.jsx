@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useRef, useState, useEffect } from 'react';
-import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
+import { api, API_KEY } from '../config/apiConfiguration.js';
 import {
     getDownloadURL,
     getStorage,
@@ -65,18 +65,15 @@ export default function Profile() {
         e.preventDefault();
         try {
             dispatch(updateUserStart());
-            const res = await fetch(
-                `${API_BASE_URL}/api/user/update/${currentUser._id}`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': API_KEY,
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify(formData),
-                }
-            );
+            const res = await fetch(`${api.user}/${currentUser._id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': API_KEY,
+                },
+                credentials: 'include',
+                body: JSON.stringify(formData),
+            });
             const data = await res.json();
             if (data.success === false) {
                 dispatch(updateUserFailure(data));
@@ -116,7 +113,7 @@ export default function Profile() {
 
     const handleSignOut = async () => {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/auth/signout`, {
+            const response = await fetch(`${api.auth.signout}`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -135,7 +132,6 @@ export default function Profile() {
     };
     return (
         <>
-            {/* <Header /> */}
             <div className="p-3 max-w-lg mx-auto ">
                 <h1 className="text-3xl font-semibold text-center my-7">
                     Profile

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Pagination } from '@nextui-org/react';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
+import { api, API_KEY } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
@@ -69,7 +67,7 @@ const PYQPage = () => {
     useEffect(() => {
         const fetchPYQs = async () => {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/pyqs`, {
+                const response = await fetch(`${api.pyq}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

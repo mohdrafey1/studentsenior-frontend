@@ -7,7 +7,7 @@ import {
 } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import OAuth from '../components/OAuth';
-import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
+import { api, API_KEY } from '../config/apiConfiguration.js';
 import { toast } from 'react-toastify';
 
 export default function SignIn() {
@@ -25,7 +25,7 @@ export default function SignIn() {
         e.preventDefault();
         try {
             dispatch(signInStart());
-            const res = await fetch(`${API_BASE_URL}/api/auth/signin`, {
+            const res = await fetch(`${api.auth.login}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -41,8 +41,7 @@ export default function SignIn() {
             }
             dispatch(signInSuccess(data));
             toast.success('Sign In successful');
-            // Navigate to the correct route after successful login
-            const from = location.state?.from?.pathname || '/'; // Default to home if `from` is not set
+            const from = location.state?.from?.pathname || '/';
             navigate(from, { replace: true });
         } catch (error) {
             dispatch(signInFailure(error));

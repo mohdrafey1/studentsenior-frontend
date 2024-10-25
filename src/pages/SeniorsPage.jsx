@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { signOut } from '../redux/user/userSlice.js';
+import { useParams } from 'react-router-dom';
 import EditSeniorModal from '../components/SeniorModal/EditSeniorModal';
 import SeniorDetailModal from '../components/SeniorModal/SeniorDetailModal';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
+import { api, API_KEY } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
+import useApiRequest from '../hooks/useApiRequest.js';
 
 const SeniorPage = () => {
     const { collegeName } = useParams();
@@ -19,9 +18,12 @@ const SeniorPage = () => {
     const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
     const [selectedSenior, setSelectedSenior] = useState(null);
     const [selectedCourse, setSelectedCourse] = useState('');
-    const [isLoggedOut, setIsLoggedOut] = useState(false);
     const [selectedYear, setSelectedYear] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [loadingStates, setLoadingStates] = useState({
+        editSenior: {},
+        deleteSenior: {},
+    });
     const colleges = [
         { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
         { id: '66cba84ce0e3a7e528642837', name: 'MPEC Kanpur' },
@@ -29,15 +31,16 @@ const SeniorPage = () => {
         { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
     ];
 
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
+
+    const { apiRequest, loading } = useApiRequest();
+    const url = api.senior;
 
     const fetchSeniors = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/api/seniors`, {
+            const response = await fetch(`${url}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,38 +78,22 @@ const SeniorPage = () => {
         setIsDetailModalOpen(true);
     };
 
-    const handleLogout = () => {
-        dispatch(signOut());
-        navigate('/sign-in');
-    };
-    const closeDialog = () => {
-        setIsSucsess(false);
-        window.location.href = '../';
-    };
-
     const handleDelete = async (seniorId) => {
+        setLoadingStates((prev) => ({
+            ...prev,
+            deleteSenior: { ...prev.deleteSenior, [seniorId]: true },
+        }));
         try {
-            const response = await fetch(
-                `${API_BASE_URL}/api/seniors/${seniorId}`,
-                {
-                    method: 'DELETE',
-                    headers: { 'x-api-key': API_KEY },
-                    credentials: 'include',
-                }
-            );
-            if (response.ok) {
-                fetchSeniors();
-                toast.success('Senior deleted successfully!');
-            } else if (response.status === 401) {
-                setIsLoggedOut(true);
-                dispatch(signOut());
-            } else {
-                const errorData = await response.json();
-                toast.error(`Failed to delete senior: ${errorData.message}`);
-            }
+            await apiRequest(`${url}/${seniorId}`, 'DELETE');
+            fetchSeniors();
+            toast.success('Senior deleted successfully!');
         } catch (err) {
             console.error('Error deleting senior:', err);
-            toast.error('An error occurred while deleting the senior.');
+        } finally {
+            setLoadingStates((prev) => ({
+                ...prev,
+                deleteSenior: { ...prev.deleteSenior, [seniorId]: false },
+            }));
         }
     };
 
@@ -128,50 +115,6 @@ const SeniorPage = () => {
 
     return (
         <div className="bg-gradient-to-t from-sky-200 to bg-white">
-            <div
-                className={`${
-                    isLoggedOut ? 'block' : 'hidden'
-                } text-center fixed bg-opacity-80 bg-gray-300 flex justify-center h-full  w-full z-50 items-center`}
-            >
-                <div
-                    role="alert"
-                    className="mt-3 relative flex flex-col max-w-sm p-4 text-sm text-white bg-black rounded-md"
-                >
-                    <p className="flex justify-center text-2xl">Logged Out</p>
-                    <p className="ml-4 p-3">
-                        You have been signed out, Login Again
-                    </p>
-
-                    <button
-                        className="flex items-center justify-center transition-all w-8 h-8 rounded-md text-white hover:bg-white/20 active:bg-white/10 absolute top-1.5 right-1.5"
-                        type="button"
-                        onClick={closeDialog}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            className="h-5 w-5"
-                            strokeWidth="2"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M6 18L18 6M6 6l12 12"
-                            ></path>
-                        </svg>
-                    </button>
-                    <button
-                        className="bg-white text-black p-2 rounded-md w-full"
-                        onClick={handleLogout}
-                    >
-                        Log In
-                    </button>
-                </div>
-            </div>
-
-            {/* <Header /> */}
             <CollegeLinks />
             <div className="container mx-auto p-5">
                 <div className="flex flex-col justify-center items-center">
@@ -257,7 +200,7 @@ const SeniorPage = () => {
                                                             handleEdit(senior)
                                                         }
                                                     >
-                                                        Edit
+                                                        <i className="fa-regular fa-pen-to-square"></i>
                                                     </button>
                                                     <button
                                                         className="bg-red-500 text-white px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm hover:bg-red-600"
@@ -266,8 +209,21 @@ const SeniorPage = () => {
                                                                 senior._id
                                                             )
                                                         }
+                                                        disabled={
+                                                            loadingStates
+                                                                .deleteSenior[
+                                                                senior._id
+                                                            ]
+                                                        }
                                                     >
-                                                        Delete
+                                                        {loadingStates
+                                                            .deleteSenior[
+                                                            senior._id
+                                                        ] ? (
+                                                            <i className="fa fa-spinner fa-spin"></i>
+                                                        ) : (
+                                                            <i className="fa-solid fa-trash"></i>
+                                                        )}
                                                     </button>
                                                 </div>
                                             )}
@@ -334,41 +290,19 @@ const SeniorPage = () => {
                             };
 
                             try {
-                                const response = await fetch(
-                                    `${API_BASE_URL}/api/seniors/${editingSenior._id}`,
-                                    {
-                                        method: 'PUT',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'x-api-key': API_KEY,
-                                        },
-                                        credentials: 'include',
-                                        body: JSON.stringify(payload),
-                                    }
+                                await apiRequest(
+                                    `${url}/${editingSenior._id}`,
+                                    'PUT',
+                                    payload
                                 );
-
-                                if (response.ok) {
-                                    toast.success(
-                                        'Senior updated successfully'
-                                    );
-                                    setIsEditModalOpen(false);
-                                    fetchSeniors();
-                                } else if (response.status === 401) {
-                                    toast.error(
-                                        'Your session has expired. Please Login Again.'
-                                    );
-                                    handleLogout();
-                                } else {
-                                    const errorData = await response.json();
-                                    toast.error(
-                                        `Failed to update senior: ${errorData.message}`
-                                    );
-                                }
+                                toast.success('Senior updated successfully');
+                                setIsEditModalOpen(false);
+                                fetchSeniors();
                             } catch (err) {
                                 console.error('Error updating senior:', err);
-                                toast.error('Error updating senior:', err);
                             }
                         }}
+                        loading={loading}
                         setIsModalOpen={setIsEditModalOpen}
                     />
                 )}

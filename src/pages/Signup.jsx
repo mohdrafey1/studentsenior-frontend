@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import OAuth from '../components/OAuth';
-import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js'; //correction
+import { api, API_KEY } from '../config/apiConfiguration.js'; //correction
 import { toast } from 'react-toastify';
 
 export default function SignUp() {
@@ -18,7 +18,7 @@ export default function SignUp() {
         try {
             setLoading(true);
             setError(false);
-            const res = await fetch(`${API_BASE_URL}/api/auth/signup`, {
+            const res = await fetch(`${api.auth.signup}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,7 +43,6 @@ export default function SignUp() {
     };
     return (
         <>
-            {/* <Header /> */}
             <div className="p-3 max-w-lg mx-auto">
                 <h1 className="text-3xl text-center font-semibold my-7">
                     Sign Up

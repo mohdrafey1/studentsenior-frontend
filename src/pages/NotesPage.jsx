@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
+import { api, API_KEY } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
@@ -19,7 +19,7 @@ const NotesPage = () => {
     useEffect(() => {
         const FetchNotes = async () => {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/notes`, {
+                const response = await fetch(`${api.notes}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
