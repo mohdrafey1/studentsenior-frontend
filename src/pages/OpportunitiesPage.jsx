@@ -2,19 +2,20 @@ import React, { useState, useEffect } from 'react';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Collegelink2 from '../components/Links/CollegeLink2';
 import { capitalizeWords } from '../utils/Capitalize.js';
-import { useNavigate, useParams } from 'react-router-dom';
-import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
-import { useSelector, useDispatch } from 'react-redux';
-import { signOut } from '../redux/user/userSlice.js';
+import { useParams } from 'react-router-dom';
+import { api } from '../config/apiConfiguration.js';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import useApiFetch from '../hooks/useApiFetch.js';
+import useApiRequest from '../hooks/useApiRequest.js';
 
 const OpportunitiesPage = () => {
     const { collegeName } = useParams();
     const [getOpportunities, setGetOpportunities] = useState([]);
     const [giveOpportunities, setGiveOpportunities] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
     const [showGetForm, setShowGetForm] = useState(false);
     const [showGiveForm, setShowGiveForm] = useState(false);
+    const [loadingStates, setLoadingStates] = useState({});
     const [newGetOpportunity, setNewGetOpportunity] = useState({
         name: '',
         description: '',
@@ -42,38 +43,20 @@ const OpportunitiesPage = () => {
         { id: '66d08aff784c9f07a53507b9', name: 'GCET Noida' },
         { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
     ];
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
 
+    const { useFetch, loadingFetch } = useApiFetch();
+    const { apiRequest, loading } = useApiRequest();
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
 
-    const handleLogout = () => {
-        dispatch(signOut());
-        navigate('/sign-in');
-    };
-
     // Fetch Get Opportunities
     const fetchGetOpportunities = async () => {
-        setIsLoading(true);
         try {
-            const response = await fetch(
-                `${API_BASE_URL}/api/opportunity/getopportunities`,
-                {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': API_KEY,
-                    },
-                }
-            );
-            const data = await response.json();
+            const data = await useFetch(api.getOpportunity);
             setGetOpportunities(collegeBased(data));
         } catch (error) {
             console.error('Error Fetching Get Opportunities: ', error);
             toast.error('Error Fetching Get Opportunities ');
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -105,41 +88,21 @@ const OpportunitiesPage = () => {
 
         if (college) {
             try {
-                const response = await fetch(
-                    `${API_BASE_URL}/api/opportunity/getopportunities`,
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-api-key': API_KEY,
-                        },
-                        credentials: 'include',
-                        body: JSON.stringify({
-                            ...newGetOpportunity,
-                            college: college,
-                        }),
-                    }
+                await apiRequest(api.getOpportunity, 'POST', {
+                    ...newGetOpportunity,
+                    college: college,
+                });
+
+                setNewGetOpportunity({
+                    name: '',
+                    description: '',
+                    whatsapp: '',
+                    email: '',
+                });
+                setShowGetForm(false);
+                toast.success(
+                    'Get Opportunity Added SuccessFully , Available Once Approved'
                 );
-                if (response.ok) {
-                    setNewGetOpportunity({
-                        name: '',
-                        description: '',
-                        whatsapp: '',
-                        email: '',
-                    });
-                    setShowGetForm(false);
-                    toast.success(
-                        'Get Opportunity Added SuccessFully , Available Once Approved'
-                    );
-                } else if (response.status === 401) {
-                    toast.error(
-                        'Your session has expired. Please log in again.'
-                    );
-                    handleLogout();
-                } else {
-                    const errorData = await response.json();
-                    toast.error(`${errorData.message}`);
-                }
             } catch (err) {
                 console.error(err);
                 toast.error(err);
@@ -164,81 +127,60 @@ const OpportunitiesPage = () => {
     const handleEditOpportunitySubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(
-                `${API_BASE_URL}/api/opportunity/getopportunities/${editingOpportunity}`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': API_KEY,
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify(editedOpportunity),
-                }
+            await apiRequest(
+                `${api.getOpportunity}/${editingOpportunity}`,
+                'PUT',
+                editedOpportunity
             );
 
-            if (response.ok) {
-                setEditingOpportunity(null);
-                fetchGetOpportunities();
-                setIsModalOpen(false);
-                toast.success('get opportunity edited successfully');
-            } else {
-                const errorData = await response.json();
-                toast.error(
-                    `Failed to update opportunity: ${errorData.message}`
-                );
-            }
+            setGetOpportunities((prevOpportunities) =>
+                prevOpportunities.map((opportunity) =>
+                    opportunity._id === editingOpportunity
+                        ? { ...opportunity, ...editedOpportunity }
+                        : opportunity
+                )
+            );
+
+            setEditingOpportunity(null);
+            setIsModalOpen(false);
+            toast.success('Get opportunity edited successfully');
         } catch (error) {
             console.error('Error updating opportunity:', error);
-            toast.error('Error updating opportunity');
         }
     };
 
     const DeleteGetOpportunity = async (getOpportunitiesId) => {
+        setLoadingStates((prev) => ({ ...prev, [getOpportunitiesId]: true }));
         try {
-            const response = await fetch(
-                `${API_BASE_URL}/api/opportunity/getopportunities/${getOpportunitiesId}`,
-                {
-                    method: 'DELETE',
-                    headers: {
-                        'x-api-key': API_KEY,
-                    },
-                    credentials: 'include',
-                }
+            await apiRequest(
+                `${api.getOpportunity}/${getOpportunitiesId}`,
+                'DELETE'
             );
-            if (response.ok) {
-                fetchGetOpportunities();
-                toast.success('get opportunity deleted successfully');
-            } else {
-                console.error('Failed to delete opportunity');
-                toast.error('Failed to delete opportunity');
-            }
+
+            setGetOpportunities((prevOpportunities) =>
+                prevOpportunities.filter(
+                    (opportunity) => opportunity._id !== getOpportunitiesId
+                )
+            );
+            toast.success('Get opportunity deleted successfully');
         } catch (error) {
             console.error('Error deleting Get Opportunity:', error);
-            toast.error('Error deleting Get Opportunity');
+        } finally {
+            setLoadingStates((prev) => ({
+                ...prev,
+                [getOpportunitiesId]: false,
+            }));
         }
     };
+
     // Fetch Give Opportunities
     const fetchGiveOpportunities = async () => {
-        setIsLoading(true);
         try {
-            const response = await fetch(
-                `${API_BASE_URL}/api/opportunity/giveopportunities`,
-                {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': API_KEY,
-                    },
-                }
-            );
-            const data = await response.json();
+            const data = await useFetch(api.giveOpportunity);
             setGiveOpportunities(collegeBased(data));
         } catch (error) {
             console.error('Error Fetching give Opportunities: ', error);
             toast.error('Error Fetching give Opportunities ');
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -259,43 +201,24 @@ const OpportunitiesPage = () => {
 
         if (college) {
             try {
-                const response = await fetch(
-                    `${API_BASE_URL}/api/opportunity/giveopportunities`,
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-api-key': API_KEY,
-                        },
-                        credentials: 'include',
-                        body: JSON.stringify({
-                            ...newGiveOpportunity,
-                            college: college,
-                        }),
-                    }
+                await apiRequest(`${api.giveOpportunity}`, 'POST', {
+                    ...newGiveOpportunity,
+                    college: college,
+                });
+
+                setNewGiveOpportunity({
+                    name: '',
+                    description: '',
+                    whatsapp: '',
+                    email: '',
+                });
+                setShowGiveForm(false);
+                toast.success(
+                    'Give Opportunity Added SuccessFully , Available Once Approved'
                 );
-                if (response.ok) {
-                    setNewGiveOpportunity({
-                        name: '',
-                        description: '',
-                        whatsapp: '',
-                        email: '',
-                    });
-                    setShowGiveForm(false);
-                    toast.success(
-                        'Give Opportunity Added SuccessFully , Available Once Approved'
-                    );
-                } else if (response.status === 401) {
-                    toast.error(
-                        'Your session has expired. Please log in again.'
-                    );
-                    handleLogout();
-                } else {
-                    const errorData = await response.json();
-                    toast.error(`${errorData.message}`);
-                }
             } catch (err) {
-                toast.error(err);
+                // toast.error(err);
+                console.log(err);
             }
         } else {
             toast.error('College not found.');
@@ -317,63 +240,54 @@ const OpportunitiesPage = () => {
     const handleEditGiveOpportunitySubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(
-                `${API_BASE_URL}/api/opportunity/giveopportunities/${editingOpportunity}`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': API_KEY,
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify(editedOpportunity),
-                }
+            await apiRequest(
+                `${api.giveOpportunity}/${editingOpportunity}`,
+                'PUT',
+                editedOpportunity
             );
 
-            if (response.ok) {
-                setEditingOpportunity(null);
-                fetchGiveOpportunities();
-                setIsModalOpen(false);
-                toast.success('Give Opportunity Updated Successfully');
-            } else {
-                const errorData = await response.json();
-                toast.error(
-                    `Failed to update opportunity: ${errorData.message}`
-                );
-            }
+            setGiveOpportunities((prevOpportunities) =>
+                prevOpportunities.map((opportunity) =>
+                    opportunity._id === editingOpportunity
+                        ? { ...opportunity, ...editedOpportunity }
+                        : opportunity
+                )
+            );
+
+            setEditingOpportunity(null);
+            setIsModalOpen(false);
+            toast.success('Give opportunity updated successfully');
         } catch (error) {
             console.error('Error updating opportunity:', error);
-            toast.error('Error updating opportunity');
         }
     };
 
     const DeleteGiveOpportunity = async (giveOpportunitiesId) => {
+        setLoadingStates((prev) => ({ ...prev, [giveOpportunitiesId]: true }));
         try {
-            const response = await fetch(
-                `${API_BASE_URL}/api/opportunity/giveopportunities/${giveOpportunitiesId}`,
-                {
-                    method: 'DELETE',
-                    headers: {
-                        'x-api-key': API_KEY,
-                    },
-                    credentials: 'include',
-                }
+            await apiRequest(
+                `${api.giveOpportunity}/${giveOpportunitiesId}`,
+                'DELETE'
             );
-            if (response.ok) {
-                fetchGiveOpportunities();
-                toast.success('Give Opportunity deleted successfully');
-            } else {
-                toast.error('Failed to delete opportunity');
-            }
+
+            setGiveOpportunities((prevOpportunities) =>
+                prevOpportunities.filter(
+                    (opportunity) => opportunity._id !== giveOpportunitiesId
+                )
+            );
+            toast.success('Give opportunity deleted successfully');
         } catch (error) {
             console.error('Error deleting Give Opportunity:', error);
-            toast.error('Error deleting Give Opportunity');
+        } finally {
+            setLoadingStates((prev) => ({
+                ...prev,
+                [giveOpportunitiesId]: false,
+            }));
         }
     };
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full">
-            {/* <Header /> */}
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5">
                 <h1 className="text-3xl font-bold mb-5 text-center">
@@ -462,13 +376,18 @@ const OpportunitiesPage = () => {
                                 <button
                                     type="submit"
                                     className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                    disabled={loading}
                                 >
-                                    Submit
+                                    {loading ? (
+                                        <i className="fa fa-spinner fa-spin"></i>
+                                    ) : (
+                                        <>Submit</>
+                                    )}
                                 </button>
                             </form>
                         )}
 
-                        {isLoading ? (
+                        {loadingFetch ? (
                             <div className="text-center">
                                 <svg
                                     aria-hidden="true"
@@ -546,8 +465,19 @@ const OpportunitiesPage = () => {
                                                             )
                                                         }
                                                         className="px-4 py-2 bg-red-500 text-white rounded-md"
+                                                        disabled={
+                                                            loadingStates[
+                                                                opportunity._id
+                                                            ]
+                                                        }
                                                     >
-                                                        Delete
+                                                        {loadingStates[
+                                                            opportunity._id
+                                                        ] ? (
+                                                            <i className="fa fa-spinner fa-spin"></i>
+                                                        ) : (
+                                                            <>Delete</>
+                                                        )}
                                                     </button>
                                                 </>
                                             )}
@@ -624,8 +554,13 @@ const OpportunitiesPage = () => {
                         <button
                             type="submit"
                             className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                            disabled={loading}
                         >
-                            {isEditing ? 'Update' : 'Submit'}
+                            {loading ? (
+                                <i className="fa fa-spinner fa-spin"></i>
+                            ) : (
+                                <>Update</>
+                            )}
                         </button>
                     </Modal>
 
@@ -714,7 +649,7 @@ const OpportunitiesPage = () => {
                             </form>
                         )}
 
-                        {isLoading ? (
+                        {loadingFetch ? (
                             <div className="text-center">
                                 <svg
                                     aria-hidden="true"
@@ -791,8 +726,19 @@ const OpportunitiesPage = () => {
                                                             )
                                                         }
                                                         className="px-4 py-2 bg-red-500 text-white rounded-md"
+                                                        disabled={
+                                                            loading[
+                                                                opportunity._id
+                                                            ]
+                                                        }
                                                     >
-                                                        Delete
+                                                        {loadingStates[
+                                                            opportunity._id
+                                                        ] ? (
+                                                            <i className="fa fa-spinner fa-spin"></i>
+                                                        ) : (
+                                                            <>Delete</>
+                                                        )}
                                                     </button>
                                                 </>
                                             )}
