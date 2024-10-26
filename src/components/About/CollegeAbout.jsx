@@ -1,25 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { api, API_KEY } from '../../config/apiConfiguration';
+import { api } from '../../config/apiConfiguration';
 import { capitalizeWords } from '../../utils/Capitalize.js';
 import { useParams } from 'react-router-dom';
+import useApiFetch from '../../hooks/useApiFetch.js';
 
 const CollegeAbout = () => {
     const [collegeData, setCollegeData] = useState([]);
     const [des, setDes] = useState('');
     const { collegeName } = useParams();
 
+    const { useFetch, loadingFetch } = useApiFetch();
     const url = api.college;
 
     const fetchCollege = async () => {
         try {
-            const response = await fetch(url, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': API_KEY,
-                },
-                method: 'GET',
-            });
-            const Collegedata = await response.json();
+            const Collegedata = await useFetch(url);
             setCollegeData(Collegedata);
             setDes(collegeBased(Collegedata));
         } catch (error) {
@@ -45,7 +40,11 @@ const CollegeAbout = () => {
         <section className="flex justify-center ">
             <div className="text-center mx-4/5 max-w-7xl p-8">
                 <h3 className="text-3xl font-bold mb-6">
-                    About {capitalizeWords(collegeName)}
+                    {loadingFetch ? (
+                        <i className="fa fa-spinner fa-spin"></i>
+                    ) : (
+                        <> About {capitalizeWords(collegeName)}</>
+                    )}
                 </h3>
                 <p className="text-gray-500 text-xl">{des}</p>
             </div>

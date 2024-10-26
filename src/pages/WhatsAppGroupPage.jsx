@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import { api, API_KEY } from '../config/apiConfiguration.js';
+import { api } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
 import useApiRequest from '../hooks/useApiRequest.js';
+import useApiFetch from '../hooks/useApiFetch.js';
 
 const WhatsAppGroupPage = () => {
     const { collegeName } = useParams();
     const [searchTerm, setSearchTerm] = useState('');
     const [groups, setGroupLink] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [text, setText] = useState('Submit');
     const [groupData, setGroupData] = useState({
@@ -23,6 +23,7 @@ const WhatsAppGroupPage = () => {
     });
 
     const { apiRequest, loading } = useApiRequest();
+    const { useFetch, loadingFetch } = useApiFetch();
     const url = api.group;
 
     const openModal = () => {
@@ -41,15 +42,7 @@ const WhatsAppGroupPage = () => {
     useEffect(() => {
         const fetchLink = async () => {
             try {
-                const response = await fetch(`${url}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': API_KEY,
-                    },
-                });
-                setIsLoading(false);
-                const data = await response.json();
+                const data = await useFetch(api.group);
                 const collegeid = localStorage.getItem(getCollegeId());
                 const selectedColleges = data.filter(
                     (item) => item.college === collegeid
@@ -58,7 +51,7 @@ const WhatsAppGroupPage = () => {
                     setGroupLink(LatestFirst(selectedColleges));
                 }
             } catch (error) {
-                console.error('Error fetching WhatsApp links: ', error);
+                console.error('Error fetching WhatsApp Groups: ', error);
                 toast.error('Error fetching WhatsApp Groups ');
             }
         };
@@ -137,7 +130,6 @@ const WhatsAppGroupPage = () => {
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full">
-            {/* <Header /> */}
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5">
                 <h1 className="text-3xl font-bold mb-5 text-center">
@@ -194,30 +186,12 @@ const WhatsAppGroupPage = () => {
                         ))}
                     </div>
                 ) : (
-                    <div
-                        className={`${
-                            isLoading ? 'block' : 'hidden'
-                        } text-center w-full`}
-                    >
-                        <div role="status">
-                            <svg
-                                aria-hidden="true"
-                                className="inline w-20 h-20 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                                viewBox="0 0 100 101"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                    fill="currentColor"
-                                />
-                                <path
-                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 66.0814 12.1905 70.7824 14.1209C75.4835 16.0514 79.4052 18.4618 82.9602 21.2794C85.969 23.7307 88.6364 26.7018 90.9726 30.1997C92.0551 32.5764 93.4383 36.4742 93.9676 39.0409Z"
-                                    fill="currentFill"
-                                />
-                            </svg>
-                            <span className="sr-only">Loading...</span>
-                        </div>
+                    <div className="col-span-4 flex justify-center items-center w-full">
+                        {loadingFetch ? (
+                            <i className="fas fa-spinner fa-pulse fa-5x"></i>
+                        ) : (
+                            <p>No Notes Found</p>
+                        )}
                     </div>
                 )}
             </div>
@@ -295,8 +269,13 @@ const WhatsAppGroupPage = () => {
                                 <button
                                     type="submit"
                                     className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                    disabled={loading}
                                 >
-                                    {text}
+                                    {loading ? (
+                                        <i className="fas fa-spinner fa-pulse"></i>
+                                    ) : (
+                                        <p>{text}</p>
+                                    )}
                                 </button>
                             </div>
                         </form>
