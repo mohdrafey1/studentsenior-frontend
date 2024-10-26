@@ -7,7 +7,7 @@ const AddProductModal = ({
     handleFileChange,
     handleSubmit,
     setIsModalOpen,
-    colleges,
+    loading,
 }) => {
     const [imagePreview, setImagePreview] = useState('');
 
@@ -82,20 +82,6 @@ const AddProductModal = ({
                         placeholder="Telegram (Optional)"
                         className="mb-4 w-full p-2 border border-gray-300 rounded-lg"
                     />
-                    {/* <select
-                        name="college"
-                        value={newProduct.college}
-                        onChange={handleInputChange}
-                        className="mb-4 w-full p-2 border border-gray-300 rounded-lg"
-                        required
-                    >
-                        <option>Select Your College</option>
-                        {colleges.map((college) => (
-                            <option key={college.id} value={college.id}>
-                                {college.name}
-                            </option>
-                        ))}
-                    </select> */}
                     <div className="flex">
                         <div className=" m-3">
                             <label
@@ -150,8 +136,13 @@ const AddProductModal = ({
                     <button
                         type="submit"
                         className=" bg-blue-500 text-white px-4 py-2 rounded-md w-full hover:bg-blue-600 transition"
+                        disabled={loading}
                     >
-                        Add Product
+                        {loading ? (
+                            <i className="fa fa-spinner fa-spin"></i>
+                        ) : (
+                            <>Add Product</>
+                        )}
                     </button>
                 </form>
             </div>

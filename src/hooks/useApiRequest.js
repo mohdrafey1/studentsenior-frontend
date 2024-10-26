@@ -16,7 +16,7 @@ const useApiRequest = () => {
         navigate('/sign-in');
     };
 
-    const apiRequest = async (url, method, body = null) => {
+    const apiRequest = async (url, method, body = null, isFormData = false) => {
         setLoading(true);
         setError(null);
 
@@ -24,15 +24,14 @@ const useApiRequest = () => {
             const options = {
                 method,
                 headers: {
-                    'Content-Type': 'application/json',
                     'x-api-key': API_KEY,
+                    ...(isFormData
+                        ? {}
+                        : { 'Content-Type': 'application/json' }),
                 },
                 credentials: 'include',
+                body: isFormData ? body : JSON.stringify(body),
             };
-
-            if (body) {
-                options.body = JSON.stringify(body);
-            }
 
             const response = await fetch(url, options);
 
@@ -42,16 +41,14 @@ const useApiRequest = () => {
             } else if (response.status === 401) {
                 handleLogout();
                 toast.error(
-                    'Your token is expired, please login again and continue your request..',
-                    {
-                        autoClose: 10000,
-                    }
+                    'Your token is expired, please log in again and continue your request.',
+                    { autoClose: 10000 }
                 );
                 throw new Error('Unauthorized');
             } else {
                 const errorData = await response.json();
                 toast.error(errorData.message || 'An error has occurred');
-                throw new Error(errorData.message || 'Something went wrong');
+                throw new Error(errorData || 'Something went wrong');
             }
         } catch (error) {
             setError(error.message);

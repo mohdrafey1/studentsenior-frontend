@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { signOut } from '../redux/user/userSlice.js';
+import { useParams } from 'react-router-dom';
 import AddProductModal from '../components/StoreModal/AddProductModal';
 import EditProductModal from '../components/StoreModal/EditProductModal';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import { API_BASE_URL, API_KEY } from '../config/apiConfiguration.js';
+import { api, API_KEY } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
+import useApiRequest from '../hooks/useApiRequest.js';
+import useApiFetch from '../hooks/useApiFetch.js';
 
 const StorePage = () => {
     const { collegeName } = useParams();
     const [products, setProducts] = useState([]);
     const [affiliateproducts, setAffiliateProducts] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isLoading2, setIsLoading2] = useState(false);
-    const [isLoading3, setIsLoading3] = useState(false);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const [loadingStates, setLoadingStates] = useState({});
     const [newProduct, setNewProduct] = useState({
         name: '',
         price: '',
@@ -48,22 +44,14 @@ const StorePage = () => {
     const collegeId = selectedCollegeObject.id;
 
     const currentUser = useSelector((state) => state.user.currentUser);
-
     const ownerId = currentUser?._id;
+    const { useFetch, loadingFetch } = useApiFetch();
+    const { apiRequest, loading } = useApiRequest();
 
     const fetchProducts = async () => {
-        setIsLoading(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/api/store`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': API_KEY,
-                },
-            });
-            const data = await response.json();
+            const data = await useFetch(api.store);
             setProducts(LatestFirst(data));
-            setIsLoading(false);
         } catch (err) {
             console.error('Error fetching products:', err);
             toast.error('Error fetching products:');
@@ -82,22 +70,9 @@ const StorePage = () => {
     };
 
     const fetchAffiliateProducts = async () => {
-        setIsLoading3(true);
         try {
-            const response = await fetch(
-                `${API_BASE_URL}/api/store/affiliate`,
-                {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': API_KEY,
-                    },
-                }
-            );
-            const data = await response.json();
-
+            const data = await useFetch(`${api.store}/affiliate`);
             setAffiliateProducts(data);
-            setIsLoading3(false);
         } catch (err) {
             console.error('Error fetching products:', err);
             toast.error('Error fetching products');
@@ -130,14 +105,7 @@ const StorePage = () => {
         }
     };
 
-    const handleLogout = () => {
-        dispatch(signOut());
-        navigate('/sign-in');
-    };
-
     const handleSubmit = async (e) => {
-        setIsLoading2(true);
-
         e.preventDefault();
         const formData = new FormData();
         formData.append('name', newProduct.name);
@@ -148,42 +116,21 @@ const StorePage = () => {
         formData.append('college', collegeId);
         formData.append('image', newProduct.image);
         formData.append('available', newProduct.available);
-        // formData.append('owner', ownerId);
 
         try {
-            const response = await fetch(`${API_BASE_URL}/api/store`, {
-                method: 'POST',
-                headers: {
-                    'x-api-key': API_KEY,
-                },
-                credentials: 'include',
-                body: formData,
-            });
-            setIsLoading2(false);
-
-            if (response.ok) {
-                fetchProducts();
-                setIsModalOpen(false);
-                toast.success(
-                    'Your request has been received, and the item will be displayed once it has been approved.',
-                    { autoClose: 10000 }
-                );
-            } else if (response.status === 401) {
-                setIsModalOpen(false);
-                toast.error('Your session has expired. Please log in again.');
-                handleLogout();
-            } else {
-                const errorData = await response.json();
-                toast.error(`Failed to add product: ${errorData.message}`);
-            }
+            await apiRequest(`${api.store}`, 'POST', formData, true);
+            fetchProducts();
+            setIsModalOpen(false);
+            toast.success(
+                'Your request has been received. The item will display once approved.',
+                { autoClose: 10000 }
+            );
         } catch (err) {
             console.error('Error adding product:', err);
-            toast.error('Error adding product ');
         }
     };
 
     const handleUpdate = async (e) => {
-        setIsLoading2(true);
         e.preventDefault();
         const formData = new FormData();
         formData.append('name', editingProduct.name);
@@ -197,35 +144,19 @@ const StorePage = () => {
         formData.append('status', 'true');
 
         try {
-            const response = await fetch(
-                `${API_BASE_URL}/api/store/${editingProduct._id}`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'x-api-key': API_KEY,
-                    },
-                    credentials: 'include',
-                    body: formData,
-                }
+            await apiRequest(
+                `${api.store}/${editingProduct._id}`,
+                'PUT',
+                formData,
+                true
             );
-            setIsLoading2(false);
 
-            if (response.ok) {
-                fetchProducts(); // Refresh products list
-                setIsModalOpen(false);
-                setEditingProduct(null);
-                toast.success('Your request has been updated.');
-            } else if (response.status === 401) {
-                setIsModalOpen(false);
-                toast.error('Your session has expired. Please log in again.');
-                handleLogout();
-            } else {
-                const errorData = await response.json();
-                toast.error(`Failed to Update product: ${errorData.message}`);
-            }
+            fetchProducts();
+            setIsModalOpen(false);
+            setEditingProduct(null);
+            toast.success('Your request has been updated.');
         } catch (err) {
             console.error('Error updating product:', err);
-            toast.error('Error updating product');
         }
     };
 
@@ -234,20 +165,17 @@ const StorePage = () => {
         setIsModalOpen(true);
     };
 
+    // will setup later with custom hook #issue
     const handleDelete = async (productId) => {
-        setIsLoading2(true);
+        setLoadingStates((prev) => ({ ...prev, [productId]: true }));
         try {
-            const response = await fetch(
-                `${API_BASE_URL}/api/store/${productId}`,
-                {
-                    method: 'DELETE',
-                    headers: {
-                        'x-api-key': API_KEY,
-                    },
-                    credentials: 'include',
-                }
-            );
-            setIsLoading2(false);
+            const response = await fetch(`${api.store}/${productId}`, {
+                method: 'DELETE',
+                headers: {
+                    'x-api-key': API_KEY,
+                },
+                credentials: 'include',
+            });
             if (response.ok) {
                 fetchProducts();
                 toast.success('Your request has been deleted successfully');
@@ -262,6 +190,11 @@ const StorePage = () => {
         } catch (err) {
             console.error('Error deleting product:', err);
             toast.error('Error deleting product');
+        } finally {
+            setLoadingStates((prev) => ({
+                ...prev,
+                [productId]: false,
+            }));
         }
     };
 
@@ -272,12 +205,6 @@ const StorePage = () => {
 
     return (
         <div className="bg-gradient-to-t from-sky-200 to bg-white">
-            <div className={`${isLoading2 ? 'block' : 'hidden'} text-center `}>
-                <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-50">
-                    <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>
-                </div>
-            </div>
-            {/* <Header /> */}
             <CollegeLinks />
             <div className="container mx-auto px-4 py-5">
                 <div className="flex flex-col justify-center items-center">
@@ -378,8 +305,19 @@ const StorePage = () => {
                                                                     product._id
                                                                 )
                                                             }
+                                                            disabled={
+                                                                loadingStates[
+                                                                    product._id
+                                                                ]
+                                                            }
                                                         >
-                                                            Delete
+                                                            {loadingStates[
+                                                                product._id
+                                                            ] ? (
+                                                                <i className="fa fa-spinner fa-spin"></i>
+                                                            ) : (
+                                                                <>Delete</>
+                                                            )}
                                                         </button>
                                                     </>
                                                 )}
@@ -389,7 +327,7 @@ const StorePage = () => {
                                 ))
                             ) : (
                                 <div className="col-span-4 flex justify-center items-center w-full">
-                                    {isLoading ? (
+                                    {loadingFetch ? (
                                         <div className="text-center">
                                             <svg
                                                 aria-hidden="true"
@@ -472,7 +410,7 @@ const StorePage = () => {
                                 ))
                             ) : (
                                 <div className="col-span-4 flex justify-center items-center w-full">
-                                    {isLoading3 ? (
+                                    {loadingFetch ? (
                                         <div className="text-center">
                                             <svg
                                                 aria-hidden="true"
@@ -512,7 +450,7 @@ const StorePage = () => {
                             handleFileChange={handleFileChange}
                             handleUpdate={handleUpdate}
                             setIsModalOpen={setIsModalOpen}
-                            colleges={colleges}
+                            loading={loading}
                         />
                     ) : (
                         <AddProductModal
@@ -521,7 +459,7 @@ const StorePage = () => {
                             handleFileChange={handleFileChange}
                             handleSubmit={handleSubmit}
                             setIsModalOpen={setIsModalOpen}
-                            colleges={colleges}
+                            loading={loading}
                         />
                     ))}
             </div>

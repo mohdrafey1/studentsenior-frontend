@@ -6,7 +6,7 @@ const EditProductModal = ({
     handleFileChange,
     handleUpdate,
     setIsModalOpen,
-    colleges,
+    loading,
 }) => {
     const [imagePreview, setImagePreview] = useState(
         editingProduct.image.url || ''
@@ -41,50 +41,75 @@ const EditProductModal = ({
                     encType="multipart/form-data"
                     className="space-y-4"
                 >
-                    {[
-                        'name',
-                        'price',
-                        'description',
-                        'whatsapp',
-                        'telegram',
-                    ].map((field) => (
-                        <div key={field}>
-                            <label className="block text-sm font-semibold mb-0 capitalize">
-                                {field}
-                            </label>
-                            <input
-                                type={field === 'price' ? 'number' : 'text'}
-                                name={field}
-                                value={editingProduct[field]}
-                                onChange={handleInputChange}
-                                placeholder={
-                                    field.charAt(0).toUpperCase() +
-                                    field.slice(1)
-                                }
-                                className="p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            />
-                        </div>
-                    ))}
-
-                    {/* <div>
-                        <label className="block text-sm font-semibold mb-0">
-                            Select Your College
+                    <div>
+                        <label className="block text-sm font-semibold mb-0 capitalize">
+                            Name
                         </label>
-                        <select
-                            name="college"
-                            value={editingProduct.college}
+                        <input
+                            type="text"
+                            name="name"
+                            value={editingProduct.name}
                             onChange={handleInputChange}
+                            placeholder="Name"
+                            required
                             className="p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        >
-                            <option>Select Your College</option>
-                            {colleges.map((college) => (
-                                <option key={college.id} value={college.id}>
-                                    {college.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div> */}
-
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-semibold mb-0 capitalize">
+                            Price
+                        </label>
+                        <input
+                            type="number"
+                            name="price"
+                            required
+                            value={editingProduct.price}
+                            onChange={handleInputChange}
+                            placeholder="Price"
+                            className="p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-semibold mb-0 capitalize">
+                            Description
+                        </label>
+                        <input
+                            type="text"
+                            name="description"
+                            required
+                            value={editingProduct.description}
+                            onChange={handleInputChange}
+                            placeholder="Description"
+                            className="p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-semibold mb-0 capitalize">
+                            WhatsApp
+                        </label>
+                        <input
+                            type="Number"
+                            name="whatsapp"
+                            required
+                            value={editingProduct.whatsapp}
+                            onChange={handleInputChange}
+                            placeholder="WhatsApp Number"
+                            className="p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-semibold mb-0 capitalize">
+                            Telegram
+                        </label>
+                        <input
+                            type="Number"
+                            name="telegram"
+                            value={editingProduct.telegram}
+                            onChange={handleInputChange}
+                            placeholder="Telegram Number (optional)"
+                            className="p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                    </div>
                     <div className="flex items-center justify-center space-y-4">
                         <input
                             type="file"
@@ -100,7 +125,7 @@ const EditProductModal = ({
                         <img
                             src={imagePreview || previousImageUrl}
                             alt={editingProduct.name}
-                            className="object-cover rounded-md w-48 h-24" // Fixed size for preview
+                            className="object-cover rounded-md w-48 h-24"
                         />
                     </div>
 
@@ -121,8 +146,13 @@ const EditProductModal = ({
                         <button
                             type="submit"
                             className="bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 transition-all duration-200 ease-in-out"
+                            disabled={loading}
                         >
-                            Update Product
+                            {loading ? (
+                                <i className="fa fa-spinner fa-spin"></i>
+                            ) : (
+                                <>Update</>
+                            )}
                         </button>
                         <button
                             type="button"
