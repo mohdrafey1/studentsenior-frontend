@@ -30,7 +30,9 @@ const useApiRequest = () => {
                         : { 'Content-Type': 'application/json' }),
                 },
                 credentials: 'include',
-                body: isFormData ? body : JSON.stringify(body),
+                ...(body !== null && {
+                    body: isFormData ? body : JSON.stringify(body),
+                }),
             };
 
             const response = await fetch(url, options);
