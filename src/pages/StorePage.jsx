@@ -165,28 +165,12 @@ const StorePage = () => {
         setIsModalOpen(true);
     };
 
-    // will setup later with custom hook #issue
     const handleDelete = async (productId) => {
         setLoadingStates((prev) => ({ ...prev, [productId]: true }));
         try {
-            const response = await fetch(`${api.store}/${productId}`, {
-                method: 'DELETE',
-                headers: {
-                    'x-api-key': API_KEY,
-                },
-                credentials: 'include',
-            });
-            if (response.ok) {
-                fetchProducts();
-                toast.success('Your request has been deleted successfully');
-            } else if (response.status === 401) {
-                setIsModalOpen(false);
-                toast.error('Your session has expired. Please log in again.');
-                handleLogout();
-            } else {
-                const errorData = await response.json();
-                toast.error(`Failed to Delete product: ${errorData.message}`);
-            }
+            await apiRequest(`${api.store}/${productId}`, 'DELETE');
+            fetchProducts();
+            toast.success('Your request has been deleted successfully');
         } catch (err) {
             console.error('Error deleting product:', err);
             toast.error('Error deleting product');
