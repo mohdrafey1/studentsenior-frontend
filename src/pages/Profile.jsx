@@ -19,6 +19,7 @@ import {
     signOut,
 } from '../redux/user/userSlice';
 import { toast } from 'react-toastify';
+import warning from '../../public/assets/warning.png';
 
 export default function Profile() {
     const dispatch = useDispatch();
@@ -28,6 +29,7 @@ export default function Profile() {
     const [imageError, setImageError] = useState(false);
     const [formData, setFormData] = useState({});
     const [updateSuccess, setUpdateSuccess] = useState(false);
+    const [showDialog, setShowDialog] = useState(false);
 
     const { currentUser, loading, error } = useSelector((state) => state.user);
     useEffect(() => {
@@ -131,109 +133,132 @@ export default function Profile() {
         }
     };
     return (
-        <>
-            <div className="p-3 max-w-lg mx-auto ">
-                <h1 className="text-3xl font-semibold text-center my-7">
-                    Profile
-                </h1>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    <input
-                        type="file"
-                        ref={fileRef}
-                        hidden
-                        accept="image/*"
-                        onChange={(e) => setImage(e.target.files[0])}
-                    />
-                    <img
-                        src={
-                            formData.profilePicture ||
-                            currentUser.profilePicture
-                        }
-                        alt="profile"
-                        className="h-24 w-24 self-center cursor-pointer rounded-full object-cover mt-2"
-                        onClick={() => fileRef.current.click()}
-                    />
-                    <p className="text-sm self-center">
-                        {imageError ? (
-                            <span className="text-red-700">
-                                Error uploading image (file size must be less
-                                than 2 MB)
-                            </span>
-                        ) : imagePercent > 0 && imagePercent < 100 ? (
-                            <span className="text-slate-700">{`Uploading: ${imagePercent} %`}</span>
-                        ) : imagePercent === 100 ? (
-                            <span className="text-green-700">
-                                Image uploaded successfully
-                            </span>
-                        ) : (
-                            ''
-                        )}
-                    </p>
-                    <input
-                        defaultValue={currentUser.username}
-                        type="text"
-                        id="username"
-                        placeholder="Username"
-                        className="bg-slate-100 rounded-lg p-3"
-                        onChange={handleChange}
-                    />
-                    <input
-                        defaultValue={currentUser.email}
-                        type="email"
-                        id="email"
-                        placeholder="Email"
-                        className="bg-slate-100 rounded-lg p-3"
-                        onChange={handleChange}
-                        readOnly
-                    />
-                    <input
-                        defaultValue={currentUser.college}
-                        type="text"
-                        id="college"
-                        placeholder="College Name"
-                        className="bg-slate-100 rounded-lg p-3"
-                        onChange={handleChange}
-                    />
-                    <input
-                        defaultValue={currentUser.phone}
-                        type="number"
-                        id="phone"
-                        placeholder="Please Enter 10 digit Mobile No"
-                        className="bg-slate-100 rounded-lg p-3"
-                        onChange={handleChange}
-                    />
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Password"
-                        className="bg-slate-100 rounded-lg p-3"
-                        onChange={handleChange}
-                    />
-                    <button className="bg-sky-500 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
-                        {loading ? 'Loading...' : 'Update'}
-                    </button>
-                </form>
-                <div className="flex justify-between mt-5">
-                    <span
-                        onClick={handleDeleteAccount}
-                        className="text-gray-400 cursor-pointer"
-                    >
-                        <button disabled>Delete Account</button>
-                    </span>
-                    <span
-                        onClick={handleSignOut}
-                        className="text-red-700 cursor-pointer"
-                    >
-                        Sign out
-                    </span>
+      <>
+        {showDialog ? (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-400 z-50 bg-opacity-75 ">
+            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 rounded-lg lg:w-1/3 w-2/3 shadow-2xl">
+              <div className="sm:flex sm:items-start">
+                <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                  <img src={warning} alt="warning icon" className="p-2" />
                 </div>
-                <p className="text-red-700 mt-5">
-                    {error && 'Something went wrong!'}
-                </p>
-                <p className="text-green-700 mt-5">
-                    {updateSuccess && 'User is updated successfully!'}
-                </p>
+                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                  <p> Do you want to log out?</p>
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">
+                      You'll need to log in again to access your account.
+                    </p>
+                  </div>
+                  <div className="flex py-4 gap-3 lg:justify-end justify-center ">
+                    <p 
+                    className='p-1 py-2 bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer'
+                    onClick={() => setShowDialog(false)}
+                    >Cancel</p>
+                    <p 
+                    className='p-1 py-2 bg-red-600 rounded-lg px-4 border-gray-400 text-sm font-semibold text-white outline-indigo-100 cursor-pointer'
+                    onClick={handleSignOut}
+                    >Log out</p>
+                  </div>
+                </div>
+              </div>
             </div>
-        </>
+          </div>
+        ) : null}
+        <div className="p-3 max-w-lg mx-auto ">
+          <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <input
+              type="file"
+              ref={fileRef}
+              hidden
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files[0])}
+            />
+            <img
+              src={formData.profilePicture || currentUser.profilePicture}
+              alt="profile"
+              className="h-24 w-24 self-center cursor-pointer rounded-full object-cover mt-2"
+              onClick={() => fileRef.current.click()}
+            />
+            <p className="text-sm self-center">
+              {imageError ? (
+                <span className="text-red-700">
+                  Error uploading image (file size must be less than 2 MB)
+                </span>
+              ) : imagePercent > 0 && imagePercent < 100 ? (
+                <span className="text-slate-700">{`Uploading: ${imagePercent} %`}</span>
+              ) : imagePercent === 100 ? (
+                <span className="text-green-700">
+                  Image uploaded successfully
+                </span>
+              ) : (
+                ""
+              )}
+            </p>
+            <input
+              defaultValue={currentUser.username}
+              type="text"
+              id="username"
+              placeholder="Username"
+              className="bg-slate-100 rounded-lg p-3"
+              onChange={handleChange}
+            />
+            <input
+              defaultValue={currentUser.email}
+              type="email"
+              id="email"
+              placeholder="Email"
+              className="bg-slate-100 rounded-lg p-3"
+              onChange={handleChange}
+              readOnly
+            />
+            <input
+              defaultValue={currentUser.college}
+              type="text"
+              id="college"
+              placeholder="College Name"
+              className="bg-slate-100 rounded-lg p-3"
+              onChange={handleChange}
+            />
+            <input
+              defaultValue={currentUser.phone}
+              type="number"
+              id="phone"
+              placeholder="Please Enter 10 digit Mobile No"
+              className="bg-slate-100 rounded-lg p-3"
+              onChange={handleChange}
+            />
+            <input
+              type="password"
+              id="password"
+              placeholder="Password"
+              className="bg-slate-100 rounded-lg p-3"
+              onChange={handleChange}
+            />
+            <button className="bg-sky-500 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
+              {loading ? "Loading..." : "Update"}
+            </button>
+          </form>
+          <div className="flex justify-between mt-5">
+            <span
+              onClick={handleDeleteAccount}
+              className="text-gray-400 cursor-pointer"
+            >
+              <button disabled>Delete Account</button>
+            </span>
+            <span
+              onClick={() => {setShowDialog(true);}}
+              className="text-red-700 cursor-pointer"
+            >
+              Sign out
+            </span>
+          </div>
+          <p className="text-red-700 mt-5">
+            {error && "Something went wrong!"}
+          </p>
+          <p className="text-green-700 mt-5">
+            {updateSuccess && "User is updated successfully!"}
+          </p>
+        </div>
+      </>
     );
 }
