@@ -339,7 +339,7 @@ const StorePage = () => {
                                             className="bg-white shadow-md lg:h-2/5 h-36 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
                                         />
                                         <div className="p-4">
-                                            <h5 className="text-sm lg:text-lg tracking-tight text-gray-700 dark:text-gray-300">
+                                            <h5 className="text-sm lg:text-lg tracking-tight text-gray-700 dark:text-gray-300 line-clamp-1">
                                                 {product.name}
                                             </h5>
                                             <p>
@@ -348,22 +348,22 @@ const StorePage = () => {
                                                     ₹{product.price}
                                                 </span>
                                             </p>
-
-                                            <div className="overflow-y-scroll h-24 lg:h-32">
-                                                <p className="text-gray-600  italic text-[9px] lg:text-base dark:text-gray-200">
-                                                    {product.description}
-                                                </p>
-                                                <a
+                                            <a
                                                     target="blank"
                                                     href={product.link}
                                                 >
                                                     <button
                                                         type="button"
-                                                        className="text-white w-3/4 mx-4 my-3 p-1 lg:text-lg text-sm bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                                                        className="text-white w-3/4 mx-4 my-3 py-1 lg:p-1 lg:text-lg text-sm bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                                                     >
                                                         Buy Now
                                                     </button>
                                                 </a>
+                                            <div className="overflow-y-scroll h-12 lg:h-20">
+                                                <p className="text-gray-600  italic text-[9px] lg:text-base dark:text-gray-200">
+                                                    {product.description}
+                                                </p>
+                                               
                                             </div>
                                         </div>
                                     </div>
