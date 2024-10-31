@@ -16,7 +16,7 @@ const CollegePage = () => {
                 <Collegelinks />
             </CollegeHero>
             <FeaturedSeniors />
-            <Testimonials />
+          
             <CollegeAbout />
             <Collegelink2 />
         </div>
