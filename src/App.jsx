@@ -25,6 +25,7 @@ import PrivateRoute from './components/PrivateRoute';
 import InstallPage from './pages/InstallPage';
 import Layout from './components/Layout/Layout';
 import NotFoundPage from './components/NotFoundPage';
+import ContactUs from './Forms/ContactUs';
 
 const validColleges = [
     'integral-university',
@@ -125,6 +126,7 @@ const App = () => {
                     <Route path="/becomesenior" element={<AddSenior />} />
                     <Route path="/add-college" element={<AddCollege />} />
                     <Route path="/about-us" element={<AboutPage />} />
+                    <Route path="/contact-us" element={<ContactUs />} />
                     <Route
                         path="/sign-in"
                         element={user ? <Navigate to="/" /> : <SignIn />}
