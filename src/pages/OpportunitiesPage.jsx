@@ -476,7 +476,7 @@ const OpportunitiesPage = () => {
                             isEditing
                                 ? handleEditOpportunitySubmit
                                 : handleEditGiveOpportunitySubmit
-                        } // Dynamic submission
+                        }
                     >
                         <h3 className="text-xl font-bold mb-3">
                             {isEditing

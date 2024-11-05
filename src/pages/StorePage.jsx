@@ -217,12 +217,12 @@ const StorePage = () => {
                                 products.map((product) => (
                                     <div
                                         key={product._id}
-                                        className="border  h-96 lg:h-min my-3 border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
+                                        className="border my-3 border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
                                     >
                                         <img
                                             src={product.image.url}
                                             alt={product.name}
-                                            className="bg-white shadow-md h-36 lg:h-2/5 max-h-60 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
+                                            className="bg-white shadow-md h-36 max-h-60 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
                                         />
                                         <div className="p-4 ">
                                             <h5 className="lg:text-lg text-sm tracking-tight text-gray-700 dark:text-gray-300">
@@ -247,66 +247,67 @@ const StorePage = () => {
                                                         }
                                                     </p>
                                                 </div>
-                                                <div className="flex items-center mt-2 gap-3">
-                                                    <a
-                                                        target="_blank"
-                                                        href={`https://wa.me/${product.whatsapp}`}
-                                                        aria-label="WhatsApp"
-                                                        className="text-green-600 hover:text-green-500 transition"
-                                                    >
-                                                        <i className="fa-brands fa-whatsapp text-2xl sm:text-3xl"></i>
-                                                    </a>
-                                                    <a
-                                                        target="_blank"
-                                                        href={`https://t.me/+91${product.telegram}`}
-                                                        aria-label="Telegram"
-                                                        className="text-blue-600 hover:text-blue-500 transition"
-                                                    >
-                                                        <i className="fa-brands fa-telegram text-2xl sm:text-3xl"></i>
-                                                    </a>
+                                                <div className="flex my-2 justify-between">
+                                                    <div className="flex gap-3">
+                                                        <a
+                                                            target="_blank"
+                                                            href={`https://wa.me/${product.whatsapp}`}
+                                                            aria-label="WhatsApp"
+                                                            className="text-green-600 hover:text-green-500 transition"
+                                                        >
+                                                            <i className="fa-brands fa-whatsapp text-2xl sm:text-3xl"></i>
+                                                        </a>
+                                                        <a
+                                                            target="_blank"
+                                                            href={`https://t.me/+91${product.telegram}`}
+                                                            aria-label="Telegram"
+                                                            className="text-blue-600 hover:text-blue-500 transition"
+                                                        >
+                                                            <i className="fa-brands fa-telegram text-2xl sm:text-3xl"></i>
+                                                        </a>
+                                                    </div>
+                                                    {product.owner ===
+                                                        ownerId && (
+                                                        <div className="flex gap-3">
+                                                            <button
+                                                                className="text-yellow-600 text-2xl sm:text-3xl rounded mr-2 transition hover:text-yellow-300 "
+                                                                onClick={() =>
+                                                                    handleEdit(
+                                                                        product
+                                                                    )
+                                                                }
+                                                            >
+                                                                <i className="fa-regular fa-pen-to-square"></i>
+                                                            </button>
+                                                            <button
+                                                                className="text-2xl sm:text-3xl text-red-600 rounded transition hover:text-red-300 "
+                                                                onClick={() =>
+                                                                    handleDelete(
+                                                                        product._id
+                                                                    )
+                                                                }
+                                                                disabled={
+                                                                    loadingStates[
+                                                                        product
+                                                                            ._id
+                                                                    ]
+                                                                }
+                                                            >
+                                                                {loadingStates[
+                                                                    product._id
+                                                                ] ? (
+                                                                    <i className="fa fa-spinner fa-spin"></i>
+                                                                ) : (
+                                                                    <i className="fa-solid fa-trash"></i>
+                                                                )}
+                                                            </button>
+                                                        </div>
+                                                    )}
                                                 </div>
 
                                                 <p className="text-gray-600 italic overflow-hidden dark:text-gray-200 text-xs lg:text-base">
                                                     {product.description}
                                                 </p>
-                                            </div>
-
-                                            <div className="flex justify-center mt-4">
-                                                {product.owner === ownerId && (
-                                                    <>
-                                                        <button
-                                                            className="bg-yellow-500 text-white px-4 py-2 rounded mr-2 transition hover:bg-yellow-600 text-xs lg:text-base"
-                                                            onClick={() =>
-                                                                handleEdit(
-                                                                    product
-                                                                )
-                                                            }
-                                                        >
-                                                            Edit
-                                                        </button>
-                                                        <button
-                                                            className="bg-red-500 text-white px-4 py-2 rounded transition hover:bg-red-600 text-xs lg:text-base"
-                                                            onClick={() =>
-                                                                handleDelete(
-                                                                    product._id
-                                                                )
-                                                            }
-                                                            disabled={
-                                                                loadingStates[
-                                                                    product._id
-                                                                ]
-                                                            }
-                                                        >
-                                                            {loadingStates[
-                                                                product._id
-                                                            ] ? (
-                                                                <i className="fa fa-spinner fa-spin"></i>
-                                                            ) : (
-                                                                <>Delete</>
-                                                            )}
-                                                        </button>
-                                                    </>
-                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -349,21 +350,20 @@ const StorePage = () => {
                                                 </span>
                                             </p>
                                             <a
-                                                    target="blank"
-                                                    href={product.link}
+                                                target="blank"
+                                                href={product.link}
+                                            >
+                                                <button
+                                                    type="button"
+                                                    className="text-white w-3/4 mx-4 my-3 py-1 lg:p-1 lg:text-lg text-sm bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                                                 >
-                                                    <button
-                                                        type="button"
-                                                        className="text-white w-3/4 mx-4 my-3 py-1 lg:p-1 lg:text-lg text-sm bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                                                    >
-                                                        Buy Now
-                                                    </button>
-                                                </a>
+                                                    Buy Now
+                                                </button>
+                                            </a>
                                             <div className="overflow-y-scroll h-12 lg:h-20">
                                                 <p className="text-gray-600  italic text-[9px] lg:text-base dark:text-gray-200">
                                                     {product.description}
                                                 </p>
-                                               
                                             </div>
                                         </div>
                                     </div>

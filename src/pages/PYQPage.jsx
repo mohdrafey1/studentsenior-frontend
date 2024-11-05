@@ -325,6 +325,7 @@ const PYQPage = () => {
                     </a>
                 </p>
                 <a
+                    target="_blank"
                     href="https://forms.gle/NwFvj1Jz5gxvmHfdA"
                     className="inline-block px-6 py-3 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors duration-200"
                 >

@@ -137,7 +137,7 @@ const NotesPage = () => {
                             </option>
                         ))}
                     </select>
-                    <select
+                    {/* <select
                         value={selectedBranch}
                         onChange={(e) => setSelectedBranch(e.target.value)}
                         className="p-2 border rounded-md"
@@ -149,7 +149,7 @@ const NotesPage = () => {
                                 {branch}
                             </option>
                         ))}
-                    </select>
+                    </select> */}
                 </div>
 
                 {showForm && (
@@ -174,30 +174,34 @@ const NotesPage = () => {
                         {filteredNotes.map((note) => (
                             <div
                                 key={note._id}
-                                className="bg-white p-5 shadow-md rounded-md"
+                                className="bg-white p-5 shadow-md rounded-md flex flex-col"
                             >
-                                <h2 className="text-base lg:text-xl font-bold mb-2">
-                                    {note.subjectName}
-                                </h2>
-                                <p className="mb-1 lg:text-base text-sm">
-                                    <strong>By:</strong> {note.by.username}
-                                </p>
-                                <p className="mb-1 lg:text-base text-sm">
-                                    <strong>For:</strong> {note.target}
-                                </p>
-                                <p className="mb-1 lg:text-base text-sm">
-                                    <strong>Description:</strong>{' '}
-                                    {note.description}
-                                </p>
-                                <br />
-                                <a
-                                    href={note.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-white bg-blue-500 p-2 mt-2 rounded-md hover:bg-blue-600 lg:text-base text-sm"
-                                >
-                                    View Notes
-                                </a>
+                                <div className="flex-grow">
+                                    {' '}
+                                    <h2 className="text-base lg:text-xl font-bold mb-2">
+                                        {note.subjectName}
+                                    </h2>
+                                    <p className="mb-1 lg:text-base text-sm">
+                                        <strong>By:</strong> {note.by.username}
+                                    </p>
+                                    <p className="mb-1 lg:text-base text-sm">
+                                        <strong>For:</strong> {note.target}
+                                    </p>
+                                    <p className="mb-1 lg:text-base text-sm">
+                                        <strong>Description:</strong>{' '}
+                                        {note.description}
+                                    </p>
+                                </div>
+                                <div className="my-4">
+                                    <a
+                                        href={note.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-white bg-blue-500 p-2 mt-2 rounded-md hover:bg-blue-600 lg:text-base text-sm"
+                                    >
+                                        View Notes
+                                    </a>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -222,6 +226,7 @@ const NotesPage = () => {
                     </a>
                 </p>
                 <a
+                    target="_blank"
                     href="https://forms.gle/NwFvj1Jz5gxvmHfdA"
                     className="inline-block px-6 py-3 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors duration-200"
                 >

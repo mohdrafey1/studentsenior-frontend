@@ -161,22 +161,22 @@ const WhatsAppGroupPage = () => {
                         {filteredGroups.map((group) => (
                             <div
                                 key={group._id}
-                                className="bg-white p-5 shadow-md rounded-md"
+                                className="bg-white p-5 shadow-md rounded-md flex flex-col"
                             >
-                                <div className="h-3/4">
-                                    <h2 className="text-lg lg:text-xl font-bold mb-2 text-center">
+                                <div className="h-40 sm:h-auto overflow-scroll flex-grow">
+                                    <h2 className="text-base sm:text-lg lg:text-xl font-bold mb-2 text-center">
                                         {group.title}
                                     </h2>
                                     <p className="mb-3 text-center text-sm lg:text-base">
                                         {group.info}
                                     </p>
                                 </div>
-                                <div className="flex justify-center">
+                                <div className="flex justify-center mt-auto">
                                     <a
                                         href={group.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="px-4 py-2 bg-sky-500 hover:bg-green-600 text-white rounded-md"
+                                        className="mt-2 px-2 py-2 bg-sky-500 hover:bg-sky-300 text-white rounded-md sm:px-4 sm:py-2"
                                     >
                                         Join Group &nbsp;
                                         <i className="fa-brands fa-whatsapp"></i>
