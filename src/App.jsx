@@ -26,6 +26,7 @@ import InstallPage from './pages/InstallPage';
 import Layout from './components/Layout/Layout';
 import NotFoundPage from './components/NotFoundPage';
 import ContactUs from './Forms/ContactUs';
+import PrivacyPolicy from './others/PrivacyPolicy';
 
 const validColleges = [
     'integral-university',
@@ -138,6 +139,8 @@ const App = () => {
                     <Route path="/install" element={<InstallPage />} />
 
                     <Route path="/not-found" element={<NotFoundPage />} />
+
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
