@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import AddProductModal from '../components/StoreModal/AddProductModal';
 import EditProductModal from '../components/StoreModal/EditProductModal';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import { api, API_KEY } from '../config/apiConfiguration.js';
+import { api } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
@@ -14,7 +14,6 @@ import useApiFetch from '../hooks/useApiFetch.js';
 const StorePage = () => {
     const { collegeName } = useParams();
     const [products, setProducts] = useState([]);
-    const [affiliateproducts, setAffiliateProducts] = useState([]);
     const [loadingStates, setLoadingStates] = useState({});
     const [newProduct, setNewProduct] = useState({
         name: '',
@@ -67,16 +66,6 @@ const StorePage = () => {
             }
         }
         return reversedArray;
-    };
-
-    const fetchAffiliateProducts = async () => {
-        try {
-            const data = await useFetch(`${api.store}/affiliate`);
-            setAffiliateProducts(data);
-        } catch (err) {
-            console.error('Error fetching products:', err);
-            toast.error('Error fetching products');
-        }
     };
 
     const handleInputChange = (e) => {
@@ -184,7 +173,6 @@ const StorePage = () => {
 
     useEffect(() => {
         fetchProducts();
-        fetchAffiliateProducts();
     }, []);
 
     return (
@@ -230,14 +218,13 @@ const StorePage = () => {
                                             </h5>
                                             <p>
                                                 <span className="text-base lg:text-2xl font-bold text-gray-700 dark:text-gray-300">
-                                                    {' '}
                                                     ₹{product.price}
                                                 </span>
                                             </p>
-                                            <div className="overflow-y-scroll h-28">
+                                            <div className="overflow-y-scroll h-32">
                                                 <div>
                                                     <p className="text-gray-800 text-xs lg:text-sm dark:text-gray-400 mt-2">
-                                                        College:{' '}
+                                                        College:
                                                         {
                                                             colleges.find(
                                                                 (college) =>
@@ -323,61 +310,6 @@ const StorePage = () => {
                             )}
                         </div>
                         <br />
-                        <h1 className="text-3xl font-bold mb-5 text-center">
-                            Affiliate Product
-                        </h1>
-                        <br />
-                        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl min-h-screen">
-                            {affiliateproducts.length > 0 ? (
-                                affiliateproducts.map((product) => (
-                                    <div
-                                        key={product._id}
-                                        className="border h-80 lg:h-96  border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
-                                    >
-                                        <img
-                                            src={product.image}
-                                            alt={product.name}
-                                            className="bg-white shadow-md lg:h-2/5 h-36 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
-                                        />
-                                        <div className="p-4">
-                                            <h5 className="text-sm lg:text-lg tracking-tight text-gray-700 dark:text-gray-300 line-clamp-1">
-                                                {product.name}
-                                            </h5>
-                                            <p>
-                                                <span className="text-lg lg:text-2xl font-bold text-gray-700 dark:text-gray-300">
-                                                    {' '}
-                                                    ₹{product.price}
-                                                </span>
-                                            </p>
-                                            <a
-                                                target="blank"
-                                                href={product.link}
-                                            >
-                                                <button
-                                                    type="button"
-                                                    className="text-white w-3/4 mx-4 my-3 py-1 lg:p-1 lg:text-lg text-sm bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                                                >
-                                                    Buy Now
-                                                </button>
-                                            </a>
-                                            <div className="overflow-y-scroll h-12 lg:h-20">
-                                                <p className="text-gray-600  italic text-[9px] lg:text-base dark:text-gray-200">
-                                                    {product.description}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="col-span-4 flex justify-center items-center w-full">
-                                    {loadingFetch ? (
-                                        <i className="fas fa-spinner fa-pulse fa-5x"></i>
-                                    ) : (
-                                        <p>No Affiliate Products Found</p>
-                                    )}
-                                </div>
-                            )}
-                        </div>
                     </div>
                 </div>
                 {isModalOpen &&
