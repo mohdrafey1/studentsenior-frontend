@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Collegelink2 from '../components/Links/CollegeLink2';
@@ -455,16 +455,13 @@ const CommunityPage = () => {
                                     </div>
 
                                     <div className="mt-3">
-                                        <div className="bg-sky-100 px-4 rounded-lg my-4 text-lg overflow-x-hidden overflow-y-scroll max-h-48 md:h-48">
-                                            <p className="mt-3">
-                                                <div
-                                                    className="post-content"
-                                                    dangerouslySetInnerHTML={{
-                                                        __html: post.content,
-                                                    }}
-                                                />
-                                            </p>
-                                        </div>
+                                        <>
+                                            <Link
+                                                to={`/college/${collegeName}/community/post/${post._id}`}
+                                            >
+                                                <PostPreview post={post} />
+                                            </Link>
+                                        </>
                                         <button
                                             className={`mt-1 px-3 border-2 border-sky-500 rounded-lg ${
                                                 post.likes.includes(ownerId)
@@ -734,25 +731,30 @@ const CommunityPage = () => {
                                                 className="w-full p-2 border rounded-md"
                                                 placeholder="Add a comment..."
                                             />
-                                            <button
-                                                onClick={() =>
-                                                    addComment(post._id)
-                                                }
-                                                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
-                                                disabled={
-                                                    loadingStates.addComment[
+                                            {commentContent[
+                                                post._id
+                                            ]?.trim() && (
+                                                <button
+                                                    onClick={() =>
+                                                        addComment(post._id)
+                                                    }
+                                                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+                                                    disabled={
+                                                        loadingStates
+                                                            .addComment[
+                                                            post._id
+                                                        ]
+                                                    }
+                                                >
+                                                    {loadingStates.addComment[
                                                         post._id
-                                                    ]
-                                                }
-                                            >
-                                                {loadingStates.addComment[
-                                                    post._id
-                                                ] ? (
-                                                    <i className="fa fa-spinner fa-spin"></i>
-                                                ) : (
-                                                    'Comment'
-                                                )}
-                                            </button>
+                                                    ] ? (
+                                                        <i className="fa fa-spinner fa-spin"></i>
+                                                    ) : (
+                                                        'Comment'
+                                                    )}
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -776,4 +778,36 @@ const CommunityPage = () => {
     );
 };
 
+const PostPreview = ({ post }) => {
+    const { collegeName } = useParams();
+
+    const getPreviewText = (content, charLimit = 200) => {
+        return content.length > charLimit
+            ? content.slice(0, charLimit) + '...'
+            : content;
+    };
+
+    const previewContent = getPreviewText(post.content);
+
+    return (
+        <div className="bg-sky-100 px-4 rounded-lg my-4 text-lg md:h-52">
+            <div className="post-content">
+                <p>
+                    <span
+                        dangerouslySetInnerHTML={{ __html: previewContent }}
+                        style={{ display: 'inline' }}
+                    />
+                    {post.content.length > 200 && (
+                        <Link
+                            to={`/college/${collegeName}/community/post/${post._id}`}
+                            className="text-blue-500 underline ml-1 inline"
+                        >
+                            Read More
+                        </Link>
+                    )}
+                </p>
+            </div>
+        </div>
+    );
+};
 export default CommunityPage;

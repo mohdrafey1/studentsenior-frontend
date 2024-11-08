@@ -27,6 +27,7 @@ import Layout from './components/Layout/Layout';
 import NotFoundPage from './components/NotFoundPage';
 import ContactUs from './Forms/ContactUs';
 import PrivacyPolicy from './others/PrivacyPolicy';
+import PostDetail from './DetailPages/PostDetail';
 
 const validColleges = [
     'integral-university',
@@ -100,6 +101,14 @@ const App = () => {
                         }
                     />
                     <Route
+                        path="/college/:collegeName/community/post/:id"
+                        element={
+                            <ValidateCollegeRoute>
+                                <PostDetail />
+                            </ValidateCollegeRoute>
+                        }
+                    />
+                    <Route
                         path="/college/:collegeName/whatsapp-group"
                         element={
                             <ValidateCollegeRoute>
@@ -128,14 +137,17 @@ const App = () => {
                     <Route path="/add-college" element={<AddCollege />} />
                     <Route path="/about-us" element={<AboutPage />} />
                     <Route path="/contact-us" element={<ContactUs />} />
+
                     <Route
                         path="/sign-in"
                         element={user ? <Navigate to="/" /> : <SignIn />}
                     />
                     <Route path="/sign-up" element={<Signup />} />
+
                     <Route element={<PrivateRoute />}>
                         <Route path="/profile" element={<Profile />} />
                     </Route>
+
                     <Route path="/install" element={<InstallPage />} />
 
                     <Route path="/not-found" element={<NotFoundPage />} />
