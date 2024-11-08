@@ -266,6 +266,20 @@ const CommunityPage = () => {
         return reversedArray;
     };
 
+    const handleShare = (postId) => {
+        const postUrl = `${window.location.href}/post/${postId}`;
+        if (navigator.share) {
+            navigator
+                .share({ title: postId, url: postUrl })
+                .catch((error) => console.log('Share failed:', error));
+        } else {
+            navigator.clipboard
+                .writeText(postUrl)
+                .then(() => toast.success('Link copied to clipboard!'))
+                .catch(() => toast.error('Failed to copy link.'));
+        }
+    };
+
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full">
             {/* <Header /> */}
@@ -451,6 +465,14 @@ const CommunityPage = () => {
                                                     </button>
                                                 </>
                                             )}
+                                            <button
+                                                className="text-center hover:text-blue-300"
+                                                onClick={() =>
+                                                    handleShare(post._id)
+                                                }
+                                            >
+                                                <i className="fa-regular fa-share-from-square"></i>
+                                            </button>
                                         </div>
                                     </div>
 
