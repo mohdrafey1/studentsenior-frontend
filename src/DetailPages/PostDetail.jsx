@@ -229,7 +229,7 @@ function PostDetail() {
                     </div>
                 </div>
                 <hr />
-                <div ref={commentsRef} className="comment-section p-6 my-8">
+                <div ref={commentsRef} className="comment-section p-4 my-4">
                     <h3 className="text-2xl text-center mb-6 font-bold">
                         Comments
                     </h3>
@@ -239,7 +239,7 @@ function PostDetail() {
                                 key={comment._id}
                                 className="flex items-start gap-4 mb-6 border-b"
                             >
-                                <div className="profile-photo w-12 h-12 rounded-full overflow-hidden">
+                                <div className="profile-photo w-16 h-12 sm:h-16 rounded-full overflow-hidden">
                                     <img
                                         src={
                                             comment.author?.profilePicture ||
@@ -321,7 +321,7 @@ function PostDetail() {
             {/* Fixed input section */}
             <div className="fixed bottom-0 left-0 w-full bg-sky-100 py-2 px-1">
                 <div className="rounded-3xl border border-gray-400 shadow-lg flex gap-2 h-16 items-center px-2">
-                    <div className="rounded-full w-12 h-10 bg-gray-500 flex items-center justify-center text-white overflow-hidden">
+                    <div className="rounded-full h-10 w-14 sm:h-12 bg-gray-500 flex items-center justify-center text-white overflow-hidden">
                         {currentUser ? (
                             <img
                                 src={currentUser.profilePicture}
@@ -329,7 +329,7 @@ function PostDetail() {
                                 className="rounded-full w-full h-full object-cover"
                             />
                         ) : (
-                            <span>A</span>
+                            <span className="text-lg">A</span>
                         )}
                     </div>
                     <div className="w-full">
