@@ -162,7 +162,7 @@ const CommunityPage = () => {
 
     // Add a new comment to a post
 
-    handleAddComment = async (postId) => {
+    const handleAddComment = async (postId) => {
         await addComment(postId);
         fetchPosts();
     };
