@@ -384,6 +384,19 @@ const CommunityPage = () => {
                                             <h2 className="text-lg font-semibold">
                                                 {post.isAnonymous
                                                     ? 'Anonymous'
+                                                    : post.author.username
+                                                          .length >
+                                                      (post.author._id ===
+                                                      ownerId
+                                                          ? 8
+                                                          : 20)
+                                                    ? post.author.username.slice(
+                                                          0,
+                                                          post.author._id ===
+                                                              ownerId
+                                                              ? 8
+                                                              : 20
+                                                      ) + '...'
                                                     : post.author.username}
                                             </h2>
                                         </div>
@@ -395,9 +408,9 @@ const CommunityPage = () => {
                                                         onClick={() =>
                                                             openEditModal(post)
                                                         }
-                                                        className="text-blue-500 px-2 border-2 border-sky-500 rounded-lg"
+                                                        className="text-yellow-500 px-2 rounded-lg"
                                                     >
-                                                        Edit
+                                                        <i className="fa-regular fa-pen-to-square fa-xl"></i>
                                                     </button>
                                                     {showEditModal && (
                                                         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -464,7 +477,7 @@ const CommunityPage = () => {
                                                         onClick={() =>
                                                             deletePost(post._id)
                                                         }
-                                                        className="text-red-500 px-2 border-2 border-sky-500 rounded-lg"
+                                                        className="text-red-500 px-2  rounded-lg"
                                                         disabled={
                                                             loadingStates
                                                                 .deletePost[
@@ -478,7 +491,7 @@ const CommunityPage = () => {
                                                         ] ? (
                                                             <i className="fa fa-spinner fa-spin"></i>
                                                         ) : (
-                                                            'Delete'
+                                                            <i className="fa-solid fa-trash fa-xl"></i>
                                                         )}
                                                     </button>
                                                 </>

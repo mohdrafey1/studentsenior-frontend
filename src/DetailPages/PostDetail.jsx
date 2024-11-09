@@ -239,7 +239,7 @@ function PostDetail() {
                                 key={comment._id}
                                 className="flex items-start gap-4 mb-6 border-b"
                             >
-                                <div className="profile-photo w-16 h-12 sm:h-16 rounded-full overflow-hidden">
+                                <div className="profile-photo w-14 h-12 sm:h-14 rounded-full overflow-hidden">
                                     <img
                                         src={
                                             comment.author?.profilePicture ||
