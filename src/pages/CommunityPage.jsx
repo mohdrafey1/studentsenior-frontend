@@ -26,12 +26,14 @@ const CommunityPage = () => {
     const [editedContent, setEditedContent] = useState('');
     const [showEditModal, setShowEditModal] = useState(false);
     const [likedComments, setLikedComments] = useState([]);
+    const [editLoading, setEditLoading] = useState(false);
 
     const {
         likePost,
         deletePost,
         addComment,
         deleteComment,
+        editPost,
         hookLoadingStates,
         setCommentContent,
         commentContent,
@@ -84,6 +86,7 @@ const CommunityPage = () => {
         setEditingPostId(null);
         setEditedContent('');
         setShowEditModal(false);
+        setEditLoading(false);
     };
 
     const handleDeleteClick = (postId) => {
@@ -143,25 +146,15 @@ const CommunityPage = () => {
     };
 
     // Edit a post
-    const editPost = async () => {
-        if (editedContent.trim() && editingPostId) {
-            try {
-                await apiRequest(`${url}/${editingPostId}`, 'PUT', {
-                    content: editedContent,
-                });
-                setEditingPostId(null);
-                fetchPosts();
-                setEditedContent('');
-                closeEditModal();
-                toast.success('Post Updated Successfully');
-            } catch (err) {
-                console.error('Error editing post:', err);
-            }
-        }
+    const handleEditPost = async () => {
+        setEditLoading(true);
+        await editPost(editingPostId, editedContent);
+        fetchPosts();
+        closeEditModal();
+        setEditLoading(false);
     };
 
     // Add a new comment to a post
-
     const handleAddComment = async (postId) => {
         await addComment(postId);
         fetchPosts();
@@ -414,14 +407,14 @@ const CommunityPage = () => {
                                                                     </button>
                                                                     <button
                                                                         onClick={
-                                                                            editPost
+                                                                            handleEditPost
                                                                         }
                                                                         className="px-4 py-2 bg-blue-500 text-white rounded-md"
                                                                         disabled={
-                                                                            loading
+                                                                            editLoading
                                                                         }
                                                                     >
-                                                                        {loading ? (
+                                                                        {editLoading ? (
                                                                             <i className="fa fa-spinner fa-spin"></i>
                                                                         ) : (
                                                                             'Update Post'

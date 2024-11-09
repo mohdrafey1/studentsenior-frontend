@@ -6,10 +6,18 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import usePosts from '../hooks/usePosts';
+import Dialog from '../utils/Dialog';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 function PostDetail() {
     const { collegeName, id } = useParams();
     const [post, setPost] = useState(null);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [postIdToDelete, setPostIdToDelete] = useState(null);
+    const [editingPostId, setEditingPostId] = useState(null);
+    const [editedContent, setEditedContent] = useState('');
+    const [showEditModal, setShowEditModal] = useState(false);
     const commentsRef = useRef(null);
     const commentInputRef = useRef(null);
     const navigate = useNavigate();
@@ -17,6 +25,7 @@ function PostDetail() {
 
     const { useFetch, loadingFetch } = useApiFetch();
     const {
+        editPost,
         likePost,
         deletePost,
         addComment,
@@ -26,6 +35,7 @@ function PostDetail() {
         likedComments,
         commentContent,
         setCommentContent,
+        loading,
     } = usePosts();
 
     const currentUser = useSelector((state) => state.user.currentUser);
@@ -81,6 +91,24 @@ function PostDetail() {
         }
     }, [post, location.state]);
 
+    const openEditModal = (post) => {
+        setEditingPostId(post._id);
+        setEditedContent(post.content);
+        setShowEditModal(true);
+    };
+
+    const closeEditModal = () => {
+        setEditingPostId(null);
+        setEditedContent('');
+        setShowEditModal(false);
+    };
+
+    const handleEditPost = async () => {
+        await editPost(editingPostId, editedContent);
+        fetchPost();
+        closeEditModal();
+    };
+
     const handleLikePost = async (postId) => {
         setPost((prevPost) => {
             const isLiked = prevPost.likes.includes(ownerId);
@@ -95,10 +123,25 @@ function PostDetail() {
         await likePost(postId);
     };
 
+    const handleDeleteClick = (postId) => {
+        setPostIdToDelete(postId);
+        setShowDeleteDialog(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (postIdToDelete) {
+            await handleDeletePost(postIdToDelete);
+            setShowDeleteDialog(false);
+            setPostIdToDelete(null);
+        }
+    };
+
     const handleDeletePost = async (postId) => {
-        await deletePost(post._id);
+        await deletePost(postId);
         navigate(`/college/${collegeName}/community`);
     };
+
+    const handleCloseDialog = () => setShowDeleteDialog(false);
 
     const handleAddComment = async (postId) => {
         await addComment(post._id);
@@ -148,22 +191,114 @@ function PostDetail() {
                     <div className="flex gap-4">
                         {post.author._id === ownerId && (
                             <>
-                                <button className="">
+                                <button
+                                    onClick={() => openEditModal(post)}
+                                    className="text-yellow-500 px-2 rounded-lg"
+                                    title="Edit Post"
+                                >
                                     <i className="fa-regular fa-pen-to-square fa-xl"></i>
                                 </button>
+                                {showEditModal && (
+                                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                                        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                                            <h2 className="text-xl mb-4">
+                                                Edit Post
+                                            </h2>
+                                            <div
+                                                style={{
+                                                    maxHeight: '500px',
+                                                    overflowY: 'auto',
+                                                }}
+                                            >
+                                                <CKEditor
+                                                    editor={ClassicEditor}
+                                                    data={editedContent}
+                                                    onChange={(
+                                                        event,
+                                                        editor
+                                                    ) => {
+                                                        const data =
+                                                            editor.getData();
+                                                        setEditedContent(data);
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="flex justify-end mt-4">
+                                                <button
+                                                    onClick={closeEditModal}
+                                                    className="mr-2 px-4 py-2 bg-gray-300 text-black rounded-md"
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    onClick={handleEditPost}
+                                                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                                    disabled={loading}
+                                                >
+                                                    {loading ? (
+                                                        <i className="fa fa-spinner fa-spin"></i>
+                                                    ) : (
+                                                        'Update Post'
+                                                    )}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
                                 <button
-                                    onClick={() => handleDeletePost(post._id)}
-                                    className="text-red-500 rounded-lg"
-                                    disabled={
-                                        hookLoadingStates.deletePost[post._id]
+                                    onClick={() => handleDeleteClick(post._id)}
+                                    className="text-red-500 px-2  rounded-lg"
+                                    title="Delete Post"
+                                >
+                                    <i className="fa-solid fa-trash fa-xl"></i>
+                                </button>
+                                {/* Delete Confirmation Dialog */}
+                                <Dialog
+                                    isOpen={showDeleteDialog}
+                                    onClose={handleCloseDialog}
+                                    title="Delete Confirmation"
+                                    footer={
+                                        <div className="flex py-4 gap-3 lg:justify-end justify-center">
+                                            <button
+                                                className="p-1 py-2 bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer"
+                                                onClick={handleCloseDialog}
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                className="p-1 py-2 bg-red-600 rounded-lg px-4 text-sm font-semibold text-white cursor-pointer"
+                                                onClick={handleConfirmDelete}
+                                                disabled={
+                                                    hookLoadingStates
+                                                        .deletePost[
+                                                        postIdToDelete
+                                                    ]
+                                                }
+                                            >
+                                                {hookLoadingStates.deletePost[
+                                                    postIdToDelete
+                                                ] ? (
+                                                    <i className="fa fa-spinner fa-spin"></i>
+                                                ) : (
+                                                    <>
+                                                        <span>Confirm</span>
+                                                        &nbsp;
+                                                        <i className="fa-solid fa-trash fa-xl"></i>
+                                                    </>
+                                                )}
+                                            </button>
+                                        </div>
                                     }
                                 >
-                                    {hookLoadingStates.deletePost[post._id] ? (
-                                        <i className="fa fa-spinner fa-spin"></i>
-                                    ) : (
-                                        <i className="fa-solid fa-trash fa-xl "></i>
-                                    )}
-                                </button>
+                                    <p>
+                                        Are you sure you want to delete this
+                                        item?
+                                    </p>
+                                    <p className="text-sm text-gray-500">
+                                        This action cannot be undone.
+                                    </p>
+                                </Dialog>
                             </>
                         )}
                     </div>

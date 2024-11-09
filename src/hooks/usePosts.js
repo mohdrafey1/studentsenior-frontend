@@ -17,6 +17,20 @@ const usePosts = () => {
     const { apiRequest, loading } = useApiRequest();
     const url = api.community;
 
+    // Edit a post
+    const editPost = async (editingPostId, editedContent) => {
+        if (editedContent.trim() && editingPostId) {
+            try {
+                await apiRequest(`${url}/${editingPostId}`, 'PUT', {
+                    content: editedContent,
+                });
+                toast.success('Post Updated Successfully');
+            } catch (err) {
+                console.error('Error editing post:', err);
+            }
+        }
+    };
+
     const likePost = async (postId) => {
         setHookLoadingStates((prev) => ({
             ...prev,
@@ -132,6 +146,7 @@ const usePosts = () => {
     };
 
     return {
+        editPost,
         likePost,
         deletePost,
         addComment,
@@ -141,6 +156,7 @@ const usePosts = () => {
         likedComments,
         commentContent,
         setCommentContent,
+        loading,
     };
 };
 
