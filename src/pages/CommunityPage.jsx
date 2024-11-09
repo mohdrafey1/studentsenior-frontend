@@ -741,7 +741,7 @@ const CommunityPage = () => {
 const PostPreview = ({ post }) => {
     const { collegeName } = useParams();
 
-    const getPreviewText = (content, charLimit = 200) => {
+    const getPreviewText = (content, charLimit = 230) => {
         return content.length > charLimit
             ? content.slice(0, charLimit) + '...'
             : content;
@@ -750,7 +750,7 @@ const PostPreview = ({ post }) => {
     const previewContent = getPreviewText(post.content);
 
     return (
-        <div className="bg-sky-100 px-4 rounded-lg my-4 text-lg md:h-52">
+        <div className="bg-sky-100 px-4 py-2 rounded-lg my-4 text-lg md:h-60">
             <div className="post-content">
                 <p>
                     <span

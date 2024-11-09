@@ -257,14 +257,12 @@ const PYQPage = () => {
                                     </p>
                                 </div>
                                 {isAuthenticated ? (
-                                    <a
-                                        href={paper.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                                    <Link
+                                        to={`/college/${collegeName}/pyq/${paper._id}`}
                                         className="inline-block bg-sky-500 text-white px-4 py-2 rounded-md text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
                                     >
                                         View PDF
-                                    </a>
+                                    </Link>
                                 ) : (
                                     <p className="text-red-500">
                                         <Link

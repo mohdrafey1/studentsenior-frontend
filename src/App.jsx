@@ -29,6 +29,7 @@ import ContactUs from './Forms/ContactUs';
 import PrivacyPolicy from './others/PrivacyPolicy';
 import PostDetail from './DetailPages/PostDetail';
 import ScrollToTop from './utils/ScrollToTop';
+import PyqDetail from './DetailPages/PyqDetail';
 
 const validColleges = [
     'integral-university',
@@ -83,6 +84,14 @@ const App = () => {
                         element={
                             <ValidateCollegeRoute>
                                 <PYQPage />
+                            </ValidateCollegeRoute>
+                        }
+                    />
+                    <Route
+                        path="/college/:collegeName/pyq/:id"
+                        element={
+                            <ValidateCollegeRoute>
+                                <PyqDetail />
                             </ValidateCollegeRoute>
                         }
                     />

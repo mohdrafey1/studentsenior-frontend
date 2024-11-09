@@ -182,7 +182,7 @@ function PostDetail() {
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full relative">
             <div className="main">
-                <div className="fixed top-0 left-0 z-30 w-full bg-white z-100 top-panel shadow-md h-16 flex items-center justify-between px-10">
+                <div className="fixed top-0 left-0 z-30 w-full bg-white z-100 top-panel shadow-md h-16 flex items-center justify-between px-5">
                     <div className="text-gray-600">
                         <Link to={`/college/${collegeName}/community`}>
                             <i className="fa-solid fa-arrow-left-long fa-2xl"></i>
