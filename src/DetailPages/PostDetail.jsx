@@ -44,7 +44,7 @@ function PostDetail() {
         const postUrl = window.location.href;
         if (navigator.share) {
             navigator
-                .share({ title: post.title, url: postUrl })
+                .share({ title: 'Student Senior Community Post', url: postUrl })
                 .catch((error) => console.log('Share failed:', error));
         } else {
             navigator.clipboard

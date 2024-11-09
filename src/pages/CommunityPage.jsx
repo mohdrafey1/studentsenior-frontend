@@ -222,7 +222,7 @@ const CommunityPage = () => {
         const postUrl = `${window.location.href}/post/${postId}`;
         if (navigator.share) {
             navigator
-                .share({ title: postId, url: postUrl })
+                .share({ title: 'Student Senior Community Post', url: postUrl })
                 .catch((error) => console.log('Share failed:', error));
         } else {
             navigator.clipboard
