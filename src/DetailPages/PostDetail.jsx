@@ -179,7 +179,9 @@ function PostDetail() {
                     </div>
                     <div>
                         <h3 className="text-2xl font-bold">
-                            {post.author?.username || 'Unknown Author'}
+                            {post.isAnonymous
+                                ? 'Anonymous'
+                                : post.author.username}
                         </h3>
                         <p>{post.college?.name}</p>
                     </div>
@@ -317,9 +319,9 @@ function PostDetail() {
                 </div>
             </div>
             {/* Fixed input section */}
-            <div className="fixed bottom-0 left-0 w-full bg-sky-100 p-4">
-                <div className="rounded-3xl border-2 border-gray-400 shadow-lg flex gap-4 h-16 items-center px-2 py-4">
-                    <div className="rounded-full w-12 h-12 bg-gray-500 flex items-center justify-center text-white overflow-hidden">
+            <div className="fixed bottom-0 left-0 w-full bg-sky-100 py-2 px-1">
+                <div className="rounded-3xl border border-gray-400 shadow-lg flex gap-2 h-16 items-center px-2">
+                    <div className="rounded-full w-12 h-10 bg-gray-500 flex items-center justify-center text-white overflow-hidden">
                         {currentUser ? (
                             <img
                                 src={currentUser.profilePicture}

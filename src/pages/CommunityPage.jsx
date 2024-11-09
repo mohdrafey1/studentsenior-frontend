@@ -366,11 +366,28 @@ const CommunityPage = () => {
                                     className="block max-w-sm p-6 w-full bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100"
                                 >
                                     <div className="flex justify-between">
-                                        <h2 className="text-xl font-semibold">
-                                            {post.isAnonymous
-                                                ? 'Anonymous'
-                                                : post.author.username}
-                                        </h2>
+                                        <div className="flex items-center gap-2">
+                                            {post.isAnonymous ? (
+                                                <div className="flex items-center justify-center rounded-full w-8 h-8 bg-gray-300 text-white font-bold">
+                                                    A
+                                                </div>
+                                            ) : (
+                                                <img
+                                                    src={
+                                                        post.author
+                                                            .profilePicture
+                                                    }
+                                                    alt="Author Profile"
+                                                    className="rounded-full w-8 h-8"
+                                                />
+                                            )}
+                                            <h2 className="text-lg font-semibold">
+                                                {post.isAnonymous
+                                                    ? 'Anonymous'
+                                                    : post.author.username}
+                                            </h2>
+                                        </div>
+
                                         <div className="space-x-2">
                                             {post.author._id === ownerId && (
                                                 <>
@@ -467,12 +484,12 @@ const CommunityPage = () => {
                                                 </>
                                             )}
                                             <button
-                                                className="text-center hover:text-blue-300"
+                                                className="text-center text-blue-400 hover:text-blue-300"
                                                 onClick={() =>
                                                     handleShare(post._id)
                                                 }
                                             >
-                                                <i className="fa-regular fa-share-from-square"></i>
+                                                <i className="fa-regular fa-share-from-square fa-xl"></i>
                                             </button>
                                         </div>
                                     </div>
