@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import useApiRequest from '../hooks/useApiRequest';
 import useApiFetch from '../hooks/useApiFetch.js';
+import Dialog from '../utils/Dialog.jsx';
 
 const CommunityPage = () => {
     const navigate = useNavigate();
@@ -18,6 +19,8 @@ const CommunityPage = () => {
     const [newPostContent, setNewPostContent] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [postIdToDelete, setPostIdToDelete] = useState(null);
     const [commentContent, setCommentContent] = useState({});
     const [editingPostId, setEditingPostId] = useState(null);
     const [editedContent, setEditedContent] = useState('');
@@ -78,6 +81,21 @@ const CommunityPage = () => {
         setEditedContent('');
         setShowEditModal(false);
     };
+
+    const handleDeleteClick = (postId) => {
+        setPostIdToDelete(postId);
+        setShowDeleteDialog(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (postIdToDelete) {
+            await deletePost(postIdToDelete);
+            setShowDeleteDialog(false);
+            setPostIdToDelete(null);
+        }
+    };
+
+    const handleCloseDialog = () => setShowDeleteDialog(false);
 
     // Add a new post with the extracted college
     const addPost = async () => {
@@ -409,6 +427,7 @@ const CommunityPage = () => {
                                                             openEditModal(post)
                                                         }
                                                         className="text-yellow-500 px-2 rounded-lg"
+                                                        title="Edit Post"
                                                     >
                                                         <i className="fa-regular fa-pen-to-square fa-xl"></i>
                                                     </button>
@@ -475,25 +494,74 @@ const CommunityPage = () => {
                                                     )}
                                                     <button
                                                         onClick={() =>
-                                                            deletePost(post._id)
+                                                            handleDeleteClick(
+                                                                post._id
+                                                            )
                                                         }
                                                         className="text-red-500 px-2  rounded-lg"
-                                                        disabled={
-                                                            loadingStates
-                                                                .deletePost[
-                                                                post._id
-                                                            ]
+                                                        title="Delete Post"
+                                                    >
+                                                        <i className="fa-solid fa-trash fa-xl"></i>
+                                                    </button>
+                                                    {/* Delete Confirmation Dialog */}
+                                                    <Dialog
+                                                        isOpen={
+                                                            showDeleteDialog
+                                                        }
+                                                        onClose={
+                                                            handleCloseDialog
+                                                        }
+                                                        title="Delete Confirmation"
+                                                        footer={
+                                                            <div className="flex py-4 gap-3 lg:justify-end justify-center">
+                                                                <button
+                                                                    className="p-1 py-2 bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer"
+                                                                    onClick={
+                                                                        handleCloseDialog
+                                                                    }
+                                                                >
+                                                                    Cancel
+                                                                </button>
+                                                                <button
+                                                                    className="p-1 py-2 bg-red-600 rounded-lg px-4 text-sm font-semibold text-white cursor-pointer"
+                                                                    onClick={
+                                                                        handleConfirmDelete
+                                                                    }
+                                                                    disabled={
+                                                                        loadingStates
+                                                                            .deletePost[
+                                                                            postIdToDelete
+                                                                        ]
+                                                                    }
+                                                                >
+                                                                    {loadingStates
+                                                                        .deletePost[
+                                                                        postIdToDelete
+                                                                    ] ? (
+                                                                        <i className="fa fa-spinner fa-spin"></i>
+                                                                    ) : (
+                                                                        <>
+                                                                            <span>
+                                                                                Confirm
+                                                                            </span>
+                                                                            &nbsp;
+                                                                            <i className="fa-solid fa-trash fa-xl"></i>
+                                                                        </>
+                                                                    )}
+                                                                </button>
+                                                            </div>
                                                         }
                                                     >
-                                                        {loadingStates
-                                                            .deletePost[
-                                                            post._id
-                                                        ] ? (
-                                                            <i className="fa fa-spinner fa-spin"></i>
-                                                        ) : (
-                                                            <i className="fa-solid fa-trash fa-xl"></i>
-                                                        )}
-                                                    </button>
+                                                        <p>
+                                                            Are you sure you
+                                                            want to delete this
+                                                            item?
+                                                        </p>
+                                                        <p className="text-sm text-gray-500">
+                                                            This action cannot
+                                                            be undone.
+                                                        </p>
+                                                    </Dialog>
                                                 </>
                                             )}
                                             <button
@@ -501,6 +569,7 @@ const CommunityPage = () => {
                                                 onClick={() =>
                                                     handleShare(post._id)
                                                 }
+                                                title="Share Post"
                                             >
                                                 <i className="fa-regular fa-share-from-square fa-xl"></i>
                                             </button>
