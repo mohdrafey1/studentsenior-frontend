@@ -22,7 +22,7 @@ function PostDetail() {
         addComment,
         likeComment,
         deleteComment,
-        loadingStates,
+        hookLoadingStates,
         likedComments,
         commentContent,
         setCommentContent,
@@ -155,10 +155,10 @@ function PostDetail() {
                                     onClick={() => handleDeletePost(post._id)}
                                     className="text-red-500 rounded-lg"
                                     disabled={
-                                        loadingStates.deletePost[post._id]
+                                        hookLoadingStates.deletePost[post._id]
                                     }
                                 >
-                                    {loadingStates.deletePost[post._id] ? (
+                                    {hookLoadingStates.deletePost[post._id] ? (
                                         <i className="fa fa-spinner fa-spin"></i>
                                     ) : (
                                         <i className="fa-solid fa-trash fa-xl "></i>
@@ -202,9 +202,9 @@ function PostDetail() {
                                 ? ' text-sky-500'
                                 : 'text-black'
                         }`}
-                        disabled={loadingStates.likePost[post._id]}
+                        disabled={hookLoadingStates.likePost[post._id]}
                     >
-                        {loadingStates.likePost[post._id] ? (
+                        {hookLoadingStates.likePost[post._id] ? (
                             <i className="fa fa-spinner fa-spin fa-2xl"></i>
                         ) : (
                             <>
@@ -293,12 +293,14 @@ function PostDetail() {
                                                     )
                                                 }
                                                 disabled={
-                                                    loadingStates.deleteComment[
+                                                    hookLoadingStates
+                                                        .deleteComment[
                                                         `${post._id}-${comment._id}`
                                                     ]
                                                 }
                                             >
-                                                {loadingStates.deleteComment[
+                                                {hookLoadingStates
+                                                    .deleteComment[
                                                     `${post._id}-${comment._id}`
                                                 ] ? (
                                                     <i className="fa fa-spinner fa-spin"></i>
@@ -350,9 +352,9 @@ function PostDetail() {
                     <button
                         className="flex items-center gap-1 bg-blue-400 text-white rounded-xl px-2 py-3"
                         onClick={() => handleAddComment(post._id)}
-                        disabled={loadingStates.addComment[post._id]}
+                        disabled={hookLoadingStates.addComment[post._id]}
                     >
-                        {loadingStates.addComment[post._id] ? (
+                        {hookLoadingStates.addComment[post._id] ? (
                             <i className="fa fa-spinner fa-spin"></i>
                         ) : (
                             <>

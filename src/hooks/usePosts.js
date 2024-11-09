@@ -7,7 +7,7 @@ import useApiRequest from '../hooks/useApiRequest';
 const usePosts = () => {
     const [likedComments, setLikedComments] = useState([]);
     const [commentContent, setCommentContent] = useState({});
-    const [loadingStates, setLoadingStates] = useState({
+    const [hookLoadingStates, setHookLoadingStates] = useState({
         likePost: {},
         addComment: {},
         deleteComment: {},
@@ -18,7 +18,7 @@ const usePosts = () => {
     const url = api.community;
 
     const likePost = async (postId) => {
-        setLoadingStates((prev) => ({
+        setHookLoadingStates((prev) => ({
             ...prev,
             likePost: { ...prev.likePost, [postId]: true },
         }));
@@ -28,7 +28,7 @@ const usePosts = () => {
             console.error('Error liking/unliking post:', err);
             toast.error('Error liking/unliking post');
         } finally {
-            setLoadingStates((prev) => ({
+            setHookLoadingStates((prev) => ({
                 ...prev,
                 likePost: { ...prev.likePost, [postId]: false },
             }));
@@ -36,7 +36,7 @@ const usePosts = () => {
     };
 
     const deletePost = async (postId) => {
-        setLoadingStates((prev) => ({
+        setHookLoadingStates((prev) => ({
             ...prev,
             deletePost: { ...prev.deletePost, [postId]: true },
         }));
@@ -46,7 +46,7 @@ const usePosts = () => {
         } catch (err) {
             console.error('Error deleting post:', err);
         } finally {
-            setLoadingStates((prev) => ({
+            setHookLoadingStates((prev) => ({
                 ...prev,
                 deletePost: { ...prev.deletePost, [postId]: false },
             }));
@@ -56,7 +56,7 @@ const usePosts = () => {
     const addComment = async (postId) => {
         const content = commentContent[postId];
         if (content && content.trim()) {
-            setLoadingStates((prev) => ({
+            setHookLoadingStates((prev) => ({
                 ...prev,
                 addComment: { ...prev.addComment, [postId]: true },
             }));
@@ -74,7 +74,7 @@ const usePosts = () => {
                 console.error('Error adding comment:', err);
                 toast.error('Error adding comment');
             } finally {
-                setLoadingStates((prev) => ({
+                setHookLoadingStates((prev) => ({
                     ...prev,
                     addComment: { ...prev.addComment, [postId]: false },
                 }));
@@ -104,7 +104,7 @@ const usePosts = () => {
     };
 
     const deleteComment = async (postId, commentId) => {
-        setLoadingStates((prev) => ({
+        setHookLoadingStates((prev) => ({
             ...prev,
             deleteComment: {
                 ...prev.deleteComment,
@@ -121,7 +121,7 @@ const usePosts = () => {
             console.error('Error deleting comment:', err);
             toast.error('Error deleting comment');
         } finally {
-            setLoadingStates((prev) => ({
+            setHookLoadingStates((prev) => ({
                 ...prev,
                 deleteComment: {
                     ...prev.deleteComment,
@@ -137,7 +137,7 @@ const usePosts = () => {
         addComment,
         likeComment,
         deleteComment,
-        loadingStates,
+        hookLoadingStates,
         likedComments,
         commentContent,
         setCommentContent,

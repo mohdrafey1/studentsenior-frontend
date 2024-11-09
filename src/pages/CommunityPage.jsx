@@ -11,6 +11,7 @@ import { capitalizeWords } from '../utils/Capitalize.js';
 import useApiRequest from '../hooks/useApiRequest';
 import useApiFetch from '../hooks/useApiFetch.js';
 import Dialog from '../utils/Dialog.jsx';
+import usePosts from '../hooks/usePosts.js';
 
 const CommunityPage = () => {
     const navigate = useNavigate();
@@ -32,6 +33,8 @@ const CommunityPage = () => {
         addComment: {},
         deleteComment: {},
     });
+
+    const { likePost, deletePost, hookLoadingStates } = usePosts();
 
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
@@ -89,7 +92,7 @@ const CommunityPage = () => {
 
     const handleConfirmDelete = async () => {
         if (postIdToDelete) {
-            await deletePost(postIdToDelete);
+            await handleDeletePost(postIdToDelete);
             setShowDeleteDialog(false);
             setPostIdToDelete(null);
         }
@@ -133,23 +136,9 @@ const CommunityPage = () => {
     };
 
     // Delete a post
-    const deletePost = async (postId) => {
-        setLoadingStates((prev) => ({
-            ...prev,
-            deletePost: { ...prev.deletePost, [postId]: true },
-        }));
-        try {
-            await apiRequest(`${url}/${postId}`, 'DELETE');
-            fetchPosts();
-            toast.success('Post Deleted Successfully');
-        } catch (err) {
-            console.error('Error deleting post:', err);
-        } finally {
-            setLoadingStates((prev) => ({
-                ...prev,
-                deletePost: { ...prev.deletePost, [postId]: false },
-            }));
-        }
+    const handleDeletePost = async (postId) => {
+        await deletePost(postId);
+        fetchPosts();
     };
 
     // Edit a post
@@ -196,23 +185,9 @@ const CommunityPage = () => {
         }
     };
 
-    const likePost = async (postId) => {
-        setLoadingStates((prev) => ({
-            ...prev,
-            likePost: { ...prev.likePost, [postId]: true },
-        }));
-        try {
-            await apiRequest(`${url}/${postId}/like`, 'POST');
-            await fetchPosts();
-        } catch (err) {
-            console.error('Error liking/unliking post:', err);
-            toast.error('Error liking/unliking post');
-        } finally {
-            setLoadingStates((prev) => ({
-                ...prev,
-                likePost: { ...prev.likePost, [postId]: false },
-            }));
-        }
+    const handleLikePost = async (postId) => {
+        await likePost(postId);
+        await fetchPosts();
     };
 
     useEffect(() => {
@@ -528,13 +503,13 @@ const CommunityPage = () => {
                                                                         handleConfirmDelete
                                                                     }
                                                                     disabled={
-                                                                        loadingStates
+                                                                        hookLoadingStates
                                                                             .deletePost[
                                                                             postIdToDelete
                                                                         ]
                                                                     }
                                                                 >
-                                                                    {loadingStates
+                                                                    {hookLoadingStates
                                                                         .deletePost[
                                                                         postIdToDelete
                                                                     ] ? (
@@ -590,12 +565,16 @@ const CommunityPage = () => {
                                                     ? 'text-white bg-sky-500'
                                                     : 'text-black'
                                             }`}
-                                            onClick={() => likePost(post._id)}
+                                            onClick={() =>
+                                                handleLikePost(post._id)
+                                            }
                                             disabled={
-                                                loadingStates.likePost[post._id]
+                                                hookLoadingStates.likePost[
+                                                    post._id
+                                                ]
                                             }
                                         >
-                                            {loadingStates.likePost[
+                                            {hookLoadingStates.likePost[
                                                 post._id
                                             ] ? (
                                                 <i className="fa fa-spinner fa-spin"></i>
