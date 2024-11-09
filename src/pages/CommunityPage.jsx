@@ -22,19 +22,20 @@ const CommunityPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [postIdToDelete, setPostIdToDelete] = useState(null);
-    const [commentContent, setCommentContent] = useState({});
     const [editingPostId, setEditingPostId] = useState(null);
     const [editedContent, setEditedContent] = useState('');
     const [showEditModal, setShowEditModal] = useState(false);
     const [likedComments, setLikedComments] = useState([]);
-    const [loadingStates, setLoadingStates] = useState({
-        deletePost: {},
-        likePost: {},
-        addComment: {},
-        deleteComment: {},
-    });
 
-    const { likePost, deletePost, hookLoadingStates } = usePosts();
+    const {
+        likePost,
+        deletePost,
+        addComment,
+        deleteComment,
+        hookLoadingStates,
+        setCommentContent,
+        commentContent,
+    } = usePosts();
 
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
@@ -160,34 +161,15 @@ const CommunityPage = () => {
     };
 
     // Add a new comment to a post
-    const addComment = async (postId) => {
-        const content = commentContent[postId];
-        if (content && content.trim()) {
-            setLoadingStates((prev) => ({
-                ...prev,
-                addComment: { ...prev.addComment, [postId]: true },
-            }));
-            try {
-                await apiRequest(`${url}/${postId}/comments`, 'POST', {
-                    content,
-                });
-                fetchPosts();
-                setCommentContent({ ...commentContent, [postId]: '' });
-                toast.success('Comment Added !');
-            } catch (err) {
-                console.error('Error adding comment:', err);
-            } finally {
-                setLoadingStates((prev) => ({
-                    ...prev,
-                    addComment: { ...prev.addComment, [postId]: false },
-                }));
-            }
-        }
+
+    handleAddComment = async (postId) => {
+        await addComment(postId);
+        fetchPosts();
     };
 
     const handleLikePost = async (postId) => {
         await likePost(postId);
-        await fetchPosts();
+        fetchPosts();
     };
 
     useEffect(() => {
@@ -220,29 +202,11 @@ const CommunityPage = () => {
     };
 
     // Delete a comment
-    const deleteComment = async (postId, commentId) => {
-        setLoadingStates((prev) => ({
-            ...prev,
-            deleteComment: { ...prev.deleteComment, [postId]: true },
-        }));
-        try {
-            await apiRequest(
-                `${url}/${postId}/comments/${commentId}`,
-                'DELETE'
-            );
-
-            fetchPosts();
-            toast.success('Comment Deleted Successfully');
-        } catch (err) {
-            console.error('Error deleting comment:', err);
-            toast.error('Error deleting comment ');
-        } finally {
-            setLoadingStates((prev) => ({
-                ...prev,
-                deleteComment: { ...prev.deleteComment, [postId]: false },
-            }));
-        }
+    const handleDeleteComment = async (postId, commentId) => {
+        await deleteComment(postId, commentId);
+        fetchPosts();
     };
+
     const LatestFirst = (data) => {
         let reversedArray = [];
         const collegeId = localStorage.getItem('id');
@@ -682,7 +646,7 @@ const CommunityPage = () => {
                                                             <button
                                                                 className="text-red-500"
                                                                 onClick={() =>
-                                                                    deleteComment(
+                                                                    handleDeleteComment(
                                                                         post._id,
                                                                         post
                                                                             .comments[
@@ -694,13 +658,13 @@ const CommunityPage = () => {
                                                                     )
                                                                 }
                                                                 disabled={
-                                                                    loadingStates
+                                                                    hookLoadingStates
                                                                         .deleteComment[
                                                                         post._id
                                                                     ]
                                                                 }
                                                             >
-                                                                {loadingStates
+                                                                {hookLoadingStates
                                                                     .deleteComment[
                                                                     post._id
                                                                 ] ? (
@@ -736,17 +700,20 @@ const CommunityPage = () => {
                                             ]?.trim() && (
                                                 <button
                                                     onClick={() =>
-                                                        addComment(post._id)
+                                                        handleAddComment(
+                                                            post._id
+                                                        )
                                                     }
                                                     className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
                                                     disabled={
-                                                        loadingStates
+                                                        hookLoadingStates
                                                             .addComment[
                                                             post._id
                                                         ]
                                                     }
                                                 >
-                                                    {loadingStates.addComment[
+                                                    {hookLoadingStates
+                                                        .addComment[
                                                         post._id
                                                     ] ? (
                                                         <i className="fa fa-spinner fa-spin"></i>
