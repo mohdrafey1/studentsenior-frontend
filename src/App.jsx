@@ -28,6 +28,7 @@ import NotFoundPage from './components/NotFoundPage';
 import ContactUs from './Forms/ContactUs';
 import PrivacyPolicy from './others/PrivacyPolicy';
 import PostDetail from './DetailPages/PostDetail';
+import ScrollToTop from './utils/ScrollToTop';
 
 const validColleges = [
     'integral-university',
@@ -57,6 +58,7 @@ const App = () => {
 
     return (
         <Router>
+            <ScrollToTop />
             <Layout>
                 <Routes>
                     <Route path="/" element={<MainPage />} />

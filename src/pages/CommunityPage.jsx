@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Collegelink2 from '../components/Links/CollegeLink2';
@@ -12,6 +12,7 @@ import useApiRequest from '../hooks/useApiRequest';
 import useApiFetch from '../hooks/useApiFetch.js';
 
 const CommunityPage = () => {
+    const navigate = useNavigate();
     const { collegeName } = useParams();
     const [posts, setPosts] = useState([]);
     const [newPostContent, setNewPostContent] = useState('');
@@ -22,8 +23,6 @@ const CommunityPage = () => {
     const [editedContent, setEditedContent] = useState('');
     const [showEditModal, setShowEditModal] = useState(false);
     const [likedComments, setLikedComments] = useState([]);
-    const [showComment, setshowComment] = useState(false);
-    const [showCom, setshowCom] = useState('');
     const [loadingStates, setLoadingStates] = useState({
         deletePost: {},
         likePost: {},
@@ -241,10 +240,6 @@ const CommunityPage = () => {
 
             fetchPosts();
             toast.success('Comment Deleted Successfully');
-            // setshowCom((prevCom) =>
-            //     prevCom.filter((comment) => comment._id !== commentId)
-            // );
-            // console.log(showCom);
         } catch (err) {
             console.error('Error deleting comment:', err);
             toast.error('Error deleting comment ');
@@ -278,6 +273,12 @@ const CommunityPage = () => {
                 .then(() => toast.success('Link copied to clipboard!'))
                 .catch(() => toast.error('Failed to copy link.'));
         }
+    };
+
+    const handleShowComments = (postId) => {
+        navigate(`/college/${collegeName}/community/post/${postId}`, {
+            state: { scrollToComments: true },
+        });
     };
 
     return (
@@ -518,12 +519,11 @@ const CommunityPage = () => {
                                             {post.comments.length > 0 && (
                                                 <button
                                                     className="text-sm p-1 rounded-md text-sky-500"
-                                                    onClick={() => {
-                                                        setshowCom(
-                                                            post.comments
-                                                        );
-                                                        setshowComment(true);
-                                                    }}
+                                                    onClick={() =>
+                                                        handleShowComments(
+                                                            post._id
+                                                        )
+                                                    }
                                                 >
                                                     Show All
                                                 </button>
@@ -636,106 +636,6 @@ const CommunityPage = () => {
                                                 </li>
                                             )}
                                         </ul>
-
-                                        {showComment && (
-                                            <div className="text-center">
-                                                <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-95 px-2 py-5 lg:p-5">
-                                                    <p
-                                                        className="absolute right-0 top-0 px-4 py-2 m-4 bg-red-300 cursor-pointer rounded-lg"
-                                                        onClick={() =>
-                                                            setshowComment(
-                                                                false
-                                                            )
-                                                        }
-                                                    >
-                                                        X
-                                                    </p>
-                                                    <ul className="lg:w-1/3 m-4 bg-slate-300 p-4 rounded-lg text-left overflow-scroll max-h-full my-4">
-                                                        {showCom.length > 0 ? (
-                                                            showCom.map(
-                                                                (comment) => (
-                                                                    <li
-                                                                        key={
-                                                                            comment._id
-                                                                        }
-                                                                        className="bg-slate-200 p-3 my-1 rounded-lg"
-                                                                    >
-                                                                        <>
-                                                                            <strong>
-                                                                                <span>
-                                                                                    {
-                                                                                        comment
-                                                                                            .author
-                                                                                            .username
-                                                                                    }
-                                                                                </span>
-                                                                            </strong>
-                                                                            <p className="mt-3">
-                                                                                <div
-                                                                                    className="post-content"
-                                                                                    dangerouslySetInnerHTML={{
-                                                                                        __html: comment.content,
-                                                                                    }}
-                                                                                />
-                                                                            </p>
-                                                                        </>
-                                                                        <div className="flex items-center justify-between mt-2">
-                                                                            <button
-                                                                                className={`text-blue-500 ${
-                                                                                    likedComments.includes(
-                                                                                        comment._id
-                                                                                    )
-                                                                                        ? 'opacity-50 cursor-not-allowed'
-                                                                                        : ''
-                                                                                }`}
-                                                                                onClick={() =>
-                                                                                    likeComment(
-                                                                                        post._id,
-                                                                                        comment._id
-                                                                                    )
-                                                                                }
-                                                                                disabled={likedComments.includes(
-                                                                                    comment._id
-                                                                                )}
-                                                                            >
-                                                                                Like
-                                                                                (
-                                                                                {
-                                                                                    comment.likes
-                                                                                }
-
-                                                                                )
-                                                                            </button>
-                                                                            {comment
-                                                                                .author
-                                                                                ._id ===
-                                                                                ownerId && (
-                                                                                <button
-                                                                                    className="text-red-500"
-                                                                                    onClick={() =>
-                                                                                        deleteComment(
-                                                                                            post._id,
-                                                                                            comment._id
-                                                                                        )
-                                                                                    }
-                                                                                >
-                                                                                    Delete
-                                                                                </button>
-                                                                            )}
-                                                                        </div>
-                                                                    </li>
-                                                                )
-                                                            )
-                                                        ) : (
-                                                            <li>
-                                                                No comments
-                                                                available.
-                                                            </li>
-                                                        )}
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        )}
 
                                         <div className="mt-3">
                                             <textarea

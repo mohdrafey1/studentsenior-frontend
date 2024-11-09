@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import useApiFetch from '../hooks/useApiFetch';
 import { api } from '../config/apiConfiguration';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -10,8 +10,10 @@ import usePosts from '../hooks/usePosts';
 function PostDetail() {
     const { collegeName, id } = useParams();
     const [post, setPost] = useState(null);
+    const commentsRef = useRef(null);
     const commentInputRef = useRef(null);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const { useFetch, loadingFetch } = useApiFetch();
     const {
@@ -28,6 +30,29 @@ function PostDetail() {
 
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
+
+    const scrollToComments = () => {
+        if (commentsRef.current) {
+            commentsRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            });
+        }
+    };
+
+    const handleShare = () => {
+        const postUrl = window.location.href;
+        if (navigator.share) {
+            navigator
+                .share({ title: post.title, url: postUrl })
+                .catch((error) => console.log('Share failed:', error));
+        } else {
+            navigator.clipboard
+                .writeText(postUrl)
+                .then(() => toast.success('Link copied to clipboard!'))
+                .catch(() => toast.error('Failed to copy link.'));
+        }
+    };
 
     const url = `${api.community}/${id}`;
 
@@ -46,23 +71,15 @@ function PostDetail() {
         commentInputRef.current?.focus();
     };
 
-    const handleShare = () => {
-        const postUrl = window.location.href;
-        if (navigator.share) {
-            navigator
-                .share({ title: post.title, url: postUrl })
-                .catch((error) => console.log('Share failed:', error));
-        } else {
-            navigator.clipboard
-                .writeText(postUrl)
-                .then(() => toast.success('Link copied to clipboard!'))
-                .catch(() => toast.error('Failed to copy link.'));
-        }
-    };
-
     useEffect(() => {
         fetchPost();
     }, [id]);
+
+    useEffect(() => {
+        if (post && location.state?.scrollToComments) {
+            setTimeout(scrollToComments, 100);
+        }
+    }, [post, location.state]);
 
     const handleLikePost = async (postId) => {
         setPost((prevPost) => {
@@ -120,7 +137,7 @@ function PostDetail() {
     }
 
     return (
-        <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full relative pb-20">
+        <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full relative">
             <div className="main">
                 <div className="fixed top-0 left-0 z-30 w-full bg-white z-100 top-panel shadow-md h-16 flex items-center justify-between px-10">
                     <div className="text-gray-600">
@@ -210,82 +227,93 @@ function PostDetail() {
                     </div>
                 </div>
                 <hr />
-                <div className="comment-section p-4 my-4">
-                    <h3 className="text-xl text-center mb-4 font-bold">
+                <div ref={commentsRef} className="comment-section p-6 my-8">
+                    <h3 className="text-2xl text-center mb-6 font-bold">
                         Comments
                     </h3>
-                    {post.comments?.map((comment) => (
-                        <div
-                            key={comment._id}
-                            className="flex items-start gap-4 mb-4"
-                        >
-                            <div className="profile-photo w-12 h-12 rounded-full">
-                                <img
-                                    src={comment.author?.profilePicture}
-                                    alt="Comment author profile"
-                                    className="w-full h-full rounded-full mt-4"
-                                />
-                            </div>
-                            <div className="w-full">
-                                <div className="comment-content bg-sky-100 rounded-md p-4">
-                                    <div className="name font-semibold">
-                                        {comment.author?.username ||
-                                            'Anonymous'}
-                                    </div>
-                                    <div className="content">
-                                        {comment.content || 'No comment text'}
-                                    </div>
-                                </div>
-                                <div className="my-2 flex gap-8">
-                                    <button
-                                        onClick={() =>
-                                            handleLikeComment(comment._id)
+                    {post?.comments?.length > 0 ? (
+                        post.comments.map((comment) => (
+                            <div
+                                key={comment._id}
+                                className="flex items-start gap-4 mb-6 border-b"
+                            >
+                                <div className="profile-photo w-12 h-12 rounded-full overflow-hidden">
+                                    <img
+                                        src={
+                                            comment.author?.profilePicture ||
+                                            '/default-avatar.png'
                                         }
-                                        className={`text-center hover:text-blue-300 ${
-                                            likedComments.includes(comment._id)
-                                                ? 'text-sky-500'
-                                                : 'text-black'
-                                        }`}
-                                        disabled={likedComments.includes(
-                                            comment._id
-                                        )}
-                                    >
-                                        <p>
-                                            Like &nbsp;
-                                            <i className="fa-regular fa-heart"></i>
-                                            &nbsp;
-                                            <span>({comment.likes})</span>
-                                        </p>
-                                    </button>
-
-                                    {comment.author._id === ownerId && (
+                                        alt="Comment author profile"
+                                        className="w-full h-full rounded-full object-cover"
+                                    />
+                                </div>
+                                <div className="w-full">
+                                    <div className="comment-content bg-white rounded-md p-4">
+                                        <div className="name font-semibold mb-2">
+                                            {comment.author?.username ||
+                                                'Anonymous'}
+                                        </div>
+                                        <div className="content text-gray-700">
+                                            {comment.content ||
+                                                'No comment text'}
+                                        </div>
+                                    </div>
+                                    <div className="my-3 flex gap-4 items-center">
                                         <button
-                                            className="text-red-500"
                                             onClick={() =>
-                                                handleDeleteComment(
-                                                    post._id,
+                                                handleLikeComment(comment._id)
+                                            }
+                                            className={`hover:text-blue-500 ${
+                                                likedComments.includes(
                                                     comment._id
                                                 )
-                                            }
-                                            disabled={
-                                                loadingStates.deleteComment[
-                                                    `${post._id}-${comment._id}`
-                                                ]
-                                            }
-                                        >
-                                            {loadingStates.deleteComment[
-                                                `${post._id}-${comment._id}`
-                                            ] ? (
-                                                <i className="fa fa-spinner fa-spin"></i>
-                                            ) : (
-                                                <i className="fa-solid fa-trash"></i>
+                                                    ? 'text-sky-500'
+                                                    : 'text-gray-600'
+                                            }`}
+                                            disabled={likedComments.includes(
+                                                comment._id
                                             )}
+                                        >
+                                            <p className="flex items-center gap-1">
+                                                <i className="fa-regular fa-heart"></i>
+                                                <span>Like</span>
+                                                <span>({comment.likes})</span>
+                                            </p>
                                         </button>
-                                    )}
+
+                                        {comment.author._id === ownerId && (
+                                            <button
+                                                className="text-red-500 hover:text-red-700"
+                                                onClick={() =>
+                                                    handleDeleteComment(
+                                                        post._id,
+                                                        comment._id
+                                                    )
+                                                }
+                                                disabled={
+                                                    loadingStates.deleteComment[
+                                                        `${post._id}-${comment._id}`
+                                                    ]
+                                                }
+                                            >
+                                                {loadingStates.deleteComment[
+                                                    `${post._id}-${comment._id}`
+                                                ] ? (
+                                                    <i className="fa fa-spinner fa-spin"></i>
+                                                ) : (
+                                                    <i className="fa-solid fa-trash"></i>
+                                                )}
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <p className="text-center text-gray-500 mt-4">
+                            No comments yet. Be the first to comment!
+                        </p>
+                    )}
                 </div>
             </div>
             {/* Fixed input section */}

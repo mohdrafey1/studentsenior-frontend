@@ -111,7 +111,7 @@ const NotesPage = () => {
                 <div className="flex flex-col justify-center sm:flex-row sm:items-center sm:space-x-4 mb-5">
                     <button
                         onClick={() => setShowForm(!showForm)}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-md mb-2 sm:mb-0"
+                        className="px-4 py-2 bg-sky-500 text-white rounded-md mb-2 sm:mb-0"
                     >
                         {showForm ? 'Close Form' : 'Add Note'}
                     </button>
@@ -197,7 +197,7 @@ const NotesPage = () => {
                                         href={note.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-white bg-blue-500 p-2 mt-2 rounded-md hover:bg-blue-600 lg:text-base text-sm"
+                                        className="text-white bg-sky-500 p-2 mt-2 rounded-md hover:bg-blue-600 lg:text-base text-sm"
                                     >
                                         View Notes
                                     </a>
