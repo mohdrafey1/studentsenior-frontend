@@ -304,7 +304,7 @@ const OpportunitiesPage = () => {
                         <div className="flex justify-between items-center mb-5">
                             <button
                                 onClick={() => setShowGetForm(!showGetForm)}
-                                className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                className="px-4 py-2 bg-sky-500 text-white rounded-md"
                             >
                                 {showGetForm ? 'Close Form' : 'Get Opportunity'}
                             </button>
@@ -375,7 +375,7 @@ const OpportunitiesPage = () => {
 
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                    className="px-4 py-2 bg-sky-500 text-white rounded-md"
                                     disabled={loading}
                                 >
                                     {loading ? (
@@ -413,7 +413,7 @@ const OpportunitiesPage = () => {
                                                 target="_blank"
                                                 rel="noreferrer"
                                             >
-                                                <button className="px-4 py-2 bg-blue-500 text-white rounded-md">
+                                                <button className="py-2 px-1 sm:px-4 bg-sky-500 hover:bg-blue-500 text-white rounded-md">
                                                     Hire Me{' '}
                                                 </button>
                                             </a>
@@ -422,7 +422,7 @@ const OpportunitiesPage = () => {
                                                 target="_blank"
                                                 rel="noreferrer"
                                             >
-                                                <button className="px-4 py-2 bg-blue-500 text-white rounded-md">
+                                                <button className="py-2 px-1 sm:px-4 bg-sky-500 hover:bg-blue-500 text-white rounded-md">
                                                     Email Me
                                                 </button>
                                             </a>
@@ -435,9 +435,9 @@ const OpportunitiesPage = () => {
                                                                 opportunity
                                                             )
                                                         }
-                                                        className="px-4 py-2 bg-yellow-500 text-white rounded-md ml-2"
+                                                        className="sm:px-4 p-2 bg-yellow-500 hover:bg-yellow-200 text-white rounded-md ml-2"
                                                     >
-                                                        Edit
+                                                        <i className="fa-regular fa-pen-to-square"></i>
                                                     </button>
 
                                                     <button
@@ -446,7 +446,7 @@ const OpportunitiesPage = () => {
                                                                 opportunity._id
                                                             )
                                                         }
-                                                        className="px-4 py-2 bg-red-500 text-white rounded-md"
+                                                        className="sm:px-4 p-2 bg-red-500 hover:bg-red-200 text-white rounded-md"
                                                         disabled={
                                                             loadingStates[
                                                                 opportunity._id
@@ -458,7 +458,7 @@ const OpportunitiesPage = () => {
                                                         ] ? (
                                                             <i className="fa fa-spinner fa-spin"></i>
                                                         ) : (
-                                                            <>Delete</>
+                                                            <i className="fa-solid fa-trash"></i>
                                                         )}
                                                     </button>
                                                 </>
@@ -535,7 +535,7 @@ const OpportunitiesPage = () => {
                         />
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                            className="px-4 py-2 bg-sky-500 text-white rounded-md"
                             disabled={loading}
                         >
                             {loading ? (
@@ -624,7 +624,7 @@ const OpportunitiesPage = () => {
 
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                    className="px-4 py-2 bg-sky-500 text-white rounded-md"
                                 >
                                     Submit
                                 </button>
@@ -657,7 +657,7 @@ const OpportunitiesPage = () => {
                                                 target="_blank"
                                                 rel="noreferrer"
                                             >
-                                                <button className="px-4 py-2 bg-blue-500 text-white rounded-md">
+                                                <button className="py-2 px-1 sm:px-4 bg-sky-500 hover:bg-blue-500 text-white rounded-md">
                                                     Contact Us{' '}
                                                 </button>
                                             </a>
@@ -666,7 +666,7 @@ const OpportunitiesPage = () => {
                                                 target="_blank"
                                                 rel="noreferrer"
                                             >
-                                                <button className="px-4 py-2 bg-blue-500 text-white rounded-md">
+                                                <button className="py-2 px-1 sm:px-4 bg-sky-500 hover:bg-blue-500 text-white rounded-md">
                                                     Email Us
                                                 </button>
                                             </a>
@@ -679,9 +679,9 @@ const OpportunitiesPage = () => {
                                                                 opportunity
                                                             )
                                                         }
-                                                        className="px-4 py-2 bg-yellow-500 text-white rounded-md ml-2"
+                                                        className="sm:px-4 p-2 bg-yellow-500 hover:bg-yellow-200 text-white rounded-md ml-2"
                                                     >
-                                                        Edit
+                                                        <i className="fa-regular fa-pen-to-square"></i>
                                                     </button>
                                                     <button
                                                         onClick={() =>
@@ -689,7 +689,7 @@ const OpportunitiesPage = () => {
                                                                 opportunity._id
                                                             )
                                                         }
-                                                        className="px-4 py-2 bg-red-500 text-white rounded-md"
+                                                        className="sm:px-4 p-2 bg-red-500 hover:bg-red-200 text-white rounded-md"
                                                         disabled={
                                                             loading[
                                                                 opportunity._id
@@ -701,7 +701,7 @@ const OpportunitiesPage = () => {
                                                         ] ? (
                                                             <i className="fa fa-spinner fa-spin"></i>
                                                         ) : (
-                                                            <>Delete</>
+                                                            <i className="fa-solid fa-trash"></i>
                                                         )}
                                                     </button>
                                                 </>
