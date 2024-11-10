@@ -3,7 +3,7 @@ import { Pagination } from '@nextui-org/react';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { api, API_KEY } from '../config/apiConfiguration.js';
+import { api } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
@@ -18,8 +18,7 @@ const PYQPage = () => {
     const [selectedCourse, setSelectedCourse] = useState('');
     const [selectedExamType, setSelectedExamType] = useState('');
     const [pyqs, setPyqs] = useState([]);
-    const [isLoading, setisLoading] = useState(true);
-    const [collegeId, setcollegeId] = useState('');
+    const [collegeId, setCollegeId] = useState('');
     const { isAuthenticated } = useSelector((state) => state.user);
     const location = useLocation();
     const { useFetch, loadingFetch } = useApiFetch();
@@ -43,41 +42,36 @@ const PYQPage = () => {
         },
     ];
 
-    const saveToLocalStorage = () => {
+    useEffect(() => {
         colleges.forEach((data) => {
             const formattedCollegeName = data.name
                 .replace(/\s+/g, '-')
                 .toLowerCase();
-            // Save to localStorage
             localStorage.setItem(formattedCollegeName, data.id);
         });
-    };
-    const getCollegeId = () => {
-        const currentURL = window.location.href;
-        const regex = /college\/([^\/]+)\//;
-        const match = currentURL.match(regex);
-        if (match) {
-            setcollegeId(match[1]);
-        }
-        return match[1];
-    };
-
-    // Pagination states
-    const [currentPage, setCurrentPage] = useState(1);
-    const papersPerPage = 6; // Number of papers per page
+    }, []);
 
     useEffect(() => {
+        if (!collegeName) return;
+
+        const formattedCollegeName = collegeName
+            .replace(/\s+/g, '-')
+            .toLowerCase();
+        const savedCollegeId = localStorage.getItem(formattedCollegeName);
+
+        if (savedCollegeId) {
+            setCollegeId(savedCollegeId);
+        }
+    }, [collegeName]);
+
+    useEffect(() => {
+        if (!collegeId) return;
+
         const fetchPYQs = async () => {
             try {
-                const data = await useFetch(api.pyq);
-                const collegeid = localStorage.getItem(getCollegeId());
-                const selectedColleges = data.filter(
-                    (item) => item.college === collegeid
-                );
-                if (selectedColleges.length > 0) {
-                    setPyqs(LatestFirst(selectedColleges)); // Add an array of matching objects to the state
-                }
-                // setPyqs(data);
+                const url = `${api.pyq}/all/${collegeId}`;
+                const data = await useFetch(url);
+                if (data) setPyqs(LatestFirst(data));
             } catch (error) {
                 console.error('Error fetching PYQs:', error);
                 toast.error('Error fetching PYQs');
@@ -85,17 +79,13 @@ const PYQPage = () => {
         };
 
         fetchPYQs();
-        saveToLocalStorage();
-    }, []);
+    }, [collegeId]);
 
     const LatestFirst = (data) => {
-        let reversedArray = [];
-        for (let i = data.length - 1; i >= 0; i--) {
-            reversedArray.push(data[i]);
-        }
-        return reversedArray;
+        return [...data].reverse();
     };
 
+    // Filter options
     const courses = [...new Set(pyqs.map((paper) => paper.course))];
     const branches = selectedCourse
         ? [
@@ -124,16 +114,15 @@ const PYQPage = () => {
     });
 
     // Pagination logic
+    const [currentPage, setCurrentPage] = useState(1);
+    const papersPerPage = 6;
     const indexOfLastPaper = currentPage * papersPerPage;
     const indexOfFirstPaper = indexOfLastPaper - papersPerPage;
     const currentPapers = filteredPapers.slice(
         indexOfFirstPaper,
         indexOfLastPaper
     );
-
     const totalPages = Math.ceil(filteredPapers.length / papersPerPage);
-
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full">
@@ -144,11 +133,7 @@ const PYQPage = () => {
                     <span>( </span>
                     {capitalizeWords(collegeName)} <span>)</span>
                 </h1>
-                {/* <p className="italic text-center">
-                    "Find here PYQs which help you understand the pattern and
-                    develop effective strategies for better preparation."
-                </p>
-                <br /> */}
+
                 <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-2 sm:gap-4 mb-4">
                     <input
                         type="text"
@@ -180,6 +165,7 @@ const PYQPage = () => {
                         <option value="4">4th</option>
                         <option value="5">5th</option>
                         <option value="6">6th</option>
+                        <option value="7">7th</option>
                     </select>
                     <select
                         className="p-2 border rounded-md w-full sm:w-auto"
@@ -304,13 +290,13 @@ const PYQPage = () => {
                     </>
                 )}
 
-                <div className="flex justify-center mt-6 ">
+                <div className="flex justify-center mt-6">
                     <Pagination
                         showControls
                         color="success"
                         total={totalPages}
                         initialPage={1}
-                        onChange={paginate}
+                        onChange={(page) => setCurrentPage(page)}
                         className="pagination"
                     />
                 </div>
