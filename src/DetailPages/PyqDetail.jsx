@@ -3,12 +3,13 @@ import { Link, useParams } from 'react-router-dom';
 import useApiFetch from '../hooks/useApiFetch';
 import { toast } from 'react-toastify';
 import { api } from '../config/apiConfiguration';
+import DetailPageNavbar from './DetailPageNavbar';
 
 function PyqDetail() {
     const { collegeName, id } = useParams();
     const [pyq, setPyq] = useState(null);
     const [error, setError] = useState(null);
-    const [suggestedPapers, setSuggestedPapers] = useState([]);
+    const [suggestedpyqs, setSuggestedpyqs] = useState([]);
     const [collegeId, setCollegeId] = useState('');
 
     const url = `${api.pyq}/${id}`;
@@ -19,7 +20,7 @@ function PyqDetail() {
             const data = await useFetch(url);
             setPyq(data);
             setError(null);
-            fetchSuggestedPapers(data);
+            fetchSuggestedpyqs(data);
         } catch (error) {
             setError('No PYQ found with this ID');
             setPyq(null);
@@ -28,7 +29,7 @@ function PyqDetail() {
         }
     };
 
-    const fetchSuggestedPapers = async (data) => {
+    const fetchSuggestedpyqs = async (data) => {
         if (!collegeId) return;
         const { year, semester, course, branch, examType } = data;
         const query = {
@@ -41,12 +42,14 @@ function PyqDetail() {
 
         const suggestedUrl = `${
             api.pyq
-        }/${collegeId}/related-pyqs?${new URLSearchParams(query).toString()}`;
+        }/${collegeId}/${id}/related-pyqs?${new URLSearchParams(
+            query
+        ).toString()}`;
         try {
-            const papers = await useFetch(suggestedUrl);
-            setSuggestedPapers(papers);
+            const pyqs = await useFetch(suggestedUrl);
+            setSuggestedpyqs(pyqs);
         } catch (error) {
-            console.log('Error fetching related papers:', error);
+            console.log('Error fetching related pyqs:', error);
         }
     };
 
@@ -65,20 +68,6 @@ function PyqDetail() {
         if (collegeId) fetchPyq();
     }, [id, collegeId]);
 
-    const handleShare = () => {
-        const postUrl = window.location.href;
-        if (navigator.share) {
-            navigator
-                .share({ title: 'Student Senior Pyq', url: postUrl })
-                .catch((error) => console.log('Share failed:', error));
-        } else {
-            navigator.clipboard
-                .writeText(postUrl)
-                .then(() => toast.success('Link copied to clipboard!'))
-                .catch(() => toast.error('Failed to copy link.'));
-        }
-    };
-
     if (loadingFetch || !pyq) {
         return (
             <div className="flex justify-center items-center min-h-screen">
@@ -93,23 +82,9 @@ function PyqDetail() {
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full relative">
+            <DetailPageNavbar path={'pyq'} />
             <div className="main flex">
                 <div className="flex-1 px-3 py-4">
-                    <div className="fixed top-0 left-0 z-30 w-full bg-white z-100 top-panel shadow-md h-16 flex items-center justify-between px-5">
-                        <div className="text-gray-600">
-                            <Link to={`/college/${collegeName}/pyq`}>
-                                <i className="fa-solid fa-arrow-left-long fa-2xl"></i>
-                            </Link>
-                        </div>
-                        <div
-                            className="text-center hover:text-blue-300"
-                            onClick={handleShare}
-                        >
-                            <i className="fa-regular fa-share-from-square fa-xl"></i>
-                            <p>Share</p>
-                        </div>
-                    </div>
-
                     <div className="flex flex-col items-center sm:px-4 space-y-4">
                         <h2 className="text-2xl font-semibold text-gray-800">
                             {pyq?.subjectName}
@@ -177,48 +152,80 @@ function PyqDetail() {
 
                 {/* Sidebar Section */}
                 <div className="w-1/4 hidden lg:block bg-white p-5 shadow-lg max-h-screen overflow-y-auto">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-4 text-center">
-                        Related Papers
+                    <div className="flex flex-col justify-center shadow-md p-4 rounded-md bg-sky-100">
+                        <h3 className="text-xl font-semibold  mb-4 text-center text-sky-600">
+                            Get This Filter All Pyq
+                        </h3>
+                        <div>
+                            <p className="mb-2  text-xs lg:text-base">
+                                Semester: {pyq.semester}
+                            </p>
+                            <p className="mb-2  text-xs lg:text-base">
+                                Year: {pyq.year}
+                            </p>
+                            <p className="mb-2  text-xs lg:text-base">
+                                Exam Type: {pyq.examType}
+                            </p>
+                            <p className="mb-2  text-xs lg:text-base">
+                                Course : {pyq.course}
+                            </p>
+                            <p className="mb-2  text-xs lg:text-base">
+                                Branch:{' '}
+                                {Array.isArray(pyq.branch)
+                                    ? pyq.branch.join(', ')
+                                    : pyq.branch}
+                            </p>
+                        </div>
+                        <Link
+                            to={`/college/${collegeName}/pyq/bundle?year=${pyq.year}&semester=${pyq.semester}&course=${pyq.course}&branch=${pyq.branch}&examType=${pyq.examType}`}
+                            className="inline-block bg-sky-500 text-white px-4 py-2 rounded-md text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
+                        >
+                            View
+                        </Link>
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-800 my-4 text-center">
+                        Related pyqs
                     </h3>
+
                     <div className="space-y-4">
-                        {suggestedPapers.length > 0 ? (
-                            suggestedPapers.map((paper) => (
+                        {suggestedpyqs.length > 0 ? (
+                            suggestedpyqs.map((pyq) => (
                                 <div
-                                    key={paper._id}
+                                    key={pyq._id}
                                     className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300"
                                 >
                                     <h4 className="text-lg font-semibold text-gray-800">
-                                        {paper.subjectName}
+                                        {pyq.subjectName}
                                     </h4>
                                     <p className="text-gray-600">
                                         Exam Type:{' '}
                                         <span className="font-normal">
-                                            {paper.examType}
+                                            {pyq.examType}
                                         </span>
                                     </p>
                                     <p className="text-gray-600">
                                         Year:{' '}
                                         <span className="font-normal">
-                                            {paper.year}
+                                            {pyq.year}
                                         </span>
                                     </p>
                                     <p className="text-gray-600">
                                         Semester:{' '}
                                         <span className="font-normal">
-                                            {paper.semester}
+                                            {pyq.semester}
                                         </span>
                                     </p>
                                     <p className="text-gray-600">
                                         Branch:{' '}
                                         <span className="font-normal">
-                                            {Array.isArray(paper.branch)
-                                                ? paper.branch.join(', ')
-                                                : paper.branch}
+                                            {Array.isArray(pyq.branch)
+                                                ? pyq.branch.join(', ')
+                                                : pyq.branch}
                                         </span>
                                     </p>
                                     <div className="mt-4 flex justify-center">
                                         <Link
-                                            to={`/college/${collegeName}/pyq/${paper._id}`}
+                                            to={`/college/${collegeName}/pyq/${pyq._id}`}
                                             className="bg-sky-500 text-white px-4 py-2 rounded-md text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
                                         >
                                             View Details
@@ -228,58 +235,93 @@ function PyqDetail() {
                             ))
                         ) : (
                             <p className="text-gray-500">
-                                No related papers found
+                                No related pyqs found
                             </p>
                         )}
                     </div>
                 </div>
             </div>{' '}
-            {/* Suggested Papers (Small Screen) */}
+            {/* Suggested pyqs Small Screen */}
             <div className="lg:hidden w-full bg-white p-5 shadow-lg space-y-4 mt-5">
+                <div className="flex flex-col justify-center shadow-md p-4 rounded-md bg-sky-100">
+                    <div>
+                        <h3 className="text-xl font-semibold  mb-4 text-center text-sky-600">
+                            Get This Filter All Pyq
+                        </h3>
+                    </div>
+                    <div className="flex gap-2 sm:gap-4 flex-wrap">
+                        <p className="mb-2  text-xs sm:text-base">
+                            Semester: {pyq.semester}
+                        </p>
+                        <p className="mb-2  text-xs sm:text-base">
+                            Year: {pyq.year}
+                        </p>
+                        <p className="mb-2  text-xs sm:text-base">
+                            Exam Type: {pyq.examType}
+                        </p>
+                        <p className="mb-2  text-xs sm:text-base">
+                            Course : {pyq.course}
+                        </p>
+                        <p className="mb-2  text-xs sm:text-base">
+                            Branch:{' '}
+                            {Array.isArray(pyq.branch)
+                                ? pyq.branch.join(', ')
+                                : pyq.branch}
+                        </p>
+                    </div>
+                    <div className="flex justify-center sm:mt-4">
+                        <Link
+                            to={`/college/${collegeName}/pyq/bundle?year=${pyq.year}&semester=${pyq.semester}&course=${pyq.course}&branch=${pyq.branch}&examType=${pyq.examType}`}
+                            className="w-full sm:w-1/4 bg-sky-500 text-white px-4 py-2 rounded-md text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
+                        >
+                            View
+                        </Link>
+                    </div>
+                </div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-4 text-center">
-                    Related Papers
+                    Related pyqs
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    {suggestedPapers.length > 0 ? (
-                        suggestedPapers.map((paper) => (
+                    {suggestedpyqs.length > 0 ? (
+                        suggestedpyqs.map((pyq) => (
                             <div
-                                key={paper._id}
+                                key={pyq._id}
                                 className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col"
                             >
                                 <div className="flex-grow">
                                     <h4 className="text-sm  mb-2  font-semibold text-gray-800 ">
-                                        {paper.subjectName}
+                                        {pyq.subjectName}
                                     </h4>
                                     <p className="text-gray-600 mb-2 text-xs">
                                         Exam Type:{' '}
                                         <span className="font-normal">
-                                            {paper.examType}
+                                            {pyq.examType}
                                         </span>
                                     </p>
                                     <p className="text-gray-600 mb-2  text-xs">
                                         Year:{' '}
                                         <span className="font-normal">
-                                            {paper.year}
+                                            {pyq.year}
                                         </span>
                                     </p>
                                     <p className="text-gray-600  mb-2 text-xs">
                                         Semester:{' '}
                                         <span className="font-normal">
-                                            {paper.semester}
+                                            {pyq.semester}
                                         </span>
                                     </p>
                                     <p className="text-gray-600 mb-2  text-xs">
                                         Branch:{' '}
                                         <span className="font-normal">
-                                            {Array.isArray(paper.branch)
-                                                ? paper.branch.join(', ')
-                                                : paper.branch}
+                                            {Array.isArray(pyq.branch)
+                                                ? pyq.branch.join(', ')
+                                                : pyq.branch}
                                         </span>
                                     </p>
                                 </div>
                                 <div className="mt-4 flex justify-center">
                                     <Link
-                                        to={`/college/${collegeName}/pyq/${paper._id}`}
+                                        to={`/college/${collegeName}/pyq/${pyq._id}`}
                                         className="bg-sky-500 text-white px-4 py-2 rounded-md text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
                                     >
                                         View Details
@@ -288,7 +330,7 @@ function PyqDetail() {
                             </div>
                         ))
                     ) : (
-                        <p className="text-gray-500">No related papers found</p>
+                        <p className="text-gray-500">No related pyqs found</p>
                     )}
                 </div>
             </div>
