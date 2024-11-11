@@ -9,6 +9,7 @@ function PyqDetail() {
     const [pyq, setPyq] = useState(null);
     const [error, setError] = useState(null);
     const [suggestedPapers, setSuggestedPapers] = useState([]);
+    const [collegeId, setCollegeId] = useState('');
 
     const url = `${api.pyq}/${id}`;
     const { useFetch, loadingFetch } = useApiFetch();
@@ -28,6 +29,7 @@ function PyqDetail() {
     };
 
     const fetchSuggestedPapers = async (data) => {
+        if (!collegeId) return;
         const { year, semester, course, branch, examType } = data;
         const query = {
             year,
@@ -37,9 +39,9 @@ function PyqDetail() {
             examType,
         };
 
-        const suggestedUrl = `${api.pyq}/s/related-pyqs?${new URLSearchParams(
-            query
-        ).toString()}`;
+        const suggestedUrl = `${
+            api.pyq
+        }/${collegeId}/related-pyqs?${new URLSearchParams(query).toString()}`;
         try {
             const papers = await useFetch(suggestedUrl);
             setSuggestedPapers(papers);
@@ -49,8 +51,19 @@ function PyqDetail() {
     };
 
     useEffect(() => {
-        fetchPyq();
-    }, [id]);
+        const formattedCollegeName = collegeName
+            .replace(/\s+/g, '-')
+            .toLowerCase();
+        const savedCollegeId = localStorage.getItem(formattedCollegeName);
+
+        if (savedCollegeId) {
+            setCollegeId(savedCollegeId);
+        }
+    }, [collegeName]);
+
+    useEffect(() => {
+        if (collegeId) fetchPyq();
+    }, [id, collegeId]);
 
     const handleShare = () => {
         const postUrl = window.location.href;
