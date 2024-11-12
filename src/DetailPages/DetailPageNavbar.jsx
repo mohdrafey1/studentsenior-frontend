@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { API_KEY_URL } from '../config/apiConfiguration';
 import { toast } from 'react-toastify';
@@ -7,6 +7,7 @@ const DetailPageNavbar = ({ path }) => {
     const { collegeName } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
+    const [loading, setLoading] = useState(false);
 
     const handleBackNavigation = () => {
         if (window.history.length > 2) {
@@ -18,7 +19,7 @@ const DetailPageNavbar = ({ path }) => {
 
     const handleShare = async () => {
         const postUrl = window.location.href;
-
+        setLoading(true);
         try {
             const response = await fetch(
                 'https://ssurl.studentsenior.com/api/shorten',
@@ -35,7 +36,7 @@ const DetailPageNavbar = ({ path }) => {
             if (response.ok) {
                 const data = await response.json();
                 const shortUrl = data.shortUrl;
-
+                setLoading(false);
                 if (navigator.share) {
                     navigator
                         .share({ title: 'Student Senior', url: shortUrl })
@@ -54,6 +55,8 @@ const DetailPageNavbar = ({ path }) => {
         } catch (error) {
             console.log('Error shortening the URL:', error);
             toast.error('Failed to shorten the URL.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -64,13 +67,20 @@ const DetailPageNavbar = ({ path }) => {
                     <i className="fa-solid fa-arrow-left-long fa-2xl"></i>
                 </div>
             </div>
-            <div
+            <button
                 className="text-center hover:text-blue-300"
                 onClick={handleShare}
+                disabled={loading}
             >
-                <i className="fa-regular fa-share-from-square fa-xl"></i>
-                <p>Share</p>
-            </div>
+                {loading ? (
+                    <i className="fa fa-spinner fa-spin"></i>
+                ) : (
+                    <>
+                        <i className="fa-regular fa-share-from-square fa-xl"></i>
+                        <p>Share</p>
+                    </>
+                )}
+            </button>
         </div>
     );
 };
