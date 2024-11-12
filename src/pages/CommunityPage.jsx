@@ -53,7 +53,6 @@ const CommunityPage = () => {
     const { useFetch, loadingFetch } = useApiFetch();
     const url = api.community;
 
-    // Fetch posts from backend API
     const fetchPosts = async () => {
         try {
             const data = await useFetch(url);
