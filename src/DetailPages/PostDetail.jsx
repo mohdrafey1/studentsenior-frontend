@@ -9,6 +9,8 @@ import usePosts from '../hooks/usePosts';
 import Dialog from '../utils/Dialog';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import DetailPageNavbar from './DetailPageNavbar';
+import { originalHandleShare } from '../utils/handleShare';
 
 function PostDetail() {
     const { collegeName, id } = useParams();
@@ -50,20 +52,6 @@ function PostDetail() {
         }
     };
 
-    const handleShare = () => {
-        const postUrl = window.location.href;
-        if (navigator.share) {
-            navigator
-                .share({ title: 'Student Senior Community Post', url: postUrl })
-                .catch((error) => console.log('Share failed:', error));
-        } else {
-            navigator.clipboard
-                .writeText(postUrl)
-                .then(() => toast.success('Link copied to clipboard!'))
-                .catch(() => toast.error('Failed to copy link.'));
-        }
-    };
-
     const url = `${api.community}/${id}`;
 
     const fetchPost = async () => {
@@ -72,8 +60,8 @@ function PostDetail() {
             setPost(data);
             console.log(data);
         } catch (err) {
-            console.error('Error fetching post:', err);
-            toast.error('Error fetching post');
+            console.error('Error fetching post:', err.message);
+            toast.error(err.message);
         }
     };
 
@@ -173,135 +161,147 @@ function PostDetail() {
 
     if (!post) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
-                <i className="fas fa-spinner fa-pulse fa-5x"></i>
+            <div>
+                {loadingFetch ? (
+                    <>
+                        <div className="flex justify-center items-center min-h-screen">
+                            <i className="fas fa-spinner fa-pulse fa-5x"></i>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <div className="flex flex-col items-center justify-center h-screen text-center">
+                            <h1 className="text-2xl font-semibold text-gray-800">
+                                Post Not Found !
+                            </h1>
+                            <Link
+                                to={`/college/${collegeName}/community`}
+                                className="mt-6 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                            >
+                                See Other Posts
+                            </Link>
+                        </div>
+                    </>
+                )}
             </div>
         );
     }
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full relative">
+            <DetailPageNavbar
+                path={'community'}
+                handleShare={originalHandleShare}
+            />
             <div className="main">
-                <div className="fixed top-0 left-0 z-30 w-full bg-white z-100 top-panel shadow-md h-16 flex items-center justify-between px-5">
-                    <div className="text-gray-600">
-                        <Link to={`/college/${collegeName}/community`}>
-                            <i className="fa-solid fa-arrow-left-long fa-2xl"></i>
-                        </Link>
-                    </div>
-                    <div className="flex gap-4">
-                        {post.author._id === ownerId && (
-                            <>
-                                <button
-                                    onClick={() => openEditModal(post)}
-                                    className="text-yellow-500 px-2 rounded-lg"
-                                    title="Edit Post"
-                                >
-                                    <i className="fa-regular fa-pen-to-square fa-xl"></i>
-                                </button>
-                                {showEditModal && (
-                                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                                        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-                                            <h2 className="text-xl mb-4">
-                                                Edit Post
-                                            </h2>
-                                            <div
-                                                style={{
-                                                    maxHeight: '500px',
-                                                    overflowY: 'auto',
+                <div className="flex gap-4">
+                    {post.author._id === ownerId && (
+                        <>
+                            <button
+                                onClick={() => openEditModal(post)}
+                                className="text-yellow-500 px-2 rounded-lg"
+                                title="Edit Post"
+                            >
+                                <i className="fa-regular fa-pen-to-square fa-xl"></i>
+                            </button>
+                            {showEditModal && (
+                                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                                    <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                                        <h2 className="text-xl mb-4">
+                                            Edit Post
+                                        </h2>
+                                        <div
+                                            style={{
+                                                maxHeight: '500px',
+                                                overflowY: 'auto',
+                                            }}
+                                        >
+                                            <CKEditor
+                                                editor={ClassicEditor}
+                                                data={editedContent}
+                                                onChange={(event, editor) => {
+                                                    const data =
+                                                        editor.getData();
+                                                    setEditedContent(data);
                                                 }}
-                                            >
-                                                <CKEditor
-                                                    editor={ClassicEditor}
-                                                    data={editedContent}
-                                                    onChange={(
-                                                        event,
-                                                        editor
-                                                    ) => {
-                                                        const data =
-                                                            editor.getData();
-                                                        setEditedContent(data);
-                                                    }}
-                                                />
-                                            </div>
-                                            <div className="flex justify-end mt-4">
-                                                <button
-                                                    onClick={closeEditModal}
-                                                    className="mr-2 px-4 py-2 bg-gray-300 text-black rounded-md"
-                                                >
-                                                    Cancel
-                                                </button>
-                                                <button
-                                                    onClick={handleEditPost}
-                                                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                                                    disabled={loading}
-                                                >
-                                                    {loading ? (
-                                                        <i className="fa fa-spinner fa-spin"></i>
-                                                    ) : (
-                                                        'Update Post'
-                                                    )}
-                                                </button>
-                                            </div>
+                                            />
                                         </div>
-                                    </div>
-                                )}
-
-                                <button
-                                    onClick={() => handleDeleteClick(post._id)}
-                                    className="text-red-500 px-2  rounded-lg"
-                                    title="Delete Post"
-                                >
-                                    <i className="fa-solid fa-trash fa-xl"></i>
-                                </button>
-                                {/* Delete Confirmation Dialog */}
-                                <Dialog
-                                    isOpen={showDeleteDialog}
-                                    onClose={handleCloseDialog}
-                                    title="Delete Confirmation"
-                                    footer={
-                                        <div className="flex py-4 gap-3 lg:justify-end justify-center">
+                                        <div className="flex justify-end mt-4">
                                             <button
-                                                className="p-1 py-2 bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer"
-                                                onClick={handleCloseDialog}
+                                                onClick={closeEditModal}
+                                                className="mr-2 px-4 py-2 bg-gray-300 text-black rounded-md"
                                             >
                                                 Cancel
                                             </button>
                                             <button
-                                                className="p-1 py-2 bg-red-600 rounded-lg px-4 text-sm font-semibold text-white cursor-pointer"
-                                                onClick={handleConfirmDelete}
-                                                disabled={
-                                                    hookLoadingStates
-                                                        .deletePost[
-                                                        postIdToDelete
-                                                    ]
-                                                }
+                                                onClick={handleEditPost}
+                                                className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                                disabled={loading}
                                             >
-                                                {hookLoadingStates.deletePost[
-                                                    postIdToDelete
-                                                ] ? (
+                                                {loading ? (
                                                     <i className="fa fa-spinner fa-spin"></i>
                                                 ) : (
-                                                    <>
-                                                        <span>Confirm</span>
-                                                        &nbsp;
-                                                        <i className="fa-solid fa-trash fa-xl"></i>
-                                                    </>
+                                                    'Update Post'
                                                 )}
                                             </button>
                                         </div>
-                                    }
-                                >
-                                    <p>
-                                        Are you sure you want to delete this
-                                        item?
-                                    </p>
-                                    <p className="text-sm text-gray-500">
-                                        This action cannot be undone.
-                                    </p>
-                                </Dialog>
-                            </>
-                        )}
-                    </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            <button
+                                onClick={() => handleDeleteClick(post._id)}
+                                className="text-red-500 px-2  rounded-lg"
+                                title="Delete Post"
+                            >
+                                <i className="fa-solid fa-trash fa-xl"></i>
+                            </button>
+                            {/* Delete Confirmation Dialog */}
+                            <Dialog
+                                isOpen={showDeleteDialog}
+                                onClose={handleCloseDialog}
+                                title="Delete Confirmation"
+                                footer={
+                                    <div className="flex py-4 gap-3 lg:justify-end justify-center">
+                                        <button
+                                            className="p-1 py-2 bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer"
+                                            onClick={handleCloseDialog}
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            className="p-1 py-2 bg-red-600 rounded-lg px-4 text-sm font-semibold text-white cursor-pointer"
+                                            onClick={handleConfirmDelete}
+                                            disabled={
+                                                hookLoadingStates.deletePost[
+                                                    postIdToDelete
+                                                ]
+                                            }
+                                        >
+                                            {hookLoadingStates.deletePost[
+                                                postIdToDelete
+                                            ] ? (
+                                                <i className="fa fa-spinner fa-spin"></i>
+                                            ) : (
+                                                <>
+                                                    <span>Confirm</span>
+                                                    &nbsp;
+                                                    <i className="fa-solid fa-trash fa-xl"></i>
+                                                </>
+                                            )}
+                                        </button>
+                                    </div>
+                                }
+                            >
+                                <p>
+                                    Are you sure you want to delete this item?
+                                </p>
+                                <p className="text-sm text-gray-500">
+                                    This action cannot be undone.
+                                </p>
+                            </Dialog>
+                        </>
+                    )}
                 </div>
 
                 <div className="profile-section m-4 flex items-center gap-4">
@@ -357,7 +357,7 @@ function PostDetail() {
                     </div>
                     <div
                         className="text-center hover:text-blue-300"
-                        onClick={handleShare}
+                        onClick={originalHandleShare}
                     >
                         <i className="fa-regular fa-share-from-square fa-2xl"></i>
                         <p>Share</p>

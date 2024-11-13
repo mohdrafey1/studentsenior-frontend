@@ -31,6 +31,7 @@ import PostDetail from './DetailPages/PostDetail';
 import ScrollToTop from './utils/ScrollToTop';
 import PyqDetail from './DetailPages/PyqDetail';
 import BundlePyq from './DetailPages/BundlePyq';
+import ProductDetail from './DetailPages/ProductDetail';
 
 const validColleges = [
     'integral-university',
@@ -109,6 +110,14 @@ const App = () => {
                         element={
                             <ValidateCollegeRoute>
                                 <StorePage />
+                            </ValidateCollegeRoute>
+                        }
+                    />
+                    <Route
+                        path="/college/:collegeName/store/:id"
+                        element={
+                            <ValidateCollegeRoute>
+                                <ProductDetail />
                             </ValidateCollegeRoute>
                         }
                     />

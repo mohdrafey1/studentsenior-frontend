@@ -4,6 +4,7 @@ import useApiFetch from '../hooks/useApiFetch';
 import { toast } from 'react-toastify';
 import { api } from '../config/apiConfiguration';
 import DetailPageNavbar from './DetailPageNavbar';
+import { originalHandleShare } from '../utils/handleShare';
 
 function PyqDetail() {
     const { collegeName, id } = useParams();
@@ -68,13 +69,29 @@ function PyqDetail() {
         if (collegeId) fetchPyq();
     }, [id, collegeId]);
 
-    if (loadingFetch || !pyq) {
+    if (!pyq) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
+            <div>
                 {loadingFetch ? (
-                    <i className="fas fa-spinner fa-pulse fa-5x"></i>
+                    <>
+                        <div className="flex justify-center items-center min-h-screen">
+                            <i className="fas fa-spinner fa-pulse fa-5x"></i>
+                        </div>
+                    </>
                 ) : (
-                    <p className="text-center text-gray-500 mt-5">{error}</p>
+                    <>
+                        <div className="flex flex-col items-center justify-center h-screen text-center">
+                            <h1 className="text-2xl font-semibold text-gray-800">
+                                Pyq Not Found !
+                            </h1>
+                            <Link
+                                to={`/college/${collegeName}/pyq`}
+                                className="mt-6 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                            >
+                                See Other Pyq
+                            </Link>
+                        </div>
+                    </>
                 )}
             </div>
         );
@@ -82,7 +99,7 @@ function PyqDetail() {
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full relative">
-            <DetailPageNavbar path={'pyq'} />
+            <DetailPageNavbar path={'pyq'} handleShare={originalHandleShare} />
             <div className="main flex">
                 <div className="flex-1 px-3 py-4">
                     <div className="flex flex-col items-center sm:px-4 space-y-4">

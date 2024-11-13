@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import AddProductModal from '../components/StoreModal/AddProductModal';
 import EditProductModal from '../components/StoreModal/EditProductModal';
 import CollegeLinks from '../components/Links/CollegeLinks';
@@ -203,101 +203,101 @@ const StorePage = () => {
                         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6 w-full max-w-7xl h-fit ">
                             {products.length > 0 ? (
                                 products.map((product) => (
-                                    <div
-                                        key={product._id}
-                                        className="border my-3 border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
-                                    >
-                                        <img
-                                            src={product.image.url}
-                                            alt={product.name}
-                                            className="bg-white shadow-md h-36 max-h-60 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
-                                        />
-                                        <div className="p-4 ">
-                                            <h5 className="lg:text-lg text-sm tracking-tight text-gray-700 dark:text-gray-300">
-                                                {product.name}
-                                            </h5>
-                                            <p>
-                                                <span className="text-base lg:text-2xl font-bold text-gray-700 dark:text-gray-300">
-                                                    ₹{product.price}
-                                                </span>
-                                            </p>
-                                            <div className="overflow-y-scroll h-32">
-                                                <div>
-                                                    <p className="text-gray-800 text-xs lg:text-sm dark:text-gray-400 mt-2">
-                                                        College:
-                                                        {
-                                                            colleges.find(
-                                                                (college) =>
-                                                                    college.id ===
-                                                                    product.college
-                                                            )?.name
-                                                        }
-                                                    </p>
-                                                </div>
-                                                <div className="flex my-2 justify-between">
-                                                    <div className="flex gap-3">
-                                                        <a
-                                                            target="_blank"
-                                                            href={`https://wa.me/${product.whatsapp}`}
-                                                            aria-label="WhatsApp"
-                                                            className="text-green-600 hover:text-green-500 transition"
-                                                        >
-                                                            <i className="fa-brands fa-whatsapp text-2xl sm:text-3xl"></i>
-                                                        </a>
-                                                        <a
-                                                            target="_blank"
-                                                            href={`https://t.me/+91${product.telegram}`}
-                                                            aria-label="Telegram"
-                                                            className="text-blue-600 hover:text-blue-500 transition"
-                                                        >
-                                                            <i className="fa-brands fa-telegram text-2xl sm:text-3xl"></i>
-                                                        </a>
+                                    <Link to={product._id} key={product._id}>
+                                        <div className="border my-3 border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
+                                            <img
+                                                src={product.image.url}
+                                                alt={product.name}
+                                                className="bg-white shadow-md h-36 max-h-60 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
+                                            />
+                                            <div className="p-4 ">
+                                                <h5 className="lg:text-lg text-sm tracking-tight text-gray-700 dark:text-gray-300">
+                                                    {product.name}
+                                                </h5>
+                                                <p>
+                                                    <span className="text-base lg:text-2xl font-bold text-gray-700 dark:text-gray-300">
+                                                        ₹{product.price}
+                                                    </span>
+                                                </p>
+                                                <div className="overflow-y-scroll h-32">
+                                                    <div>
+                                                        <p className="text-gray-800 text-xs lg:text-sm dark:text-gray-400 mt-2">
+                                                            College:
+                                                            {
+                                                                colleges.find(
+                                                                    (college) =>
+                                                                        college.id ===
+                                                                        product.college
+                                                                )?.name
+                                                            }
+                                                        </p>
                                                     </div>
-                                                    {product.owner ===
-                                                        ownerId && (
+                                                    <div className="flex my-2 justify-between">
                                                         <div className="flex gap-3">
-                                                            <button
-                                                                className="text-yellow-600 text-2xl sm:text-3xl rounded mr-2 transition hover:text-yellow-300 "
-                                                                onClick={() =>
-                                                                    handleEdit(
-                                                                        product
-                                                                    )
-                                                                }
+                                                            <a
+                                                                target="_blank"
+                                                                href={`https://wa.me/${product.whatsapp}`}
+                                                                aria-label="WhatsApp"
+                                                                className="text-green-600 hover:text-green-500 transition"
                                                             >
-                                                                <i className="fa-regular fa-pen-to-square"></i>
-                                                            </button>
-                                                            <button
-                                                                className="text-2xl sm:text-3xl text-red-600 rounded transition hover:text-red-300 "
-                                                                onClick={() =>
-                                                                    handleDelete(
-                                                                        product._id
-                                                                    )
-                                                                }
-                                                                disabled={
-                                                                    loadingStates[
+                                                                <i className="fa-brands fa-whatsapp text-2xl sm:text-3xl"></i>
+                                                            </a>
+                                                            <a
+                                                                target="_blank"
+                                                                href={`https://t.me/+91${product.telegram}`}
+                                                                aria-label="Telegram"
+                                                                className="text-blue-600 hover:text-blue-500 transition"
+                                                            >
+                                                                <i className="fa-brands fa-telegram text-2xl sm:text-3xl"></i>
+                                                            </a>
+                                                        </div>
+                                                        {product.owner ===
+                                                            ownerId && (
+                                                            <div className="flex gap-3">
+                                                                <button
+                                                                    className="text-yellow-600 text-2xl sm:text-3xl rounded mr-2 transition hover:text-yellow-300 "
+                                                                    onClick={() =>
+                                                                        handleEdit(
+                                                                            product
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <i className="fa-regular fa-pen-to-square"></i>
+                                                                </button>
+                                                                <button
+                                                                    className="text-2xl sm:text-3xl text-red-600 rounded transition hover:text-red-300 "
+                                                                    onClick={() =>
+                                                                        handleDelete(
+                                                                            product._id
+                                                                        )
+                                                                    }
+                                                                    disabled={
+                                                                        loadingStates[
+                                                                            product
+                                                                                ._id
+                                                                        ]
+                                                                    }
+                                                                >
+                                                                    {loadingStates[
                                                                         product
                                                                             ._id
-                                                                    ]
-                                                                }
-                                                            >
-                                                                {loadingStates[
-                                                                    product._id
-                                                                ] ? (
-                                                                    <i className="fa fa-spinner fa-spin"></i>
-                                                                ) : (
-                                                                    <i className="fa-solid fa-trash"></i>
-                                                                )}
-                                                            </button>
-                                                        </div>
-                                                    )}
-                                                </div>
+                                                                    ] ? (
+                                                                        <i className="fa fa-spinner fa-spin"></i>
+                                                                    ) : (
+                                                                        <i className="fa-solid fa-trash"></i>
+                                                                    )}
+                                                                </button>
+                                                            </div>
+                                                        )}
+                                                    </div>
 
-                                                <p className="text-gray-600 italic overflow-hidden dark:text-gray-200 text-xs lg:text-base">
-                                                    {product.description}
-                                                </p>
+                                                    <p className="text-gray-600 italic overflow-hidden dark:text-gray-200 text-xs lg:text-base">
+                                                        {product.description}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                 ))
                             ) : (
                                 <div className="col-span-4 flex justify-center items-center w-full">
