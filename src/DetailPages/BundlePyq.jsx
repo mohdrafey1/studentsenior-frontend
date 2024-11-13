@@ -11,7 +11,20 @@ function BundlePyq() {
     const { useFetch, loadingFetch } = useApiFetch();
     const [bundlePyqs, setBundlePyqs] = useState([]);
     const [error, setError] = useState(null);
-    const [collegeId, setCollegeId] = useState('');
+
+    const colleges = [
+        { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
+        { id: '66cba84ce0e3a7e528642837', name: 'MPEC Kanpur' },
+        { id: '66d08aff784c9f07a53507b9', name: 'GCET Noida' },
+        { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
+    ];
+
+    const selectedCollegeObject = colleges.find(
+        (college) =>
+            college.name.toLowerCase().replace(/\s+/g, '-') === collegeName
+    );
+
+    const collegeId = selectedCollegeObject.id;
 
     const getQueryParams = () => {
         const params = new URLSearchParams(location.search);
@@ -40,17 +53,6 @@ function BundlePyq() {
         };
         fetchPyqBundle();
     }, [location.search, collegeId]);
-
-    useEffect(() => {
-        const formattedCollegeName = collegeName
-            .replace(/\s+/g, '-')
-            .toLowerCase();
-        const savedCollegeId = localStorage.getItem(formattedCollegeName);
-
-        if (savedCollegeId) {
-            setCollegeId(savedCollegeId);
-        }
-    }, [collegeName]);
 
     if (loadingFetch) {
         return (

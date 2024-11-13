@@ -49,23 +49,12 @@ const StorePage = () => {
 
     const fetchProducts = async () => {
         try {
-            const data = await useFetch(api.store);
-            setProducts(LatestFirst(data));
+            const data = await useFetch(`${api.store}/all/${collegeId}`);
+            setProducts(data);
         } catch (err) {
             console.error('Error fetching products:', err);
             toast.error('Error fetching products:');
         }
-    };
-
-    const LatestFirst = (data) => {
-        let reversedArray = [];
-        const collegeId = localStorage.getItem('id');
-        for (let i = data.length - 1; i >= 0; i--) {
-            if (data[i].college === collegeId) {
-                reversedArray.push(data[i]);
-            }
-        }
-        return reversedArray;
     };
 
     const handleInputChange = (e) => {
@@ -234,22 +223,22 @@ const StorePage = () => {
                                                     </div>
                                                     <div className="flex my-2 justify-between">
                                                         <div className="flex gap-3">
-                                                            <a
+                                                            <button
                                                                 target="_blank"
                                                                 href={`https://wa.me/${product.whatsapp}`}
                                                                 aria-label="WhatsApp"
                                                                 className="text-green-600 hover:text-green-500 transition"
                                                             >
                                                                 <i className="fa-brands fa-whatsapp text-2xl sm:text-3xl"></i>
-                                                            </a>
-                                                            <a
+                                                            </button>
+                                                            <button
                                                                 target="_blank"
                                                                 href={`https://t.me/+91${product.telegram}`}
                                                                 aria-label="Telegram"
                                                                 className="text-blue-600 hover:text-blue-500 transition"
                                                             >
                                                                 <i className="fa-brands fa-telegram text-2xl sm:text-3xl"></i>
-                                                            </a>
+                                                            </button>
                                                         </div>
                                                         {product.owner ===
                                                             ownerId && (

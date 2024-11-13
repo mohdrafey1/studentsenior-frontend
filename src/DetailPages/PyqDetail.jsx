@@ -9,23 +9,32 @@ import { originalHandleShare } from '../utils/handleShare';
 function PyqDetail() {
     const { collegeName, id } = useParams();
     const [pyq, setPyq] = useState(null);
-    const [error, setError] = useState(null);
     const [suggestedpyqs, setSuggestedpyqs] = useState([]);
-    const [collegeId, setCollegeId] = useState('');
 
     const url = `${api.pyq}/${id}`;
     const { useFetch, loadingFetch } = useApiFetch();
+
+    const colleges = [
+        { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
+        { id: '66cba84ce0e3a7e528642837', name: 'MPEC Kanpur' },
+        { id: '66d08aff784c9f07a53507b9', name: 'GCET Noida' },
+        { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
+    ];
+
+    const selectedCollegeObject = colleges.find(
+        (college) =>
+            college.name.toLowerCase().replace(/\s+/g, '-') === collegeName
+    );
+
+    const collegeId = selectedCollegeObject.id;
 
     const fetchPyq = async () => {
         try {
             const data = await useFetch(url);
             setPyq(data);
-            setError(null);
             fetchSuggestedpyqs(data);
         } catch (error) {
-            setError('No PYQ found with this ID');
             setPyq(null);
-            console.log(error);
             toast.error('Something Error Occurred Fetching Pyq');
         }
     };
@@ -53,17 +62,6 @@ function PyqDetail() {
             console.log('Error fetching related pyqs:', error);
         }
     };
-
-    useEffect(() => {
-        const formattedCollegeName = collegeName
-            .replace(/\s+/g, '-')
-            .toLowerCase();
-        const savedCollegeId = localStorage.getItem(formattedCollegeName);
-
-        if (savedCollegeId) {
-            setCollegeId(savedCollegeId);
-        }
-    }, [collegeName]);
 
     useEffect(() => {
         if (collegeId) fetchPyq();

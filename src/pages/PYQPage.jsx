@@ -71,7 +71,7 @@ const PYQPage = () => {
             try {
                 const url = `${api.pyq}/all/${collegeId}`;
                 const data = await useFetch(url);
-                if (data) setPyqs(LatestFirst(data));
+                setPyqs(data);
             } catch (error) {
                 console.error('Error fetching PYQs:', error);
                 toast.error('Error fetching PYQs');
@@ -80,10 +80,6 @@ const PYQPage = () => {
 
         fetchPYQs();
     }, [collegeId]);
-
-    const LatestFirst = (data) => {
-        return [...data].reverse();
-    };
 
     // Filter options
     const courses = [...new Set(pyqs.map((paper) => paper.course))];
