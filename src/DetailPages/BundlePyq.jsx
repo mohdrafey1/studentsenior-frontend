@@ -57,11 +57,7 @@ function BundlePyq() {
     if (loadingFetch) {
         return (
             <div className="flex justify-center items-center min-h-screen">
-                {loadingFetch ? (
-                    <i className="fas fa-spinner fa-pulse fa-5x"></i>
-                ) : (
-                    <p className="text-center text-gray-500 mt-5">{error}</p>
-                )}
+                <i className="fas fa-spinner fa-pulse fa-5x"></i>
             </div>
         );
     }
@@ -130,7 +126,7 @@ function BundlePyq() {
                             ))
                         ) : (
                             <p className="text-center text-gray-600 mt-5">
-                                {error || 'No PYQ bundles available'}
+                                {error || 'No PYQ bundles available.'}
                             </p>
                         )}
                     </div>

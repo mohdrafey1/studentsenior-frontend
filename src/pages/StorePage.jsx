@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import AddProductModal from '../components/StoreModal/AddProductModal';
 import EditProductModal from '../components/StoreModal/EditProductModal';
 import CollegeLinks from '../components/Links/CollegeLinks';
@@ -10,6 +9,7 @@ import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
 import useApiRequest from '../hooks/useApiRequest.js';
 import useApiFetch from '../hooks/useApiFetch.js';
+import ProductsCard from '../components/Cards/ProductsCard.jsx';
 
 const StorePage = () => {
     const { collegeName } = useParams();
@@ -27,6 +27,7 @@ const StorePage = () => {
     });
     const [editingProduct, setEditingProduct] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalType, setModalType] = useState('add');
 
     const colleges = [
         { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
@@ -42,8 +43,6 @@ const StorePage = () => {
 
     const collegeId = selectedCollegeObject.id;
 
-    const currentUser = useSelector((state) => state.user.currentUser);
-    const ownerId = currentUser?._id;
     const { useFetch, loadingFetch } = useApiFetch();
     const { apiRequest, loading } = useApiRequest();
 
@@ -138,7 +137,24 @@ const StorePage = () => {
         }
     };
 
+    const handleAddProduct = () => {
+        setNewProduct({
+            name: '',
+            price: '',
+            description: '',
+            whatsapp: '',
+            telegram: '',
+            college: '',
+            image: null,
+            available: true,
+        });
+        setEditingProduct(null);
+        setModalType('add');
+        setIsModalOpen(true);
+    };
+
     const handleEdit = (product) => {
+        setModalType('edit');
         setEditingProduct(product);
         setIsModalOpen(true);
     };
@@ -181,128 +197,26 @@ const StorePage = () => {
                 <div className="flex justify-center mb-4">
                     <button
                         className="bg-blue-500 text-white px-4 py-2 rounded"
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={handleAddProduct}
                     >
                         Add Product
                     </button>
                 </div>
 
                 <div className="flex justify-center items-center py-1">
-                    <div>
-                        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6 w-full max-w-7xl h-fit ">
-                            {products.length > 0 ? (
-                                products.map((product) => (
-                                    <Link to={product._id} key={product._id}>
-                                        <div className="border my-3 border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
-                                            <img
-                                                src={product.image.url}
-                                                alt={product.name}
-                                                className="bg-white shadow-md h-36 max-h-60 w-full rounded-sm overflow-hidden transform transition duration-300 hover:scale-105"
-                                            />
-                                            <div className="p-4 ">
-                                                <h5 className="lg:text-lg text-sm tracking-tight text-gray-700 dark:text-gray-300">
-                                                    {product.name}
-                                                </h5>
-                                                <p>
-                                                    <span className="text-base lg:text-2xl font-bold text-gray-700 dark:text-gray-300">
-                                                        ₹{product.price}
-                                                    </span>
-                                                </p>
-                                                <div className="overflow-y-scroll h-32">
-                                                    <div>
-                                                        <p className="text-gray-800 text-xs lg:text-sm dark:text-gray-400 mt-2">
-                                                            College:
-                                                            {
-                                                                colleges.find(
-                                                                    (college) =>
-                                                                        college.id ===
-                                                                        product.college
-                                                                )?.name
-                                                            }
-                                                        </p>
-                                                    </div>
-                                                    <div className="flex my-2 justify-between">
-                                                        <div className="flex gap-3">
-                                                            <button
-                                                                target="_blank"
-                                                                href={`https://wa.me/${product.whatsapp}`}
-                                                                aria-label="WhatsApp"
-                                                                className="text-green-600 hover:text-green-500 transition"
-                                                            >
-                                                                <i className="fa-brands fa-whatsapp text-2xl sm:text-3xl"></i>
-                                                            </button>
-                                                            <button
-                                                                target="_blank"
-                                                                href={`https://t.me/+91${product.telegram}`}
-                                                                aria-label="Telegram"
-                                                                className="text-blue-600 hover:text-blue-500 transition"
-                                                            >
-                                                                <i className="fa-brands fa-telegram text-2xl sm:text-3xl"></i>
-                                                            </button>
-                                                        </div>
-                                                        {product.owner ===
-                                                            ownerId && (
-                                                            <div className="flex gap-3">
-                                                                <button
-                                                                    className="text-yellow-600 text-2xl sm:text-3xl rounded mr-2 transition hover:text-yellow-300 "
-                                                                    onClick={() =>
-                                                                        handleEdit(
-                                                                            product
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    <i className="fa-regular fa-pen-to-square"></i>
-                                                                </button>
-                                                                <button
-                                                                    className="text-2xl sm:text-3xl text-red-600 rounded transition hover:text-red-300 "
-                                                                    onClick={() =>
-                                                                        handleDelete(
-                                                                            product._id
-                                                                        )
-                                                                    }
-                                                                    disabled={
-                                                                        loadingStates[
-                                                                            product
-                                                                                ._id
-                                                                        ]
-                                                                    }
-                                                                >
-                                                                    {loadingStates[
-                                                                        product
-                                                                            ._id
-                                                                    ] ? (
-                                                                        <i className="fa fa-spinner fa-spin"></i>
-                                                                    ) : (
-                                                                        <i className="fa-solid fa-trash"></i>
-                                                                    )}
-                                                                </button>
-                                                            </div>
-                                                        )}
-                                                    </div>
-
-                                                    <p className="text-gray-600 italic overflow-hidden dark:text-gray-200 text-xs lg:text-base">
-                                                        {product.description}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                ))
-                            ) : (
-                                <div className="col-span-4 flex justify-center items-center w-full">
-                                    {loadingFetch ? (
-                                        <i className="fas fa-spinner fa-pulse fa-5x"></i>
-                                    ) : (
-                                        <p>No Products Found</p>
-                                    )}
-                                </div>
-                            )}
-                        </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6 w-full max-w-7xl h-fit ">
+                        <ProductsCard
+                            products={products}
+                            loadingFetch={loadingFetch}
+                            loadingStates={loadingStates}
+                            handleEdit={handleEdit}
+                            handleDelete={handleDelete}
+                        />
                         <br />
                     </div>
                 </div>
                 {isModalOpen &&
-                    (editingProduct ? (
+                    (modalType === 'edit' ? (
                         <EditProductModal
                             editingProduct={editingProduct}
                             handleInputChange={handleInputChange}
