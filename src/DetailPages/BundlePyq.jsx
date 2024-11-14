@@ -4,6 +4,7 @@ import { api } from '../config/apiConfiguration';
 import useApiFetch from '../hooks/useApiFetch';
 import DetailPageNavbar from './DetailPageNavbar';
 import { shortnerHandleShare } from '../utils/handleShare';
+import PyqCard from '../components/Cards/PyqCard';
 
 function BundlePyq() {
     const { collegeName } = useParams();
@@ -72,61 +73,10 @@ function BundlePyq() {
                     </h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mx-4">
                         {bundlePyqs.length > 0 ? (
-                            bundlePyqs.map((pyq) => (
-                                <div
-                                    key={pyq._id}
-                                    className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col mb-4"
-                                >
-                                    <div className="flex-grow">
-                                        <h2 className="text-sm lg:text-xl font-bold mb-2">
-                                            {pyq.subjectName}
-                                        </h2>
-                                        <p className="mb-2 text-xs lg:text-base">
-                                            Subject Code:{' '}
-                                            <span className="font-normal">
-                                                {pyq.subjectCode}
-                                            </span>
-                                        </p>
-                                        <p className="mb-2 text-xs lg:text-base">
-                                            Exam Type:{' '}
-                                            <span className="font-normal">
-                                                {pyq.examType}
-                                            </span>
-                                        </p>
-                                        <p className="mb-2 text-xs lg:text-base">
-                                            Year:{' '}
-                                            <span className="font-normal">
-                                                {pyq.year}
-                                            </span>
-                                        </p>
-                                        <p className="mb-2 text-xs lg:text-base">
-                                            Semester:{' '}
-                                            <span className="font-normal">
-                                                {pyq.semester}
-                                            </span>
-                                        </p>
-                                        <p className="mb-2 text-xs lg:text-base">
-                                            Branch:{' '}
-                                            <span className="font-normal">
-                                                {Array.isArray(pyq.branch)
-                                                    ? pyq.branch.join(', ')
-                                                    : pyq.branch}
-                                            </span>
-                                        </p>
-                                    </div>
-                                    <div className="mt-4 flex justify-center">
-                                        <Link
-                                            to={`/college/${collegeName}/pyq/${pyq._id}`}
-                                            className="bg-sky-500 text-white px-4 py-2 rounded-md text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
-                                        >
-                                            View Details
-                                        </Link>
-                                    </div>
-                                </div>
-                            ))
+                            <PyqCard Pyqs={bundlePyqs} />
                         ) : (
                             <p className="text-center text-gray-600 mt-5">
-                                {error || 'No PYQ bundles available.'}
+                                {error || 'No PYQ bundles available'}
                             </p>
                         )}
                     </div>

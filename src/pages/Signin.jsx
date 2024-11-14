@@ -41,7 +41,9 @@ export default function SignIn() {
             }
             dispatch(signInSuccess(data));
             toast.success('Sign In successful');
-            const from = location.state?.from?.pathname || '/';
+            const from =
+                location.state?.from?.pathname + location.state?.from?.search ||
+                '/';
             navigate(from, { replace: true });
         } catch (error) {
             dispatch(signInFailure(error));

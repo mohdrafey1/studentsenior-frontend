@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Pagination } from '@nextui-org/react';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import { useSelector } from 'react-redux';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { api } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
 import useApiFetch from '../hooks/useApiFetch.js';
+import PyqCard from '../components/Cards/PyqCard.jsx';
 
 const PYQPage = () => {
     const { collegeName } = useParams();
@@ -19,8 +19,6 @@ const PYQPage = () => {
     const [selectedExamType, setSelectedExamType] = useState('');
     const [pyqs, setPyqs] = useState([]);
     const [collegeId, setCollegeId] = useState('');
-    const { isAuthenticated } = useSelector((state) => state.user);
-    const location = useLocation();
     const { useFetch, loadingFetch } = useApiFetch();
 
     const colleges = [
@@ -207,58 +205,7 @@ const PYQPage = () => {
 
                 {currentPapers.length > 0 ? (
                     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3  gap-2 lg:gap-6">
-                        {currentPapers.map((paper, index) => (
-                            <div
-                                key={index}
-                                className="bg-white p-4 rounded-lg shadow-md"
-                            >
-                                <div className="h-5/6">
-                                    <h2 className="text-sm lg:text-xl font-bold mb-2">
-                                        {paper.subjectName}
-                                    </h2>
-                                    <p className="mb-2 text-xs lg:text-base">
-                                        Subject Code: {paper.subjectCode}
-                                    </p>
-                                    <p className="mb-2  text-xs lg:text-base">
-                                        Semester: {paper.semester}
-                                    </p>
-                                    <p className="mb-2  text-xs lg:text-base">
-                                        Year: {paper.year}
-                                    </p>
-                                    <p className="mb-2  text-xs lg:text-base">
-                                        Exam Type: {paper.examType}
-                                    </p>
-                                    <p className="mb-2  text-xs lg:text-base">
-                                        Course : {paper.course}
-                                    </p>
-                                    <p className="mb-2  text-xs lg:text-base">
-                                        Branch:{' '}
-                                        {Array.isArray(paper.branch)
-                                            ? paper.branch.join(', ')
-                                            : paper.branch}
-                                    </p>
-                                </div>
-                                {isAuthenticated ? (
-                                    <Link
-                                        to={`/college/${collegeName}/pyq/${paper._id}`}
-                                        className="inline-block bg-sky-500 text-white px-4 py-2 rounded-md text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
-                                    >
-                                        View PDF
-                                    </Link>
-                                ) : (
-                                    <p className="text-red-500">
-                                        <Link
-                                            to="/sign-in"
-                                            state={{ from: location }}
-                                            replace
-                                            className="inline-block bg-red-500 text-white px-2 py-1 sm:px-4 sm:py-2 mb-2 rounded-md text-center hover:bg-red-600 transition-colors text-xs lg:text-base"
-                                        >
-                                            Please log in to view the PDF.
-                                        </Link>
-                                    </p>
-                                )}
-                            </div>
-                        ))}
+                        <PyqCard Pyqs={currentPapers} />
                     </div>
                 ) : (
                     <>

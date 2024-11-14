@@ -159,30 +159,26 @@ function PostDetail() {
         await fetchPost();
     };
 
+    if (loadingFetch) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <i className="fas fa-spinner fa-pulse fa-5x"></i>
+            </div>
+        );
+    }
+
     if (!post) {
         return (
-            <div>
-                {loadingFetch ? (
-                    <>
-                        <div className="flex justify-center items-center min-h-screen">
-                            <i className="fas fa-spinner fa-pulse fa-5x"></i>
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <div className="flex flex-col items-center justify-center h-screen text-center">
-                            <h1 className="text-2xl font-semibold text-gray-800">
-                                Post Not Found !
-                            </h1>
-                            <Link
-                                to={`/college/${collegeName}/community`}
-                                className="mt-6 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-                            >
-                                See Other Posts
-                            </Link>
-                        </div>
-                    </>
-                )}
+            <div className="flex flex-col items-center justify-center h-screen text-center">
+                <h1 className="text-2xl font-semibold text-gray-800">
+                    Post Not Found !
+                </h1>
+                <Link
+                    to={`/college/${collegeName}/community`}
+                    className="mt-6 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                >
+                    See Other Posts
+                </Link>
             </div>
         );
     }

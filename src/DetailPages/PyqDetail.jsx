@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { api } from '../config/apiConfiguration';
 import DetailPageNavbar from './DetailPageNavbar';
 import { originalHandleShare } from '../utils/handleShare';
+import PyqCard from '../components/Cards/PyqCard';
 
 function PyqDetail() {
     const { collegeName, id } = useParams();
@@ -67,30 +68,26 @@ function PyqDetail() {
         if (collegeId) fetchPyq();
     }, [id, collegeId]);
 
+    if (loadingFetch) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <i className="fas fa-spinner fa-pulse fa-5x"></i>
+            </div>
+        );
+    }
+
     if (!pyq) {
         return (
-            <div>
-                {loadingFetch ? (
-                    <>
-                        <div className="flex justify-center items-center min-h-screen">
-                            <i className="fas fa-spinner fa-pulse fa-5x"></i>
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <div className="flex flex-col items-center justify-center h-screen text-center">
-                            <h1 className="text-2xl font-semibold text-gray-800">
-                                Pyq Not Found !
-                            </h1>
-                            <Link
-                                to={`/college/${collegeName}/pyq`}
-                                className="mt-6 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-                            >
-                                See Other Pyq
-                            </Link>
-                        </div>
-                    </>
-                )}
+            <div className="flex flex-col items-center justify-center h-screen text-center">
+                <h1 className="text-2xl font-semibold text-gray-800">
+                    Pyq Not Found !
+                </h1>
+                <Link
+                    to={`/college/${collegeName}/pyq`}
+                    className="mt-6 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                >
+                    See Other Pyq
+                </Link>
             </div>
         );
     }
@@ -167,87 +164,13 @@ function PyqDetail() {
 
                 {/* Sidebar Section */}
                 <div className="w-1/4 hidden lg:block bg-white p-5 shadow-lg max-h-screen overflow-y-auto">
-                    <div className="flex flex-col justify-center shadow-md p-4 rounded-md bg-sky-100">
-                        <h3 className="text-xl font-semibold  mb-4 text-center text-sky-600">
-                            Get This Filter All Pyq
-                        </h3>
-                        <div>
-                            <p className="mb-2  text-xs lg:text-base">
-                                Semester: {pyq.semester}
-                            </p>
-                            <p className="mb-2  text-xs lg:text-base">
-                                Year: {pyq.year}
-                            </p>
-                            <p className="mb-2  text-xs lg:text-base">
-                                Exam Type: {pyq.examType}
-                            </p>
-                            <p className="mb-2  text-xs lg:text-base">
-                                Course : {pyq.course}
-                            </p>
-                            <p className="mb-2  text-xs lg:text-base">
-                                Branch:{' '}
-                                {Array.isArray(pyq.branch)
-                                    ? pyq.branch.join(', ')
-                                    : pyq.branch}
-                            </p>
-                        </div>
-                        <Link
-                            to={`/college/${collegeName}/pyq/bundle?year=${pyq.year}&semester=${pyq.semester}&course=${pyq.course}&branch=${pyq.branch}&examType=${pyq.examType}`}
-                            className="inline-block bg-sky-500 text-white px-4 py-2 rounded-md text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
-                        >
-                            View
-                        </Link>
-                    </div>
                     <h3 className="text-xl font-semibold text-gray-800 my-4 text-center">
                         Related pyqs
                     </h3>
-
+                    <BundlePyqLink pyq={pyq} />
                     <div className="space-y-4">
                         {suggestedpyqs.length > 0 ? (
-                            suggestedpyqs.map((pyq) => (
-                                <div
-                                    key={pyq._id}
-                                    className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300"
-                                >
-                                    <h4 className="text-lg font-semibold text-gray-800">
-                                        {pyq.subjectName}
-                                    </h4>
-                                    <p className="text-gray-600">
-                                        Exam Type:{' '}
-                                        <span className="font-normal">
-                                            {pyq.examType}
-                                        </span>
-                                    </p>
-                                    <p className="text-gray-600">
-                                        Year:{' '}
-                                        <span className="font-normal">
-                                            {pyq.year}
-                                        </span>
-                                    </p>
-                                    <p className="text-gray-600">
-                                        Semester:{' '}
-                                        <span className="font-normal">
-                                            {pyq.semester}
-                                        </span>
-                                    </p>
-                                    <p className="text-gray-600">
-                                        Branch:{' '}
-                                        <span className="font-normal">
-                                            {Array.isArray(pyq.branch)
-                                                ? pyq.branch.join(', ')
-                                                : pyq.branch}
-                                        </span>
-                                    </p>
-                                    <div className="mt-4 flex justify-center">
-                                        <Link
-                                            to={`/college/${collegeName}/pyq/${pyq._id}`}
-                                            className="bg-sky-500 text-white px-4 py-2 rounded-md text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
-                                        >
-                                            View Details
-                                        </Link>
-                                    </div>
-                                </div>
-                            ))
+                            <PyqCard Pyqs={suggestedpyqs} />
                         ) : (
                             <p className="text-gray-500">
                                 No related pyqs found
@@ -258,92 +181,13 @@ function PyqDetail() {
             </div>{' '}
             {/* Suggested pyqs Small Screen */}
             <div className="lg:hidden w-full bg-white p-5 shadow-lg space-y-4 mt-5">
-                <div className="flex flex-col justify-center shadow-md p-4 rounded-md bg-sky-100">
-                    <div>
-                        <h3 className="text-xl font-semibold  mb-4 text-center text-sky-600">
-                            Get This Filter All Pyq
-                        </h3>
-                    </div>
-                    <div className="flex gap-2 sm:gap-4 flex-wrap">
-                        <p className="mb-2  text-xs sm:text-base">
-                            Semester: {pyq.semester}
-                        </p>
-                        <p className="mb-2  text-xs sm:text-base">
-                            Year: {pyq.year}
-                        </p>
-                        <p className="mb-2  text-xs sm:text-base">
-                            Exam Type: {pyq.examType}
-                        </p>
-                        <p className="mb-2  text-xs sm:text-base">
-                            Course : {pyq.course}
-                        </p>
-                        <p className="mb-2  text-xs sm:text-base">
-                            Branch:{' '}
-                            {Array.isArray(pyq.branch)
-                                ? pyq.branch.join(', ')
-                                : pyq.branch}
-                        </p>
-                    </div>
-                    <div className="flex justify-center sm:mt-4">
-                        <Link
-                            to={`/college/${collegeName}/pyq/bundle?year=${pyq.year}&semester=${pyq.semester}&course=${pyq.course}&branch=${pyq.branch}&examType=${pyq.examType}`}
-                            className="w-full sm:w-1/4 bg-sky-500 text-white px-4 py-2 rounded-md text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
-                        >
-                            View
-                        </Link>
-                    </div>
-                </div>
+                <BundlePyqLink pyq={pyq} />
                 <h3 className="text-xl font-semibold text-gray-800 mb-4 text-center">
                     Related pyqs
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     {suggestedpyqs.length > 0 ? (
-                        suggestedpyqs.map((pyq) => (
-                            <div
-                                key={pyq._id}
-                                className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col"
-                            >
-                                <div className="flex-grow">
-                                    <h4 className="text-sm  mb-2  font-semibold text-gray-800 ">
-                                        {pyq.subjectName}
-                                    </h4>
-                                    <p className="text-gray-600 mb-2 text-xs">
-                                        Exam Type:{' '}
-                                        <span className="font-normal">
-                                            {pyq.examType}
-                                        </span>
-                                    </p>
-                                    <p className="text-gray-600 mb-2  text-xs">
-                                        Year:{' '}
-                                        <span className="font-normal">
-                                            {pyq.year}
-                                        </span>
-                                    </p>
-                                    <p className="text-gray-600  mb-2 text-xs">
-                                        Semester:{' '}
-                                        <span className="font-normal">
-                                            {pyq.semester}
-                                        </span>
-                                    </p>
-                                    <p className="text-gray-600 mb-2  text-xs">
-                                        Branch:{' '}
-                                        <span className="font-normal">
-                                            {Array.isArray(pyq.branch)
-                                                ? pyq.branch.join(', ')
-                                                : pyq.branch}
-                                        </span>
-                                    </p>
-                                </div>
-                                <div className="mt-4 flex justify-center">
-                                    <Link
-                                        to={`/college/${collegeName}/pyq/${pyq._id}`}
-                                        className="bg-sky-500 text-white px-4 py-2 rounded-md text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
-                                    >
-                                        View Details
-                                    </Link>
-                                </div>
-                            </div>
-                        ))
+                        <PyqCard Pyqs={suggestedpyqs} />
                     ) : (
                         <p className="text-gray-500">No related pyqs found</p>
                     )}
@@ -354,3 +198,38 @@ function PyqDetail() {
 }
 
 export default PyqDetail;
+
+function BundlePyqLink({ pyq }) {
+    const { collegeName } = useParams();
+    return (
+        <div className="flex flex-col justify-center shadow-md p-4 rounded-md bg-sky-100">
+            <h3 className="text-xl font-semibold  mb-4 text-center text-sky-600">
+                Get This Filter All Pyq
+            </h3>
+            <div className="sm:flex sm:gap-4 lg:flex-wrap lg:block">
+                <p className="mb-2  text-xs sm:text-base">
+                    Semester: {pyq.semester}
+                </p>
+                <p className="mb-2  text-xs sm:text-base">Year: {pyq.year}</p>
+                <p className="mb-2  text-xs sm:text-base">
+                    Exam Type: {pyq.examType}
+                </p>
+                <p className="mb-2  text-xs sm:text-base">
+                    Course : {pyq.course}
+                </p>
+                <p className="mb-2  text-xs sm:text-base">
+                    Branch:{' '}
+                    {Array.isArray(pyq.branch)
+                        ? pyq.branch.join(', ')
+                        : pyq.branch}
+                </p>
+            </div>
+            <Link
+                to={`/college/${collegeName}/pyq/bundle?year=${pyq.year}&semester=${pyq.semester}&course=${pyq.course}&branch=${pyq.branch}&examType=${pyq.examType}`}
+                className="inline-block bg-sky-500 text-white px-4 py-2 rounded-md text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
+            >
+                View
+            </Link>
+        </div>
+    );
+}

@@ -11,7 +11,6 @@ export default function OAuth() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || '/';
 
     const [loading, setLoading] = useState(false);
 
@@ -38,9 +37,12 @@ export default function OAuth() {
             });
 
             const data = await res.json();
-            console.log(data);
+            // console.log(data);
             dispatch(signInSuccess(data));
-            navigate(from);
+            const from =
+                location.state?.from?.pathname + location.state?.from?.search ||
+                '/';
+            navigate(from, { replace: true });
             toast.success('Log in successfull');
         } catch (error) {
             console.log('Could not login with Google', error);
