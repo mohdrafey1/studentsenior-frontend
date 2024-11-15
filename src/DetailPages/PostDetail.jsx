@@ -58,7 +58,7 @@ function PostDetail() {
         try {
             const data = await useFetch(url);
             setPost(data);
-            console.log(data);
+            // console.log(data);
         } catch (err) {
             console.error('Error fetching post:', err.message);
             toast.error(err.message);
@@ -302,11 +302,17 @@ function PostDetail() {
 
                 <div className="profile-section m-4 flex items-center gap-4">
                     <div className="w-16 h-16 rounded-full">
-                        <img
-                            className="w-16 h-16 rounded-full"
-                            src={post.author?.profilePicture}
-                            alt="profile"
-                        />
+                        {post.isAnonymous ? (
+                            <div className="flex items-center justify-center rounded-full w-16 h-16 bg-gray-300 text-white font-bold">
+                                A
+                            </div>
+                        ) : (
+                            <img
+                                src={post.author.profilePicture}
+                                alt="Author Profile"
+                                className="w-16 h-16 rounded-full"
+                            />
+                        )}
                     </div>
                     <div>
                         <h3 className="text-2xl font-bold">

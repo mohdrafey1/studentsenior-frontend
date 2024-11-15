@@ -235,10 +235,10 @@ const CommunityPage = () => {
             {/* <Header /> */}
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5">
-                <h1 className="text-3xl font-bold text-center mb-5">
+                <h1 className="sm:text-3xl font-bold mb-2 text-center">
                     Community - {capitalizeWords(collegeName)}
                 </h1>
-                <p className="italic text-center">
+                <p className="italic text-center text-xs sm:text-base">
                     "Connect, share, and ask your questions and doubts through
                     the community."
                 </p>

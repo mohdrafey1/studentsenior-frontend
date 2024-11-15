@@ -110,10 +110,10 @@ const SeniorPage = () => {
             <CollegeLinks />
             <div className="container mx-auto p-5">
                 <div className="flex flex-col justify-center items-center">
-                    <h1 className="text-3xl font-bold mb-5 text-center">
+                    <h1 className="sm:text-3xl font-bold mb-2 text-center">
                         Seniors - {capitalizeWords(collegeName)}
                     </h1>
-                    <p className="italic text-center">
+                    <p className="italic text-center text-xs sm:text-base">
                         Reach out to seniors for mentorship and expert guidance
                         on your journey
                     </p>
