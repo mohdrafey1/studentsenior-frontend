@@ -41,7 +41,7 @@ export default defineConfig({
             hostname: 'https://studentsenior.com',
             outDir: 'dist',
             dynamicRoutes: [...staticRoutes, ...dynamicRoutes],
-            generateRobotsTxt: true,
+            generateRobotsTxt: false,
         }),
         VitePWA({
             registerType: 'autoUpdate',
