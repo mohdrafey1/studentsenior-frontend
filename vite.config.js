@@ -3,21 +3,45 @@ import react from '@vitejs/plugin-react';
 import SitemapPlugin from 'vite-plugin-sitemap';
 import { VitePWA } from 'vite-plugin-pwa';
 
+const colleges = [
+    'integral-university',
+    'mpec-kanpur',
+    'gcet-noida',
+    'kmc-university',
+];
+const collegePages = [
+    '',
+    '/pyq',
+    '/seniors',
+    '/notes',
+    '/whatsapp-group',
+    '/store',
+    '/community',
+    '/opportunities',
+];
+
+const staticRoutes = [
+    '/',
+    '/about-us',
+    '/contact-us',
+    '/privacy-policy',
+    '/sign-in',
+    '/sign-up',
+    '/install',
+];
+
+const dynamicRoutes = colleges.flatMap((college) =>
+    collegePages.map((page) => `/college/${college}${page}`)
+);
+
 export default defineConfig({
     plugins: [
         react(),
         SitemapPlugin({
             hostname: 'https://studentsenior.com',
             outDir: 'dist',
-            dynamicRoutes: [
-                '/college/integral-university',
-                '/college/integral-university/pyq',
-                '/college/integral-university/seniors',
-                '/college/integral-university/notes',
-                '/college/integral-university/whatsappgroups',
-                '/about-us',
-            ],
-            generateRobotsTxt: false,
+            dynamicRoutes: [...staticRoutes, ...dynamicRoutes],
+            generateRobotsTxt: true,
         }),
         VitePWA({
             registerType: 'autoUpdate',
