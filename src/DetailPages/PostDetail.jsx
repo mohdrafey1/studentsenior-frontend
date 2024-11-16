@@ -190,7 +190,72 @@ function PostDetail() {
                 handleShare={originalHandleShare}
             />
             <div className="main">
-                <div className="flex gap-4">
+                <div className="content  sm:w-4/5 sm:mx-auto">
+                    <div className="profile-section m-4 flex items-center gap-4">
+                        <div className="w-16 h-16 rounded-full">
+                            {post.isAnonymous ? (
+                                <div className="flex items-center justify-center rounded-full w-16 h-16 bg-gray-300 text-white font-bold">
+                                    A
+                                </div>
+                            ) : (
+                                <img
+                                    src={post.author.profilePicture}
+                                    alt="Author Profile"
+                                    className="w-16 h-16 rounded-full"
+                                />
+                            )}
+                        </div>
+                        <div>
+                            <h3 className="text-2xl font-bold">
+                                {post.isAnonymous
+                                    ? 'Anonymous'
+                                    : post.author.username}
+                            </h3>
+                            <p>{post.college?.name}</p>
+                        </div>
+                    </div>
+
+                    <div
+                        className="post-content m-4"
+                        dangerouslySetInnerHTML={{
+                            __html: post.content || 'No content available',
+                        }}
+                    />
+                </div>
+                <hr />
+                <div className="tool-section shadow-md flex items-center justify-evenly h-20">
+                    <button
+                        onClick={() => handleLikePost(post._id)}
+                        className={`mt-1 px-3 rounded-lg ${
+                            post.likes.includes(ownerId)
+                                ? ' text-sky-500'
+                                : 'text-black'
+                        }`}
+                        disabled={hookLoadingStates.likePost[post._id]}
+                    >
+                        {hookLoadingStates.likePost[post._id] ? (
+                            <i className="fa fa-spinner fa-spin fa-2xl"></i>
+                        ) : (
+                            <>
+                                <i className="fa-regular fa-thumbs-up fa-2xl"></i>
+                                <p>Like ({post.likes.length})</p>
+                            </>
+                        )}
+                    </button>
+                    <div
+                        className="text-center hover:text-blue-300"
+                        onClick={handleCommentClick}
+                    >
+                        <i className="fa-regular fa-comment-dots fa-2xl"></i>
+                        <p>Comment</p>
+                    </div>
+                    <div
+                        className="text-center hover:text-blue-300"
+                        onClick={originalHandleShare}
+                    >
+                        <i className="fa-regular fa-share-from-square fa-2xl"></i>
+                        <p>Share</p>
+                    </div>
                     {post.author._id === ownerId && (
                         <>
                             <button
@@ -198,7 +263,7 @@ function PostDetail() {
                                 className="text-yellow-500 px-2 rounded-lg"
                                 title="Edit Post"
                             >
-                                <i className="fa-regular fa-pen-to-square fa-xl"></i>
+                                <i className="fa-regular fa-pen-to-square fa-2xl"></i>
                             </button>
                             {showEditModal && (
                                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -250,7 +315,7 @@ function PostDetail() {
                                 className="text-red-500 px-2  rounded-lg"
                                 title="Delete Post"
                             >
-                                <i className="fa-solid fa-trash fa-xl"></i>
+                                <i className="fa-solid fa-trash fa-2xl"></i>
                             </button>
                             {/* Delete Confirmation Dialog */}
                             <Dialog
@@ -282,7 +347,7 @@ function PostDetail() {
                                                 <>
                                                     <span>Confirm</span>
                                                     &nbsp;
-                                                    <i className="fa-solid fa-trash fa-xl"></i>
+                                                    <i className="fa-solid fa-trash fa-2xl"></i>
                                                 </>
                                             )}
                                         </button>
@@ -299,74 +364,11 @@ function PostDetail() {
                         </>
                     )}
                 </div>
-
-                <div className="profile-section m-4 flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-full">
-                        {post.isAnonymous ? (
-                            <div className="flex items-center justify-center rounded-full w-16 h-16 bg-gray-300 text-white font-bold">
-                                A
-                            </div>
-                        ) : (
-                            <img
-                                src={post.author.profilePicture}
-                                alt="Author Profile"
-                                className="w-16 h-16 rounded-full"
-                            />
-                        )}
-                    </div>
-                    <div>
-                        <h3 className="text-2xl font-bold">
-                            {post.isAnonymous
-                                ? 'Anonymous'
-                                : post.author.username}
-                        </h3>
-                        <p>{post.college?.name}</p>
-                    </div>
-                </div>
-
+                <hr />
                 <div
-                    className="post-content m-4"
-                    dangerouslySetInnerHTML={{
-                        __html: post.content || 'No content available',
-                    }}
-                />
-                <hr />
-                <div className="tool-section shadow-md flex items-center justify-evenly h-20">
-                    <button
-                        onClick={() => handleLikePost(post._id)}
-                        className={`mt-1 px-3 rounded-lg ${
-                            post.likes.includes(ownerId)
-                                ? ' text-sky-500'
-                                : 'text-black'
-                        }`}
-                        disabled={hookLoadingStates.likePost[post._id]}
-                    >
-                        {hookLoadingStates.likePost[post._id] ? (
-                            <i className="fa fa-spinner fa-spin fa-2xl"></i>
-                        ) : (
-                            <>
-                                <i className="fa-regular fa-thumbs-up fa-2xl"></i>
-                                <p>Like ({post.likes.length})</p>
-                            </>
-                        )}
-                    </button>
-                    <div
-                        className="text-center hover:text-blue-300"
-                        onClick={handleCommentClick}
-                    >
-                        <i className="fa-regular fa-comment-dots fa-2xl"></i>
-                        <p>Comment</p>
-                    </div>
-                    <div
-                        className="text-center hover:text-blue-300"
-                        onClick={originalHandleShare}
-                    >
-                        <i className="fa-regular fa-share-from-square fa-2xl"></i>
-                        <p>Share</p>
-                    </div>
-                </div>
-                <hr />
-                <div ref={commentsRef} className="comment-section p-4 my-4">
+                    ref={commentsRef}
+                    className="comment-section p-4 my-4  sm:w-4/5 sm:mx-auto"
+                >
                     <h3 className="text-2xl text-center mb-6 font-bold">
                         Comments
                     </h3>
@@ -487,7 +489,7 @@ function PostDetail() {
                         />
                     </div>
                     <button
-                        className="flex items-center gap-1 bg-blue-400 text-white rounded-xl px-2 py-3"
+                        className="flex items-center gap-1 bg-blue-400 text-white rounded-2xl px-2 py-3"
                         onClick={() => handleAddComment(post._id)}
                         disabled={hookLoadingStates.addComment[post._id]}
                     >

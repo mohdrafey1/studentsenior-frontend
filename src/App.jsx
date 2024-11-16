@@ -32,6 +32,7 @@ import ScrollToTop from './utils/ScrollToTop';
 import PyqDetail from './DetailPages/PyqDetail';
 import BundlePyq from './DetailPages/BundlePyq';
 import ProductDetail from './DetailPages/ProductDetail';
+import FAQPage from './others/FAQPage';
 
 const validColleges = [
     'integral-university',
@@ -182,6 +183,8 @@ const App = () => {
                     <Route path="/not-found" element={<NotFoundPage />} />
 
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+
+                    <Route path="/faq" element={<FAQPage />} />
 
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>

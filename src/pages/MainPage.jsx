@@ -5,48 +5,16 @@ import FeaturedSeniors from '../components/FeaturedSenior/FeaturedSenior';
 import Testimonials from '../components/Testimonials/Testimonials';
 import About from '../components/About/About';
 import '../App.css';
+import { colleges } from '../hooks/useCollegeId';
 
 const MainPage = () => {
     const [selectedCollege, setSelectedCollege] = useState('');
     const navigate = useNavigate();
 
-    const colleges = [
-        {
-            id: '66cb9952a9c088fc11800714',
-            name: 'Integral University',
-        },
-        {
-            id: '66cba84ce0e3a7e528642837',
-            name: 'MPEC Kanpur',
-        },
-        {
-            id: '66d08aff784c9f07a53507b9',
-            name: 'GCET Noida',
-        },
-        {
-            id: '66d40833ec7d66559acbf24c',
-            name: 'KMC UNIVERSITY',
-        },
-    ];
-    useEffect(() => {
-        saveToLocalStorage();
-    }, []);
-    const saveToLocalStorage = () => {
-        colleges.forEach((data) => {
-            const formattedCollegeName = data.name
-                .replace(/\s+/g, '-')
-                .toLowerCase();
-            // Save to localStorage
-            localStorage.setItem(formattedCollegeName, data.id);
-        });
-    };
+    //it was with the api but working slow so feed it , if will no of colleges will be more will do with api again
 
     const handleCollegeChange = (event) => {
         setSelectedCollege(event.target.value);
-        const selectedOption = event.target.options[event.target.selectedIndex];
-        const dataKey = selectedOption.getAttribute('data');
-
-        localStorage.setItem('id', dataKey);
     };
 
     const handleCollegeSelect = () => {

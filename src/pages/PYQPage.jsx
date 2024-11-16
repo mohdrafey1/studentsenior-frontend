@@ -8,9 +8,11 @@ import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
 import useApiFetch from '../hooks/useApiFetch.js';
 import PyqCard from '../components/Cards/PyqCard.jsx';
+import { useCollegeId } from '../hooks/useCollegeId.js';
 
 const PYQPage = () => {
     const { collegeName } = useParams();
+    const collegeId = useCollegeId(collegeName);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedYear, setSelectedYear] = useState('');
     const [selectedSemester, setSelectedSemester] = useState('');
@@ -18,56 +20,14 @@ const PYQPage = () => {
     const [selectedCourse, setSelectedCourse] = useState('');
     const [selectedExamType, setSelectedExamType] = useState('');
     const [pyqs, setPyqs] = useState([]);
-    const [collegeId, setCollegeId] = useState('');
     const { useFetch, loadingFetch } = useApiFetch();
-
-    const colleges = [
-        {
-            id: '66cb9952a9c088fc11800714',
-            name: 'Integral University',
-        },
-        {
-            id: '66cba84ce0e3a7e528642837',
-            name: 'MPEC Kanpur',
-        },
-        {
-            id: '66d08aff784c9f07a53507b9',
-            name: 'GCET Noida',
-        },
-        {
-            id: '66d40833ec7d66559acbf24c',
-            name: 'KMC UNIVERSITY',
-        },
-    ];
-
-    useEffect(() => {
-        colleges.forEach((data) => {
-            const formattedCollegeName = data.name
-                .replace(/\s+/g, '-')
-                .toLowerCase();
-            localStorage.setItem(formattedCollegeName, data.id);
-        });
-    }, []);
-
-    useEffect(() => {
-        if (!collegeName) return;
-
-        const formattedCollegeName = collegeName
-            .replace(/\s+/g, '-')
-            .toLowerCase();
-        const savedCollegeId = localStorage.getItem(formattedCollegeName);
-
-        if (savedCollegeId) {
-            setCollegeId(savedCollegeId);
-        }
-    }, [collegeName]);
 
     useEffect(() => {
         if (!collegeId) return;
 
         const fetchPYQs = async () => {
             try {
-                const url = `${api.pyq}/all/${collegeId}`;
+                const url = `${api.pyq}/college/${collegeId}`;
                 const data = await useFetch(url);
                 setPyqs(data);
             } catch (error) {

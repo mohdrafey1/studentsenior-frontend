@@ -6,7 +6,6 @@ const EditSeniorModal = ({
     handleFileChange,
     handleUpdate,
     setIsModalOpen,
-    colleges,
     loading,
 }) => {
     return (
@@ -94,7 +93,7 @@ const EditSeniorModal = ({
                             className="w-full px-4 py-1.5 border rounded"
                         />
                     </div>
-                    <div className="mb-4 text-xs">
+                    {/* <div className="mb-4 text-xs">
                         <label className="block text-sm font-bold mb-1 text-gray-900 dark:text-white">
                             College
                         </label>
@@ -110,7 +109,7 @@ const EditSeniorModal = ({
                                 </option>
                             ))}
                         </select>
-                    </div>
+                    </div> */}
                     {/* <div className="mb-4 text-xs">
                         <label className="block text-sm font-bold mb-1 text-gray-900 dark:text-white">
                             Image

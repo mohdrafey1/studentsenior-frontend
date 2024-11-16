@@ -10,9 +10,11 @@ import { toast } from 'react-toastify';
 import useApiRequest from '../hooks/useApiRequest.js';
 import useApiFetch from '../hooks/useApiFetch.js';
 import ProductsCard from '../components/Cards/ProductsCard.jsx';
+import { useCollegeId } from '../hooks/useCollegeId.js';
 
 const StorePage = () => {
     const { collegeName } = useParams();
+    const collegeId = useCollegeId(collegeName);
     const [products, setProducts] = useState([]);
     const [loadingStates, setLoadingStates] = useState({});
     const [newProduct, setNewProduct] = useState({
@@ -29,26 +31,12 @@ const StorePage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalType, setModalType] = useState('add');
 
-    const colleges = [
-        { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
-        { id: '66cba84ce0e3a7e528642837', name: 'MPEC Kanpur' },
-        { id: '66d08aff784c9f07a53507b9', name: 'GCET Noida' },
-        { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
-    ];
-
-    const selectedCollegeObject = colleges.find(
-        (college) =>
-            college.name.toLowerCase().replace(/\s+/g, '-') === collegeName
-    );
-
-    const collegeId = selectedCollegeObject.id;
-
     const { useFetch, loadingFetch } = useApiFetch();
     const { apiRequest, loading } = useApiRequest();
 
     const fetchProducts = async () => {
         try {
-            const data = await useFetch(`${api.store}/all/${collegeId}`);
+            const data = await useFetch(`${api.store}/college/${collegeId}`);
             setProducts(data);
         } catch (err) {
             console.error('Error fetching products:', err);

@@ -6,74 +6,33 @@ import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
 import useApiFetch from '../hooks/useApiFetch.js';
+import { useCollegeId } from '../hooks/useCollegeId.js';
 
 const NotesPage = () => {
     const { collegeName } = useParams();
+    const collegeId = useCollegeId(collegeName);
     const [initialNotes, setInitialNotes] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [selectedBranch, setSelectedBranch] = useState('');
     const [selectedCourse, setSelectedCourse] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
-    const [collegeId, setcollegeId] = useState('');
     const { useFetch, loadingFetch } = useApiFetch();
 
     useEffect(() => {
         const FetchNotes = async () => {
             try {
-                const data = await useFetch(api.notes);
-                const collegeid = localStorage.getItem(getCollegeId());
-                const selectedColleges = data.filter(
-                    (item) => item.college === collegeid
+                const data = await useFetch(
+                    `${api.notes}/college/${collegeId}`
                 );
-                if (selectedColleges.length > 0) {
-                    setInitialNotes(selectedColleges);
-                }
+                setInitialNotes(data);
+                // console.log(data);
             } catch (error) {
                 console.log('Error Fetching Notes : ', error);
                 toast.log('Error Fetching Notes  ');
             }
         };
         FetchNotes();
-        saveToLocalStorage();
     }, []);
-
-    const colleges = [
-        {
-            id: '66cb9952a9c088fc11800714',
-            name: 'Integral University',
-        },
-        {
-            id: '66cba84ce0e3a7e528642837',
-            name: 'MPEC Kanpur',
-        },
-        {
-            id: '66d08aff784c9f07a53507b9',
-            name: 'GCET Noida',
-        },
-        {
-            id: '66d40833ec7d66559acbf24c',
-            name: 'KMC UNIVERSITY',
-        },
-    ];
-
-    const saveToLocalStorage = () => {
-        colleges.forEach((data) => {
-            const formattedCollegeName = data.name
-                .replace(/\s+/g, '-')
-                .toLowerCase();
-            // Save to localStorage
-            localStorage.setItem(formattedCollegeName, data.id);
-        });
-    };
-    const getCollegeId = () => {
-        const currentURL = window.location.href;
-        const regex = /college\/([^\/]+)\//;
-        const match = currentURL.match(regex);
-        if (match) {
-            setcollegeId(match[1]);
-        }
-        return match[1];
-    };
 
     const courses = [...new Set(initialNotes.map((note) => note.target))];
     const branches = selectedCourse
@@ -246,7 +205,6 @@ const NotesPage = () => {
                 </a>
             </div>
 
-            {/* <Footer /> */}
             <Collegelink2 />
         </div>
     );

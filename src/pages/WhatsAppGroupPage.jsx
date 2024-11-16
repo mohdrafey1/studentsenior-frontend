@@ -7,11 +7,13 @@ import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
 import useApiRequest from '../hooks/useApiRequest.js';
 import useApiFetch from '../hooks/useApiFetch.js';
+import { useCollegeId } from '../hooks/useCollegeId.js';
 
 const WhatsAppGroupPage = () => {
     const { collegeName } = useParams();
+    const collegeId = useCollegeId(collegeName);
     const [searchTerm, setSearchTerm] = useState('');
-    const [groups, setGroupLink] = useState([]);
+    const [groups, setGroup] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [text, setText] = useState('Submit');
     const [groupData, setGroupData] = useState({
@@ -42,44 +44,15 @@ const WhatsAppGroupPage = () => {
     useEffect(() => {
         const fetchLink = async () => {
             try {
-                const data = await useFetch(api.group);
-                const collegeid = localStorage.getItem(getCollegeId());
-                const selectedColleges = data.filter(
-                    (item) => item.college === collegeid
-                );
-                if (selectedColleges.length > 0) {
-                    setGroupLink(LatestFirst(selectedColleges));
-                }
+                const data = await useFetch(`${url}/college/${collegeId}`);
+                setGroup(data);
             } catch (error) {
                 console.error('Error fetching WhatsApp Groups: ', error);
                 toast.error('Error fetching WhatsApp Groups ');
             }
         };
         fetchLink();
-        saveToLocalStorage();
     }, []);
-
-    const LatestFirst = (data) => {
-        let reversedArray = [];
-        for (let i = data.length - 1; i >= 0; i--) {
-            reversedArray.push(data[i]);
-        }
-        return reversedArray;
-    };
-
-    const colleges = [
-        { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
-        { id: '66cba84ce0e3a7e528642837', name: 'MPEC Kanpur' },
-        { id: '66d08aff784c9f07a53507b9', name: 'GCET Noida' },
-        { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
-    ];
-
-    const selectedCollegeObject = colleges.find(
-        (college) =>
-            college.name.toLowerCase().replace(/\s+/g, '-') === collegeName
-    );
-
-    const collegeId = selectedCollegeObject.id;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -101,24 +74,6 @@ const WhatsAppGroupPage = () => {
             setText('Submit');
         } catch (error) {
             console.error(error);
-        }
-    };
-
-    const saveToLocalStorage = () => {
-        colleges.forEach((data) => {
-            const formattedCollegeName = data.name
-                .replace(/\s+/g, '-')
-                .toLowerCase();
-            localStorage.setItem(formattedCollegeName, data.id);
-        });
-    };
-
-    const getCollegeId = () => {
-        const currentURL = window.location.href;
-        const regex = /college\/([^\/]+)\//;
-        const match = currentURL.match(regex);
-        if (match) {
-            return match[1];
         }
     };
 

@@ -12,10 +12,12 @@ import useApiRequest from '../hooks/useApiRequest';
 import useApiFetch from '../hooks/useApiFetch.js';
 import Dialog from '../utils/Dialog.jsx';
 import usePosts from '../hooks/usePosts.js';
+import { useCollegeId } from '../hooks/useCollegeId.js';
 
 const CommunityPage = () => {
     const navigate = useNavigate();
     const { collegeName } = useParams();
+    const collegeId = useCollegeId(collegeName);
     const [posts, setPosts] = useState([]);
     const [newPostContent, setNewPostContent] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
@@ -42,21 +44,16 @@ const CommunityPage = () => {
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
 
-    const colleges = [
-        { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
-        { id: '66cba84ce0e3a7e528642837', name: 'MPEC Kanpur' },
-        { id: '66d08aff784c9f07a53507b9', name: 'GCET Noida' },
-        { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
-    ];
-
     const { apiRequest, loading } = useApiRequest();
     const { useFetch, loadingFetch } = useApiFetch();
+
     const url = api.community;
 
     const fetchPosts = async () => {
         try {
-            const data = await useFetch(url);
-            setPosts(LatestFirst(data));
+            const data = await useFetch(`${url}/college/${collegeId}`);
+            setPosts(data);
+            // console.log(data);
         } catch (err) {
             console.error('Error fetching posts:', err);
             toast.error('Error fetching posts');
@@ -106,22 +103,12 @@ const CommunityPage = () => {
     // Add a new post with the extracted college
     const addPost = async () => {
         if (newPostContent.trim()) {
-            const selectedCollegeObject = colleges.find(
-                (college) =>
-                    college.name.toLowerCase().replace(/\s+/g, '-') ===
-                    collegeName
-            );
-
-            const college = selectedCollegeObject
-                ? selectedCollegeObject.id
-                : null;
-
-            if (college) {
+            if (collegeId) {
                 try {
                     await apiRequest(url, 'POST', {
                         content: newPostContent,
                         isAnonymous,
-                        college,
+                        college: collegeId,
                     });
 
                     fetchPosts();
@@ -197,17 +184,6 @@ const CommunityPage = () => {
     const handleDeleteComment = async (postId, commentId) => {
         await deleteComment(postId, commentId);
         fetchPosts();
-    };
-
-    const LatestFirst = (data) => {
-        let reversedArray = [];
-        const collegeId = localStorage.getItem('id');
-        for (let i = data.length - 1; i >= 0; i--) {
-            if (data[i].college._id === collegeId) {
-                reversedArray.push(data[i]);
-            }
-        }
-        return reversedArray;
     };
 
     const handleShare = (postId) => {

@@ -4,15 +4,17 @@ import { useParams } from 'react-router-dom';
 import EditSeniorModal from '../components/SeniorModal/EditSeniorModal';
 import SeniorDetailModal from '../components/SeniorModal/SeniorDetailModal';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import { api, API_KEY } from '../config/apiConfiguration.js';
+import { api } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
 import useApiRequest from '../hooks/useApiRequest.js';
 import useApiFetch from '../hooks/useApiFetch.js';
+import { useCollegeId } from '../hooks/useCollegeId.js';
 
 const SeniorPage = () => {
     const { collegeName } = useParams();
+    const collegeId = useCollegeId(collegeName);
     const [seniors, setSeniors] = useState([]);
     const [editingSenior, setEditingSenior] = useState(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -24,40 +26,23 @@ const SeniorPage = () => {
         editSenior: {},
         deleteSenior: {},
     });
-    const colleges = [
-        { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
-        { id: '66cba84ce0e3a7e528642837', name: 'MPEC Kanpur' },
-        { id: '66d08aff784c9f07a53507b9', name: 'GCET Noida' },
-        { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
-    ];
 
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
 
     const { apiRequest, loading } = useApiRequest();
     const { useFetch, loadingFetch } = useApiFetch();
+
     const url = api.senior;
 
     const fetchSeniors = async () => {
         try {
-            const data = await useFetch(url);
-            setSeniors(collegeBased(data));
+            const data = await useFetch(`${url}/college/${collegeId}`);
+            setSeniors(data);
         } catch (err) {
             console.error('Error fetching seniors:', err);
             toast.error('Error fetching seniors ');
         }
-    };
-
-    const collegeBased = (data) => {
-        let returnArray = [];
-        const collegeId = localStorage.getItem('id');
-        for (let i = 0; i <= data.length - 1; i++) {
-            if (data[i].college === collegeId) {
-                returnArray.push(data[i]);
-            }
-        }
-
-        return returnArray;
     };
 
     const handleEdit = (senior) => {
@@ -236,7 +221,6 @@ const SeniorPage = () => {
                 {isEditModalOpen && (
                     <EditSeniorModal
                         editingSenior={editingSenior}
-                        colleges={colleges}
                         handleInputChange={(e) => {
                             const { name, value, type, checked } = e.target;
                             setEditingSenior({
