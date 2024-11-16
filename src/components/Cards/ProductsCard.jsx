@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function ProductsCard({
@@ -9,6 +9,7 @@ function ProductsCard({
     handleDelete,
     handleEdit,
 }) {
+    const { collegeName } = useParams();
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
 
@@ -16,7 +17,10 @@ function ProductsCard({
         <>
             {products.length > 0 ? (
                 products.map((product) => (
-                    <Link to={product._id} key={product._id}>
+                    <Link
+                        to={`/college/${collegeName}/store/${product._id}`}
+                        key={product._id}
+                    >
                         <div className="border my-3 border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
                             <img
                                 src={product.image.url}
