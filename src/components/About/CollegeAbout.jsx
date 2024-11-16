@@ -3,34 +3,23 @@ import { api } from '../../config/apiConfiguration';
 import { capitalizeWords } from '../../utils/Capitalize.js';
 import { useParams } from 'react-router-dom';
 import useApiFetch from '../../hooks/useApiFetch.js';
+import { useCollegeId } from '../../hooks/useCollegeId.js';
 
 const CollegeAbout = () => {
-    const [collegeData, setCollegeData] = useState([]);
-    const [des, setDes] = useState('');
+    const [collegeData, setCollegeData] = useState({});
     const { collegeName } = useParams();
+    const collegeId = useCollegeId(collegeName);
 
     const { useFetch, loadingFetch } = useApiFetch();
     const url = api.college;
 
     const fetchCollege = async () => {
         try {
-            const Collegedata = await useFetch(url);
+            const Collegedata = await useFetch(`${url}/${collegeId}`);
             setCollegeData(Collegedata);
-            setDes(collegeBased(Collegedata));
         } catch (error) {
             console.error('Error fetching college data:', error);
         }
-    };
-
-    const collegeBased = (data) => {
-        let description = '';
-        for (let i = 0; i < data.length; i++) {
-            const collegeId = localStorage.getItem('id');
-            if (data[i]._id === collegeId) {
-                description = data[i].description;
-            }
-        }
-        return description;
     };
 
     useEffect(() => {
@@ -46,7 +35,9 @@ const CollegeAbout = () => {
                         <> About {capitalizeWords(collegeName)}</>
                     )}
                 </h3>
-                <p className="text-gray-500 text-xl">{des}</p>
+                <p className="text-gray-500 text-xl">
+                    {collegeData.description}
+                </p>
             </div>
         </section>
     );

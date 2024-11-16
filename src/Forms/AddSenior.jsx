@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import useApiRequest from '../hooks/useApiRequest';
 import { api } from '../config/apiConfiguration.js';
+import { colleges } from '../hooks/useCollegeId.js';
 
 const AddSeniorPage = () => {
     const [isSuccess, setIsSuccess] = useState(false);
@@ -17,13 +18,6 @@ const AddSeniorPage = () => {
 
     const { apiRequest, loading, error } = useApiRequest();
     const url = api.senior;
-
-    const colleges = [
-        { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
-        { id: '66cba84ce0e3a7e528642837', name: 'MPEC Kanpur' },
-        { id: '66d08aff784c9f07a53507b9', name: 'GCET Noida' },
-        { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
-    ];
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;

@@ -1,20 +1,16 @@
 import React from 'react';
+import { colleges } from '../../hooks/useCollegeId';
 
 const SeniorDetailModal = ({ senior, setIsDetailModalOpen }) => {
-    const colleges = [
-        { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
-        { id: '66cba84ce0e3a7e528642837', name: 'MPEC Kanpur' },
-        { id: '66d08aff784c9f07a53507b9', name: 'GCET Noida' },
-        { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
-    ];
-
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
             {/* Modal Container */}
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg m-4 dark:bg-gray-800">
                 {/* Header Section */}
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white ">Senior Details</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white ">
+                        Senior Details
+                    </h2>
                     <button
                         className=" text-gray-900 dark:text-white  transition"
                         onClick={() => setIsDetailModalOpen(false)}
@@ -47,7 +43,9 @@ const SeniorDetailModal = ({ senior, setIsDetailModalOpen }) => {
 
                 {/* Senior Info Section */}
                 <div className="mb-4">
-                    <h3 className="text-lg sm:text-xl font-bold  text-gray-900 dark:text-white  mb-2 text-center">{senior.name}</h3>
+                    <h3 className="text-lg sm:text-xl font-bold  text-gray-900 dark:text-white  mb-2 text-center">
+                        {senior.name}
+                    </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         <p className=" text-gray-900 dark:text-white  text-base ">
                             <strong>Course:</strong> {senior.branch}
@@ -60,9 +58,12 @@ const SeniorDetailModal = ({ senior, setIsDetailModalOpen }) => {
                         </p>
                         <p className=" text-gray-900 dark:text-white  text-base ">
                             <strong>College:</strong>{' '}
-                            {colleges.find(college => college.id === senior.college)?.name}
+                            {
+                                colleges.find(
+                                    (college) => college.id === senior.college
+                                )?.name
+                            }
                         </p>
-
                     </div>
                 </div>
 
@@ -87,7 +88,6 @@ const SeniorDetailModal = ({ senior, setIsDetailModalOpen }) => {
                         </a>
                     )}
                 </div>
-
             </div>
         </div>
     );

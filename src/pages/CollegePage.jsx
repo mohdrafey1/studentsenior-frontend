@@ -2,7 +2,6 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import CollegeHero from '../components/Hero/CollegeHero';
 import FeaturedSeniors from '../components/FeaturedSenior/FeaturedSenior';
-import Testimonials from '../components/Testimonials/Testimonials';
 import CollegeAbout from '../components/About/CollegeAbout';
 import Collegelinks from '../components/Links/CollegeLinks';
 import Collegelink2 from '../components/Links/CollegeLink2';
@@ -16,7 +15,7 @@ const CollegePage = () => {
                 <Collegelinks />
             </CollegeHero>
             <FeaturedSeniors />
-          
+
             <CollegeAbout />
             <Collegelink2 />
         </div>
