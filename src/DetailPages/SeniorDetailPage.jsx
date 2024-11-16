@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DetailPageNavbar from './DetailPageNavbar';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useCollegeId } from '../hooks/useCollegeId';
 import { toast } from 'react-toastify';
 import useApiFetch from '../hooks/useApiFetch';
@@ -9,7 +9,7 @@ import { api } from '../config/apiConfiguration';
 function SeniorDetail() {
     const { collegeName, id } = useParams();
     const collegeId = useCollegeId(collegeName);
-    const [senior, setSenior] = useState({});
+    const [senior, setSenior] = useState(null);
     const { useFetch, loadingFetch } = useApiFetch();
 
     const fetchSenior = async () => {
@@ -25,6 +25,30 @@ function SeniorDetail() {
     useEffect(() => {
         fetchSenior();
     }, [id]);
+
+    if (loadingFetch) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <i className="fas fa-spinner fa-pulse fa-5x"></i>
+            </div>
+        );
+    }
+
+    if (!senior) {
+        return (
+            <div className="flex flex-col items-center justify-center h-screen text-center">
+                <h1 className="text-2xl font-semibold text-gray-800">
+                    Senior Not Found !
+                </h1>
+                <Link
+                    to={`/college/${collegeName}/seniors`}
+                    className="mt-6 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                >
+                    See Other Seniors
+                </Link>
+            </div>
+        );
+    }
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to-white min-h-screen min-w-full">
