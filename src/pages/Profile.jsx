@@ -20,9 +20,11 @@ import {
 } from '../redux/user/userSlice';
 import { toast } from 'react-toastify';
 import warning from '../../public/assets/warning.png';
+import { useNavigate } from 'react-router-dom';
 
 export default function Profile() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const fileRef = useRef(null);
     const [image, setImage] = useState(undefined);
     const [imagePercent, setImagePercent] = useState(0);
@@ -124,6 +126,7 @@ export default function Profile() {
 
             if (response.ok) {
                 dispatch(signOut());
+                navigate('/login');
                 setLoading1(false);
                 toast.warning('You are Logout Now');
             } else {

@@ -4,28 +4,15 @@ import { toast } from 'react-toastify';
 import { api } from '../config/apiConfiguration';
 import { useParams, Link } from 'react-router-dom';
 import DetailPageNavbar from './DetailPageNavbar';
-import { originalHandleShare } from '../utils/handleShare';
 import ProductsCard from '../components/Cards/ProductsCard';
+import { useCollegeId } from '../hooks/useCollegeId';
 
 function ProductDetail() {
     const { collegeName, id } = useParams();
+    const collegeId = useCollegeId(collegeName);
     const { useFetch, loadingFetch } = useApiFetch();
     const [product, setProduct] = useState(null);
     const [suggestedProduct, setSuggestedProduct] = useState([]);
-
-    const colleges = [
-        { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
-        { id: '66cba84ce0e3a7e528642837', name: 'MPEC Kanpur' },
-        { id: '66d08aff784c9f07a53507b9', name: 'GCET Noida' },
-        { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
-    ];
-
-    const selectedCollegeObject = colleges.find(
-        (college) =>
-            college.name.toLowerCase().replace(/\s+/g, '-') === collegeName
-    );
-
-    const collegeId = selectedCollegeObject.id;
 
     const url = `${api.store}/${id}`;
 
@@ -82,10 +69,7 @@ function ProductDetail() {
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full relative">
-            <DetailPageNavbar
-                path={'store'}
-                handleShare={originalHandleShare}
-            />
+            <DetailPageNavbar path={'store'} />
 
             <div className="grid gap-6 lg:grid-cols-8 sm:grid-cols-2 mt-6 lg:h-screen">
                 <div className="p-4 rounded-lg shadow-lg lg:col-span-3 flex justify-center items-center">

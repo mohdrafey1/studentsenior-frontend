@@ -4,30 +4,17 @@ import useApiFetch from '../hooks/useApiFetch';
 import { toast } from 'react-toastify';
 import { api } from '../config/apiConfiguration';
 import DetailPageNavbar from './DetailPageNavbar';
-import { originalHandleShare } from '../utils/handleShare';
 import PyqCard from '../components/Cards/PyqCard';
+import { useCollegeId } from '../hooks/useCollegeId';
 
 function PyqDetail() {
     const { collegeName, id } = useParams();
+    const collegeId = useCollegeId(collegeName);
     const [pyq, setPyq] = useState(null);
     const [suggestedpyqs, setSuggestedpyqs] = useState([]);
 
     const url = `${api.pyq}/${id}`;
     const { useFetch, loadingFetch } = useApiFetch();
-
-    const colleges = [
-        { id: '66cb9952a9c088fc11800714', name: 'Integral University' },
-        { id: '66cba84ce0e3a7e528642837', name: 'MPEC Kanpur' },
-        { id: '66d08aff784c9f07a53507b9', name: 'GCET Noida' },
-        { id: '66d40833ec7d66559acbf24c', name: 'KMC UNIVERSITY' },
-    ];
-
-    const selectedCollegeObject = colleges.find(
-        (college) =>
-            college.name.toLowerCase().replace(/\s+/g, '-') === collegeName
-    );
-
-    const collegeId = selectedCollegeObject.id;
 
     const fetchPyq = async () => {
         try {
@@ -94,7 +81,7 @@ function PyqDetail() {
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full relative">
-            <DetailPageNavbar path={'pyq'} handleShare={originalHandleShare} />
+            <DetailPageNavbar path={'pyq'} />
             <div className="main flex">
                 <div className="flex-1 px-3 py-4">
                     <div className="flex flex-col items-center sm:px-4 space-y-4">

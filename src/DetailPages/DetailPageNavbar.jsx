@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { originalHandleShare } from '../utils/handleShare';
 
-const DetailPageNavbar = ({ path, handleShare }) => {
+const DetailPageNavbar = ({ path, handleShare = originalHandleShare }) => {
     const { collegeName } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
