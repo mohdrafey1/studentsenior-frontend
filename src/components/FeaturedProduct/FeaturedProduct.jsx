@@ -37,7 +37,19 @@ const FeaturedSeniors = () => {
             <div className="container mx-auto px-5 xl:px-40">
                 <div className="main-card">
                     <div className="mobile-card cards flex gap-2 md:gap-6 w-full lg:justify-center md:justify-center">
-                        <ProductCard products={products} />
+                        {products.length > 0 ? (
+                            <ProductCard products={products.slice(0, 4)} />
+                        ) : (
+                            <div className="col-span-4 flex justify-center items-center py-10 w-full">
+                                {loadingFetch ? (
+                                    <i className="fas fa-spinner fa-pulse fa-2xl"></i>
+                                ) : (
+                                    <p className="text-center text-gray-500 mt-5">
+                                        No Senior found in your college
+                                    </p>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
                 {loadingFetch ? (

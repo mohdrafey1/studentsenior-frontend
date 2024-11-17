@@ -59,7 +59,7 @@ const FeaturedSeniors = () => {
                         ) : (
                             <div className="col-span-4 flex justify-center items-center py-10 w-full">
                                 {loadingFetch ? (
-                                    <i className="fas fa-spinner fa-pulse fa-5x"></i>
+                                    <i className="fas fa-spinner fa-pulse fa-2xl"></i>
                                 ) : (
                                     <p className="text-center text-gray-500 mt-5">
                                         No Senior found in your college
