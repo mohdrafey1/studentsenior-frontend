@@ -19,7 +19,7 @@ function SeniorCard({
                 <Link
                     to={`/college/${collegeName}/seniors/${senior._id}`}
                     key={senior._id}
-                    className="min-w-48 my-4 w-full"
+                    className="min-w-40 my-4 w-full"
                 >
                     <div
                         key={senior._id}

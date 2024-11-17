@@ -28,7 +28,7 @@ const CollegeAbout = () => {
     return (
         <section className="flex justify-center ">
             <div className="text-center mx-4/5 max-w-7xl p-8">
-                <h3 className="sm:text-3xl sm:font-medium mb-6">
+                <h3 className="text-3xl sm:font-medium mb-6">
                     {loadingFetch ? (
                         <i className="fa fa-spinner fa-spin"></i>
                     ) : (

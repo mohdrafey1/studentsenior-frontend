@@ -20,9 +20,9 @@ function ProductsCard({
                     <Link
                         to={`/college/${collegeName}/store/${product._id}`}
                         key={product._id}
-                        className="min-w-48 my-4 w-full"
+                        className="min-w-40 my-4 w-full"
                     >
-                        <div className=" border my-3 border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
+                        <div className=" border border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
                             <img
                                 src={product.image.url}
                                 alt={product.name}

@@ -48,7 +48,7 @@ const FeaturedSeniors = () => {
                     <i className="fa-solid fa-star"></i>
                 </div>
             </div>
-            <div className="container mx-auto p-5 xl:px-40">
+            <div className="container mx-auto px-5 xl:px-40">
                 <div className="main-card">
                     <div className="mobile-card cards gap-2 flex md:gap-6 w-full lg:justify-center md:justify-center">
                         {seniors.length > 0 ? (
