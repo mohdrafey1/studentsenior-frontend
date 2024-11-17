@@ -28,9 +28,6 @@ const SeniorPage = () => {
         deleteSenior: {},
     });
 
-    const currentUser = useSelector((state) => state.user.currentUser);
-    const ownerId = currentUser?._id;
-
     const { apiRequest, loading } = useApiRequest();
     const { useFetch, loadingFetch } = useApiFetch();
 

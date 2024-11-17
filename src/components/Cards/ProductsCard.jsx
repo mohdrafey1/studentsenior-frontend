@@ -20,8 +20,9 @@ function ProductsCard({
                     <Link
                         to={`/college/${collegeName}/store/${product._id}`}
                         key={product._id}
+                        className="min-w-48 my-4 w-full"
                     >
-                        <div className="border my-3 border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
+                        <div className=" border my-3 border-gray-200 rounded-lg shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
                             <img
                                 src={product.image.url}
                                 alt={product.name}
@@ -121,10 +122,10 @@ function ProductsCard({
                                     </div>
 
                                     <p className="text-gray-600 italic overflow-hidden dark:text-gray-200 text-xs lg:text-base">
-                                        {product.description.length > 100
+                                        {product.description.length > 50
                                             ? `${product.description.substring(
                                                   0,
-                                                  100
+                                                  50
                                               )}...`
                                             : product.description}
                                     </p>

@@ -1,79 +1,45 @@
-import React from 'react';
-
-const seniors = [
-    {
-        name: 'Mohd Rafey',
-        job: 'Devops + Web Dev',
-        image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214937/student_senior/u3tqpo9vbzq8wlrnfoab.jpg',
-        socials: [
-            {
-                icon: 'linkedin',
-                link: 'https://www.linkedin.com/in/mohd-rafey',
-            },
-            {
-                icon: 'whatsapp',
-                link: 'https://api.whatsapp.com/send?phone=919455346151',
-            },
-            {
-                icon: 'instagram',
-                link: 'https://www.instagram.com/studentsenior12?igsh=c2NkZWRpNm9pdTVy',
-            },
-            { icon: 'youtube', link: 'https://youtube.com/extraelements' },
-        ],
-    },
-    {
-        name: 'Najmus Sahar',
-        job: 'Frontend Developer',
-        image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725214975/student_senior/zbiisemkblddgqjfcjwz.jpg',
-        socials: [
-            {
-                icon: 'linkedin',
-                link: 'https://www.linkedin.com/in/najmus-sahar-02494b319',
-            },
-            {
-                icon: 'whatsapp',
-                link: 'https://api.whatsapp.com/send?phone=919264969397',
-            },
-            {
-                icon: 'instagram',
-                link: 'https://www.instagram.com/studentsenior12?igsh=c2NkZWRpNm9pdTVy',
-            },
-            {
-                icon: 'youtube',
-                link: 'https://youtube.com/extraelements',
-            },
-        ],
-    },
-    {
-        name: 'Muskan Khatoon',
-        job: 'Web Developer',
-        image: 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1725429901/student_senior/qehp7dr9wnfthnwphqke.jpg',
-        socials: [
-            {
-                icon: 'linkedin',
-                link: 'https://www.linkedin.com/in/muskan-khatoon-845b66317',
-            },
-            {
-                icon: 'whatsapp',
-                link: 'https://api.whatsapp.com/send?phone=919335250362',
-            },
-            {
-                icon: 'instagram',
-                link: 'https://www.instagram.com/studentsenior12?igsh=c2NkZWRpNm9pdTVy',
-            },
-            {
-                icon: 'youtube',
-                link: 'https://youtube.com/extraelements',
-            },
-        ],
-    },
-];
+import React, { useState, useEffect } from 'react';
+import useApiFetch from '../../hooks/useApiFetch';
+import { useCollegeId } from '../../hooks/useCollegeId';
+import { api } from '../../config/apiConfiguration';
+import SeniorCard from '../Cards/SeniorCard';
+import { toast } from 'react-toastify';
+import { useParams, Link } from 'react-router-dom';
+import SeniorDetailModal from '../SeniorModal/SeniorDetailModal';
 
 const FeaturedSeniors = () => {
+    const { collegeName } = useParams();
+    const collegeId = useCollegeId(collegeName);
+    const [seniors, setSeniors] = useState([]);
+    const [selectedSenior, setSelectedSenior] = useState(null);
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+    const { useFetch, loadingFetch } = useApiFetch();
+
+    const handleDetail = (senior) => {
+        setSelectedSenior(senior);
+        setIsDetailModalOpen(true);
+    };
+
+    const fetchSeniors = async () => {
+        try {
+            const data = await useFetch(`${api.senior}/college/${collegeId}`);
+            setSeniors(data);
+        } catch (err) {
+            console.error('Error fetching seniors:', err);
+            toast.error('Error fetching seniors');
+        }
+    };
+
+    useEffect(() => {
+        fetchSeniors();
+    }, []);
+
     return (
-        <section className="container mx-auto ">
+        <section className="container mx-auto">
             <div className="flex flex-col md:flex-row justify-center items-center text-2xl text-center p-4">
-                <h3>10 Thousands of Students Learned</h3>
+                <h3 className="md:text-3xl sm:font-medium">
+                    Thousands of Students Guided by our Seniors
+                </h3>
                 <div className="text-sky-500 ml-2">
                     <i className="fa-solid fa-star"></i>
                     <i className="fa-solid fa-star"></i>
@@ -82,48 +48,46 @@ const FeaturedSeniors = () => {
                     <i className="fa-solid fa-star"></i>
                 </div>
             </div>
-            <div className="container mt-4">
+            <div className="container mx-auto p-5 xl:px-40">
                 <div className="main-card">
-                    <div className="mobile-card cards flex gap-6 w-full lg:justify-center md:justify-center">
-                        {seniors.map((senior, index) => (
-                            <div
-                                key={index}
-                                className="card w-full sm:w-full lg:w-1/4 bg-white rounded-lg p-8 shadow-lg transform transition-transform duration-400 hover:-translate-y-4"
-                            >
-                                <div className="content flex flex-col justify-center items-center text-center">
-                                    <div className="img h-32 w-32 rounded-full p-1 bg-sky-300 mb-4">
-                                        <img
-                                            src={senior.image}
-                                            alt={senior.name}
-                                            className="h-full w-full rounded-full border-4 border-white object-cover"
-                                        />
-                                    </div>
-                                    <div className="name text-xl font-medium">
-                                        {senior.name}
-                                    </div>
-                                    <div className="job text-xl text-sky-500">
-                                        {senior.job}
-                                    </div>
-                                    <div className="media-icons flex gap-2 mt-2">
-                                        {senior.socials.map((social, i) => (
-                                            <a
-                                                target="_blank"
-                                                key={i}
-                                                href={social.link}
-                                                className="flex items-center justify-center h-9 w-9 text-white bg-sky-300 rounded-full border-2 border-transparent transition-all duration-300 hover:text-red-500 hover:bg-white hover:border-red-500"
-                                            >
-                                                <i
-                                                    className={`fab fa-${social.icon}`}
-                                                ></i>
-                                            </a>
-                                        ))}
-                                    </div>
-                                </div>
+                    <div className="mobile-card cards gap-2 flex md:gap-6 w-full lg:justify-center md:justify-center">
+                        {seniors.length > 0 ? (
+                            <SeniorCard
+                                seniors={seniors.slice(0, 4)}
+                                handleDetail={handleDetail}
+                            />
+                        ) : (
+                            <div className="col-span-4 flex justify-center items-center py-10 w-full">
+                                {loadingFetch ? (
+                                    <i className="fas fa-spinner fa-pulse fa-5x"></i>
+                                ) : (
+                                    <p className="text-center text-gray-500 mt-5">
+                                        No Senior found in your college
+                                    </p>
+                                )}
                             </div>
-                        ))}
+                        )}
                     </div>
                 </div>
+                {loadingFetch ? (
+                    <></>
+                ) : (
+                    <div className="text-center my-5">
+                        <Link
+                            to={`/college/${collegeName}/seniors`}
+                            className="bg-sky-500 text-white py-2 px-4 rounded hover:bg-sky-600"
+                        >
+                            View All
+                        </Link>
+                    </div>
+                )}
             </div>
+            {isDetailModalOpen && (
+                <SeniorDetailModal
+                    senior={selectedSenior}
+                    setIsDetailModalOpen={setIsDetailModalOpen}
+                />
+            )}
         </section>
     );
 };

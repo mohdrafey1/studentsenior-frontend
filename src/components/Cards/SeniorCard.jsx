@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function SeniorCard({
@@ -9,13 +9,18 @@ function SeniorCard({
     handleEdit,
     handleDetail,
 }) {
+    const { collegeName } = useParams();
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
 
     return (
         <>
             {seniors.map((senior) => (
-                <Link to={senior._id} key={senior._id}>
+                <Link
+                    to={`/college/${collegeName}/seniors/${senior._id}`}
+                    key={senior._id}
+                    className="min-w-48 my-4 w-full"
+                >
                     <div
                         key={senior._id}
                         className="bg-white shadow-md rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl dark:bg-gray-800 w-full h-full flex flex-col"
@@ -35,7 +40,7 @@ function SeniorCard({
                             <p className="text-gray-600 dark:text-gray-400 text-xs lg:text-sm mb-1">
                                 Year: {senior.year}
                             </p>
-                            <p className="text-gray-500 dark:text-gray-300 text-xs lg:text-sm ">
+                            <p className="text-gray-500 dark:text-gray-300 text-xs lg:text-sm w-full overflow-y-scroll ">
                                 Domain: {senior.domain}
                             </p>
                         </div>
@@ -49,39 +54,41 @@ function SeniorCard({
                             >
                                 View
                             </button>
-                            {senior.owner === ownerId && (
-                                <div className="flex space-x-2">
-                                    <button
-                                        className="bg-yellow-500 text-white px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm hover:bg-yellow-600"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            handleEdit(senior);
-                                        }}
-                                    >
-                                        <i className="fa-regular fa-pen-to-square"></i>
-                                    </button>
-                                    <button
-                                        className="bg-red-500 text-white px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm hover:bg-red-600"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            handleDelete(senior._id);
-                                        }}
-                                        disabled={
-                                            loadingStates.deleteSenior[
+                            {handleDelete &&
+                                handleEdit &&
+                                senior.owner === ownerId && (
+                                    <div className="flex space-x-2">
+                                        <button
+                                            className="bg-yellow-500 text-white px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm hover:bg-yellow-600"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleEdit(senior);
+                                            }}
+                                        >
+                                            <i className="fa-regular fa-pen-to-square"></i>
+                                        </button>
+                                        <button
+                                            className="bg-red-500 text-white px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm hover:bg-red-600"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleDelete(senior._id);
+                                            }}
+                                            disabled={
+                                                loadingStates.deleteSenior[
+                                                    senior._id
+                                                ]
+                                            }
+                                        >
+                                            {loadingStates.deleteSenior[
                                                 senior._id
-                                            ]
-                                        }
-                                    >
-                                        {loadingStates.deleteSenior[
-                                            senior._id
-                                        ] ? (
-                                            <i className="fa fa-spinner fa-spin"></i>
-                                        ) : (
-                                            <i className="fa-solid fa-trash"></i>
-                                        )}
-                                    </button>
-                                </div>
-                            )}
+                                            ] ? (
+                                                <i className="fa fa-spinner fa-spin"></i>
+                                            ) : (
+                                                <i className="fa-solid fa-trash"></i>
+                                            )}
+                                        </button>
+                                    </div>
+                                )}
                         </div>
                     </div>
                 </Link>
