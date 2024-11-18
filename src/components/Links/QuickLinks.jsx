@@ -34,8 +34,8 @@ function QuickLinks() {
     console.log(selectedCollege);
 
     return (
-        <div className="container mx-auto my-5 p-5 ">
-            <h1 className="text-center text-2xl">
+        <div className="container mx-auto my-4 p-4 ">
+            <h1 className="text-center text-3xl">
                 <span className="heading-class font-bold">Quick Access</span>
             </h1>
             <div className="flex justify-center items-center">
