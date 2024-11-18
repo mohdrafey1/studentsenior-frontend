@@ -30,7 +30,7 @@ const FeaturedSeniors = () => {
     return (
         <section className="container mx-auto ">
             <div className="flex flex-col md:flex-row justify-center items-center text-2xl text-center p-2">
-                <h3 className="sm:text-3xl sm:font-medium">
+                <h3 className="sm:text-3xl font-medium">
                     Product for sale in {capitalizeWords(collegeName)}
                 </h3>
             </div>

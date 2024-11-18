@@ -18,13 +18,6 @@ const Testimonials = () => {
     return (
         <div className="w-full flex flex-col justify-center">
             <div className="text-center mt-6">
-                <div className="text-sky-400 text-3xl sm:text-4xl">
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                </div>
                 <h3 className="text-3xl sm:text-4xl mt-1 font-bold">
                     Perfect Match
                 </h3>
@@ -32,6 +25,13 @@ const Testimonials = () => {
                     Over hundreds of students gave a <br />
                     review of 5 stars to our website!
                 </p>
+                <div className="text-sky-400 text-3xl sm:text-4xl">
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                </div>
             </div>
             <div className="flex justify-center items-center py-8">
                 <div className="wrapper relative w-full sm:w-4/5 overflow-hidden">

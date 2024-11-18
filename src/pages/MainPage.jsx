@@ -5,6 +5,7 @@ import Testimonials from '../components/Testimonials/Testimonials';
 import About from '../components/About/About';
 import '../App.css';
 import { colleges } from '../hooks/useCollegeId';
+import QuickLinks from '../components/Links/QuickLinks';
 
 const MainPage = () => {
     const [selectedCollege, setSelectedCollege] = useState('');
@@ -61,6 +62,7 @@ const MainPage = () => {
                     </div>
                 </div>
             </Hero>
+            <QuickLinks />
             <Testimonials />
             <About />
         </>
