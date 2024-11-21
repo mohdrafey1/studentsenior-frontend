@@ -95,7 +95,7 @@ function QuickLinks() {
                         onClick={() => handleOpenModal('whatsapp-group')}
                     >
                         <div className="flex flex-col items-center sm:text-xl font-medium">
-                            <i className="fa-brands fa-square-whatsapp"></i>
+                            <i className="fa-brands fa-whatsapp"></i>
                             <p>Groups</p>
                         </div>
                     </div>
