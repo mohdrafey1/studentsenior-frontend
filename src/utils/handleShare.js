@@ -21,6 +21,16 @@ export const shortnerHandleShare = async (setLoading) => {
             const data = await response.json();
             const shortUrl = data.shortUrl;
             setLoading(false);
+
+            //google analytics event
+            if (window.gtag) {
+                window.gtag('event', 'share', {
+                    event_category: 'engagement',
+                    event_label: shortUrl,
+                    value: 1,
+                });
+            }
+
             if (navigator.share) {
                 navigator
                     .share({ title: 'Student Senior', url: shortUrl })
@@ -46,6 +56,16 @@ export const shortnerHandleShare = async (setLoading) => {
 
 export const originalHandleShare = () => {
     const postUrl = window.location.href;
+
+    //google analytics event
+    if (window.gtag) {
+        window.gtag('event', 'share', {
+            event_category: 'engagement',
+            event_label: postUrl,
+            value: 1,
+        });
+    }
+
     if (navigator.share) {
         navigator
             .share({ title: 'Student Senior Community Post', url: postUrl })
