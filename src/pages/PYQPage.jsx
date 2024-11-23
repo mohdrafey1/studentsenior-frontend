@@ -9,6 +9,8 @@ import { toast } from 'react-toastify';
 import useApiFetch from '../hooks/useApiFetch.js';
 import PyqCard from '../components/Cards/PyqCard.jsx';
 import { useCollegeId } from '../hooks/useCollegeId.js';
+import pyw from '../../public/assets/pyq.png';
+import notesandpyq from '../../public/assets/notes&pyq.png';
 
 const PYQPage = () => {
     const { collegeName } = useParams();
@@ -206,7 +208,9 @@ const PYQPage = () => {
                     />
                 </div>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md text-center mb-8">
+            <div className='lg:flex w-full justify-center gap-5'>
+            <div className="bg-white p-6 rounded-lg shadow-md text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
+                <img src={pyw} alt="pyq sell" className='w-36 mx-auto' />
                 <p className="mb-4">
                     Get solved questions for just ₹29. <br />
                     <a className="text-sm text-gray-500">
@@ -221,7 +225,8 @@ const PYQPage = () => {
                     Buy Solved Question Paper
                 </a>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md text-center mb-8">
+            <div className="bg-white p-6 rounded-lg shadow-md text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
+            <img src={notesandpyq} alt="pyq upload" className='w-36 mx-auto' />
                 <p className="mb-4">
                     If you have any PYQs or notes, please share them with us.
                 </p>
@@ -232,6 +237,7 @@ const PYQPage = () => {
                 >
                     Click Here To Share PYQs
                 </a>
+            </div>
             </div>
             {/* <Footer /> */}
             <Collegelink2 />
