@@ -75,7 +75,7 @@ const FeaturedSeniors = () => {
                     <div className="text-center my-5">
                         <Link
                             to={`/college/${collegeName}/seniors`}
-                            className="bg-sky-500 text-white py-2 px-4 rounded hover:bg-sky-600"
+                            className="bg-sky-500 text-white py-2 px-4 rounded-xl hover:bg-sky-600"
                         >
                             View All
                         </Link>

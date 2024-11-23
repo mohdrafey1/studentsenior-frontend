@@ -30,7 +30,7 @@ function QuickLinks() {
         }
     };
 
-    console.log(selectedCollege);
+    // console.log(selectedCollege);
 
     return (
         <div className="container mx-auto my-4 p-4 ">

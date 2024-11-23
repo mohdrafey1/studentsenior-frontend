@@ -23,7 +23,7 @@ function SeniorCard({
                 >
                     <div
                         key={senior._id}
-                        className="bg-white shadow-md rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl dark:bg-gray-800 w-full h-full flex flex-col"
+                        className="bg-white shadow-md rounded-3xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl dark:bg-gray-800 w-full h-full flex flex-col"
                     >
                         <img
                             src={senior.profilePicture}
