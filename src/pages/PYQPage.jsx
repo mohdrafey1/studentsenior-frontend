@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import useApiFetch from '../hooks/useApiFetch.js';
 import PyqCard from '../components/Cards/PyqCard.jsx';
 import { useCollegeId } from '../hooks/useCollegeId.js';
-import pyw from '../../public/assets/pyq.png';
+import pyq from '../../public/assets/pyq.png';
 import notesandpyq from '../../public/assets/notes&pyq.png';
 
 const PYQPage = () => {
@@ -94,12 +94,12 @@ const PYQPage = () => {
                     <input
                         type="text"
                         placeholder="Search by Subject Name"
-                        className="p-2 border rounded-md w-full sm:w-auto"
+                        className="p-2 px-3 border rounded-3xl w-full sm:w-auto"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     <select
-                        className="p-2 border rounded-md w-full sm:w-auto"
+                        className="p-2 px-3 border rounded-3xl w-full sm:w-auto"
                         onChange={(e) => setSelectedYear(e.target.value)}
                         value={selectedYear}
                     >
@@ -110,7 +110,7 @@ const PYQPage = () => {
                         <option value="2024-2025">2024-2025</option>
                     </select>
                     <select
-                        className="p-2 border rounded-md w-full sm:w-auto"
+                        className="p-2 px-3 border rounded-3xl w-full sm:w-auto"
                         onChange={(e) => setSelectedSemester(e.target.value)}
                         value={selectedSemester}
                     >
@@ -124,7 +124,7 @@ const PYQPage = () => {
                         <option value="7">7th</option>
                     </select>
                     <select
-                        className="p-2 border rounded-md w-full sm:w-auto"
+                        className="p-2 px-3 border rounded-3xl w-full sm:w-auto"
                         onChange={(e) => {
                             setSelectedCourse(e.target.value);
                             setSelectedBranch(''); // Reset branch when course changes
@@ -139,7 +139,7 @@ const PYQPage = () => {
                         ))}
                     </select>
                     <select
-                        className="p-2 border rounded-md w-full sm:w-auto"
+                        className="p-2 px-3 border rounded-3xl w-full sm:w-auto"
                         onChange={(e) => setSelectedBranch(e.target.value)}
                         value={selectedBranch}
                         disabled={!selectedCourse}
@@ -152,7 +152,7 @@ const PYQPage = () => {
                         ))}
                     </select>
                     <select
-                        className="p-2 border rounded-md w-full sm:w-auto"
+                        className="p-2 px-3 border rounded-3xl w-full sm:w-auto"
                         onChange={(e) => setSelectedExamType(e.target.value)}
                         value={selectedExamType}
                     >
@@ -175,7 +175,7 @@ const PYQPage = () => {
                             {loadingFetch ? (
                                 <i className="fas fa-spinner fa-pulse fa-5x"></i>
                             ) : (
-                                <div className="text-center p-4 bg-white rounded-lg shadow-md">
+                                <div className="text-center p-4 bg-white rounded-lg shadow-3xl">
                                     <p className="text-xl font-semibold text-gray-700">
                                         No papers found matching the criteria.
                                         Try adjusting your filters.
@@ -209,8 +209,8 @@ const PYQPage = () => {
                 </div>
             </div>
             <div className='lg:flex w-full justify-center gap-5'>
-            <div className="bg-white p-6 rounded-lg shadow-md text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
-                <img src={pyw} alt="pyq sell" className='w-36 mx-auto' />
+            <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
+                <img src={pyq} alt="pyq sell" className='w-36 mx-auto' />
                 <p className="mb-4">
                     Get solved questions for just ₹29. <br />
                     <a className="text-sm text-gray-500">
@@ -225,7 +225,7 @@ const PYQPage = () => {
                     Buy Solved Question Paper
                 </a>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
+            <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
             <img src={notesandpyq} alt="pyq upload" className='w-36 mx-auto' />
                 <p className="mb-4">
                     If you have any PYQs or notes, please share them with us.
