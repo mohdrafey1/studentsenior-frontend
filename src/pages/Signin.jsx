@@ -86,7 +86,7 @@ export default function SignIn() {
               disabled={loading}
               className="bg-sky-500 text-white p-2 rounded-lg uppercase hover:opacity-95 disabled:opacity-80 mx-3"
             >
-              {loading ? "Signing in ..." : "Sign In"}
+              {loading ? <i className="fas fa-spinner fa-pulse"></i> : "Sign In"}
             </button>
             <br />
             <div className="flex">

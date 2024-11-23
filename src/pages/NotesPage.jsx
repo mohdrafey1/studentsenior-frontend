@@ -37,12 +37,12 @@ const NotesPage = () => {
     const courses = [...new Set(initialNotes.map((note) => note.target))];
     const branches = selectedCourse
         ? [
-              ...new Set(
-                  initialNotes
-                      .filter((note) => note.course === selectedCourse)
-                      .map((note) => note.branch)
-              ),
-          ]
+            ...new Set(
+                initialNotes
+                    .filter((note) => note.course === selectedCourse)
+                    .map((note) => note.branch)
+            ),
+        ]
         : [];
 
     const filteredNotes = initialNotes.filter(
@@ -51,8 +51,8 @@ const NotesPage = () => {
             (selectedCourse ? note.target === selectedCourse : true) &&
             (searchTerm
                 ? note.subjectName
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase())
                 : true)
     );
     return (
@@ -116,7 +116,7 @@ const NotesPage = () => {
                         <p>
                             To add a new note, please fill out the{' '}
                             <a
-                                href="https://forms.gle/your-google-form-link"
+                                href="https://docs.google.com/forms/d/e/1FAIpQLSebji3Hfr-6Volc7KJwk4entnuXH803AAVF1QnHYGPK7AtjPw/viewform"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-blue-500 underline"

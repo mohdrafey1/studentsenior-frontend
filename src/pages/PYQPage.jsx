@@ -43,12 +43,12 @@ const PYQPage = () => {
     const courses = [...new Set(pyqs.map((paper) => paper.course))];
     const branches = selectedCourse
         ? [
-              ...new Set(
-                  pyqs
-                      .filter((paper) => paper.course === selectedCourse)
-                      .flatMap((paper) => paper.branch)
-              ),
-          ]
+            ...new Set(
+                pyqs
+                    .filter((paper) => paper.course === selectedCourse)
+                    .flatMap((paper) => paper.branch)
+            ),
+        ]
         : [];
     const examTypes = [...new Set(pyqs.map((paper) => paper.examType))];
 
@@ -61,8 +61,8 @@ const PYQPage = () => {
             (selectedExamType ? paper.examType === selectedExamType : true) &&
             (searchTerm
                 ? paper.subjectName
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase())
                 : true)
         );
     });
@@ -196,11 +196,13 @@ const PYQPage = () => {
                 <div className="flex justify-center mt-6">
                     <Pagination
                         showControls
-                        color="success"
+                        color="primary"
                         total={totalPages}
                         initialPage={1}
                         onChange={(page) => setCurrentPage(page)}
                         className="pagination"
+                        size='lg'
+                        variant='flat'
                     />
                 </div>
             </div>
