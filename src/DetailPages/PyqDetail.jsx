@@ -189,7 +189,7 @@ export default PyqDetail;
 function BundlePyqLink({ pyq }) {
     const { collegeName } = useParams();
     return (
-        <div className="flex flex-col justify-center shadow-md p-4 rounded-md bg-sky-100">
+        <div className="flex flex-col justify-center shadow-md p-4 mb-2 rounded-md bg-sky-100">
             <h3 className="text-xl font-semibold  mb-4 text-center text-sky-600">
                 Get This Filter All Pyq
             </h3>
