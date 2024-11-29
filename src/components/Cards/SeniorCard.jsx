@@ -61,7 +61,7 @@ function SeniorCard({
                             </button>
                             {handleDelete &&
                                 handleEdit &&
-                                senior.owner === ownerId && (
+                                senior.owner._id === ownerId && (
                                     <div className="flex space-x-2">
                                         <button
                                             className="bg-yellow-500 text-white px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm hover:bg-yellow-600"
