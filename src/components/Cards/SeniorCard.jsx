@@ -26,7 +26,12 @@ function SeniorCard({
                         className="bg-white shadow-md rounded-3xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl dark:bg-gray-800 w-full h-full flex flex-col"
                     >
                         <img
-                            src={senior.profilePicture}
+                            src={
+                                senior.owner.profilePicture.replace(
+                                    '=s96-c',
+                                    ''
+                                ) || senior.profilePicture
+                            }
                             alt={senior.name}
                             className="w-full h-40 lg:h-60 transition-transform duration-300 hover:scale-110"
                         />

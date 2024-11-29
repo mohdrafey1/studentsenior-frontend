@@ -64,14 +64,14 @@ export default function SignUp() {
                     />
                     <input
                         type="text"
-                        placeholder="College Name"
+                        placeholder="College Name (optional)"
                         id="college"
                         className="bg-slate-100 p-3 rounded-lg"
                         onChange={handleChange}
                     />
                     <input
                         type="number"
-                        placeholder="Please Enter 10 digit Mobile No"
+                        placeholder="Please Enter 10 digit Mobile No (optional)"
                         id="phone"
                         className="bg-slate-100 p-3 rounded-lg"
                         onChange={handleChange}

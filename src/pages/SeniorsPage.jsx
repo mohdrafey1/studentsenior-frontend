@@ -132,7 +132,7 @@ const SeniorPage = () => {
                         </select>
                     </div>
                 </div>
-                <div className="flex justify-center items-center py-10">
+                <div className="flex justify-center items-center">
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-6 w-full max-w-7xl">
                         {filteredSeniors.length > 0 ? (
                             <SeniorCard

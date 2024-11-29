@@ -59,7 +59,12 @@ function SeniorDetail() {
                     <div className="shadow-md rounded-md md:fixed md:top-48 lg:left-16 xl:left-24">
                         <div className="">
                             <img
-                                src={senior.profilePicture}
+                                src={
+                                    senior.owner.profilePicture.replace(
+                                        '=s96-c',
+                                        ''
+                                    ) || senior.profilePicture
+                                }
                                 alt={senior.name}
                                 className="h-40 w-40 mx-auto rounded-3xl transition-transform duration-300 hover:scale-110"
                             />

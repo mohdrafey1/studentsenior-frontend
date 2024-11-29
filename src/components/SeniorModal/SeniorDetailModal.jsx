@@ -35,7 +35,10 @@ const SeniorDetailModal = ({ senior, setIsDetailModalOpen }) => {
                 {/* Image Section */}
                 <div className="mb-4 flex justify-center">
                     <img
-                        src={senior.profilePicture}
+                        src={
+                            senior.owner.profilePicture.replace('=s96-c', '') ||
+                            senior.profilePicture
+                        }
                         alt={senior.name}
                         className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 object-cover rounded-full shadow-sm"
                     />
