@@ -13,9 +13,6 @@ const EditSeniorModal = ({
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg m-4 dark:bg-gray-800">
                 <h2 className="text-xl font-bold mb-4 text-center  text-gray-900 dark:text-white">
                     Edit Senior
-                    <span className="text-xs">
-                        you can edit your photo in profile page
-                    </span>
                 </h2>
                 <form onSubmit={handleUpdate}>
                     <div className="mb-4 text-xs">
@@ -95,6 +92,11 @@ const EditSeniorModal = ({
                             onChange={handleInputChange}
                             className="w-full px-4 py-1.5 border rounded"
                         />
+                    </div>
+                    <div className="mb-2">
+                        <span className="text-xs text-gray-400">
+                            ( you can edit your photo in profile page )
+                        </span>
                     </div>
                     {/* <div className="mb-4 text-xs">
                         <label className="block text-sm font-bold mb-1 text-gray-900 dark:text-white">
