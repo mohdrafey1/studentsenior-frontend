@@ -33,6 +33,7 @@ export default function Profile() {
     const [updateSuccess, setUpdateSuccess] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
     const [loading1, setLoading1] = useState(false);
+    const [passwordShown, setPasswordShown] = useState(false);
 
     const { currentUser, loading, error } = useSelector((state) => state.user);
     useEffect(() => {
@@ -140,6 +141,12 @@ export default function Profile() {
             setLoading1(false);
         }
     };
+
+    const togglePass = () => {
+        setPasswordShown(!passwordShown);
+    };
+
+
     return (
         <>
             {showDialog ? (
@@ -257,13 +264,18 @@ export default function Profile() {
                         className="bg-slate-100 rounded-lg p-3"
                         onChange={handleChange}
                     />
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Password"
-                        className="bg-slate-100 rounded-lg p-3"
-                        onChange={handleChange}
-                    />
+                    <div className='w-full flex justify-between'>
+                        <input
+                            type={passwordShown ? 'text' : 'password'}
+                            id="password"
+                            placeholder="Password"
+                            className="bg-slate-100 rounded-lg p-3 w-full"
+                            onChange={handleChange}
+
+                        /><i className="fa-solid fa-eye -translate-x-10 w-0 content-center cursor-pointer text-lg"
+                            onClick={togglePass}
+                        ></i>
+                    </div>
                     <button className="bg-sky-500 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
                         {loading ? 'Loading...' : 'Update'}
                     </button>

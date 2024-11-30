@@ -7,6 +7,8 @@ import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
 import useApiFetch from '../hooks/useApiFetch.js';
 import { useCollegeId } from '../hooks/useCollegeId.js';
+import pyq from '../../public/assets/pyq.png';
+import notesandpyq from '../../public/assets/notes&pyq.png';
 
 const NotesPage = () => {
     const { collegeName } = useParams();
@@ -177,7 +179,9 @@ const NotesPage = () => {
                 )}
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-md text-center mb-8">
+            <div className='lg:flex w-full justify-center gap-5'>
+            <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
+                <img src={pyq} alt="pyq sell" className='w-36 mx-auto' />
                 <p className="mb-4">
                     Get solved questions for just ₹29. <br />
                     <a className="text-sm text-gray-500">
@@ -192,17 +196,19 @@ const NotesPage = () => {
                     Buy Solved Question Paper
                 </a>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md text-center">
+            <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
+            <img src={notesandpyq} alt="pyq upload" className='w-36 mx-auto' />
                 <p className="mb-4">
-                    If you have any past year questions or notes, please share
-                    them with us.
+                    If you have any PYQs or notes, please share them with us.
                 </p>
                 <a
-                    href="mailto:your-email@example.com"
-                    className="inline-block px-6 py-3 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition-colors duration-200"
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSebji3Hfr-6Volc7KJwk4entnuXH803AAVF1QnHYGPK7AtjPw/viewform?usp=sf_link"
+                    className="inline-block px-6 py-3 bg-sky-500 text-white font-bold rounded-lg hover transition-colors duration-200"
+                    target="_blank"
                 >
-                    Click Here to Share
+                    Click Here To Share PYQs
                 </a>
+            </div>
             </div>
 
             <Collegelink2 />
