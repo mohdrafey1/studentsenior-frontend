@@ -8,6 +8,8 @@ export default function SignUp() {
     const [formData, setFormData] = useState({});
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [passwordShown, setPasswordShown] = useState(false);
+
     const navigate = useNavigate();
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -40,6 +42,9 @@ export default function SignUp() {
             setError(true);
             toast.error('Something Went Wrong');
         }
+    };
+    const togglePass = () => {
+        setPasswordShown(!passwordShown);
     };
     return (
         <>
@@ -76,13 +81,18 @@ export default function SignUp() {
                         className="bg-slate-100 p-3 rounded-lg"
                         onChange={handleChange}
                     />
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        id="password"
-                        className="bg-slate-100 p-3 rounded-lg"
-                        onChange={handleChange}
-                    />
+                    <div className='w-full flex justify-between'>
+                        <input
+                            type={passwordShown ? 'text' : 'password'}
+                            id="password"
+                            placeholder="Password"
+                            className="bg-slate-100 rounded-lg p-3 w-full"
+                            onChange={handleChange}
+
+                        /><i className="fa-solid fa-eye -translate-x-10 w-0 content-center cursor-pointer text-lg"
+                            onClick={togglePass}
+                        ></i>
+                    </div>
                     <button
                         disabled={loading}
                         className="bg-sky-500 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
@@ -91,7 +101,7 @@ export default function SignUp() {
                     </button>
                     <OAuth />
                 </form>
-                <div className="flex gap-2 mt-5">
+                <div className="flex gap-2 mt-5 mx-auto justify-center">
                     <p>Have an account?</p>
                     <Link to="/sign-in">
                         <span className="text-blue-500">Sign in</span>
