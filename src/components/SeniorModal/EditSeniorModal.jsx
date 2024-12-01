@@ -55,6 +55,7 @@ const EditSeniorModal = ({
                             <option value="3rd Year">3rd Year</option>
                             <option value="4th Year">4th Year</option>
                             <option value="5th Year">5th Year</option>
+                            <option value="Alumni">Alumni</option>
                         </select>
                     </div>
                     <div className="mb-4 text-xs">

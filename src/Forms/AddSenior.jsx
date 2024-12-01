@@ -179,6 +179,7 @@ const AddSeniorPage = () => {
                                         <option value="5th Year">
                                             5th Year
                                         </option>
+                                        <option value="Alumni">Alumni</option>
                                     </select>
                                 </div>
                                 <div className="mb-4">
