@@ -25,6 +25,7 @@ const CollegeAbout = () => {
     useEffect(() => {
         fetchCollege();
     }, []);
+
     return (
         <section className="flex justify-center ">
             <div className="text-center mx-4/5 max-w-7xl p-8">
@@ -36,7 +37,7 @@ const CollegeAbout = () => {
                     )}
                 </h3>
                 <p className="text-gray-500 text-xl">
-                    {collegeData.description}
+                    {collegeData?.description || 'no description provided'}
                 </p>
             </div>
         </section>

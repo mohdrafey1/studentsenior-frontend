@@ -25,7 +25,6 @@ const SeniorPage = () => {
     const [selectedYear, setSelectedYear] = useState('');
     const [loadingStates, setLoadingStates] = useState({
         editSenior: {},
-        deleteSenior: {},
     });
 
     const { apiRequest, loading } = useApiRequest();
@@ -54,21 +53,12 @@ const SeniorPage = () => {
     };
 
     const handleDelete = async (seniorId) => {
-        setLoadingStates((prev) => ({
-            ...prev,
-            deleteSenior: { ...prev.deleteSenior, [seniorId]: true },
-        }));
         try {
             await apiRequest(`${url}/${seniorId}`, 'DELETE');
             fetchSeniors();
             toast.success('Senior deleted successfully!');
         } catch (err) {
             console.error('Error deleting senior:', err);
-        } finally {
-            setLoadingStates((prev) => ({
-                ...prev,
-                deleteSenior: { ...prev.deleteSenior, [seniorId]: false },
-            }));
         }
     };
 

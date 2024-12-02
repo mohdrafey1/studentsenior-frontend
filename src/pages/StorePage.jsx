@@ -11,12 +11,16 @@ import useApiRequest from '../hooks/useApiRequest.js';
 import useApiFetch from '../hooks/useApiFetch.js';
 import ProductsCard from '../components/Cards/ProductsCard.jsx';
 import { useCollegeId } from '../hooks/useCollegeId.js';
+import Dialog from '../utils/Dialog.jsx';
 
 const StorePage = () => {
     const { collegeName } = useParams();
     const collegeId = useCollegeId(collegeName);
     const [products, setProducts] = useState([]);
     const [loadingStates, setLoadingStates] = useState({});
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [productIdtoDelete, setProductIdtoDelete] = useState(null);
+    const [deleteLoading, setDeleteLoading] = useState(null);
     const [newProduct, setNewProduct] = useState({
         name: '',
         price: '',
@@ -148,21 +152,28 @@ const StorePage = () => {
     };
 
     const handleDelete = async (productId) => {
-        setLoadingStates((prev) => ({ ...prev, [productId]: true }));
+        setProductIdtoDelete(productId);
+        setShowDeleteDialog(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        setDeleteLoading(true);
         try {
-            await apiRequest(`${api.store}/${productId}`, 'DELETE');
+            await apiRequest(`${api.store}/${productIdtoDelete}`, 'DELETE');
             fetchProducts();
             toast.success('Your request has been deleted successfully');
+            setShowDeleteDialog(false);
+            setProductIdtoDelete(null);
+            setDeleteLoading(false);
         } catch (err) {
             console.error('Error deleting product:', err);
             toast.error('Error deleting product');
         } finally {
-            setLoadingStates((prev) => ({
-                ...prev,
-                [productId]: false,
-            }));
+            setDeleteLoading(false);
         }
     };
+
+    const handleCloseDialog = () => setShowDeleteDialog(false);
 
     useEffect(() => {
         fetchProducts();
@@ -201,6 +212,41 @@ const StorePage = () => {
                             handleDelete={handleDelete}
                         />
                         <br />
+                        <Dialog
+                            isOpen={showDeleteDialog}
+                            onClose={handleCloseDialog}
+                            title="Product Delete Confirmation"
+                            footer={
+                                <div className="flex py-4 gap-3 lg:justify-end justify-center">
+                                    <button
+                                        className="p-1 py-2 bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer"
+                                        onClick={handleCloseDialog}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        className="p-1 py-2 bg-red-600 rounded-lg px-4 text-sm font-semibold text-white cursor-pointer"
+                                        onClick={handleConfirmDelete}
+                                        disabled={deleteLoading}
+                                    >
+                                        {deleteLoading ? (
+                                            <i className="fa fa-spinner fa-spin"></i>
+                                        ) : (
+                                            <>
+                                                <span>Confirm</span>
+                                                &nbsp;
+                                                <i className="fa-solid fa-trash fa-xl"></i>
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                            }
+                        >
+                            <p>Are you sure you want to delete this item?</p>
+                            <p className="text-sm text-gray-500">
+                                This action cannot be undone.
+                            </p>
+                        </Dialog>
                     </div>
                 </div>
                 {isModalOpen &&

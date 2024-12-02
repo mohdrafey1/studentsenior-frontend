@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import Dialog from '../../utils/Dialog';
 
 function SeniorCard({
     seniors,
@@ -9,9 +10,34 @@ function SeniorCard({
     handleEdit,
     handleDetail,
 }) {
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [seniorIdtoDelete, setSeniorIdtoDelete] = useState(null);
+    const [deleteLoading, setDeleteLoading] = useState(false);
     const { collegeName } = useParams();
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
+
+    const handleDeleteClick = (id) => {
+        setSeniorIdtoDelete(id);
+        setShowDeleteDialog(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        try {
+            if (seniorIdtoDelete) {
+                setDeleteLoading(true);
+                await handleDelete(seniorIdtoDelete);
+                setShowDeleteDialog(false);
+                setSeniorIdtoDelete(null);
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setDeleteLoading(false);
+        }
+    };
+
+    const handleCloseDialog = () => setShowDeleteDialog(false);
 
     return (
         <>
@@ -76,21 +102,11 @@ function SeniorCard({
                                             className="bg-red-500 text-white px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm hover:bg-red-600"
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                handleDelete(senior._id);
+                                                handleDeleteClick(senior._id);
                                             }}
-                                            disabled={
-                                                loadingStates.deleteSenior[
-                                                    senior._id
-                                                ]
-                                            }
+                                            title="Delete Post"
                                         >
-                                            {loadingStates.deleteSenior[
-                                                senior._id
-                                            ] ? (
-                                                <i className="fa fa-spinner fa-spin"></i>
-                                            ) : (
-                                                <i className="fa-solid fa-trash"></i>
-                                            )}
+                                            <i className="fa-solid fa-trash"></i>
                                         </button>
                                     </div>
                                 )}
@@ -98,6 +114,41 @@ function SeniorCard({
                     </div>
                 </Link>
             ))}
+            <Dialog
+                isOpen={showDeleteDialog}
+                onClose={handleCloseDialog}
+                title="Senior Delete Confirmation"
+                footer={
+                    <div className="flex py-4 gap-3 lg:justify-end justify-center">
+                        <button
+                            className="p-1 py-2 bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer"
+                            onClick={handleCloseDialog}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            className="p-1 py-2 bg-red-600 rounded-lg px-4 text-sm font-semibold text-white cursor-pointer"
+                            onClick={handleConfirmDelete}
+                            disabled={deleteLoading}
+                        >
+                            {deleteLoading ? (
+                                <i className="fa fa-spinner fa-spin"></i>
+                            ) : (
+                                <>
+                                    <span>Confirm</span>
+                                    &nbsp;
+                                    <i className="fa-solid fa-trash fa-xl"></i>
+                                </>
+                            )}
+                        </button>
+                    </div>
+                }
+            >
+                <p>Are you sure you want to delete this item?</p>
+                <p className="text-sm text-gray-500">
+                    This action cannot be undone.
+                </p>
+            </Dialog>
         </>
     );
 }
