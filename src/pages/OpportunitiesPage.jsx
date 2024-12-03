@@ -263,7 +263,7 @@ const OpportunitiesPage = () => {
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full">
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5">
-                <h1 className="sm:text-3xl font-bold mb-2 text-center">
+                <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
                     Opportunities - {capitalizeWords(collegeName)}
                 </h1>
                 <p className="italic text-center text-xs sm:text-base">

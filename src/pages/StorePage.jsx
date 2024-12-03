@@ -184,7 +184,7 @@ const StorePage = () => {
             <CollegeLinks />
             <div className="container mx-auto px-4 py-5">
                 <div className="flex flex-col justify-center items-center">
-                    <h1 className="sm:text-3xl font-bold mb-2 text-center">
+                    <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
                         Product Store - {capitalizeWords(collegeName)}
                     </h1>
                     <p className="italic text-center text-xs sm:text-base">

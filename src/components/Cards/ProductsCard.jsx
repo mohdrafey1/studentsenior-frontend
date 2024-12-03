@@ -17,18 +17,35 @@ function ProductsCard({
         <>
             {products.length > 0 ? (
                 products.map((product) => (
-                    <Link
-                        to={`/college/${collegeName}/store/${product._id}`}
+                    <div
                         key={product._id}
-                        className="min-w-40 my-4 w-full"
+                        className={`min-w-40 my-4 w-full relative ${
+                            !product.available &&
+                            'opacity-50 cursor-not-allowed'
+                        }`}
                     >
-                        <div className=" border border-gray-200 rounded-2xl shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
+                        {!product.available && (
+                            <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                Sold
+                            </div>
+                        )}
+                        <Link
+                            to={`/college/${collegeName}/store/${product._id}`}
+                            className={`block border border-gray-200 rounded-2xl shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 ${
+                                product.available
+                                    ? 'hover:scale-105 hover:shadow-xl'
+                                    : ''
+                            }`}
+                            onClick={(e) => {
+                                if (!product.available) e.preventDefault();
+                            }}
+                        >
                             <img
                                 src={product.image.url}
                                 alt={product.name}
                                 className="bg-white shadow-md h-40 max-h-60 w-full rounded-t-lg overflow-hidden transform transition duration-300 hover:scale-105"
                             />
-                            <div className="p-4 ">
+                            <div className="p-4">
                                 <h5 className="lg:text-lg text-sm tracking-tight text-gray-700 dark:text-gray-300">
                                     {product.name}
                                 </h5>
@@ -37,12 +54,10 @@ function ProductsCard({
                                         ₹{product.price}
                                     </span>
                                 </p>
-                                <div className="overflow-y-scroll overflow-x-hidden h-32">
-                                    <div>
-                                        <p className="text-gray-800 text-xs lg:text-sm dark:text-gray-400 mt-2">
-                                            College: {product.college.name}
-                                        </p>
-                                    </div>
+                                <div className="h-32">
+                                    <p className="text-gray-800 text-xs lg:text-sm dark:text-gray-400 mt-2">
+                                        College: {product.college.name}
+                                    </p>
                                     <div className="flex my-2 justify-between">
                                         <div className="flex gap-3">
                                             <button
@@ -76,51 +91,46 @@ function ProductsCard({
                                                 </a>
                                             </button>
                                         </div>
-                                        {loadingStates ? (
-                                            <>
-                                                {product.owner === ownerId && (
-                                                    <div className="flex gap-3">
-                                                        <button
-                                                            className="text-yellow-600 text-2xl sm:text-3xl rounded mr-2 transition hover:text-yellow-300 "
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                handleEdit(
-                                                                    product
-                                                                );
-                                                            }}
-                                                        >
-                                                            <i className="fa-regular fa-pen-to-square"></i>
-                                                        </button>
-                                                        <button
-                                                            className="text-2xl sm:text-3xl text-red-600 rounded transition hover:text-red-300 "
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                handleDelete(
-                                                                    product._id
-                                                                );
-                                                            }}
-                                                            disabled={
-                                                                loadingStates[
-                                                                    product._id
-                                                                ]
-                                                            }
-                                                        >
-                                                            {loadingStates[
-                                                                product._id
-                                                            ] ? (
-                                                                <i className="fa fa-spinner fa-spin"></i>
-                                                            ) : (
-                                                                <i className="fa-solid fa-trash"></i>
-                                                            )}
-                                                        </button>
-                                                    </div>
-                                                )}
-                                            </>
-                                        ) : (
-                                            <></>
-                                        )}
+                                        {loadingStates
+                                            ? product.owner === ownerId && (
+                                                  <div className="flex gap-3">
+                                                      <button
+                                                          className="text-yellow-600 text-2xl sm:text-3xl rounded mr-2 transition hover:text-yellow-300"
+                                                          onClick={(e) => {
+                                                              e.preventDefault();
+                                                              handleEdit(
+                                                                  product
+                                                              );
+                                                          }}
+                                                      >
+                                                          <i className="fa-regular fa-pen-to-square"></i>
+                                                      </button>
+                                                      <button
+                                                          className="text-2xl sm:text-3xl text-red-600 rounded transition hover:text-red-300"
+                                                          onClick={(e) => {
+                                                              e.preventDefault();
+                                                              handleDelete(
+                                                                  product._id
+                                                              );
+                                                          }}
+                                                          disabled={
+                                                              loadingStates[
+                                                                  product._id
+                                                              ]
+                                                          }
+                                                      >
+                                                          {loadingStates[
+                                                              product._id
+                                                          ] ? (
+                                                              <i className="fa fa-spinner fa-spin"></i>
+                                                          ) : (
+                                                              <i className="fa-solid fa-trash"></i>
+                                                          )}
+                                                      </button>
+                                                  </div>
+                                              )
+                                            : null}
                                     </div>
-
                                     <p className="text-gray-600 italic overflow-hidden dark:text-gray-200 text-xs lg:text-base">
                                         {product.description.length > 50
                                             ? `${product.description.substring(
@@ -131,8 +141,8 @@ function ProductsCard({
                                     </p>
                                 </div>
                             </div>
-                        </div>
-                    </Link>
+                        </Link>
+                    </div>
                 ))
             ) : (
                 <div className="col-span-4 flex justify-center items-center w-full">

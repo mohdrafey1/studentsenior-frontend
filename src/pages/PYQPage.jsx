@@ -45,12 +45,12 @@ const PYQPage = () => {
     const courses = [...new Set(pyqs.map((paper) => paper.course))];
     const branches = selectedCourse
         ? [
-            ...new Set(
-                pyqs
-                    .filter((paper) => paper.course === selectedCourse)
-                    .flatMap((paper) => paper.branch)
-            ),
-        ]
+              ...new Set(
+                  pyqs
+                      .filter((paper) => paper.course === selectedCourse)
+                      .flatMap((paper) => paper.branch)
+              ),
+          ]
         : [];
     const examTypes = [...new Set(pyqs.map((paper) => paper.examType))];
 
@@ -63,8 +63,8 @@ const PYQPage = () => {
             (selectedExamType ? paper.examType === selectedExamType : true) &&
             (searchTerm
                 ? paper.subjectName
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase())
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase())
                 : true)
         );
     });
@@ -84,7 +84,7 @@ const PYQPage = () => {
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full">
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-4 md:p-8">
-                <h1 className="sm:text-3xl font-bold mb-5 text-center">
+                <h1 className="text-lg sm:text-3xl font-bold mb-5 text-center">
                     Previous Year Question Paper <br />
                     <span>( </span>
                     {capitalizeWords(collegeName)} <span>)</span>
@@ -203,41 +203,46 @@ const PYQPage = () => {
                         initialPage={1}
                         onChange={(page) => setCurrentPage(page)}
                         className="pagination"
-                        size='lg'
-                        variant='flat'
+                        size="lg"
+                        variant="flat"
                     />
                 </div>
             </div>
-            <div className='lg:flex w-full justify-center gap-5'>
-            <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
-                <img src={pyq} alt="pyq sell" className='w-36 mx-auto' />
-                <p className="mb-4">
-                    Get solved questions for just ₹29. <br />
-                    <a className="text-sm text-gray-500">
-                        Terms and conditions apply.
+            <div className="lg:flex w-full justify-center gap-5">
+                <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
+                    <img src={pyq} alt="pyq sell" className="w-36 mx-auto" />
+                    <p className="mb-4">
+                        Get solved questions for just ₹29. <br />
+                        <a className="text-sm text-gray-500">
+                            Terms and conditions apply.
+                        </a>
+                    </p>
+                    <a
+                        target="_blank"
+                        href="https://forms.gle/NwFvj1Jz5gxvmHfdA"
+                        className="inline-block px-6 py-3 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors duration-200"
+                    >
+                        Buy Solved Question Paper
                     </a>
-                </p>
-                <a
-                    target="_blank"
-                    href="https://forms.gle/NwFvj1Jz5gxvmHfdA"
-                    className="inline-block px-6 py-3 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors duration-200"
-                >
-                    Buy Solved Question Paper
-                </a>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
-            <img src={notesandpyq} alt="pyq upload" className='w-36 mx-auto' />
-                <p className="mb-4">
-                    If you have any PYQs or notes, please share them with us.
-                </p>
-                <a
-                    href="https://docs.google.com/forms/d/e/1FAIpQLSebji3Hfr-6Volc7KJwk4entnuXH803AAVF1QnHYGPK7AtjPw/viewform?usp=sf_link"
-                    className="inline-block px-6 py-3 bg-sky-500 text-white font-bold rounded-lg hover transition-colors duration-200"
-                    target="_blank"
-                >
-                    Click Here To Share PYQs
-                </a>
-            </div>
+                </div>
+                <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
+                    <img
+                        src={notesandpyq}
+                        alt="pyq upload"
+                        className="w-36 mx-auto"
+                    />
+                    <p className="mb-4">
+                        If you have any PYQs or notes, please share them with
+                        us.
+                    </p>
+                    <a
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSebji3Hfr-6Volc7KJwk4entnuXH803AAVF1QnHYGPK7AtjPw/viewform?usp=sf_link"
+                        className="inline-block px-6 py-3 bg-sky-500 text-white font-bold rounded-lg hover transition-colors duration-200"
+                        target="_blank"
+                    >
+                        Click Here To Share PYQs
+                    </a>
+                </div>
             </div>
             {/* <Footer /> */}
             <Collegelink2 />

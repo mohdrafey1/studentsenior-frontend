@@ -83,7 +83,7 @@ const SeniorPage = () => {
             <CollegeLinks />
             <div className="container mx-auto p-5">
                 <div className="flex flex-col justify-center items-center">
-                    <h1 className="sm:text-3xl font-bold mb-2 text-center">
+                    <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
                         Seniors - {capitalizeWords(collegeName)}
                     </h1>
                     <p className="italic text-center text-xs sm:text-base">
@@ -105,6 +105,7 @@ const SeniorPage = () => {
                             <option value="3rd Year">3rd Year</option>
                             <option value="4th Year">4th Year</option>
                             <option value="5th Year">5th Year</option>
+                            <option value="Alumni">Alumni</option>
                         </select>
                         <select
                             value={selectedCourse}
