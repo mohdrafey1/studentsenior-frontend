@@ -31,7 +31,7 @@ function ProductsCard({
                         )}
                         <Link
                             to={`/college/${collegeName}/store/${product._id}`}
-                            className={`block border border-gray-200 rounded-2xl shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 ${
+                            className={`h-full block border border-gray-200 rounded-2xl shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 ${
                                 product.available
                                     ? 'hover:scale-105 hover:shadow-xl'
                                     : ''
@@ -54,10 +54,7 @@ function ProductsCard({
                                         ₹{product.price}
                                     </span>
                                 </p>
-                                <div className="h-32">
-                                    <p className="text-gray-800 text-xs lg:text-sm dark:text-gray-400 mt-2">
-                                        College: {product.college.name}
-                                    </p>
+                                <div className="">
                                     <div className="flex my-2 justify-between">
                                         <div className="flex gap-3">
                                             <button
