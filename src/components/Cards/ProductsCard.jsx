@@ -25,8 +25,8 @@ function ProductsCard({
                         }`}
                     >
                         {!product.available && (
-                            <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                                Sold
+                            <div className="z-50 absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                Sold Out
                             </div>
                         )}
                         <Link
