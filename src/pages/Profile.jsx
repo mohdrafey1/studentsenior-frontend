@@ -146,7 +146,6 @@ export default function Profile() {
         setPasswordShown(!passwordShown);
     };
 
-
     return (
         <>
             {showDialog ? (
@@ -199,22 +198,29 @@ export default function Profile() {
                     Profile
                 </h1>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    <input
-                        type="file"
-                        ref={fileRef}
-                        hidden
-                        accept="image/*"
-                        onChange={(e) => setImage(e.target.files[0])}
-                    />
-                    <img
-                        src={
-                            formData.profilePicture ||
-                            currentUser.profilePicture
-                        }
-                        alt="profile"
-                        className="h-24 w-24 self-center cursor-pointer rounded-full object-cover mt-2"
-                        onClick={() => fileRef.current.click()}
-                    />
+                    <div className="relative flex justify-center">
+                        <input
+                            type="file"
+                            ref={fileRef}
+                            hidden
+                            accept="image/*"
+                            onChange={(e) => setImage(e.target.files[0])}
+                        />
+                        <img
+                            src={
+                                formData.profilePicture ||
+                                currentUser.profilePicture
+                            }
+                            alt="profile"
+                            className="h-32 w-32 self-center cursor-pointer rounded-full object-cover border border-sky-300"
+                            onClick={() => fileRef.current.click()}
+                        />
+                        <i
+                            className="fa-solid fa-pen absolute top-8 right-1/4 sm:right-1/3 transform -translate-x-1/2 -translate-y-1/2 bg-gray-50 p-2 rounded-full cursor-pointer text-gray-700"
+                            onClick={() => fileRef.current.click()}
+                        ></i>
+                    </div>
+
                     <p className="text-sm self-center">
                         {imageError ? (
                             <span className="text-red-700">
@@ -225,7 +231,7 @@ export default function Profile() {
                             <span className="text-slate-700">{`Uploading: ${imagePercent} %`}</span>
                         ) : imagePercent === 100 ? (
                             <span className="text-green-700">
-                                Image uploaded successfully
+                                Image uploaded successfully please click update
                             </span>
                         ) : (
                             ''
@@ -264,15 +270,16 @@ export default function Profile() {
                         className="bg-slate-100 rounded-lg p-3"
                         onChange={handleChange}
                     />
-                    <div className='w-full flex justify-between'>
+                    <div className="w-full flex justify-between">
                         <input
                             type={passwordShown ? 'text' : 'password'}
                             id="password"
                             placeholder="Password"
                             className="bg-slate-100 rounded-lg p-3 w-full"
                             onChange={handleChange}
-
-                        /><i className="fa-solid fa-eye -translate-x-10 w-0 content-center cursor-pointer text-lg"
+                        />
+                        <i
+                            className="fa-solid fa-eye -translate-x-10 w-0 content-center cursor-pointer text-lg"
                             onClick={togglePass}
                         ></i>
                     </div>
