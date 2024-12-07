@@ -30,6 +30,13 @@ const FeaturedSeniors = () => {
         }
     };
 
+    const fake = [
+        { "no": 1 },
+        { "no": 2 },
+        { "no": 3 },
+        { "no": 4 },
+    ]
+
     useEffect(() => {
         fetchSeniors();
     }, []);
@@ -59,7 +66,16 @@ const FeaturedSeniors = () => {
                         ) : (
                             <div className="col-span-4 flex justify-center items-center py-10 w-full">
                                 {loadingFetch ? (
-                                    <i className="fas fa-spinner fa-pulse fa-2xl"></i>
+                                    <div className='w-full flex gap-5'>
+                                        {fake.map((item, index) => {
+                                            return <div
+                                                className="bg-white shadow-md rounded-3xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl dark:bg-slate-300 w-full lg:h-56 flex flex-col"
+                                            >
+                                                <div className='h-20 w-20 rounded-full bg-gray-400 m-auto animate-ping'>
+                                                </div>
+                                            </div>;
+                                         })}
+                                    </div>
                                 ) : (
                                     <p className="text-center text-gray-500 mt-5">
                                         No Senior found in your college
