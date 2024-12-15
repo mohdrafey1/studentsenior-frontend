@@ -48,7 +48,7 @@ function PyqCard({ Pyqs }) {
                     <div className="mt-4 flex justify-center">
                         {isAuthenticated ? (
                             <Link
-                                to={`/college/${collegeName}/pyq/${pyq._id}`}
+                                to={`/college/${collegeName}/pyq/${pyq.slug}`}
                                 className="bg-sky-500 text-white px-4 py-2 rounded-3xl text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
                             >
                                 View PDF

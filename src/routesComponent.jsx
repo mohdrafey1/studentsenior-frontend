@@ -95,7 +95,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/college/:collegeName/pyq/:id"
+                path="/college/:collegeName/pyq/:slug"
                 element={
                     <ValidateCollegeRoute>
                         <PyqDetail />

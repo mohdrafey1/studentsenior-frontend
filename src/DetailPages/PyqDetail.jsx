@@ -8,12 +8,12 @@ import PyqCard from '../components/Cards/PyqCard';
 import { useCollegeId } from '../hooks/useCollegeId';
 
 function PyqDetail() {
-    const { collegeName, id } = useParams();
+    const { collegeName, slug } = useParams();
     const collegeId = useCollegeId(collegeName);
     const [pyq, setPyq] = useState(null);
     const [suggestedpyqs, setSuggestedpyqs] = useState([]);
 
-    const url = `${api.pyq}/${id}`;
+    const url = `${api.pyq}/${slug}`;
     const { useFetch, loadingFetch } = useApiFetch();
 
     const fetchPyq = async () => {
@@ -29,7 +29,8 @@ function PyqDetail() {
 
     const fetchSuggestedpyqs = async (data) => {
         if (!collegeId) return;
-        const { year, semester, course, branch, examType } = data;
+        const { _id, year, semester, course, branch, examType } = data;
+
         const query = {
             year,
             semester,
@@ -40,7 +41,7 @@ function PyqDetail() {
 
         const suggestedUrl = `${
             api.pyq
-        }/${collegeId}/${id}/related-pyqs?${new URLSearchParams(
+        }/${collegeId}/${_id}/related-pyqs?${new URLSearchParams(
             query
         ).toString()}`;
         try {
@@ -53,7 +54,7 @@ function PyqDetail() {
 
     useEffect(() => {
         if (collegeId) fetchPyq();
-    }, [id, collegeId]);
+    }, [slug, collegeId]);
 
     if (loadingFetch) {
         return (
