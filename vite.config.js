@@ -45,6 +45,9 @@ export default defineConfig({
         }),
         VitePWA({
             registerType: 'autoUpdate',
+            workbox: {
+                cleanupOutdatedCaches: true,
+            },
             manifest: {
                 name: 'Student Senior',
                 short_name: 'Student Senior',
