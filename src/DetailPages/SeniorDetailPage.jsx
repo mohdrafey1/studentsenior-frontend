@@ -7,14 +7,14 @@ import useApiFetch from '../hooks/useApiFetch';
 import { api } from '../config/apiConfiguration';
 
 function SeniorDetail() {
-    const { collegeName, id } = useParams();
+    const { collegeName, slug } = useParams();
     const collegeId = useCollegeId(collegeName);
     const [senior, setSenior] = useState(null);
     const { useFetch, loadingFetch } = useApiFetch();
 
     const fetchSenior = async () => {
         try {
-            const data = await useFetch(`${api.senior}/${id}`);
+            const data = await useFetch(`${api.senior}/${slug}`);
             setSenior(data);
         } catch (error) {
             console.error(error);
@@ -24,7 +24,7 @@ function SeniorDetail() {
 
     useEffect(() => {
         fetchSenior();
-    }, [id]);
+    }, [slug]);
 
     if (loadingFetch) {
         return (

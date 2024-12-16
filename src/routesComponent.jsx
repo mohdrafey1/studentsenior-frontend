@@ -71,7 +71,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/college/:collegeName/seniors/:id"
+                path="/college/:collegeName/seniors/:slug"
                 element={
                     <ValidateCollegeRoute>
                         <SeniorDetailPage />

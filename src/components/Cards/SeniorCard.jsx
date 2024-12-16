@@ -43,7 +43,7 @@ function SeniorCard({
         <>
             {seniors.map((senior) => (
                 <Link
-                    to={`/college/${collegeName}/seniors/${senior._id}`}
+                    to={`/college/${collegeName}/seniors/${senior.slug}`}
                     key={senior._id}
                     className="min-w-40 my-4 w-full"
                 >
