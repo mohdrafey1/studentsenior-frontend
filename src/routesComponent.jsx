@@ -111,7 +111,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/college/:collegeName/store/:id"
+                path="/college/:collegeName/store/:slug"
                 element={
                     <ValidateCollegeRoute>
                         <ProductDetail />

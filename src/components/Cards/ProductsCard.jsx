@@ -30,7 +30,7 @@ function ProductsCard({
                             </div>
                         )}
                         <Link
-                            to={`/college/${collegeName}/store/${product._id}`}
+                            to={`/college/${collegeName}/store/${product.slug}`}
                             className={`h-full block border border-gray-200 rounded-2xl shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 ${
                                 product.available
                                     ? 'hover:scale-105 hover:shadow-xl'
