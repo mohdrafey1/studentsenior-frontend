@@ -8,13 +8,13 @@ import ProductsCard from '../components/Cards/ProductsCard';
 import { useCollegeId } from '../hooks/useCollegeId';
 
 function ProductDetail() {
-    const { collegeName, id } = useParams();
+    const { collegeName, slug } = useParams();
     const collegeId = useCollegeId(collegeName);
     const { useFetch, loadingFetch } = useApiFetch();
     const [product, setProduct] = useState(null);
     const [suggestedProduct, setSuggestedProduct] = useState([]);
 
-    const url = `${api.store}/${id}`;
+    const url = `${api.store}/${slug}`;
 
     const fetchProduct = async () => {
         try {
@@ -29,7 +29,7 @@ function ProductDetail() {
     const fetchSuggestedProduct = async () => {
         try {
             const data = await useFetch(
-                `${api.store}/suggested/${collegeId}/${id}`
+                `${api.store}/suggested/${collegeId}/${slug}`
             );
             setSuggestedProduct(data);
         } catch (error) {
@@ -41,7 +41,7 @@ function ProductDetail() {
     useEffect(() => {
         fetchProduct();
         fetchSuggestedProduct();
-    }, [id]);
+    }, [slug]);
 
     if (loadingFetch) {
         return (
