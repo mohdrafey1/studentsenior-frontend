@@ -28,6 +28,7 @@ import BundlePyq from './DetailPages/BundlePyq';
 import ProductDetail from './DetailPages/ProductDetail';
 import PyqDetail from './DetailPages/PyqDetail';
 import SeniorDetailPage from './DetailPages/SeniorDetailPage';
+import RequestPYQ from './Forms/RequestPYQ';
 
 const validColleges = [
     'integral-university',
@@ -178,6 +179,7 @@ const RoutesComponent = () => {
             </Route>
 
             {/* Other Pages */}
+            <Route path="/request-pyq" element={<RequestPYQ />} />
             <Route path="/install" element={<InstallPage />} />
             <Route path="/not-found" element={<NotFoundPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />

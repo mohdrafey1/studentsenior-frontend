@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Pagination } from '@nextui-org/react';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { api } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
@@ -221,7 +221,7 @@ const PYQPage = () => {
                     <a
                         target="_blank"
                         href="https://forms.gle/NwFvj1Jz5gxvmHfdA"
-                        className="inline-block px-6 py-3 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors duration-200"
+                        className="inline-block px-6 py-3 w-full bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors duration-200"
                     >
                         Buy Solved Question Paper
                     </a>
@@ -238,7 +238,7 @@ const PYQPage = () => {
                     </p>
                     <a
                         href="https://docs.google.com/forms/d/e/1FAIpQLSebji3Hfr-6Volc7KJwk4entnuXH803AAVF1QnHYGPK7AtjPw/viewform?usp=sf_link"
-                        className="inline-block px-6 py-3 bg-sky-500 text-white font-bold rounded-lg hover transition-colors duration-200"
+                        className="inline-block px-6 py-3 w-full bg-sky-500 text-white font-bold rounded-lg hover transition-colors duration-200"
                         target="_blank"
                     >
                         Click Here To Share PYQs
@@ -252,13 +252,12 @@ const PYQPage = () => {
                             Can't find the PYQ you need? Request it here, and we'll send it to you shortly!
                         </a>
                     </p>
-                    <a
-                        target="_blank"
-                        href="https://forms.gle/pKsXr2QJ1NreCUuq9"
-                        className="inline-block px-6 py-3 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors duration-200"
+                    <Link
+                        to="/request-pyq"
+                        className="inline-block px-6 py-3 w-full bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors duration-200"
                     >
                         Request PYQ
-                    </a>
+                    </Link>
                 </div>
             </div>
             {/* <Footer /> */}

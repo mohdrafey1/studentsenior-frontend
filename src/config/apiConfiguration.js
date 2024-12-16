@@ -31,4 +31,6 @@ export const api = {
     senior: `${API_BASE_URL}/api/seniors`,
 
     store: `${API_BASE_URL}/api/store`,
+
+    requestPyq : `${API_BASE_URL}/api/pyqs/request-pyq`,
 };
