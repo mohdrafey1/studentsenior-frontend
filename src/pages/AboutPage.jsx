@@ -13,8 +13,9 @@ function AboutPage() {
                         <h1 className="text-4xl font-bold mb-6">About Us</h1>
                         <ul className="space-y-4 text-base max-w-5xl mx-auto text-start">
                             <li>
-                                A one-stop platform for students to select
-                                courses, access previous year's question papers
+                                test kjlkjldkjdfkljkjldflkjdfkjl A one-stop
+                                platform for students to select courses, access
+                                previous year's question papers
                                 <strong> (PYQs)</strong>, and download
                                 <strong> Comprehensive notes</strong>,
                                 simplifying exam preparation.
