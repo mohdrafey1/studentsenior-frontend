@@ -1,18 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import { api, API_KEY } from '../config/apiConfiguration.js';
+import { api } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
 import useApiFetch from '../hooks/useApiFetch.js';
-import { useCollegeId } from '../hooks/useCollegeId.js';
 import pyq from '../../public/assets/pyq.png';
 import notesandpyq from '../../public/assets/notes&pyq.png';
 
 const NotesPage = () => {
     const { collegeName } = useParams();
-    const collegeId = useCollegeId(collegeName);
+
+    const { useFetch, loadingFetch } = useApiFetch();
+    const [courses, setCourses] = useState([]);
+
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const data = await useFetch(`${api.courses}`);
+                setCourses(data);
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+            }
+        };
+        fetchCourses();
+    }, [collegeName]);
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-w-full ">
@@ -26,6 +39,42 @@ const NotesPage = () => {
                     preparation."
                 </p>
                 <br />
+            </div>
+
+            <div className="mb-8 mx-auto max-w-7xl">
+                {loadingFetch ? (
+                    <p className="text-center">Loading courses...</p>
+                ) : courses.length ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        {courses.map((course) => (
+                            <div
+                                key={course._id}
+                                className="p-4 border rounded shadow-lg"
+                            >
+                                <div className="font-bold">
+                                    {course.courseName}
+                                </div>
+                                <p>total branch : 10</p>
+                                <p>total subject : 100</p>
+                                <p>total notes : 100</p>
+                                <div>
+                                    <Link
+                                        to={course.courseCode.toLowerCase()}
+                                        state={{ courseId: course._id }}
+                                        className="text-blue-500 hover:underline"
+                                        aria-label={`View details for ${course.courseName}`}
+                                    >
+                                        View
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-center">
+                        No courses available at the moment.
+                    </p>
+                )}
             </div>
 
             <div className="lg:flex w-full justify-center gap-5">

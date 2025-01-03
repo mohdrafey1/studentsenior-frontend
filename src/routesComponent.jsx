@@ -29,6 +29,9 @@ import ProductDetail from './DetailPages/ProductDetail';
 import PyqDetail from './DetailPages/PyqDetail';
 import SeniorDetailPage from './DetailPages/SeniorDetailPage';
 import RequestPYQ from './Forms/RequestPYQ';
+import Branches from './components/Notes/Branches';
+import Subjects from './components/Notes/Subjects';
+import SubjectNotes from './components/Notes/SubjectNotes';
 
 const validColleges = [
     'integral-university',
@@ -152,10 +155,34 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/college/:collegeName/notes"
+                path="/:collegeName/notes"
                 element={
                     <ValidateCollegeRoute>
                         <NotesPage />
+                    </ValidateCollegeRoute>
+                }
+            />
+            <Route
+                path="/:collegeName/notes/:courseCode"
+                element={
+                    <ValidateCollegeRoute>
+                        <Branches />
+                    </ValidateCollegeRoute>
+                }
+            />
+            <Route
+                path="/:collegeName/notes/:courseCode/:branchCode"
+                element={
+                    <ValidateCollegeRoute>
+                        <Subjects />
+                    </ValidateCollegeRoute>
+                }
+            />
+            <Route
+                path="/:collegeName/notes/:courseCode/:branchCode/:subjectCode"
+                element={
+                    <ValidateCollegeRoute>
+                        <SubjectNotes />
                     </ValidateCollegeRoute>
                 }
             />
