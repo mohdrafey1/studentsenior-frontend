@@ -1,34 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import { api } from '../config/apiConfiguration.js';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchCourses } from '../redux/slices/courseSlice';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
-import { toast } from 'react-toastify';
-import useApiFetch from '../hooks/useApiFetch.js';
 import pyq from '../../public/assets/pyq.png';
 import notesandpyq from '../../public/assets/notes&pyq.png';
 
 const NotesPage = () => {
     const { collegeName } = useParams();
+    const dispatch = useDispatch();
 
-    const { useFetch, loadingFetch } = useApiFetch();
-    const [courses, setCourses] = useState([]);
+    const {
+        courses = [],
+        loading,
+        error,
+    } = useSelector((state) => state.courses || {});
 
     useEffect(() => {
-        const fetchCourses = async () => {
-            try {
-                const data = await useFetch(`${api.courses}`);
-                setCourses(data);
-            } catch (error) {
-                console.error('Error fetching courses:', error);
-            }
-        };
-        fetchCourses();
-    }, [collegeName]);
+        if (!courses.length) {
+            dispatch(fetchCourses(collegeName));
+        }
+    }, [collegeName, courses.length]);
 
     return (
-        <div className="container bg-gradient-to-t from-sky-200 to bg-white min-w-full ">
+        <div className="container bg-gradient-to-t from-sky-200 to bg-white min-w-full">
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5 min-h-full">
                 <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
@@ -42,8 +39,12 @@ const NotesPage = () => {
             </div>
 
             <div className="mb-8 mx-auto max-w-7xl">
-                {loadingFetch ? (
+                {loading ? (
                     <p className="text-center">Loading courses...</p>
+                ) : error ? (
+                    <p className="text-center text-red-500">
+                        Error loading courses: {error}
+                    </p>
                 ) : courses.length ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {courses.map((course) => (
@@ -59,8 +60,11 @@ const NotesPage = () => {
                                 <p>total notes : 100</p>
                                 <div>
                                     <Link
-                                        to={course.courseCode.toLowerCase()}
-                                        state={{ courseId: course._id }}
+                                        to={
+                                            course.courseCode
+                                                ? course.courseCode.toLowerCase()
+                                                : '#'
+                                        }
                                         className="text-blue-500 hover:underline"
                                         aria-label={`View details for ${course.courseName}`}
                                     >
@@ -79,7 +83,11 @@ const NotesPage = () => {
 
             <div className="lg:flex w-full justify-center gap-5">
                 <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
-                    <img src={pyq} alt="pyq sell" className="w-36 mx-auto" />
+                    <img
+                        src={pyq}
+                        alt="Buy solved question paper"
+                        className="w-36 mx-auto"
+                    />
                     <p className="mb-4">
                         Get solved questions for just ₹29. <br />
                         <a className="text-sm text-gray-500">
@@ -97,7 +105,7 @@ const NotesPage = () => {
                 <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
                     <img
                         src={notesandpyq}
-                        alt="pyq upload"
+                        alt="Upload PYQs and notes"
                         className="w-36 mx-auto"
                     />
                     <p className="mb-4">

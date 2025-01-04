@@ -1,41 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useParams, useLocation } from 'react-router-dom';
-import useApiFetch from '../../hooks/useApiFetch.js';
-import { api } from '../../config/apiConfiguration.js';
+import React, { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchBranches } from '../../redux/slices/branchSlice.js';
+import { fetchCourses } from '../../redux/slices/courseSlice.js';
 
 const Branches = () => {
-    const { collegeName } = useParams();
-    const location = useLocation();
-    const { courseId } = location.state || {};
+    const { collegeName, courseCode } = useParams();
+    const [selectedCourse, setSelectedCourse] = useState(null);
 
-    const { useFetch, loadingFetch } = useApiFetch();
-    const [branches, setBranches] = useState([]);
-    const [error, setError] = useState(null);
+    const dispatch = useDispatch();
+
+    const {
+        branches = [],
+        loading,
+        error,
+    } = useSelector((state) => state.branches || {});
+    const { courses = [] } = useSelector((state) => state.courses || {});
 
     useEffect(() => {
-        if (!courseId) {
-            setError('Course ID is missing.');
-            return;
+        if (!courses.length) {
+            dispatch(fetchCourses());
         }
+    }, [dispatch, courses.length]);
 
-        const fetchBranches = async () => {
-            try {
-                const data = await useFetch(`${api.branches}/${courseId}`);
-                setBranches(data);
-            } catch (err) {
-                setError(err.message);
+    useEffect(() => {
+        if (courses.length) {
+            const foundCourse = courses.find(
+                (course) =>
+                    course.courseCode.toLowerCase() === courseCode.toLowerCase()
+            );
+
+            if (foundCourse) {
+                setSelectedCourse(foundCourse);
+            } else {
+                toast.error('Course not found for courseCode');
             }
-        };
+        }
+    }, [courseCode, courses]);
 
-        fetchBranches();
-    }, [collegeName, courseId]);
+    console.log(selectedCourse);
 
-    if (loadingFetch) {
+    useEffect(() => {
+        if (selectedCourse && selectedCourse._id) {
+            dispatch(fetchBranches(selectedCourse._id));
+        }
+    }, [selectedCourse, branches.length, dispatch]);
+
+    if (loading) {
         return <p className="text-center">Loading branches...</p>;
     }
 
     if (error) {
         return <p className="text-center text-red-500">Error: {error}</p>;
+    }
+
+    if (!selectedCourse) {
+        return <p className="text-center text-red-500">Course not found!</p>;
     }
 
     return (
@@ -56,15 +76,13 @@ const Branches = () => {
                         <p className="text-sm text-gray-600">
                             Code: {branch.branchCode}
                         </p>
-
-                        <p>total subject : 100</p>
-                        <p>total notes : 100</p>
+                        <p>Total subjects: 100</p>
+                        <p>Total notes: 100</p>
 
                         <Link
                             to={branch.branchCode.toLowerCase()}
-                            state={{ branchId: branch._id }}
                             className="text-blue-500 hover:underline"
-                            aria-label={`View details for ${branch.courseName}`}
+                            aria-label={`View details for ${branch.name}`}
                         >
                             View
                         </Link>

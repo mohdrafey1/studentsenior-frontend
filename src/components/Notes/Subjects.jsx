@@ -1,59 +1,124 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams, useLocation } from 'react-router-dom';
-import useApiFetch from '../../hooks/useApiFetch.js';
-import { api } from '../../config/apiConfiguration.js';
+import { useParams, Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchBranches } from '../../redux/slices/branchSlice.js';
+import { fetchCourses } from '../../redux/slices/courseSlice.js';
+import { fetchSubjects } from '../../redux/slices/subjectSlice.js';
+import { toast } from 'react-toastify';
 
 function Subjects() {
-    const { branchCode } = useParams();
-    const [subjects, setSubjects] = useState([]);
-    const [groupedSubjects, setGroupedSubjects] = useState({});
+    const { branchCode, courseCode } = useParams();
     const [activeSemester, setActiveSemester] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const dispatch = useDispatch();
 
-    const location = useLocation();
-    const { branchId } = location.state || {};
+    const {
+        branches,
+        loading: branchesLoading,
+        error: branchesError,
+    } = useSelector((state) => state.branches || {});
+    const {
+        courses,
+        loading: coursesLoading,
+        error: coursesError,
+    } = useSelector((state) => state.courses || {});
+    const {
+        subjects,
+        loading: subjectsLoading,
+        error: subjectsError,
+    } = useSelector((state) => state.subjects || {});
 
-    const { useFetch } = useApiFetch();
+    const [selectedCourse, setSelectedCourse] = useState(null);
+    const [selectedBranch, setSelectedBranch] = useState(null);
+    const [groupedSubjects, setGroupedSubjects] = useState({});
 
+    // Fetch courses if not already fetched
     useEffect(() => {
-        const fetchSubjects = async () => {
-            try {
-                const data = await useFetch(`${api.subjects}/${branchId}`);
-                setSubjects(data);
+        if (!courses.length) {
+            dispatch(fetchCourses());
+        }
+    }, [dispatch, courses.length]);
 
-                // Group subjects by semester
-                const grouped = data.reduce((acc, subject) => {
-                    const { semester } = subject;
-                    if (!acc[semester]) {
-                        acc[semester] = [];
-                    }
-                    acc[semester].push(subject);
-                    return acc;
-                }, {});
-                setGroupedSubjects(grouped);
-
-                // Set the first semester as the default active semester
-                const semesters = Object.keys(grouped).sort((a, b) => a - b);
-                if (semesters.length > 0) {
-                    setActiveSemester(semesters[0]);
-                }
-            } catch (err) {
-                setError(err.message || 'Failed to fetch subjects');
-            } finally {
-                setLoading(false);
+    // Find selected course when courses are fetched
+    useEffect(() => {
+        if (courses.length) {
+            const foundCourse = courses.find(
+                (course) =>
+                    course.courseCode.toLowerCase() === courseCode.toLowerCase()
+            );
+            if (foundCourse) {
+                setSelectedCourse(foundCourse);
+            } else {
+                toast.error('Course not found for courseCode');
             }
-        };
+        }
+    }, [courses, courseCode]);
 
-        fetchSubjects();
-    }, [branchCode]);
+    // Fetch branches when selected course is found
+    useEffect(() => {
+        if (selectedCourse && !branches.length) {
+            dispatch(fetchBranches(selectedCourse._id));
+        }
+    }, [selectedCourse, dispatch, branches.length]);
 
-    if (loading) {
+    // Find selected branch when branches are fetched
+    useEffect(() => {
+        if (branches.length) {
+            const foundBranch = branches.find(
+                (branch) =>
+                    branch.branchCode.toLowerCase() === branchCode.toLowerCase()
+            );
+            if (foundBranch) {
+                setSelectedBranch(foundBranch);
+            } else {
+                toast.error('Branch not found for branchCode');
+            }
+        }
+    }, [branches, branchCode]);
+
+    console.log(selectedBranch);
+
+    // Fetch subjects when selected branch is found
+    useEffect(() => {
+        if (selectedBranch) {
+            dispatch(fetchSubjects(selectedBranch._id));
+        }
+    }, [selectedBranch]);
+
+    // Group subjects by semester
+    useEffect(() => {
+        if (subjects.length) {
+            const grouped = subjects.reduce((acc, subject) => {
+                const { semester } = subject;
+                if (!acc[semester]) {
+                    acc[semester] = [];
+                }
+                acc[semester].push(subject);
+                return acc;
+            }, {});
+            setGroupedSubjects(grouped);
+
+            // Set the first semester as the default active semester
+            const semesters = Object.keys(grouped).sort((a, b) => a - b);
+            if (semesters.length > 0) {
+                setActiveSemester(semesters[0]);
+            }
+        }
+    }, [subjects]);
+
+    if (subjectsLoading || coursesLoading || branchesLoading) {
         return <p className="text-center">Loading subjects...</p>;
     }
 
-    if (error) {
-        return <p className="text-center text-red-500">Error: {error}</p>;
+    if (subjectsError || coursesError || branchesError) {
+        return (
+            <p className="text-center text-red-500">
+                Error: {subjectsError || coursesError || branchesError}
+            </p>
+        );
+    }
+
+    if (!selectedBranch) {
+        return <p className="text-center text-red-500">Branch not found!</p>;
     }
 
     return (
@@ -76,7 +141,7 @@ function Subjects() {
                             } hover:bg-blue-400 transition duration-200`}
                             onClick={() => setActiveSemester(semester)}
                         >
-                            Semester {semester}
+                            Sem {semester}
                         </button>
                     ))}
             </div>
