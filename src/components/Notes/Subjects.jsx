@@ -6,6 +6,8 @@ import { api } from '../../config/apiConfiguration.js';
 function Subjects() {
     const { branchCode } = useParams();
     const [subjects, setSubjects] = useState([]);
+    const [groupedSubjects, setGroupedSubjects] = useState({});
+    const [activeSemester, setActiveSemester] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -19,6 +21,23 @@ function Subjects() {
             try {
                 const data = await useFetch(`${api.subjects}/${branchId}`);
                 setSubjects(data);
+
+                // Group subjects by semester
+                const grouped = data.reduce((acc, subject) => {
+                    const { semester } = subject;
+                    if (!acc[semester]) {
+                        acc[semester] = [];
+                    }
+                    acc[semester].push(subject);
+                    return acc;
+                }, {});
+                setGroupedSubjects(grouped);
+
+                // Set the first semester as the default active semester
+                const semesters = Object.keys(grouped).sort((a, b) => a - b);
+                if (semesters.length > 0) {
+                    setActiveSemester(semesters[0]);
+                }
             } catch (err) {
                 setError(err.message || 'Failed to fetch subjects');
             } finally {
@@ -42,9 +61,31 @@ function Subjects() {
             <h1 className="text-2xl font-bold text-center mb-4">
                 Subjects for Branch: {branchCode}
             </h1>
+
+            {/* Semester Tabs */}
+            <div className="flex justify-center space-x-4 mb-6">
+                {Object.keys(groupedSubjects)
+                    .sort((a, b) => a - b)
+                    .map((semester) => (
+                        <button
+                            key={semester}
+                            className={`px-4 py-2 rounded ${
+                                activeSemester === semester
+                                    ? 'bg-blue-500 text-white'
+                                    : 'bg-gray-200 text-gray-800'
+                            } hover:bg-blue-400 transition duration-200`}
+                            onClick={() => setActiveSemester(semester)}
+                        >
+                            Semester {semester}
+                        </button>
+                    ))}
+            </div>
+
+            {/* Subjects for Active Semester */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {subjects.length > 0 ? (
-                    subjects.map((subject) => (
+                {activeSemester &&
+                groupedSubjects[activeSemester]?.length > 0 ? (
+                    groupedSubjects[activeSemester].map((subject) => (
                         <div
                             key={subject._id}
                             className="border p-4 rounded-lg shadow hover:shadow-lg transition duration-200"
@@ -55,8 +96,7 @@ function Subjects() {
                             <p className="text-sm text-gray-600">
                                 Code: {subject.subjectCode}
                             </p>
-
-                            <p>total notes : 100</p>
+                            <p>Total notes: 100</p>
                             <Link
                                 to={subject.subjectCode.toLowerCase()}
                                 className="text-blue-500 hover:underline mt-2 inline-block"
@@ -68,7 +108,7 @@ function Subjects() {
                     ))
                 ) : (
                     <p className="text-center text-gray-600">
-                        No subjects available for this branch.
+                        No subjects available for Semester {activeSemester}.
                     </p>
                 )}
             </div>
