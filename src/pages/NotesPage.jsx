@@ -50,26 +50,48 @@ const NotesPage = () => {
                         {courses.map((course) => (
                             <div
                                 key={course._id}
-                                className="p-4 border rounded shadow-lg"
+                                className="p-6 bg-white border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
                             >
-                                <div className="font-bold">
+                                <h2 className="text-xl font-semibold mb-2 text-gray-800">
                                     {course.courseName}
+                                </h2>
+                                <div className="text-sm text-gray-600 mb-4">
+                                    <p>
+                                        Total Branches:{' '}
+                                        <span className="font-medium text-gray-800">
+                                            10
+                                        </span>
+                                    </p>
+                                    <p>
+                                        Total Subjects:{' '}
+                                        <span className="font-medium text-gray-800">
+                                            100
+                                        </span>
+                                    </p>
+                                    <p>
+                                        Total Notes:{' '}
+                                        <span className="font-medium text-gray-800">
+                                            100
+                                        </span>
+                                    </p>
                                 </div>
-                                <p>total branch : 10</p>
-                                <p>total subject : 100</p>
-                                <p>total notes : 100</p>
-                                <div>
+                                <div className="flex justify-between items-center mt-4">
                                     <Link
                                         to={
                                             course.courseCode
                                                 ? course.courseCode.toLowerCase()
                                                 : '#'
                                         }
-                                        className="text-blue-500 hover:underline"
+                                        className="text-sky-600 font-medium hover:underline"
                                         aria-label={`View details for ${course.courseName}`}
                                     >
-                                        View
+                                        View Details
                                     </Link>
+                                    <span className="text-sm text-gray-500">
+                                        {course.courseCode
+                                            ? `Code: ${course.courseCode}`
+                                            : 'No Code'}
+                                    </span>
                                 </div>
                             </div>
                         ))}

@@ -128,13 +128,13 @@ function Subjects() {
             </h1>
 
             {/* Semester Tabs */}
-            <div className="flex justify-center space-x-4 mb-6">
+            <div className="flex justify-start lg:justify-center space-x-4 mb-6 overflow-x-scroll">
                 {Object.keys(groupedSubjects)
                     .sort((a, b) => a - b)
                     .map((semester) => (
                         <button
                             key={semester}
-                            className={`px-4 py-2 rounded ${
+                            className={`min-w-16 px-2 sm:px-4 py-2 rounded ${
                                 activeSemester === semester
                                     ? 'bg-blue-500 text-white'
                                     : 'bg-gray-200 text-gray-800'
@@ -147,25 +147,34 @@ function Subjects() {
             </div>
 
             {/* Subjects for Active Semester */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {activeSemester &&
                 groupedSubjects[activeSemester]?.length > 0 ? (
                     groupedSubjects[activeSemester].map((subject) => (
                         <div
                             key={subject._id}
-                            className="border p-4 rounded-lg shadow hover:shadow-lg transition duration-200"
+                            className="border p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between"
                         >
-                            <h2 className="text-lg font-semibold">
-                                {subject.subjectName}
-                            </h2>
-                            <p className="text-sm text-gray-600">
-                                Code: {subject.subjectCode}
-                            </p>
-                            <p>Total notes: 100</p>
+                            <div>
+                                <h2 className="text-lg font-semibold mb-2 text-gray-800">
+                                    {subject.subjectName}
+                                </h2>
+                                <p className="text-sm text-gray-600 mb-1">
+                                    Code:{' '}
+                                    <span className="font-medium">
+                                        {subject.subjectCode}
+                                    </span>
+                                </p>
+                                <p className="text-sm text-gray-600 mb-4">
+                                    Total Notes:{' '}
+                                    <span className="font-medium">100</span>
+                                </p>
+                            </div>
                             <Link
                                 to={subject.subjectCode.toLowerCase()}
-                                className="text-blue-500 hover:underline mt-2 inline-block"
                                 state={{ subjectId: subject._id }}
+                                className="inline-block px-4 py-2 bg-blue-500 text-white font-medium text-center rounded-lg hover:bg-blue-600 transition-colors duration-200"
+                                aria-label={`View details for ${subject.subjectName}`}
                             >
                                 View Details
                             </Link>

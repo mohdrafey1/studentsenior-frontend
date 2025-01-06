@@ -63,29 +63,50 @@ const Branches = () => {
             <h1 className="text-2xl font-bold text-center mb-4">
                 Branches - {collegeName}
             </h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:mx-20">
                 {branches.map((branch) => (
                     <div
                         key={branch._id}
-                        className="border p-4 rounded-lg shadow hover:shadow-lg transition duration-200"
+                        className="p-6 bg-white border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between"
                     >
-                        <h2 className="text-lg font-semibold">{branch.name}</h2>
-                        <p className="text-sm text-gray-600">
-                            Name: {branch.branchName}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                            Code: {branch.branchCode}
-                        </p>
-                        <p>Total subjects: 100</p>
-                        <p>Total notes: 100</p>
-
-                        <Link
-                            to={branch.branchCode.toLowerCase()}
-                            className="text-blue-500 hover:underline"
-                            aria-label={`View details for ${branch.name}`}
-                        >
-                            View
-                        </Link>
+                        <div>
+                            <h2 className="text-xl font-semibold mb-2 text-gray-800">
+                                {branch.branchName}
+                            </h2>
+                            <div className="text-sm text-gray-600 mb-4">
+                                <p>
+                                    Total Subjects:{' '}
+                                    <span className="font-medium text-gray-800">
+                                        {branch.subjectCount}
+                                    </span>
+                                </p>
+                                <p>
+                                    Total Notes:{' '}
+                                    <span className="font-medium text-gray-800">
+                                        {branch.notesCount}
+                                    </span>
+                                </p>
+                                <p>
+                                    Code:{' '}
+                                    <span className="font-medium text-gray-800">
+                                        {branch.branchCode || 'N/A'}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div className="mt-4">
+                            <Link
+                                to={
+                                    branch.branchCode
+                                        ? branch.branchCode.toLowerCase()
+                                        : '#'
+                                }
+                                className="inline-block px-4 py-2 bg-sky-500 text-white font-medium rounded-lg hover:bg-sky-600 transition-colors duration-200"
+                                aria-label={`View details for ${branch.branchName}`}
+                            >
+                                Explore
+                            </Link>
+                        </div>
                     </div>
                 ))}
             </div>
