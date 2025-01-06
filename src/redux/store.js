@@ -5,6 +5,7 @@ import courseReducer from './slices/courseSlice.js';
 import branchReducer from './slices/branchSlice.js';
 import subjectReducer from './slices/subjectSlice.js';
 import productReducer from './slices/productSlice.js';
+import groupReducer from './slices/groupSlice.js';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     branches: branchReducer,
     subjects: subjectReducer,
     products: productReducer,
+    groups: groupReducer,
 });
 
 const persistConfig = {

@@ -1,5 +1,3 @@
-//will implement later, was just trying and it work awesome ...
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api, API_KEY } from '../../config/apiConfiguration';
 

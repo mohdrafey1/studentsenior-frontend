@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api, API_KEY } from '../../config/apiConfiguration';
 
-export const fetchProducts = createAsyncThunk(
-    'products/fetchProducts',
+export const fetchGroups = createAsyncThunk(
+    'groups/fetchGroups',
     async (collegeId, { rejectWithValue }) => {
         try {
-            const response = await fetch(`${api.store}/college/${collegeId}`, {
+            const response = await fetch(`${api.group}/college/${collegeId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -13,7 +13,7 @@ export const fetchProducts = createAsyncThunk(
                 },
             });
             if (!response.ok) {
-                throw new Error('Failed to fetch Products');
+                throw new Error('Failed to fetch Groups');
             }
             const data = await response.json();
             return data;
@@ -23,10 +23,10 @@ export const fetchProducts = createAsyncThunk(
     }
 );
 
-const productSlice = createSlice({
-    name: 'products',
+const groupSlice = createSlice({
+    name: 'groups',
     initialState: {
-        products: [],
+        groups: [],
         loading: false,
         error: null,
     },
@@ -35,19 +35,19 @@ const productSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchProducts.pending, (state) => {
+            .addCase(fetchGroups.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(fetchProducts.fulfilled, (state, action) => {
-                state.products = action.payload;
+            .addCase(fetchGroups.fulfilled, (state, action) => {
+                state.groups = action.payload;
                 state.loading = false;
             })
-            .addCase(fetchProducts.rejected, (state, action) => {
+            .addCase(fetchGroups.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });
     },
 });
 
-export default productSlice.reducer;
+export default groupSlice.reducer;
