@@ -1,11 +1,13 @@
+//will implement later, was just trying and it work awesome ...
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api, API_KEY } from '../../config/apiConfiguration';
 
-export const fetchCourses = createAsyncThunk(
-    'courses/fetchCourses',
+export const fetchProducts = createAsyncThunk(
+    'products/fetchProducts',
     async (collegeId, { rejectWithValue }) => {
         try {
-            const response = await fetch(`${api.courses}`, {
+            const response = await fetch(`${api.store}/college/${collegeId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -13,7 +15,7 @@ export const fetchCourses = createAsyncThunk(
                 },
             });
             if (!response.ok) {
-                throw new Error('Failed to fetch courses');
+                throw new Error('Failed to fetch Products');
             }
             const data = await response.json();
             return data;
@@ -23,10 +25,10 @@ export const fetchCourses = createAsyncThunk(
     }
 );
 
-const courseSlice = createSlice({
-    name: 'courses',
+const productSlice = createSlice({
+    name: 'products',
     initialState: {
-        courses: [],
+        products: [],
         loading: false,
         error: null,
     },
@@ -35,19 +37,19 @@ const courseSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchCourses.pending, (state) => {
+            .addCase(fetchProducts.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(fetchCourses.fulfilled, (state, action) => {
-                state.courses = action.payload;
+            .addCase(fetchProducts.fulfilled, (state, action) => {
+                state.products = action.payload;
                 state.loading = false;
             })
-            .addCase(fetchCourses.rejected, (state, action) => {
+            .addCase(fetchProducts.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });
     },
 });
 
-export default courseSlice.reducer;
+export default productSlice.reducer;

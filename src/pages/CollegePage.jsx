@@ -8,13 +8,19 @@ import FeaturedProduct from '../components/FeaturedProduct/FeaturedProduct';
 import CollegeAbout from '../components/About/CollegeAbout';
 import Collegelinks from '../components/Links/CollegeLinks';
 import Collegelink2 from '../components/Links/CollegeLink2';
+import { fetchSeniors } from '../redux/slices/seniorSlice.js';
+import { useCollegeId } from '../hooks/useCollegeId.js';
+import { fetchProducts } from '../redux/slices/productSlice.js';
 
 const CollegePage = () => {
     const { collegeName } = useParams();
+    const collegeId = useCollegeId(collegeName);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchCourses());
+        dispatch(fetchSeniors(collegeId));
+        dispatch(fetchProducts(collegeId));
     }, [collegeName]);
 
     return (

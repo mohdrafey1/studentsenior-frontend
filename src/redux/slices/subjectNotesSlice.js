@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { api } from '../../config/apiConfiguration';
+import { api, API_KEY } from '../../config/apiConfiguration';
 
 export const fetchSubjectNotes = createAsyncThunk(
     'subjects/fetchSubjectNotes',
@@ -11,7 +11,7 @@ export const fetchSubjectNotes = createAsyncThunk(
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'x-api-key': 'KHAZANA_123',
+                        'x-api-key': API_KEY,
                     },
                 }
             );

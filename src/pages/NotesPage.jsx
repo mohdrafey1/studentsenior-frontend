@@ -20,7 +20,7 @@ const NotesPage = () => {
 
     useEffect(() => {
         if (!courses.length) {
-            dispatch(fetchCourses(collegeName));
+            dispatch(fetchCourses());
         }
     }, [collegeName, courses.length]);
 

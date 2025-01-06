@@ -1,7 +1,7 @@
 //will implement later, was just trying and it work awesome ...
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { api } from '../../config/apiConfiguration';
+import { api, API_KEY } from '../../config/apiConfiguration';
 
 export const fetchSeniors = createAsyncThunk(
     'seniors/fetchSeniors',
@@ -11,7 +11,7 @@ export const fetchSeniors = createAsyncThunk(
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-api-key': 'KHAZANA_123',
+                    'x-api-key': API_KEY,
                 },
             });
             if (!response.ok) {

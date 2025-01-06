@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { api } from '../../config/apiConfiguration';
+import { api, API_KEY } from '../../config/apiConfiguration';
 
 export const fetchBranches = createAsyncThunk(
     'branches/fetchBranches',
@@ -9,7 +9,7 @@ export const fetchBranches = createAsyncThunk(
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-api-key': 'KHAZANA_123',
+                    'x-api-key': API_KEY,
                 },
             });
             if (!response.ok) {

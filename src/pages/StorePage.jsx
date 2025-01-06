@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import AddProductModal from '../components/StoreModal/AddProductModal';
 import EditProductModal from '../components/StoreModal/EditProductModal';
 import CollegeLinks from '../components/Links/CollegeLinks';
@@ -8,15 +9,14 @@ import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
 import useApiRequest from '../hooks/useApiRequest.js';
-import useApiFetch from '../hooks/useApiFetch.js';
 import ProductsCard from '../components/Cards/ProductsCard.jsx';
 import { useCollegeId } from '../hooks/useCollegeId.js';
 import Dialog from '../utils/Dialog.jsx';
+import { fetchProducts } from '../redux/slices/productSlice.js';
 
 const StorePage = () => {
     const { collegeName } = useParams();
     const collegeId = useCollegeId(collegeName);
-    const [products, setProducts] = useState([]);
     const [loadingStates, setLoadingStates] = useState({});
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [productIdtoDelete, setProductIdtoDelete] = useState(null);
@@ -35,18 +35,20 @@ const StorePage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalType, setModalType] = useState('add');
 
-    const { useFetch, loadingFetch } = useApiFetch();
+    const dispatch = useDispatch();
     const { apiRequest, loading } = useApiRequest();
 
-    const fetchProducts = async () => {
-        try {
-            const data = await useFetch(`${api.store}/college/${collegeId}`);
-            setProducts(data);
-        } catch (err) {
-            console.error('Error fetching products:', err);
-            toast.error('Error fetching products:');
+    const {
+        products,
+        loading: loadingProducts,
+        error,
+    } = useSelector((state) => state.products);
+
+    useEffect(() => {
+        if (!products.length) {
+            dispatch(fetchProducts(collegeId));
         }
-    };
+    }, [collegeName]);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -88,7 +90,6 @@ const StorePage = () => {
 
         try {
             await apiRequest(`${api.store}`, 'POST', formData, true);
-            fetchProducts();
             setIsModalOpen(false);
             toast.success(
                 'Your request has been received. The item will display once approved.',
@@ -120,7 +121,7 @@ const StorePage = () => {
                 true
             );
 
-            fetchProducts();
+            dispatch(fetchProducts(collegeId));
             setIsModalOpen(false);
             setEditingProduct(null);
             toast.success('Your request has been updated.');
@@ -160,7 +161,7 @@ const StorePage = () => {
         setDeleteLoading(true);
         try {
             await apiRequest(`${api.store}/${productIdtoDelete}`, 'DELETE');
-            fetchProducts();
+            dispatch(fetchProducts(collegeId));
             toast.success('Your request has been deleted successfully');
             setShowDeleteDialog(false);
             setProductIdtoDelete(null);
@@ -174,10 +175,6 @@ const StorePage = () => {
     };
 
     const handleCloseDialog = () => setShowDeleteDialog(false);
-
-    useEffect(() => {
-        fetchProducts();
-    }, []);
 
     return (
         <div className="bg-gradient-to-t from-sky-200 to bg-white">
@@ -206,7 +203,7 @@ const StorePage = () => {
                     <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6 w-full max-w-7xl h-fit ">
                         <ProductsCard
                             products={products}
-                            loadingFetch={loadingFetch}
+                            loadingFetch={loadingProducts}
                             loadingStates={loadingStates}
                             handleEdit={handleEdit}
                             handleDelete={handleDelete}
