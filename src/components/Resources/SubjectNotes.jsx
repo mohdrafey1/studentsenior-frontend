@@ -8,6 +8,7 @@ import Modal from '../../utils/Dialog.jsx';
 import AddNotes from './AddNotes.jsx';
 import { toast } from 'react-toastify';
 import useApiRequest from '../../hooks/useApiRequest.js';
+import { capitalizeWords } from '../../utils/Capitalize.js';
 
 function SubjectNotes() {
     const { collegeName, subjectCode } = useParams();
@@ -25,7 +26,7 @@ function SubjectNotes() {
     const location = useLocation();
     const { subjectId } = location.state || {};
 
-    const { useFetch } = useApiFetch();
+    const { useFetch, loadingFetch } = useApiFetch();
     const { apiRequest, loading } = useApiRequest();
 
     useEffect(() => {
@@ -92,8 +93,12 @@ function SubjectNotes() {
         setNoteIdToDelete(null);
     };
 
-    if (loading) {
-        return <p className="text-center">Loading notes...</p>;
+    if (loadingFetch) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <i className="fas fa-spinner fa-pulse fa-5x"></i>
+            </div>
+        );
     }
 
     if (error) {
@@ -101,11 +106,15 @@ function SubjectNotes() {
     }
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold text-center mb-4">
-                Notes for Subject: {subjectCode}
+        <div className="container mx-auto p-4 h-screen">
+            <h1 className="text-2xl font-bold text-center mb-2">
+                {capitalizeWords(collegeName)}: {subjectCode.toUpperCase()}
             </h1>
-            <div className="mb-5 text-center">
+            <h2 className="text-center text-xs">
+                Subject Code may vary across different colleges, ignore if not
+                match{' '}
+            </h2>
+            <div className="my-5 text-center">
                 <button
                     onClick={() => setModalOpen(true)}
                     className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
@@ -154,9 +163,10 @@ function SubjectNotes() {
                         </div>
                     ))
                 ) : (
-                    <p className="text-center text-gray-600">
-                        No notes available for this subject.
-                    </p>
+                    <div className="h-screen text-center text-gray-600">
+                        No notes available for this subject, Please Add if you
+                        have.
+                    </div>
                 )}
             </div>
             <Modal

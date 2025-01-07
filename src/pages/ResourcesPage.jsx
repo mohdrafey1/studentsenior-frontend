@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,6 +9,7 @@ import pyq from '../../public/assets/pyq.png';
 import notesandpyq from '../../public/assets/notes&pyq.png';
 
 const ResourcesPage = () => {
+    const [searchTerm, setSearchTerm] = useState('');
     const { collegeName } = useParams();
     const dispatch = useDispatch();
 
@@ -22,12 +23,22 @@ const ResourcesPage = () => {
         if (!courses.length) {
             dispatch(fetchCourses());
         }
-    }, [collegeName, courses.length]);
+    }, [collegeName]);
+
+    const filteredCourses = courses.filter((course) => {
+        const courseNameMatch = course.courseName
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase());
+        const courseCodeMatch = course.courseCode
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase());
+        return courseNameMatch || courseCodeMatch;
+    });
 
     return (
-        <div className="container bg-gradient-to-t from-sky-200 to bg-white min-w-full">
+        <div className="container bg-gradient-to-t from-sky-200 to bg-white min-w-full sm:p-8">
             <CollegeLinks />
-            <div className="max-w-7xl mx-auto p-5 min-h-full">
+            <div className="max-w-7xl mx-auto px-5 min-h-full">
                 <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
                     Resources - {capitalizeWords(collegeName)}
                 </h1>
@@ -36,66 +47,87 @@ const ResourcesPage = () => {
                     preparation."
                 </p>
                 <br />
+                {/* Search Bar */}
+                <div className="mb-2 flex justify-center">
+                    <input
+                        type="text"
+                        placeholder="Search by course name..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="border border-gray-300 px-4 py-2 rounded-lg shadow-md w-full max-w-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    />
+                </div>
             </div>
 
-            <div className="mb-8 mx-auto max-w-7xl">
+            <div className="m-4 sm:m-8 2xl:m-auto max-w-7xl">
                 {loading ? (
-                    <p className="text-center">Loading courses...</p>
-                ) : error ? (
-                    <p className="text-center text-red-500">
-                        Error loading courses: {error}
-                    </p>
-                ) : courses.length ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                        {courses.map((course) => (
-                            <div
-                                key={course._id}
-                                className="p-6 bg-white border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-                            >
-                                <h2 className="text-xl font-semibold mb-2 text-gray-800">
-                                    {course.courseName}
-                                </h2>
-                                <div className="text-sm text-gray-600 mb-4">
-                                    <p>
-                                        Total Branches:{' '}
-                                        <span className="font-medium text-gray-800">
-                                            10
-                                        </span>
-                                    </p>
-                                    <p>
-                                        Total Subjects:{' '}
-                                        <span className="font-medium text-gray-800">
-                                            100
-                                        </span>
-                                    </p>
-                                    <p>
-                                        Total Notes:{' '}
-                                        <span className="font-medium text-gray-800">
-                                            100
-                                        </span>
-                                    </p>
-                                </div>
-                                <div className="flex justify-between items-center mt-4">
-                                    <Link
-                                        to={
-                                            course.courseCode
-                                                ? course.courseCode.toLowerCase()
-                                                : '#'
-                                        }
-                                        className="text-sky-600 font-medium hover:underline"
-                                        aria-label={`View details for ${course.courseName}`}
-                                    >
-                                        View Details
-                                    </Link>
-                                    <span className="text-sm text-gray-500">
-                                        {course.courseCode
-                                            ? `Code: ${course.courseCode}`
-                                            : 'No Code'}
-                                    </span>
-                                </div>
-                            </div>
-                        ))}
+                    <div className="flex justify-center items-center min-h-screen">
+                        <i className="fas fa-spinner fa-pulse fa-5x"></i>
                     </div>
+                ) : error ? (
+                    <div className="flex justify-center items-center min-h-screen">
+                        Error loading courses: {error}
+                    </div>
+                ) : filteredCourses.length ? (
+                    <table className="table-auto w-full bg-white rounded-lg shadow-md overflow-hidden">
+                        <thead className="bg-sky-500 text-white">
+                            <tr>
+                                <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
+                                    Course Name
+                                </th>
+                                <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
+                                    Subject Code
+                                </th>
+                                <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
+                                    Total Notes
+                                </th>
+                                <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
+                                    Total Pyqs
+                                </th>
+                                <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredCourses.map((course, index) => (
+                                <tr
+                                    key={course._id}
+                                    className={
+                                        index % 2 === 0
+                                            ? 'bg-gray-100'
+                                            : 'bg-white'
+                                    }
+                                >
+                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                        {course.courseName}
+                                    </td>
+                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                        {course.courseCode}
+                                    </td>
+                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                        100
+                                    </td>
+                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                        100
+                                    </td>
+                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                        <Link
+                                            to={
+                                                course.courseCode
+                                                    ? course.courseCode.toLowerCase()
+                                                    : '#'
+                                            }
+                                            className="px-3 py-1 bg-sky-500 text-white rounded hover:underline transition-colors duration-200"
+                                            aria-label={`View details for ${course.courseName}`}
+                                        >
+                                            Explore
+                                        </Link>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 ) : (
                     <p className="text-center">
                         No courses available at the moment.
@@ -103,7 +135,7 @@ const ResourcesPage = () => {
                 )}
             </div>
 
-            <div className="lg:flex w-full justify-center gap-5">
+            {/* <div className="lg:flex w-full justify-center gap-5">
                 <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
                     <img
                         src={pyq}
@@ -124,25 +156,7 @@ const ResourcesPage = () => {
                         Buy Solved Question Paper
                     </a>
                 </div>
-                <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
-                    <img
-                        src={notesandpyq}
-                        alt="Upload PYQs and notes"
-                        className="w-36 mx-auto"
-                    />
-                    <p className="mb-4">
-                        If you have any PYQs or notes, please share them with
-                        us.
-                    </p>
-                    <a
-                        href="https://docs.google.com/forms/d/e/1FAIpQLSebji3Hfr-6Volc7KJwk4entnuXH803AAVF1QnHYGPK7AtjPw/viewform?usp=sf_link"
-                        className="inline-block px-6 py-3 bg-sky-500 text-white font-bold rounded-lg hover transition-colors duration-200"
-                        target="_blank"
-                    >
-                        Click Here To Share PYQs
-                    </a>
-                </div>
-            </div>
+            </div> */}
 
             <Collegelink2 />
         </div>
