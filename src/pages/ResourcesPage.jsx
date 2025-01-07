@@ -5,8 +5,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchCourses } from '../redux/slices/courseSlice';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
-import pyq from '../../public/assets/pyq.png';
-import notesandpyq from '../../public/assets/notes&pyq.png';
 
 const ResourcesPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -51,7 +49,7 @@ const ResourcesPage = () => {
                 <div className="mb-2 flex justify-center">
                     <input
                         type="text"
-                        placeholder="Search by course name..."
+                        placeholder="Search by course name or code..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="border border-gray-300 px-4 py-2 rounded-lg shadow-md w-full max-w-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
@@ -99,16 +97,16 @@ const ResourcesPage = () => {
                                             : 'bg-white'
                                     }
                                 >
-                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                    <td className="border border-gray-300 px-2 sm:text-lg sm:px-4 py-2">
                                         {course.courseName}
                                     </td>
-                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                    <td className="border border-gray-300 px-2 sm:text-lg sm:px-4 py-2">
                                         {course.courseCode}
                                     </td>
-                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
-                                        100
+                                    <td className="border border-gray-300 px-2 sm:text-lg sm:px-4 py-2">
+                                        {course.totalBranch}
                                     </td>
-                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                    <td className="border border-gray-300 px-2 sm:text-lg sm:px-4 py-2">
                                         100
                                     </td>
                                     <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">

@@ -12,6 +12,7 @@ import { fetchSeniors } from '../redux/slices/seniorSlice.js';
 import { useCollegeId } from '../hooks/useCollegeId.js';
 import { fetchProducts } from '../redux/slices/productSlice.js';
 import { fetchGroups } from '../redux/slices/groupSlice.js';
+import { fetchPyqs } from '../redux/slices/pyqSlice.js';
 
 const CollegePage = () => {
     const { collegeName } = useParams();
@@ -23,6 +24,7 @@ const CollegePage = () => {
         dispatch(fetchSeniors(collegeId));
         dispatch(fetchProducts(collegeId));
         dispatch(fetchGroups(collegeId));
+        dispatch(fetchPyqs(collegeId));
     }, [collegeName]);
 
     return (

@@ -2,16 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Pagination } from '@nextui-org/react';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import { Link, useParams } from 'react-router-dom';
-import { api } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
-import { toast } from 'react-toastify';
-import useApiFetch from '../hooks/useApiFetch.js';
 import PyqCard from '../components/Cards/PyqCard.jsx';
-import { useCollegeId } from '../hooks/useCollegeId.js';
 import pyq from '../../public/assets/pyq.png';
 import notesandpyq from '../../public/assets/notes&pyq.png';
 import request from '../../public/assets/request.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPyqs } from '../redux/slices/pyqSlice.js';
+import { useCollegeId } from '../hooks/useCollegeId.js';
 
 const PYQPage = () => {
     const { collegeName } = useParams();
@@ -22,36 +21,27 @@ const PYQPage = () => {
     const [selectedBranch, setSelectedBranch] = useState('');
     const [selectedCourse, setSelectedCourse] = useState('');
     const [selectedExamType, setSelectedExamType] = useState('');
-    const [pyqs, setPyqs] = useState([]);
-    const { useFetch, loadingFetch } = useApiFetch();
+
+    const dispatch = useDispatch();
+
+    const { pyqs, loading, error } = useSelector((state) => state.pyqs || {});
 
     useEffect(() => {
-        if (!collegeId) return;
-
-        const fetchPYQs = async () => {
-            try {
-                const url = `${api.pyq}/college/${collegeId}`;
-                const data = await useFetch(url);
-                setPyqs(data);
-            } catch (error) {
-                console.error('Error fetching PYQs:', error);
-                toast.error('Error fetching PYQs');
-            }
-        };
-
-        fetchPYQs();
-    }, [collegeId]);
+        if (!pyqs.length) {
+            dispatch(fetchPyqs(collegeId));
+        }
+    }, [collegeName]);
 
     // Filter options
     const courses = [...new Set(pyqs.map((paper) => paper.course))];
     const branches = selectedCourse
         ? [
-            ...new Set(
-                pyqs
-                    .filter((paper) => paper.course === selectedCourse)
-                    .flatMap((paper) => paper.branch)
-            ),
-        ]
+              ...new Set(
+                  pyqs
+                      .filter((paper) => paper.course === selectedCourse)
+                      .flatMap((paper) => paper.branch)
+              ),
+          ]
         : [];
     const examTypes = [...new Set(pyqs.map((paper) => paper.examType))];
 
@@ -64,8 +54,8 @@ const PYQPage = () => {
             (selectedExamType ? paper.examType === selectedExamType : true) &&
             (searchTerm
                 ? paper.subjectName
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase())
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase())
                 : true)
         );
     });
@@ -173,7 +163,7 @@ const PYQPage = () => {
                 ) : (
                     <>
                         <div className="col-span-4 flex justify-center items-center py-10 w-full">
-                            {loadingFetch ? (
+                            {loading ? (
                                 <i className="fas fa-spinner fa-pulse fa-5x"></i>
                             ) : (
                                 <div className="text-center p-4 bg-white rounded-lg shadow-3xl">
@@ -182,13 +172,12 @@ const PYQPage = () => {
                                         Try adjusting your filters.
                                         <br /> If You have any PYQ paper, Please
                                         Provide us{' '}
-                                        <a
-                                            href="https://docs.google.com/forms/d/e/1FAIpQLSebji3Hfr-6Volc7KJwk4entnuXH803AAVF1QnHYGPK7AtjPw/viewform?usp=sf_link"
+                                        <Link
+                                            to={`/${collegeName}/resources`}
                                             className="text-blue-500"
-                                            target="_blank"
                                         >
                                             Click
-                                        </a>
+                                        </Link>
                                     </p>
                                 </div>
                             )}
@@ -236,20 +225,24 @@ const PYQPage = () => {
                         If you have any PYQs or notes, please share them with
                         us.
                     </p>
-                    <a
-                        href="https://docs.google.com/forms/d/e/1FAIpQLSebji3Hfr-6Volc7KJwk4entnuXH803AAVF1QnHYGPK7AtjPw/viewform?usp=sf_link"
+                    <Link
+                        to={`/${collegeName}/resources`}
                         className="inline-block px-6 py-3 w-full bg-sky-500 text-white font-bold rounded-lg hover transition-colors duration-200"
-                        target="_blank"
                     >
                         Click Here To Share PYQs
-                    </a>
+                    </Link>
                 </div>
                 <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
-                    <img src={request} alt="request pyq " className="w-36 mx-auto p-4" />
+                    <img
+                        src={request}
+                        alt="request pyq "
+                        className="w-36 mx-auto p-4"
+                    />
                     <p className="mb-4">
                         {/* Request a Previous Year's Question Paper<br /> */}
                         <a className="text-sm text-gray-500">
-                            Can't find the PYQ you need? Request it here, and we'll send it to you shortly!
+                            Can't find the PYQ you need? Request it here, and
+                            we'll send it to you shortly!
                         </a>
                     </p>
                     <Link
