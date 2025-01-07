@@ -170,14 +170,24 @@ function Subjects() {
                                     <span className="font-medium">100</span>
                                 </p>
                             </div>
-                            <Link
-                                to={subject.subjectCode.toLowerCase()}
-                                state={{ subjectId: subject._id }}
-                                className="inline-block px-4 py-2 bg-blue-500 text-white font-medium text-center rounded-lg hover:bg-blue-600 transition-colors duration-200"
-                                aria-label={`View details for ${subject.subjectName}`}
-                            >
-                                View Details
-                            </Link>
+                            <div className="flex justify-between">
+                                <Link
+                                    to={`notes/${subject.subjectCode.toLowerCase()}`}
+                                    state={{ subjectId: subject._id }}
+                                    className="px-4 py-2 bg-sky-500 text-white font-medium text-center rounded-lg hover:bg-blue-600 transition-colors duration-200"
+                                    aria-label={`View details for ${subject.subjectName}`}
+                                >
+                                    Notes
+                                </Link>
+                                <Link
+                                    to={`pyqs/${subject.subjectCode.toLowerCase()}`}
+                                    state={{ subjectId: subject._id }}
+                                    className=" px-4 py-2 bg-sky-500 text-white font-medium text-center rounded-lg hover:bg-blue-600 transition-colors duration-200"
+                                    aria-label={`View details for ${subject.subjectName}`}
+                                >
+                                    Pyq
+                                </Link>
+                            </div>
                         </div>
                     ))
                 ) : (

@@ -93,12 +93,12 @@ const Collegelink2 = () => {
                         </li>
                         <li className="flex justify-center mb-2">
                             <Link
-                                to={`/${collegeName}/notes`}
+                                to={`/${collegeName}/resources`}
                                 className="rounded-lg hover:bg-sky-100 px-4 py-2 text-center w-11/12"
                             >
                                 <div className="flex items-center justify-center space-x-2 text-lg font-bold">
                                     <i className="fa-solid fa-note-sticky"></i>
-                                    <p>Notes</p>
+                                    <p>Resources</p>
                                 </div>
                             </Link>
                         </li>

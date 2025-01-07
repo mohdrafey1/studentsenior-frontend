@@ -10,7 +10,6 @@ import StorePage from './pages/StorePage';
 import CommunityPage from './pages/CommunityPage';
 import WhatsAppGroupPage from './pages/WhatsAppGroupPage';
 import OpportunitiesPage from './pages/OpportunitiesPage';
-import NotesPage from './pages/NotesPage';
 import AddSenior from './Forms/AddSenior';
 import AddCollege from './Forms/AddCollege';
 import AboutPage from './pages/AboutPage';
@@ -29,9 +28,11 @@ import ProductDetail from './DetailPages/ProductDetail';
 import PyqDetail from './DetailPages/PyqDetail';
 import SeniorDetailPage from './DetailPages/SeniorDetailPage';
 import RequestPYQ from './Forms/RequestPYQ';
-import Branches from './components/Notes/Branches';
-import Subjects from './components/Notes/Subjects';
-import SubjectNotes from './components/Notes/SubjectNotes';
+import Branches from './components/Resources/Branches';
+import Subjects from './components/Resources/Subjects';
+import SubjectNotes from './components/Resources/SubjectNotes';
+import ResourcesPage from './pages/ResourcesPage';
+import SubjectPyqs from './components/Resources/SubjectPyqs';
 
 const validColleges = [
     'integral-university',
@@ -155,15 +156,15 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/:collegeName/notes"
+                path="/:collegeName/resources"
                 element={
                     <ValidateCollegeRoute>
-                        <NotesPage />
+                        <ResourcesPage />
                     </ValidateCollegeRoute>
                 }
             />
             <Route
-                path="/:collegeName/notes/:courseCode"
+                path="/:collegeName/resources/:courseCode"
                 element={
                     <ValidateCollegeRoute>
                         <Branches />
@@ -171,7 +172,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/:collegeName/notes/:courseCode/:branchCode"
+                path="/:collegeName/resources/:courseCode/:branchCode"
                 element={
                     <ValidateCollegeRoute>
                         <Subjects />
@@ -179,10 +180,18 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/:collegeName/notes/:courseCode/:branchCode/:subjectCode"
+                path="/:collegeName/resources/:courseCode/:branchCode/notes/:subjectCode"
                 element={
                     <ValidateCollegeRoute>
                         <SubjectNotes />
+                    </ValidateCollegeRoute>
+                }
+            />
+            <Route
+                path="/:collegeName/resources/:courseCode/:branchCode/pyqs/:subjectCode"
+                element={
+                    <ValidateCollegeRoute>
+                        <SubjectPyqs />
                     </ValidateCollegeRoute>
                 }
             />

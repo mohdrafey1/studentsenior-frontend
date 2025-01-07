@@ -8,7 +8,7 @@ import { capitalizeWords } from '../utils/Capitalize.js';
 import pyq from '../../public/assets/pyq.png';
 import notesandpyq from '../../public/assets/notes&pyq.png';
 
-const NotesPage = () => {
+const ResourcesPage = () => {
     const { collegeName } = useParams();
     const dispatch = useDispatch();
 
@@ -29,7 +29,7 @@ const NotesPage = () => {
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-5 min-h-full">
                 <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
-                    Notes - {capitalizeWords(collegeName)}
+                    Resources - {capitalizeWords(collegeName)}
                 </h1>
                 <p className="italic text-center text-xs sm:text-base">
                     "Get concise and clear notes to boost your exam
@@ -149,4 +149,4 @@ const NotesPage = () => {
     );
 };
 
-export default NotesPage;
+export default ResourcesPage;
