@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api, API_KEY } from '../../config/apiConfiguration';
 
-export const fetchSubjectNotes = createAsyncThunk(
-    'subjects/fetchSubjectNotes',
-    async (subjectId, collegeId, { rejectWithValue }) => {
+// Async thunk for giving opportunities
+export const fetchGiveOpportunity = createAsyncThunk(
+    'giveOpportunities/fetchGiveOpportunity',
+    async (collegeId, { rejectWithValue }) => {
         try {
             const response = await fetch(
-                `${api.subjectNotes}/${subjectId}/${collegeId}`,
+                `${api.giveOpportunity}/college/${collegeId}`,
                 {
                     method: 'GET',
                     headers: {
@@ -26,31 +27,29 @@ export const fetchSubjectNotes = createAsyncThunk(
     }
 );
 
-const subjectNotesSlice = createSlice({
-    name: 'subjectNotes',
+const giveOpportunitySlice = createSlice({
+    name: 'giveOpportunities',
     initialState: {
-        subjectNotes: [],
+        giveOpportunities: [],
         loading: false,
         error: null,
     },
-    reducers: {
-        // Optional: Define additional reducers if needed
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(fetchSubjectNotes.pending, (state) => {
+            .addCase(fetchGiveOpportunity.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(fetchSubjectNotes.fulfilled, (state, action) => {
-                state.subjects = action.payload;
+            .addCase(fetchGiveOpportunity.fulfilled, (state, action) => {
+                state.giveOpportunities = action.payload;
                 state.loading = false;
             })
-            .addCase(fetchSubjectNotes.rejected, (state, action) => {
+            .addCase(fetchGiveOpportunity.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });
     },
 });
 
-export default subjectNotesSlice.reducer;
+export default giveOpportunitySlice.reducer;

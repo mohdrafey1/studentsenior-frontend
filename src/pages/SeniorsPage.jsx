@@ -38,9 +38,7 @@ const SeniorPage = () => {
     } = useSelector((state) => state.seniors || {});
 
     useEffect(() => {
-        if (!seniors.length) {
-            dispatch(fetchSeniors(collegeId));
-        }
+        dispatch(fetchSeniors(collegeId));
     }, [collegeName]);
 
     const handleEdit = (senior) => {

@@ -12,10 +12,10 @@ export const fetchSubjects = createAsyncThunk(
                     'x-api-key': API_KEY,
                 },
             });
-            if (!response.ok) {
-                throw new Error('Failed to fetch subjects');
-            }
             const data = await response.json();
+            if (data.success === false) {
+                throw new Error(data.message);
+            }
             return data;
         } catch (error) {
             return rejectWithValue(error.message);

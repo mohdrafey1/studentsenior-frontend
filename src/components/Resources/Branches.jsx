@@ -67,10 +67,6 @@ const Branches = () => {
         return <p className="text-center text-red-500">Error: {error}</p>;
     }
 
-    if (!selectedCourse) {
-        return <p className="text-center text-red-500">Course not found!</p>;
-    }
-
     return (
         <div className="container mx-auto p-4">
             <DetailPageNavbar path={`resource/${courseCode}`} />

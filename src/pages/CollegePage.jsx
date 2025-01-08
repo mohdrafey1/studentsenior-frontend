@@ -20,11 +20,8 @@ const CollegePage = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchCourses());
         dispatch(fetchSeniors(collegeId));
         dispatch(fetchProducts(collegeId));
-        dispatch(fetchGroups(collegeId));
-        dispatch(fetchPyqs(collegeId));
     }, [collegeName]);
 
     return (

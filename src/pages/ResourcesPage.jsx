@@ -18,9 +18,7 @@ const ResourcesPage = () => {
     } = useSelector((state) => state.courses || {});
 
     useEffect(() => {
-        if (!courses.length) {
-            dispatch(fetchCourses());
-        }
+        dispatch(fetchCourses());
     }, [collegeName]);
 
     const filteredCourses = courses.filter((course) => {
@@ -34,7 +32,7 @@ const ResourcesPage = () => {
     });
 
     return (
-        <div className="container bg-gradient-to-t from-sky-200 to bg-white min-w-full sm:p-8">
+        <div className="container bg-gradient-to-t from-sky-200 to bg-white min-w-full sm:pb-8">
             <CollegeLinks />
             <div className="max-w-7xl mx-auto px-5 min-h-full">
                 <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
@@ -58,15 +56,13 @@ const ResourcesPage = () => {
             </div>
 
             <div className="m-4 sm:m-8 2xl:m-auto max-w-7xl">
-                {loading ? (
-                    <div className="flex justify-center items-center min-h-screen">
-                        <i className="fas fa-spinner fa-pulse fa-5x"></i>
+                {error && (
+                    <div className="text-red-500 text-center">
+                        Failed to load courses: {error}
                     </div>
-                ) : error ? (
-                    <div className="flex justify-center items-center min-h-screen">
-                        Error loading courses: {error}
-                    </div>
-                ) : filteredCourses.length ? (
+                )}
+
+                {filteredCourses.length > 0 ? (
                     <table className="table-auto w-full bg-white rounded-lg shadow-md overflow-hidden">
                         <thead className="bg-sky-500 text-white">
                             <tr>
@@ -127,9 +123,13 @@ const ResourcesPage = () => {
                         </tbody>
                     </table>
                 ) : (
-                    <p className="text-center">
-                        No courses available at the moment.
-                    </p>
+                    <div className="flex justify-center items-center min-h-screen">
+                        {loading ? (
+                            <i className="fas fa-spinner fa-pulse fa-5x"></i>
+                        ) : (
+                            <p>No courses available at the moment.</p>
+                        )}
+                    </div>
                 )}
             </div>
 

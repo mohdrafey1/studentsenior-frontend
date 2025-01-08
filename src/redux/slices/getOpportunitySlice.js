@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api, API_KEY } from '../../config/apiConfiguration';
 
-export const fetchSubjectNotes = createAsyncThunk(
-    'subjects/fetchSubjectNotes',
-    async (subjectId, collegeId, { rejectWithValue }) => {
+export const fetchGetOpportunity = createAsyncThunk(
+    'getOpportunities/fetchGetOpportunity',
+    async (collegeId, { rejectWithValue }) => {
         try {
             const response = await fetch(
-                `${api.subjectNotes}/${subjectId}/${collegeId}`,
+                `${api.getOpportunity}/college/${collegeId}`,
                 {
                     method: 'GET',
                     headers: {
@@ -26,31 +26,29 @@ export const fetchSubjectNotes = createAsyncThunk(
     }
 );
 
-const subjectNotesSlice = createSlice({
-    name: 'subjectNotes',
+const giveOpportunitySlice = createSlice({
+    name: 'getOpportunities',
     initialState: {
-        subjectNotes: [],
+        getOpportunities: [],
         loading: false,
         error: null,
     },
-    reducers: {
-        // Optional: Define additional reducers if needed
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(fetchSubjectNotes.pending, (state) => {
+            .addCase(fetchGetOpportunity.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(fetchSubjectNotes.fulfilled, (state, action) => {
-                state.subjects = action.payload;
+            .addCase(fetchGetOpportunity.fulfilled, (state, action) => {
+                state.getOpportunities = action.payload;
                 state.loading = false;
             })
-            .addCase(fetchSubjectNotes.rejected, (state, action) => {
+            .addCase(fetchGetOpportunity.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });
     },
 });
 
-export default subjectNotesSlice.reducer;
+export default giveOpportunitySlice.reducer;

@@ -27,10 +27,8 @@ const PYQPage = () => {
     const { pyqs, loading, error } = useSelector((state) => state.pyqs || {});
 
     useEffect(() => {
-        if (!pyqs.length) {
-            dispatch(fetchPyqs(collegeId));
-        }
-    }, [collegeName]);
+        dispatch(fetchPyqs(collegeId));
+    }, [collegeId]);
 
     // Filter options
     const courses = [...new Set(pyqs.map((paper) => paper.course))];

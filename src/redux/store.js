@@ -7,6 +7,8 @@ import subjectReducer from './slices/subjectSlice.js';
 import productReducer from './slices/productSlice.js';
 import groupReducer from './slices/groupSlice.js';
 import pyqReducer from './slices/pyqSlice.js';
+import getOpportunitiesReducer from './slices/getOpportunitySlice.js';
+import giveOpportunitiesReducer from './slices/giveOpportunitySlice.js';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -19,6 +21,8 @@ const rootReducer = combineReducers({
     products: productReducer,
     groups: groupReducer,
     pyqs: pyqReducer,
+    getOpportunities: getOpportunitiesReducer,
+    giveOpportunities: giveOpportunitiesReducer,
 });
 
 const persistConfig = {

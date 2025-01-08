@@ -45,10 +45,8 @@ const StorePage = () => {
     } = useSelector((state) => state.products);
 
     useEffect(() => {
-        if (!products.length) {
-            dispatch(fetchProducts(collegeId));
-        }
-    }, [collegeName]);
+        dispatch(fetchProducts(collegeId));
+    }, [collegeId]);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;

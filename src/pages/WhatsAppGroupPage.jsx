@@ -46,10 +46,8 @@ const WhatsAppGroupPage = () => {
     const closeModal = () => setIsModalOpen(false);
 
     useEffect(() => {
-        if (!groups.length) {
-            dispatch(fetchGroups(collegeId));
-        }
-    }, [collegeName]);
+        dispatch(fetchGroups(collegeId));
+    }, [collegeId]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

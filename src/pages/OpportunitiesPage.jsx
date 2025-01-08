@@ -4,17 +4,17 @@ import Collegelink2 from '../components/Links/CollegeLink2';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { useParams } from 'react-router-dom';
 import { api } from '../config/apiConfiguration.js';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import useApiFetch from '../hooks/useApiFetch.js';
 import useApiRequest from '../hooks/useApiRequest.js';
 import { useCollegeId } from '../hooks/useCollegeId.js';
+import { fetchGetOpportunity } from '../redux/slices/getOpportunitySlice.js';
+import { fetchGiveOpportunity } from '../redux/slices/giveOpportunitySlice.js';
 
 const OpportunitiesPage = () => {
     const { collegeName } = useParams();
     const collegeId = useCollegeId(collegeName);
-    const [getOpportunities, setGetOpportunities] = useState([]);
-    const [giveOpportunities, setGiveOpportunities] = useState([]);
     const [showGetForm, setShowGetForm] = useState(false);
     const [showGiveForm, setShowGiveForm] = useState(false);
     const [loadingStates, setLoadingStates] = useState({});
@@ -45,22 +45,18 @@ const OpportunitiesPage = () => {
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
 
-    // Fetch Get Opportunities
-    const fetchGetOpportunities = async () => {
-        try {
-            const data = await useFetch(
-                `${api.getOpportunity}/college/${collegeId}`
-            );
-            setGetOpportunities(data);
-        } catch (error) {
-            console.error('Error Fetching Get Opportunities: ', error);
-            toast.error('Error Fetching Get Opportunities ');
-        }
-    };
+    const dispatch = useDispatch();
+    const {
+        getOpportunities,
+        loading: getOpportunitiesLoading,
+        error: getOpportunitiesError,
+    } = useSelector((state) => state.getOpportunities);
 
     useEffect(() => {
-        fetchGetOpportunities();
-    }, []);
+        if (collegeId) {
+            dispatch(fetchGetOpportunity(collegeId));
+        }
+    }, [collegeId, dispatch]);
 
     const handleGetOpportunitySubmit = async (e) => {
         e.preventDefault();
@@ -111,15 +107,7 @@ const OpportunitiesPage = () => {
                 'PUT',
                 editedOpportunity
             );
-
-            setGetOpportunities((prevOpportunities) =>
-                prevOpportunities.map((opportunity) =>
-                    opportunity._id === editingOpportunity
-                        ? { ...opportunity, ...editedOpportunity }
-                        : opportunity
-                )
-            );
-
+            dispatch(fetchGetOpportunity(collegeId));
             setEditingOpportunity(null);
             setIsModalOpen(false);
             toast.success('Get opportunity edited successfully');
@@ -136,11 +124,8 @@ const OpportunitiesPage = () => {
                 'DELETE'
             );
 
-            setGetOpportunities((prevOpportunities) =>
-                prevOpportunities.filter(
-                    (opportunity) => opportunity._id !== getOpportunitiesId
-                )
-            );
+            dispatch(fetchGetOpportunity(collegeId));
+
             toast.success('Get opportunity deleted successfully');
         } catch (error) {
             console.error('Error deleting Get Opportunity:', error);
@@ -152,21 +137,14 @@ const OpportunitiesPage = () => {
         }
     };
 
-    // Fetch Give Opportunities
-    const fetchGiveOpportunities = async () => {
-        try {
-            const data = await useFetch(
-                `${api.giveOpportunity}/college/${collegeId}`
-            );
-            setGiveOpportunities(data);
-        } catch (error) {
-            console.error('Error Fetching give Opportunities: ', error);
-            toast.error('Error Fetching give Opportunities ');
-        }
-    };
+    const {
+        giveOpportunities,
+        loading: giveOpportunitiesLoading,
+        error: giveOpportunitiesError,
+    } = useSelector((state) => state.giveOpportunities || {});
 
     useEffect(() => {
-        fetchGiveOpportunities();
+        dispatch(fetchGiveOpportunity(collegeId));
     }, []);
 
     const handleGiveOpportunitySubmit = async (e) => {
@@ -219,13 +197,7 @@ const OpportunitiesPage = () => {
                 editedOpportunity
             );
 
-            setGiveOpportunities((prevOpportunities) =>
-                prevOpportunities.map((opportunity) =>
-                    opportunity._id === editingOpportunity
-                        ? { ...opportunity, ...editedOpportunity }
-                        : opportunity
-                )
-            );
+            dispatch(fetchGiveOpportunity(collegeId));
 
             setEditingOpportunity(null);
             setIsModalOpen(false);
@@ -243,11 +215,8 @@ const OpportunitiesPage = () => {
                 'DELETE'
             );
 
-            setGiveOpportunities((prevOpportunities) =>
-                prevOpportunities.filter(
-                    (opportunity) => opportunity._id !== giveOpportunitiesId
-                )
-            );
+            dispatch(fetchGiveOpportunity(collegeId));
+
             toast.success('Give opportunity deleted successfully');
         } catch (error) {
             console.error('Error deleting Give Opportunity:', error);
@@ -360,99 +329,101 @@ const OpportunitiesPage = () => {
                             </form>
                         )}
 
-                        {loadingFetch ? (
-                            <div className="text-center">
-                                <i className="fas fa-spinner fa-pulse fa-5x"></i>
-                            </div>
-                        ) : (
-                            <div className="grid grid-cols-1 gap-6">
-                                {getOpportunities.length > 0 ? (
-                                    <>
-                                        {getOpportunities.map((opportunity) => (
-                                            <div
-                                                key={opportunity._id}
-                                                className="bg-white p-5 shadow-md rounded-md"
-                                            >
-                                                <h3 className="mb-2">
-                                                    <strong>Job Name :</strong>{' '}
-                                                    {opportunity.name}
-                                                </h3>
-                                                <div className="bg-gray-100 mb-2 rounded-md max-h-40 sm:h-40">
-                                                    <p className="p-2 h-full overflow-scroll">
-                                                        {
-                                                            opportunity.description
-                                                        }
-                                                    </p>
-                                                </div>
-                                                <div className="flex gap-4">
-                                                    <a
-                                                        href={`https://api.whatsapp.com/send?phone=${opportunity.whatsapp}`}
-                                                        target="_blank"
-                                                        rel="noreferrer"
-                                                    >
-                                                        <button className="py-2 px-1 sm:px-4 bg-sky-500 hover:bg-blue-500 text-white rounded-md">
-                                                            Hire Me{' '}
+                        <div className="grid grid-cols-1 gap-6">
+                            {getOpportunitiesError && (
+                                <div className="text-red-500 text-center">
+                                    Failed to load opportunities: {error}
+                                </div>
+                            )}
+                            {getOpportunities.length > 0 ? (
+                                <>
+                                    {getOpportunities.map((opportunity) => (
+                                        <div
+                                            key={opportunity._id}
+                                            className="bg-white p-5 shadow-md rounded-md"
+                                        >
+                                            <h3 className="mb-2">
+                                                <strong>Job Name :</strong>{' '}
+                                                {opportunity.name}
+                                            </h3>
+                                            <div className="bg-gray-100 mb-2 rounded-md max-h-40 sm:h-40">
+                                                <p className="p-2 h-full overflow-scroll">
+                                                    {opportunity.description}
+                                                </p>
+                                            </div>
+                                            <div className="flex gap-4">
+                                                <a
+                                                    href={`https://api.whatsapp.com/send?phone=${opportunity.whatsapp}`}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                >
+                                                    <button className="py-2 px-1 sm:px-4 bg-sky-500 hover:bg-blue-500 text-white rounded-md">
+                                                        Hire Me{' '}
+                                                    </button>
+                                                </a>
+                                                <a
+                                                    href={`mailto:${opportunity.email}`}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                >
+                                                    <button className="py-2 px-1 sm:px-4 bg-sky-500 hover:bg-blue-500 text-white rounded-md">
+                                                        Email Me
+                                                    </button>
+                                                </a>
+                                                {opportunity.owner._id ===
+                                                    ownerId && (
+                                                    <>
+                                                        <button
+                                                            onClick={() =>
+                                                                handleEditClick(
+                                                                    opportunity
+                                                                )
+                                                            }
+                                                            className="sm:px-4 p-2 bg-yellow-500 hover:bg-yellow-200 text-white rounded-md ml-2"
+                                                        >
+                                                            <i className="fa-regular fa-pen-to-square"></i>
                                                         </button>
-                                                    </a>
-                                                    <a
-                                                        href={`mailto:${opportunity.email}`}
-                                                        target="_blank"
-                                                        rel="noreferrer"
-                                                    >
-                                                        <button className="py-2 px-1 sm:px-4 bg-sky-500 hover:bg-blue-500 text-white rounded-md">
-                                                            Email Me
-                                                        </button>
-                                                    </a>
-                                                    {opportunity.owner._id ===
-                                                        ownerId && (
-                                                        <>
-                                                            <button
-                                                                onClick={() =>
-                                                                    handleEditClick(
-                                                                        opportunity
-                                                                    )
-                                                                }
-                                                                className="sm:px-4 p-2 bg-yellow-500 hover:bg-yellow-200 text-white rounded-md ml-2"
-                                                            >
-                                                                <i className="fa-regular fa-pen-to-square"></i>
-                                                            </button>
 
-                                                            <button
-                                                                onClick={() =>
-                                                                    DeleteGetOpportunity(
-                                                                        opportunity._id
-                                                                    )
-                                                                }
-                                                                className="sm:px-4 p-2 bg-red-500 hover:bg-red-200 text-white rounded-md"
-                                                                disabled={
-                                                                    loadingStates[
-                                                                        opportunity
-                                                                            ._id
-                                                                    ]
-                                                                }
-                                                            >
-                                                                {loadingStates[
+                                                        <button
+                                                            onClick={() =>
+                                                                DeleteGetOpportunity(
+                                                                    opportunity._id
+                                                                )
+                                                            }
+                                                            className="sm:px-4 p-2 bg-red-500 hover:bg-red-200 text-white rounded-md"
+                                                            disabled={
+                                                                loadingStates[
                                                                     opportunity
                                                                         ._id
-                                                                ] ? (
-                                                                    <i className="fa fa-spinner fa-spin"></i>
-                                                                ) : (
-                                                                    <i className="fa-solid fa-trash"></i>
-                                                                )}
-                                                            </button>
-                                                        </>
-                                                    )}
-                                                </div>
+                                                                ]
+                                                            }
+                                                        >
+                                                            {loadingStates[
+                                                                opportunity._id
+                                                            ] ? (
+                                                                <i className="fa fa-spinner fa-spin"></i>
+                                                            ) : (
+                                                                <i className="fa-solid fa-trash"></i>
+                                                            )}
+                                                        </button>
+                                                    </>
+                                                )}
                                             </div>
-                                        ))}
-                                    </>
-                                ) : (
-                                    <div className="flex justify-center">
-                                        No Get Opportunity Found{' '}
-                                    </div>
-                                )}
-                            </div>
-                        )}
+                                        </div>
+                                    ))}
+                                </>
+                            ) : (
+                                <div className="flex justify-center items-center min-h-screen">
+                                    {loading ? (
+                                        <i className="fas fa-spinner fa-pulse fa-5x"></i>
+                                    ) : (
+                                        <div className="flex justify-center">
+                                            No Get Opportunity Found{' '}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <Modal
                         isOpen={isModalOpen}
@@ -543,7 +514,6 @@ const OpportunitiesPage = () => {
                                     : 'Give Opportunity'}
                             </button>
                         </div>
-
                         {showGiveForm && (
                             <form
                                 onSubmit={handleGiveOpportunitySubmit}
@@ -615,104 +585,101 @@ const OpportunitiesPage = () => {
                                 </button>
                             </form>
                         )}
-
-                        {loadingFetch ? (
-                            <div className="text-center">
-                                <i className="fas fa-spinner fa-pulse fa-5x"></i>
-                            </div>
-                        ) : (
-                            <div className="grid grid-cols-1 gap-6">
-                                {giveOpportunities.length > 0 ? (
-                                    <>
-                                        {giveOpportunities.map(
-                                            (opportunity) => (
-                                                <div
-                                                    key={opportunity._id}
-                                                    className="bg-white p-5 shadow-md rounded-md"
+                        <div className="grid grid-cols-1 gap-6">
+                            {giveOpportunitiesError && (
+                                <div className="text-red-500 text-center">
+                                    Failed to load opportunities: {error}
+                                </div>
+                            )}
+                            {giveOpportunities.length > 0 ? (
+                                <>
+                                    {giveOpportunities.map((opportunity) => (
+                                        <div
+                                            key={opportunity._id}
+                                            className="bg-white p-5 shadow-md rounded-md"
+                                        >
+                                            <h3 className="mb-2">
+                                                <strong>Job Name :</strong>{' '}
+                                                {opportunity.name}
+                                            </h3>
+                                            <div className="bg-gray-100 mb-2 rounded-md max-h-40 sm:h-40">
+                                                <p className="p-2 h-full overflow-scroll">
+                                                    {opportunity.description}
+                                                </p>
+                                            </div>
+                                            <div className="flex gap-4">
+                                                <a
+                                                    href={`https://api.whatsapp.com/send?phone=${opportunity.whatsapp}`}
+                                                    target="_blank"
+                                                    rel="noreferrer"
                                                 >
-                                                    <h3 className="mb-2">
-                                                        <strong>
-                                                            Job Name :
-                                                        </strong>{' '}
-                                                        {opportunity.name}
-                                                    </h3>
-                                                    <div className="bg-gray-100 mb-2 rounded-md max-h-40 sm:h-40">
-                                                        <p className="p-2 h-full overflow-scroll">
-                                                            {
-                                                                opportunity.description
+                                                    <button className="py-2 px-1 sm:px-4 bg-sky-500 hover:bg-blue-500 text-white rounded-md">
+                                                        Contact Us{' '}
+                                                    </button>
+                                                </a>
+                                                <a
+                                                    href={`mailto:${opportunity.email}`}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                >
+                                                    <button className="py-2 px-1 sm:px-4 bg-sky-500 hover:bg-blue-500 text-white rounded-md">
+                                                        Email Us
+                                                    </button>
+                                                </a>
+                                                {opportunity.owner._id ===
+                                                    ownerId && (
+                                                    <>
+                                                        <button
+                                                            onClick={() =>
+                                                                handleGiveOpportunityClick(
+                                                                    opportunity
+                                                                )
                                                             }
-                                                        </p>
-                                                    </div>
-                                                    <div className="flex gap-4">
-                                                        <a
-                                                            href={`https://api.whatsapp.com/send?phone=${opportunity.whatsapp}`}
-                                                            target="_blank"
-                                                            rel="noreferrer"
+                                                            className="sm:px-4 p-2 bg-yellow-500 hover:bg-yellow-200 text-white rounded-md ml-2"
                                                         >
-                                                            <button className="py-2 px-1 sm:px-4 bg-sky-500 hover:bg-blue-500 text-white rounded-md">
-                                                                Contact Us{' '}
-                                                            </button>
-                                                        </a>
-                                                        <a
-                                                            href={`mailto:${opportunity.email}`}
-                                                            target="_blank"
-                                                            rel="noreferrer"
+                                                            <i className="fa-regular fa-pen-to-square"></i>
+                                                        </button>
+                                                        <button
+                                                            onClick={() =>
+                                                                DeleteGiveOpportunity(
+                                                                    opportunity._id
+                                                                )
+                                                            }
+                                                            className="sm:px-4 p-2 bg-red-500 hover:bg-red-200 text-white rounded-md"
+                                                            disabled={
+                                                                loading[
+                                                                    opportunity
+                                                                        ._id
+                                                                ]
+                                                            }
                                                         >
-                                                            <button className="py-2 px-1 sm:px-4 bg-sky-500 hover:bg-blue-500 text-white rounded-md">
-                                                                Email Us
-                                                            </button>
-                                                        </a>
-                                                        {opportunity.owner
-                                                            ._id ===
-                                                            ownerId && (
-                                                            <>
-                                                                <button
-                                                                    onClick={() =>
-                                                                        handleGiveOpportunityClick(
-                                                                            opportunity
-                                                                        )
-                                                                    }
-                                                                    className="sm:px-4 p-2 bg-yellow-500 hover:bg-yellow-200 text-white rounded-md ml-2"
-                                                                >
-                                                                    <i className="fa-regular fa-pen-to-square"></i>
-                                                                </button>
-                                                                <button
-                                                                    onClick={() =>
-                                                                        DeleteGiveOpportunity(
-                                                                            opportunity._id
-                                                                        )
-                                                                    }
-                                                                    className="sm:px-4 p-2 bg-red-500 hover:bg-red-200 text-white rounded-md"
-                                                                    disabled={
-                                                                        loading[
-                                                                            opportunity
-                                                                                ._id
-                                                                        ]
-                                                                    }
-                                                                >
-                                                                    {loadingStates[
-                                                                        opportunity
-                                                                            ._id
-                                                                    ] ? (
-                                                                        <i className="fa fa-spinner fa-spin"></i>
-                                                                    ) : (
-                                                                        <i className="fa-solid fa-trash"></i>
-                                                                    )}
-                                                                </button>
-                                                            </>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            )
-                                        )}
-                                    </>
-                                ) : (
-                                    <div className="flex justify-center">
-                                        No Give Opportunity Found
-                                    </div>
-                                )}
-                            </div>
-                        )}
+                                                            {loadingStates[
+                                                                opportunity._id
+                                                            ] ? (
+                                                                <i className="fa fa-spinner fa-spin"></i>
+                                                            ) : (
+                                                                <i className="fa-solid fa-trash"></i>
+                                                            )}
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </>
+                            ) : (
+                                <div className="flex justify-center items-center min-h-screen">
+                                    {giveOpportunitiesLoading ? (
+                                        <i className="fas fa-spinner fa-pulse fa-5x"></i>
+                                    ) : (
+                                        <p>
+                                            No Opportunity available at the
+                                            moment.
+                                        </p>
+                                    )}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
