@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Collegelink2 from '../components/Links/CollegeLink2';
 import { api } from '../config/apiConfiguration';
@@ -9,16 +9,15 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { toast } from 'react-toastify';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import useApiRequest from '../hooks/useApiRequest';
-import useApiFetch from '../hooks/useApiFetch.js';
 import Dialog from '../utils/Dialog.jsx';
 import usePosts from '../hooks/usePosts.js';
 import { useCollegeId } from '../hooks/useCollegeId.js';
+import { fetchPosts } from '../redux/slices/postSlice.js';
 
 const CommunityPage = () => {
     const navigate = useNavigate();
     const { collegeName } = useParams();
     const collegeId = useCollegeId(collegeName);
-    const [posts, setPosts] = useState([]);
     const [newPostContent, setNewPostContent] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -45,24 +44,19 @@ const CommunityPage = () => {
     const ownerId = currentUser?._id;
 
     const { apiRequest, loading } = useApiRequest();
-    const { useFetch, loadingFetch } = useApiFetch();
 
     const url = api.community;
 
-    const fetchPosts = async () => {
-        try {
-            const data = await useFetch(`${url}/college/${collegeId}`);
-            setPosts(data);
-            // console.log(data);
-        } catch (err) {
-            console.error('Error fetching posts:', err);
-            toast.error('Error fetching posts');
-        }
-    };
+    const dispatch = useDispatch();
+    const {
+        posts,
+        loading: postLoading,
+        error: postError,
+    } = useSelector((state) => state.posts || {});
 
     useEffect(() => {
-        fetchPosts();
-    }, []);
+        dispatch(fetchPosts(collegeId));
+    }, [collegeId]);
 
     const openModal = () => {
         setShowModal(true);
@@ -111,7 +105,7 @@ const CommunityPage = () => {
                         college: collegeId,
                     });
 
-                    fetchPosts();
+                    dispatch(fetchPosts(collegeId));
                     setNewPostContent('');
                     closeModal();
                     toast.success('Post Added Successfully');
@@ -128,14 +122,14 @@ const CommunityPage = () => {
     // Delete a post
     const handleDeletePost = async (postId) => {
         await deletePost(postId);
-        fetchPosts();
+        dispatch(fetchPosts(collegeId));
     };
 
     // Edit a post
     const handleEditPost = async () => {
         setEditLoading(true);
         await editPost(editingPostId, editedContent);
-        fetchPosts();
+        dispatch(fetchPosts(collegeId));
         closeEditModal();
         setEditLoading(false);
     };
@@ -143,12 +137,12 @@ const CommunityPage = () => {
     // Add a new comment to a post
     const handleAddComment = async (postId) => {
         await addComment(postId);
-        fetchPosts();
+        dispatch(fetchPosts(collegeId));
     };
 
     const handleLikePost = async (postId) => {
         await likePost(postId);
-        fetchPosts();
+        dispatch(fetchPosts(collegeId));
     };
 
     useEffect(() => {
@@ -164,7 +158,7 @@ const CommunityPage = () => {
                     `${url}/${postId}/comments/${commentId}/like`,
                     'POST'
                 );
-                fetchPosts();
+                dispatch(fetchPosts(collegeId));
 
                 // Update the likedComments in both state and localStorage
                 const updatedLikes = [...likedComments, commentId];
@@ -183,7 +177,7 @@ const CommunityPage = () => {
     // Delete a comment
     const handleDeleteComment = async (postId, commentId) => {
         await deleteComment(postId, commentId);
-        fetchPosts();
+        dispatch(fetchPosts(collegeId));
     };
 
     const handleShare = (postId) => {
@@ -698,7 +692,7 @@ const CommunityPage = () => {
                     </div>
                 ) : (
                     <div className="col-span-4 flex justify-center items-center py-10 w-full">
-                        {loadingFetch ? (
+                        {postLoading ? (
                             <i className="fas fa-spinner fa-pulse fa-5x"></i>
                         ) : (
                             <p className="text-gray-200  dark:text-gray-600 text-center">

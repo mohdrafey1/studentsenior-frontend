@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { fetchCourses } from '../redux/slices/courseSlice.js';
 import CollegeHero from '../components/Hero/CollegeHero';
 import FeaturedSeniors from '../components/FeaturedSenior/FeaturedSenior';
 import FeaturedProduct from '../components/FeaturedProduct/FeaturedProduct';
@@ -11,8 +10,6 @@ import Collegelink2 from '../components/Links/CollegeLink2';
 import { fetchSeniors } from '../redux/slices/seniorSlice.js';
 import { useCollegeId } from '../hooks/useCollegeId.js';
 import { fetchProducts } from '../redux/slices/productSlice.js';
-import { fetchGroups } from '../redux/slices/groupSlice.js';
-import { fetchPyqs } from '../redux/slices/pyqSlice.js';
 
 const CollegePage = () => {
     const { collegeName } = useParams();

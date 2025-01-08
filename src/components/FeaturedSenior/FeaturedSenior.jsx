@@ -1,44 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import useApiFetch from '../../hooks/useApiFetch';
 import { useCollegeId } from '../../hooks/useCollegeId';
-import { api } from '../../config/apiConfiguration';
 import SeniorCard from '../Cards/SeniorCard';
-import { toast } from 'react-toastify';
 import { useParams, Link } from 'react-router-dom';
 import SeniorDetailModal from '../SeniorModal/SeniorDetailModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchSeniors } from '../../redux/slices/seniorSlice';
 
 const FeaturedSeniors = () => {
     const { collegeName } = useParams();
     const collegeId = useCollegeId(collegeName);
-    const [seniors, setSeniors] = useState([]);
     const [selectedSenior, setSelectedSenior] = useState(null);
     const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-    const { useFetch, loadingFetch } = useApiFetch();
 
     const handleDetail = (senior) => {
         setSelectedSenior(senior);
         setIsDetailModalOpen(true);
     };
 
-    const fetchSeniors = async () => {
-        try {
-            const data = await useFetch(`${api.senior}/college/${collegeId}`);
-            setSeniors(data);
-        } catch (err) {
-            console.error('Error fetching seniors:', err);
-            toast.error('Error fetching seniors');
-        }
-    };
+    const dispatch = useDispatch();
+    const {
+        seniors,
+        loading: loadingSeniors,
+        error: seniorError,
+    } = useSelector((state) => state.seniors || {});
 
-    const fake = [
-        { "no": 1 },
-        { "no": 2 },
-        { "no": 3 },
-        { "no": 4 },
-    ]
+    const fake = [{ no: 1 }, { no: 2 }, { no: 3 }, { no: 4 }];
 
     useEffect(() => {
-        fetchSeniors();
+        dispatch(fetchSeniors(collegeId));
     }, []);
 
     return (
@@ -58,6 +47,11 @@ const FeaturedSeniors = () => {
             <div className="container mx-auto px-5 xl:px-40">
                 <div className="main-card">
                     <div className="mobile-card cards gap-2 flex md:gap-6 w-full lg:justify-center md:justify-center">
+                        {seniorError && (
+                            <div className="text-red-500 text-center">
+                                Failed to load Seniors: {error}
+                            </div>
+                        )}
                         {seniors.length > 0 ? (
                             <SeniorCard
                                 seniors={seniors.slice(0, 4)}
@@ -65,16 +59,15 @@ const FeaturedSeniors = () => {
                             />
                         ) : (
                             <div className="col-span-4 flex justify-center items-center py-10 w-full">
-                                {loadingFetch ? (
-                                    <div className='w-full flex gap-5'>
+                                {loadingSeniors ? (
+                                    <div className="w-full flex gap-5">
                                         {fake.map((item, index) => {
-                                            return <div
-                                                className="bg-white shadow-md rounded-3xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl dark:bg-slate-300 w-full lg:h-56 flex flex-col"
-                                            >
-                                                <div className='h-20 w-20 rounded-full bg-gray-400 m-auto animate-ping'>
+                                            return (
+                                                <div className="bg-white shadow-md rounded-3xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl dark:bg-slate-300 w-full lg:h-56 flex flex-col">
+                                                    <div className="h-20 w-20 rounded-full bg-gray-400 m-auto animate-ping"></div>
                                                 </div>
-                                            </div>;
-                                         })}
+                                            );
+                                        })}
                                     </div>
                                 ) : (
                                     <p className="text-center text-gray-500 mt-5">
@@ -85,7 +78,7 @@ const FeaturedSeniors = () => {
                         )}
                     </div>
                 </div>
-                {loadingFetch ? (
+                {loadingSeniors ? (
                     <></>
                 ) : (
                     <div className="text-center my-5">
