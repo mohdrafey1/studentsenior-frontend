@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Hero from '../components/Hero/Hero';
 import Testimonials from '../components/Testimonials/Testimonials';
+import OurFeatures from '../components/OurFeatures/OurFeatures';
 import About from '../components/About/About';
 import '../App.css';
 import { colleges } from '../hooks/useCollegeId';
@@ -27,7 +28,7 @@ const MainPage = () => {
     };
 
     return (
-        <>
+        <div className='bg-gray-100'>
             <Hero>
                 <div className="flex flex-col items-center my-10">
                     <div className="text-black bg-white px-4 py-2 border-radius-38 border-4 border-sky-300 flex flex-col sm:flex-row items-center my-10">
@@ -63,9 +64,10 @@ const MainPage = () => {
                 </div>
             </Hero>
             <QuickLinks />
+            <OurFeatures />
             <Testimonials />
             <About />
-        </>
+        </div>
     );
 };
 
