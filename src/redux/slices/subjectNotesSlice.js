@@ -3,10 +3,10 @@ import { api, API_KEY } from '../../config/apiConfiguration';
 
 export const fetchSubjectNotes = createAsyncThunk(
     'subjectNotes/fetchSubjectNotes',
-    async ({ subjectId, collegeId }, { rejectWithValue }) => {
+    async ({ subjectCode, branchCode, collegeId }, { rejectWithValue }) => {
         try {
             const response = await fetch(
-                `${api.subjectNotes}/${subjectId}/${collegeId}`,
+                `${api.subjectNotes}/${branchCode}/${subjectCode}/${collegeId}`,
                 {
                     method: 'GET',
                     headers: {

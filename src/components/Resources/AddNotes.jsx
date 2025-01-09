@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-function AddNotes({ subject, college, subjectId, collegeId, onSubmit }) {
+function AddNotes({
+    subjectCode,
+    branchCode,
+    college,
+    collegeId,
+    onSubmit,
+    loading,
+}) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [file, setFile] = useState(null);
@@ -25,7 +32,8 @@ function AddNotes({ subject, college, subjectId, collegeId, onSubmit }) {
         formData.append('title', title);
         formData.append('description', description);
         formData.append('file', file);
-        formData.append('subject', subjectId);
+        formData.append('subjectCode', subjectCode);
+        formData.append('branchCode', branchCode);
         formData.append('college', collegeId);
 
         onSubmit(formData);
@@ -63,29 +71,36 @@ function AddNotes({ subject, college, subjectId, collegeId, onSubmit }) {
                     required
                 />
             </div>
-            <div>
-                <label className="block font-semibold mb-1">Subject</label>
-                <input
-                    type="text"
-                    className="w-full border p-2 rounded bg-gray-100"
-                    value={subject}
-                    disabled
-                />
-            </div>
-            <div>
-                <label className="block font-semibold mb-1">College</label>
-                <input
-                    type="text"
-                    className="w-full border p-2 rounded bg-gray-100"
-                    value={college}
-                    disabled
-                />
+            <div className="flex gap-2">
+                <div>
+                    <label className="block font-semibold mb-1">Subject</label>
+                    <input
+                        type="text"
+                        className="w-full border p-2 rounded bg-gray-100"
+                        value={subjectCode.toUpperCase()}
+                        disabled
+                    />
+                </div>
+                <div>
+                    <label className="block font-semibold mb-1">College</label>
+                    <input
+                        type="text"
+                        className="w-full border p-2 rounded bg-gray-100"
+                        value={college.toUpperCase()}
+                        disabled
+                    />
+                </div>
             </div>
             <button
                 type="submit"
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                disabled={loading}
             >
-                Add Note
+                {loading ? (
+                    <i className="fas fa-spinner fa-pulse "></i>
+                ) : (
+                    <> Add Note</>
+                )}
             </button>
         </form>
     );

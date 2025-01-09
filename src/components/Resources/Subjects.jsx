@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchBranches } from '../../redux/slices/branchSlice.js';
-import { fetchCourses } from '../../redux/slices/courseSlice.js';
 import { fetchSubjects } from '../../redux/slices/subjectSlice.js';
-import { toast } from 'react-toastify';
 import { capitalizeWords } from '../../utils/Capitalize.js';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 
@@ -15,75 +12,16 @@ function Subjects() {
     const dispatch = useDispatch();
 
     const {
-        branches,
-        loading: branchesLoading,
-        error: branchesError,
-    } = useSelector((state) => state.branches || {});
-    const {
-        courses,
-        loading: coursesLoading,
-        error: coursesError,
-    } = useSelector((state) => state.courses || {});
-    const {
         subjects,
         loading: subjectsLoading,
         error: subjectsError,
     } = useSelector((state) => state.subjects || {});
 
-    const [selectedCourse, setSelectedCourse] = useState(null);
-    const [selectedBranch, setSelectedBranch] = useState(null);
     const [groupedSubjects, setGroupedSubjects] = useState({});
 
-    // Fetch courses if not already fetched
     useEffect(() => {
-        if (!courses.length) {
-            dispatch(fetchCourses());
-        }
-    }, [dispatch, courses.length]);
-
-    // Find selected course when courses are fetched
-    useEffect(() => {
-        if (courses.length) {
-            const foundCourse = courses.find(
-                (course) =>
-                    course.courseCode.toLowerCase() === courseCode.toLowerCase()
-            );
-            if (foundCourse) {
-                setSelectedCourse(foundCourse);
-            } else {
-                toast.error('Course not found for courseCode');
-            }
-        }
-    }, [courses, courseCode]);
-
-    // Fetch branches when selected course is found
-    useEffect(() => {
-        if (selectedCourse && !branches.length) {
-            dispatch(fetchBranches(selectedCourse._id));
-        }
-    }, [selectedCourse, dispatch, branches.length]);
-
-    // Find selected branch when branches are fetched
-    useEffect(() => {
-        if (branches.length) {
-            const foundBranch = branches.find(
-                (branch) =>
-                    branch.branchCode.toLowerCase() === branchCode.toLowerCase()
-            );
-            if (foundBranch) {
-                setSelectedBranch(foundBranch);
-            } else {
-                toast.error('Branch not found for branchCode');
-            }
-        }
-    }, [branches, branchCode]);
-
-    // Fetch subjects when selected branch is found
-    useEffect(() => {
-        if (selectedBranch) {
-            dispatch(fetchSubjects(selectedBranch._id));
-        }
-    }, [selectedBranch]);
+        dispatch(fetchSubjects(branchCode));
+    }, [courseCode, branchCode, collegeName]);
 
     // Group subjects by semester
     useEffect(() => {
@@ -122,7 +60,7 @@ function Subjects() {
         {}
     );
 
-    if (subjectsLoading || coursesLoading || branchesLoading) {
+    if (subjectsLoading) {
         return (
             <div className="flex justify-center items-center min-h-screen">
                 <i className="fas fa-spinner fa-pulse fa-5x"></i>
@@ -130,21 +68,15 @@ function Subjects() {
         );
     }
 
-    if (subjectsError || coursesError || branchesError) {
+    if (subjectsError) {
         return (
-            <p className="text-center text-red-500">
-                Error: {subjectsError || coursesError || branchesError}
-            </p>
+            <p className="text-center text-red-500">Error: {subjectsError}</p>
         );
-    }
-
-    if (!selectedBranch) {
-        return <p className="text-center text-red-500">Branch not found!</p>;
     }
 
     return (
         <div className="container mx-auto p-4 ">
-            <DetailPageNavbar path={`resource/${courseCode}/${branches}`} />
+            <DetailPageNavbar path={`resource/${courseCode}/${branchCode}`} />
             <h1 className="text-2xl font-bold text-center mb-2">
                 {capitalizeWords(collegeName)}: {branchCode.toUpperCase()}
             </h1>
@@ -154,7 +86,7 @@ function Subjects() {
             </h2>
 
             {/* Semester Tabs */}
-            <div className="flex justify-start lg:justify-center space-x-4 mb-6 overflow-x-scroll">
+            <div className="flex justify-start lg:justify-center space-x-4 mb-6 pb-2 overflow-x-scroll">
                 {Object.keys(groupedSubjects)
                     .sort((a, b) => a - b)
                     .map((semester) => (
@@ -162,7 +94,7 @@ function Subjects() {
                             key={semester}
                             className={`min-w-16 px-2 sm:px-4 py-2 rounded ${
                                 activeSemester === semester
-                                    ? 'bg-blue-500 text-white'
+                                    ? 'bg-sky-500 text-white'
                                     : 'bg-gray-200 text-gray-800'
                             } hover:bg-blue-400 transition duration-200`}
                             onClick={() => setActiveSemester(semester)}
@@ -221,7 +153,6 @@ function Subjects() {
                                     <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-center">
                                         <Link
                                             to={`notes/${subject.subjectCode.toLowerCase()}`}
-                                            state={{ subjectId: subject._id }}
                                             className="px-1 sm:px-3 py-1 bg-sky-500 text-white rounded hover:bg-blue-600 transition-colors duration-200 mx-1"
                                             aria-label={`View Notes for ${subject.subjectName}`}
                                         >

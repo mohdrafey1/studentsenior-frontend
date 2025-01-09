@@ -26,7 +26,7 @@ const rootReducer = combineReducers({
     getOpportunities: getOpportunitiesReducer,
     giveOpportunities: giveOpportunitiesReducer,
     posts: postReducer,
-    SubjectNotes: subjectNotesReducer,
+    subjectNotes: subjectNotesReducer,
 });
 
 const persistConfig = {
