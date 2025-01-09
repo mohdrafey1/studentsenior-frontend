@@ -38,7 +38,7 @@ const FeaturedSeniors = () => {
                     <div className="mobile-card cards flex gap-2 md:gap-6 w-full lg:justify-center md:justify-center">
                         {productError && (
                             <div className="text-red-500 text-center">
-                                Failed to load Products: {error}
+                                Failed to load Products: {productError}
                             </div>
                         )}
                         {products.length > 0 ? (

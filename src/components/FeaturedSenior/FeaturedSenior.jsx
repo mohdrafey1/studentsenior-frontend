@@ -49,7 +49,7 @@ const FeaturedSeniors = () => {
                     <div className="mobile-card cards gap-2 flex md:gap-6 w-full lg:justify-center md:justify-center">
                         {seniorError && (
                             <div className="text-red-500 text-center">
-                                Failed to load Seniors: {error}
+                                Failed to load Seniors: {seniorError}
                             </div>
                         )}
                         {seniors.length > 0 ? (

@@ -311,6 +311,11 @@ export default function Profile() {
                     {updateSuccess && 'User is updated successfully!'}
                 </p>
             </div>
+            <div className="">
+                <div>Reward Balance : {currentUser.rewardBalance}</div>
+                <div>Reward Points : {currentUser.rewardPoints}</div>
+                <div>Reward Redeemed : {currentUser.rewardRedeemed}</div>
+            </div>
         </>
     );
 }

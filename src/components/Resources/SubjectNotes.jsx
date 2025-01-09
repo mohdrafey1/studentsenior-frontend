@@ -14,7 +14,6 @@ import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 function SubjectNotes() {
     const { collegeName, courseCode, subjectCode, branchCode } = useParams();
     const collegeId = useCollegeId(collegeName);
-    const [error, setError] = useState(null);
     const [isModalOpen, setModalOpen] = useState(false);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [noteIdToDelete, setNoteIdToDelete] = useState(null);
@@ -83,6 +82,44 @@ function SubjectNotes() {
         setNoteIdToDelete(null);
     };
 
+    const likeNotes = async (noteId) => {
+        try {
+            // Optimistically update the UI for better UX
+            const updatedNotes = subjectNotes.map((note) => {
+                if (note._id === noteId) {
+                    const isLiked = note.likes.includes(ownerId);
+                    return {
+                        ...note,
+                        likes: isLiked
+                            ? note.likes.filter((id) => id !== ownerId)
+                            : [...note.likes, ownerId],
+                    };
+                }
+                return note;
+            });
+
+            dispatch({
+                type: 'subjectNotes/updateNotes',
+                payload: updatedNotes,
+            });
+
+            // Make the API request
+            const response = await apiRequest(
+                `${api.subjectNotes}/${noteId}/like`,
+                'POST'
+            );
+            toast.success(
+                response.message || 'Note liked/unliked successfully.'
+            );
+
+            // Sync UI with the server response
+            dispatch(fetchSubjectNotes({ subjectCode, branchCode, collegeId }));
+        } catch (err) {
+            console.error('Error liking/unliking note:', err);
+            toast.error('Failed to like/unlike the note. Please try again.');
+        }
+    };
+
     if (loadingSubjectNotes) {
         return (
             <div className="flex justify-center items-center min-h-screen">
@@ -91,7 +128,7 @@ function SubjectNotes() {
         );
     }
 
-    if (error) {
+    if (notesError) {
         return <p className="text-center text-red-500">Error: {notesError}</p>;
     }
 
@@ -122,11 +159,21 @@ function SubjectNotes() {
                             key={note._id}
                             className="border p-4 rounded-lg shadow hover:shadow-lg transition duration-200"
                         >
-                            <h1 className="text-2xl font-bold">
-                                {note.subject?.subjectName}
-                            </h1>
+                            <div className="flex items-center mb-2">
+                                <img
+                                    src={
+                                        note.owner?.profilePicture ||
+                                        '/default-avatar.png'
+                                    }
+                                    alt="Author Profile"
+                                    className="rounded-full w-8 h-8 mr-2"
+                                />
+                                <span className="text-sm font-medium">
+                                    {note.owner?.username || 'Anonymous'}
+                                </span>
+                            </div>
                             <h2 className="text-lg font-semibold">
-                                {note.title}
+                                Title: {note.title}
                             </h2>
                             <p className="text-sm text-gray-600">
                                 {note.description || 'No description'}
@@ -139,10 +186,32 @@ function SubjectNotes() {
                             >
                                 View Notes
                             </a>
-                            {note.owner._id === ownerId && (
-                                <div className="flex space-x-2">
+                            <p className="text-xs text-gray-500 mt-1">
+                                Uploaded at:{' '}
+                                {new Date(note.createdAt).toLocaleString()}
+                            </p>
+                            <div className="flex items-center justify-between mt-3">
+                                <button
+                                    onClick={() => likeNotes(note._id)}
+                                    className={`flex items-center space-x-1 ${
+                                        Array.isArray(note.likes) &&
+                                        note.likes.includes(ownerId)
+                                            ? 'text-red-500'
+                                            : 'text-gray-600'
+                                    } hover:text-red-500`}
+                                    title="Like this note"
+                                >
+                                    <i className="fa-regular fa-heart"></i>
+                                    <span>
+                                        {Array.isArray(note.likes)
+                                            ? note.likes.length
+                                            : 0}
+                                    </span>
+                                </button>
+
+                                {note.owner._id === ownerId && (
                                     <button
-                                        className="bg-red-500 text-white px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm hover:bg-red-600"
+                                        className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600"
                                         onClick={(e) => {
                                             e.preventDefault();
                                             handleDeleteClick(note._id);
@@ -151,17 +220,18 @@ function SubjectNotes() {
                                     >
                                         <i className="fa-solid fa-trash"></i>
                                     </button>
-                                </div>
-                            )}
+                                )}
+                            </div>
                         </div>
                     ))
                 ) : (
                     <div className="h-screen text-center text-gray-600">
-                        No notes available for this subject, Please Add if you
-                        have.
+                        No notes available for this subject. Please add if you
+                        have any.
                     </div>
                 )}
             </div>
+
             <Modal
                 isOpen={isModalOpen}
                 title="Add Note"
