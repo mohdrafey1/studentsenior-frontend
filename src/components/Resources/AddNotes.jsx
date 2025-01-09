@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import { api } from '../../config/apiConfiguration';
 
-function AddNotes({
-    subjectCode,
-    branchCode,
-    college,
-    collegeId,
-    onSubmit,
-    loading,
-}) {
+function AddNotes({ subjectCode, branchCode, college, collegeId, onSubmit }) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [file, setFile] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
@@ -22,21 +17,61 @@ function AddNotes({
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!file) {
-            toast.error('Please upload a PDF file.');
+            toast.error('Please select a file to upload.');
             return;
         }
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('description', description);
-        formData.append('file', file);
-        formData.append('subjectCode', subjectCode);
-        formData.append('branchCode', branchCode);
-        formData.append('college', collegeId);
 
-        onSubmit(formData);
+        const fileName = `${title}-${Date.now()}.pdf`;
+        const fileType = file.type;
+
+        try {
+            setLoading(true);
+            // Step 1: Get pre-signed URL
+            const response = await fetch(`${api.presignedUrl}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    fileName: `ss-notes/${fileName}`,
+                    fileType,
+                }),
+            });
+
+            const { uploadUrl, key } = await response.json();
+
+            toast.warning('uploading notes');
+
+            // Step 2: Upload file directly to S3
+            await fetch(uploadUrl, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': fileType,
+                },
+                body: file,
+            });
+
+            // Step 3: Submit metadata to the server
+            const formData = {
+                title,
+                description,
+                subjectCode,
+                branchCode,
+                college: collegeId,
+                fileUrl: `https://studentsenior.s3.ap-south-1.amazonaws.com/${key}`,
+            };
+
+            onSubmit(formData);
+            setLoading(false);
+        } catch (err) {
+            console.error(err);
+            toast.error('Failed to upload file.');
+            setLoading(false);
+        }
     };
 
     return (
@@ -97,7 +132,9 @@ function AddNotes({
                 disabled={loading}
             >
                 {loading ? (
-                    <i className="fas fa-spinner fa-pulse "></i>
+                    <span>
+                        <i className="fas fa-spinner fa-pulse "></i>Uploading...
+                    </span>
                 ) : (
                     <> Add Note</>
                 )}
