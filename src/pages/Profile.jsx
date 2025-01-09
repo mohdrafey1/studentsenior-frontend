@@ -83,6 +83,7 @@ export default function Profile() {
             const data = await res.json();
             if (data.success === false) {
                 dispatch(updateUserFailure(data));
+                toast.warning(data.message);
                 return;
             }
             dispatch(updateUserSuccess(data));

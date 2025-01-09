@@ -14,13 +14,12 @@ const useApiFetch = () => {
                     'x-api-key': API_KEY,
                 },
             });
-            if (!response.ok) {
-                const errorData = await response.json();
+            const data = await response.json();
+            if (data.success === 'false') {
                 throw new Error(
-                    errorData.message || 'Something error occured on the server'
+                    data.message || 'Something error occured on the server'
                 );
             }
-            const data = await response.json();
             return data;
         } catch (error) {
             console.error('Fetch error:', error);

@@ -10,7 +10,6 @@ import StorePage from './pages/StorePage';
 import CommunityPage from './pages/CommunityPage';
 import WhatsAppGroupPage from './pages/WhatsAppGroupPage';
 import OpportunitiesPage from './pages/OpportunitiesPage';
-import NotesPage from './pages/NotesPage';
 import AddSenior from './Forms/AddSenior';
 import AddCollege from './Forms/AddCollege';
 import AboutPage from './pages/AboutPage';
@@ -28,6 +27,12 @@ import BundlePyq from './DetailPages/BundlePyq';
 import ProductDetail from './DetailPages/ProductDetail';
 import PyqDetail from './DetailPages/PyqDetail';
 import SeniorDetailPage from './DetailPages/SeniorDetailPage';
+import RequestPYQ from './Forms/RequestPYQ';
+import Branches from './components/Resources/Branches';
+import Subjects from './components/Resources/Subjects';
+import SubjectNotes from './components/Resources/SubjectNotes';
+import ResourcesPage from './pages/ResourcesPage';
+import SubjectPyqs from './components/Resources/SubjectPyqs';
 
 const validColleges = [
     'integral-university',
@@ -111,7 +116,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/college/:collegeName/store/:id"
+                path="/college/:collegeName/store/:slug"
                 element={
                     <ValidateCollegeRoute>
                         <ProductDetail />
@@ -151,10 +156,42 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/college/:collegeName/notes"
+                path="/:collegeName/resources"
                 element={
                     <ValidateCollegeRoute>
-                        <NotesPage />
+                        <ResourcesPage />
+                    </ValidateCollegeRoute>
+                }
+            />
+            <Route
+                path="/:collegeName/resources/:courseCode"
+                element={
+                    <ValidateCollegeRoute>
+                        <Branches />
+                    </ValidateCollegeRoute>
+                }
+            />
+            <Route
+                path="/:collegeName/resources/:courseCode/:branchCode"
+                element={
+                    <ValidateCollegeRoute>
+                        <Subjects />
+                    </ValidateCollegeRoute>
+                }
+            />
+            <Route
+                path="/:collegeName/resources/:courseCode/:branchCode/notes/:subjectCode"
+                element={
+                    <ValidateCollegeRoute>
+                        <SubjectNotes />
+                    </ValidateCollegeRoute>
+                }
+            />
+            <Route
+                path="/:collegeName/resources/:courseCode/:branchCode/pyqs/:subjectCode"
+                element={
+                    <ValidateCollegeRoute>
+                        <SubjectPyqs />
                     </ValidateCollegeRoute>
                 }
             />
@@ -178,6 +215,7 @@ const RoutesComponent = () => {
             </Route>
 
             {/* Other Pages */}
+            <Route path="/request-pyq" element={<RequestPYQ />} />
             <Route path="/install" element={<InstallPage />} />
             <Route path="/not-found" element={<NotFoundPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />

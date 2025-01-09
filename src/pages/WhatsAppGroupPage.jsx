@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import { api } from '../config/apiConfiguration.js';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
 import useApiRequest from '../hooks/useApiRequest.js';
-import useApiFetch from '../hooks/useApiFetch.js';
 import { useCollegeId } from '../hooks/useCollegeId.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchGroups } from '../redux/slices/groupSlice.js';
 
 const WhatsAppGroupPage = () => {
     const { collegeName } = useParams();
     const collegeId = useCollegeId(collegeName);
     const [searchTerm, setSearchTerm] = useState('');
-    const [groups, setGroup] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [text, setText] = useState('Submit');
     const [groupData, setGroupData] = useState({
@@ -24,9 +23,14 @@ const WhatsAppGroupPage = () => {
         link: '',
     });
 
+    const {
+        groups = [],
+        loading: loadingGroups,
+        error,
+    } = useSelector((state) => state.groups || {});
+
     const { apiRequest, loading } = useApiRequest();
-    const { useFetch, loadingFetch } = useApiFetch();
-    const url = api.group;
+    const dispatch = useDispatch();
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -42,17 +46,8 @@ const WhatsAppGroupPage = () => {
     const closeModal = () => setIsModalOpen(false);
 
     useEffect(() => {
-        const fetchLink = async () => {
-            try {
-                const data = await useFetch(`${url}/college/${collegeId}`);
-                setGroup(data);
-            } catch (error) {
-                console.error('Error fetching WhatsApp Groups: ', error);
-                toast.error('Error fetching WhatsApp Groups ');
-            }
-        };
-        fetchLink();
-    }, []);
+        dispatch(fetchGroups(collegeId));
+    }, [collegeId]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -142,7 +137,7 @@ const WhatsAppGroupPage = () => {
                     </div>
                 ) : (
                     <div className="col-span-4 flex justify-center items-center w-full">
-                        {loadingFetch ? (
+                        {loadingGroups ? (
                             <i className="fas fa-spinner fa-pulse fa-5x"></i>
                         ) : (
                             <p>No Notes Found</p>

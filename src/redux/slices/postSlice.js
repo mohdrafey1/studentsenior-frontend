@@ -1,17 +1,20 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api, API_KEY } from '../../config/apiConfiguration';
 
-export const fetchSeniors = createAsyncThunk(
-    'seniors/fetchSeniors',
+export const fetchPosts = createAsyncThunk(
+    'posts/fetchPosts',
     async (collegeId, { rejectWithValue }) => {
         try {
-            const response = await fetch(`${api.senior}/college/${collegeId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': API_KEY,
-                },
-            });
+            const response = await fetch(
+                `${api.community}/college/${collegeId}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': API_KEY,
+                    },
+                }
+            );
             const data = await response.json();
             if (data.success === false) {
                 throw new Error(data.message);
@@ -23,10 +26,10 @@ export const fetchSeniors = createAsyncThunk(
     }
 );
 
-const seniorSlice = createSlice({
-    name: 'seniors',
+const postSlice = createSlice({
+    name: 'posts',
     initialState: {
-        seniors: [],
+        posts: [],
         loading: false,
         error: null,
     },
@@ -35,19 +38,19 @@ const seniorSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchSeniors.pending, (state) => {
+            .addCase(fetchPosts.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(fetchSeniors.fulfilled, (state, action) => {
-                state.seniors = action.payload;
+            .addCase(fetchPosts.fulfilled, (state, action) => {
+                state.posts = action.payload;
                 state.loading = false;
             })
-            .addCase(fetchSeniors.rejected, (state, action) => {
+            .addCase(fetchPosts.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });
     },
 });
 
-export default seniorSlice.reducer;
+export default postSlice.reducer;

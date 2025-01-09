@@ -36,22 +36,20 @@ const useApiRequest = () => {
             };
 
             const response = await fetch(url, options);
+            const data = await response.json();
 
-            if (response.ok) {
-                const data = await response.json();
-                return data;
-            } else if (response.status === 401) {
+            if (data.statusCode === 401) {
+                console.log(response);
+
                 handleLogout();
                 toast.error(
                     'Your token is expired, please log in again and continue your request.',
                     { autoClose: 10000 }
                 );
                 throw new Error('Unauthorized');
-            } else {
-                const errorData = await response.json();
-                toast.error(errorData.message || 'An error has occurred');
-                throw new Error(errorData || 'Something went wrong');
             }
+
+            return data;
         } catch (error) {
             setError(error.message);
             throw error;
