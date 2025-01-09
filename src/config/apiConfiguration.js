@@ -39,4 +39,6 @@ export const api = {
     store: `${API_BASE_URL}/api/store`,
 
     requestPyq: `${API_BASE_URL}/api/pyqs/request-pyq`,
+
+    presignedUrl: `${API_BASE_URL}/api/generate/presigned-url`,
 };

@@ -37,16 +37,20 @@ function SubjectNotes() {
 
     const handleAddNote = async (formData) => {
         try {
-            const data = await apiRequest(
-                `${api.subjectNotes}`,
-                'POST',
-                formData,
-                true
-            );
-            setModalOpen(false);
+            const response = await fetch(`${api.subjectNotes}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(formData),
+            });
+            const data = await response.json();
             toast.success(data.message);
+
+            setModalOpen(false);
         } catch (err) {
-            console.log(err);
+            console.error(err);
             toast.error('Failed to add note.');
         }
     };
@@ -247,7 +251,6 @@ function SubjectNotes() {
                 <AddNotes
                     subjectCode={subjectCode}
                     branchCode={branchCode}
-                    loading={loadingApiRequest}
                     college={collegeName}
                     collegeId={collegeId}
                     onSubmit={handleAddNote}
