@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api, API_KEY } from '../../config/apiConfiguration';
 
 export const fetchSubjectNotes = createAsyncThunk(
-    'subjects/fetchSubjectNotes',
-    async (subjectId, collegeId, { rejectWithValue }) => {
+    'subjectNotes/fetchSubjectNotes',
+    async ({ subjectId, collegeId }, { rejectWithValue }) => {
         try {
             const response = await fetch(
                 `${api.subjectNotes}/${subjectId}/${collegeId}`,
@@ -43,7 +43,7 @@ const subjectNotesSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchSubjectNotes.fulfilled, (state, action) => {
-                state.subjects = action.payload;
+                state.subjectNotes = action.payload;
                 state.loading = false;
             })
             .addCase(fetchSubjectNotes.rejected, (state, action) => {

@@ -93,16 +93,16 @@ const ResourcesPage = () => {
                                             : 'bg-white'
                                     }
                                 >
-                                    <td className="border border-gray-300 px-2 sm:text-lg sm:px-4 py-2">
+                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
                                         {course.courseName}
                                     </td>
-                                    <td className="border border-gray-300 px-2 sm:text-lg sm:px-4 py-2">
+                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
                                         {course.courseCode}
                                     </td>
-                                    <td className="border border-gray-300 px-2 sm:text-lg sm:px-4 py-2">
+                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
                                         {course.totalBranch}
                                     </td>
-                                    <td className="border border-gray-300 px-2 sm:text-lg sm:px-4 py-2">
+                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
                                         100
                                     </td>
                                     <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
