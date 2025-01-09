@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import useApiFetch from '../../hooks/useApiFetch.js';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { useCollegeId } from '../../hooks/useCollegeId.js';
 import { api } from '../../config/apiConfiguration.js';
 import Modal from '../../utils/Dialog.jsx';
@@ -9,11 +8,12 @@ import AddNotes from './AddNotes.jsx';
 import { toast } from 'react-toastify';
 import useApiRequest from '../../hooks/useApiRequest.js';
 import { capitalizeWords } from '../../utils/Capitalize.js';
+import { fetchSubjectNotes } from '../../redux/slices/subjectNotesSlice.js';
+import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 
 function SubjectNotes() {
-    const { collegeName, subjectCode } = useParams();
+    const { collegeName, courseCode, subjectCode, branchCode } = useParams();
     const collegeId = useCollegeId(collegeName);
-    const [notes, setNotes] = useState([]);
     const [error, setError] = useState(null);
     const [isModalOpen, setModalOpen] = useState(false);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -23,26 +23,18 @@ function SubjectNotes() {
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
 
-    const location = useLocation();
-    const { subjectId } = location.state || {};
+    const { apiRequest, loading: loadingApiRequest } = useApiRequest();
 
-    const { useFetch, loadingFetch } = useApiFetch();
-    const { apiRequest, loading } = useApiRequest();
-
+    const dispatch = useDispatch();
     useEffect(() => {
-        const fetchNotes = async () => {
-            try {
-                const data = await useFetch(
-                    `${api.subjectNotes}/${subjectId}/${collegeId}`
-                );
-                setNotes(data);
-            } catch (err) {
-                setError(err.message || 'Failed to fetch notes');
-            }
-        };
+        dispatch(fetchSubjectNotes({ subjectCode, branchCode, collegeId }));
+    }, [collegeId, subjectCode, branchCode]);
 
-        fetchNotes();
-    }, [subjectId]);
+    const {
+        subjectNotes,
+        loading: loadingSubjectNotes,
+        error: notesError,
+    } = useSelector((state) => state.subjectNotes || {});
 
     const handleAddNote = async (formData) => {
         try {
@@ -74,9 +66,7 @@ function SubjectNotes() {
                 `${api.subjectNotes}/${noteIdToDelete}`,
                 'DELETE'
             );
-            setNotes((prevNotes) =>
-                prevNotes.filter((note) => note._id !== noteIdToDelete)
-            );
+            dispatch(fetchSubjectNotes({ subjectCode, branchCode, collegeId }));
             toast.success(response.message || 'Note deleted successfully.');
         } catch (err) {
             console.log(err);
@@ -93,7 +83,7 @@ function SubjectNotes() {
         setNoteIdToDelete(null);
     };
 
-    if (loadingFetch) {
+    if (loadingSubjectNotes) {
         return (
             <div className="flex justify-center items-center min-h-screen">
                 <i className="fas fa-spinner fa-pulse fa-5x"></i>
@@ -102,11 +92,14 @@ function SubjectNotes() {
     }
 
     if (error) {
-        return <p className="text-center text-red-500">Error: {error}</p>;
+        return <p className="text-center text-red-500">Error: {notesError}</p>;
     }
 
     return (
         <div className="container mx-auto p-4 h-screen">
+            <DetailPageNavbar
+                path={`resource/${courseCode}/${branchCode}/${subjectCode}`}
+            />
             <h1 className="text-2xl font-bold text-center mb-2">
                 {capitalizeWords(collegeName)}: {subjectCode.toUpperCase()}
             </h1>
@@ -123,8 +116,8 @@ function SubjectNotes() {
                 </button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {notes.length > 0 ? (
-                    notes.map((note) => (
+                {subjectNotes.length > 0 ? (
+                    subjectNotes.map((note) => (
                         <div
                             key={note._id}
                             className="border p-4 rounded-lg shadow hover:shadow-lg transition duration-200"
@@ -182,9 +175,10 @@ function SubjectNotes() {
                 }
             >
                 <AddNotes
-                    subject={subjectCode}
+                    subjectCode={subjectCode}
+                    branchCode={branchCode}
+                    loading={loadingApiRequest}
                     college={collegeName}
-                    subjectId={subjectId}
                     collegeId={collegeId}
                     onSubmit={handleAddNote}
                 />

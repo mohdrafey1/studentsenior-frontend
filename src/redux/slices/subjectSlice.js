@@ -3,9 +3,9 @@ import { api, API_KEY } from '../../config/apiConfiguration';
 
 export const fetchSubjects = createAsyncThunk(
     'subjects/fetchSubjects',
-    async (branchId, { rejectWithValue }) => {
+    async (branchCode, { rejectWithValue }) => {
         try {
-            const response = await fetch(`${api.subjects}/${branchId}`, {
+            const response = await fetch(`${api.subjects}/${branchCode}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

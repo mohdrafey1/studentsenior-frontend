@@ -3,9 +3,9 @@ import { api, API_KEY } from '../../config/apiConfiguration';
 
 export const fetchBranches = createAsyncThunk(
     'branches/fetchBranches',
-    async (courseId, { rejectWithValue }) => {
+    async (courseCode, { rejectWithValue }) => {
         try {
-            const response = await fetch(`${api.branches}/${courseId}`, {
+            const response = await fetch(`${api.branches}/${courseCode}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

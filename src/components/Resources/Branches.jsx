@@ -8,7 +8,6 @@ import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 
 const Branches = () => {
     const { collegeName, courseCode } = useParams();
-    const [selectedCourse, setSelectedCourse] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
 
     const dispatch = useDispatch();
@@ -27,25 +26,8 @@ const Branches = () => {
     }, [collegeName]);
 
     useEffect(() => {
-        if (courses.length) {
-            const foundCourse = courses.find(
-                (course) =>
-                    course.courseCode.toLowerCase() === courseCode.toLowerCase()
-            );
-
-            if (foundCourse) {
-                setSelectedCourse(foundCourse);
-            } else {
-                toast.error('Course not found for courseCode');
-            }
-        }
-    }, [courseCode, courses]);
-
-    useEffect(() => {
-        if (selectedCourse && selectedCourse._id) {
-            dispatch(fetchBranches(selectedCourse._id));
-        }
-    }, [selectedCourse]);
+        dispatch(fetchBranches(courseCode));
+    }, [collegeName, courseCode]);
 
     const filteredBranches = branches.filter((branch) => {
         const lowerSearchTerm = searchTerm.toLowerCase();
