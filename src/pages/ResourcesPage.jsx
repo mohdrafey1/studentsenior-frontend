@@ -100,10 +100,10 @@ const ResourcesPage = () => {
                                         {course.courseCode}
                                     </td>
                                     <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
-                                        {course.totalBranch}
+                                        {course.totalNotes || 0}
                                     </td>
                                     <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
-                                        100
+                                        {course.totalPyqs || 0}
                                     </td>
                                     <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
                                         <Link

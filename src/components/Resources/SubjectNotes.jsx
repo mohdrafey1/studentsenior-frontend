@@ -46,6 +46,10 @@ function SubjectNotes() {
                 body: JSON.stringify(formData),
             });
             const data = await response.json();
+            if (data.success === false) {
+                toast.error(data.message);
+                return;
+            }
             toast.success(data.message);
 
             setModalOpen(false);
@@ -181,19 +185,15 @@ function SubjectNotes() {
                                         {note.owner?.username || 'Anonymous'}
                                     </span>
                                 </div>
-                                <div>
-                                    <p className="text-xs text-gray-500 mt-1">
-                                        {new Date(
-                                            note.createdAt
-                                        ).toLocaleDateString()}
-                                    </p>
-                                </div>
                             </div>
                             <h2 className="text-lg font-semibold">
                                 Title: {note.title}
                             </h2>
                             <p className="text-sm text-gray-600">
                                 {note.description || 'No description'}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                                {new Date(note.createdAt).toLocaleDateString()}
                             </p>
 
                             <div className="flex items-center justify-between mt-3">
@@ -217,7 +217,7 @@ function SubjectNotes() {
 
                                 <Link
                                     to={note.slug}
-                                    className="rounded-md py-1 px-2 bg-sky-400 hover:underline mt-2 inline-block"
+                                    className="rounded-md px-2 bg-sky-400 text-white hover:underline inline-block"
                                 >
                                     View
                                 </Link>
