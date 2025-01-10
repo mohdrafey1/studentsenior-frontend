@@ -11,7 +11,7 @@ function NotesView() {
     const [error, setError] = useState(null);
     const [pdfLoading, setPdfLoading] = useState(true);
     const [countdown, setCountdown] = useState(5);
-    const [canDownload, setCanDownload] = useState(false); // Button state
+    const [canDownload, setCanDownload] = useState(false);
 
     useEffect(() => {
         const fetchNote = async () => {
@@ -52,8 +52,8 @@ function NotesView() {
 
             if (timer === 0) {
                 clearInterval(interval);
-                setCanDownload(true); // Enable download after countdown
-                setCountdown(5); // Reset countdown
+                setCanDownload(true);
+                setCountdown(5);
             }
         }, 1000);
     };
@@ -128,9 +128,19 @@ function NotesView() {
                             }`}
                             title="Download Note PDF"
                         >
-                            {canDownload
-                                ? 'Download'
-                                : `Download ${countdown}s`}
+                            {canDownload ? (
+                                <>
+                                    <a
+                                        href={note.fileUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Download now
+                                    </a>
+                                </>
+                            ) : (
+                                `Download ${countdown}s`
+                            )}
                         </button>
                     </div>
                 </div>
