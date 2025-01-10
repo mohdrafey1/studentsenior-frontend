@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCollegeId } from '../../hooks/useCollegeId.js';
 import { api } from '../../config/apiConfiguration.js';
@@ -137,7 +137,7 @@ function SubjectNotes() {
     }
 
     return (
-        <div className="container mx-auto p-4 h-screen">
+        <div className="container mx-auto p-4 min-h-screen">
             <DetailPageNavbar
                 path={`resource/${courseCode}/${branchCode}/${subjectCode}`}
             />
@@ -156,29 +156,38 @@ function SubjectNotes() {
                     Add Note
                 </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:mx-20 gap-4">
                 {subjectNotes.length > 0 ? (
                     subjectNotes.map((note) => (
                         <div
                             key={note._id}
                             className="border p-4 rounded-lg shadow hover:shadow-lg transition duration-200"
                         >
-                            <div className="flex items-center mb-2">
-                                {note.owner.profilePicture ? (
-                                    <img
-                                        src={note.owner?.profilePicture}
-                                        alt="Author Profile"
-                                        className="rounded-full w-8 h-8 mr-2"
-                                    />
-                                ) : (
-                                    <div className="flex items-center justify-center rounded-full w-8 h-8 bg-gray-300 text-white font-bold">
-                                        A
-                                    </div>
-                                )}
+                            <div className="flex justify-between mb-2">
+                                <div className="flex">
+                                    {note.owner.profilePicture ? (
+                                        <img
+                                            src={note.owner?.profilePicture}
+                                            alt="Author Profile"
+                                            className="rounded-full w-8 h-8 sm:mr-2"
+                                        />
+                                    ) : (
+                                        <div className="flex items-center justify-center rounded-full w-8 h-8 bg-gray-300 text-white font-bold">
+                                            A
+                                        </div>
+                                    )}
 
-                                <span className="text-sm font-medium">
-                                    {note.owner?.username || 'Anonymous'}
-                                </span>
+                                    <span className="text-sm font-medium">
+                                        {note.owner?.username || 'Anonymous'}
+                                    </span>
+                                </div>
+                                <div>
+                                    <p className="text-xs text-gray-500 mt-1">
+                                        {new Date(
+                                            note.createdAt
+                                        ).toLocaleDateString()}
+                                    </p>
+                                </div>
                             </div>
                             <h2 className="text-lg font-semibold">
                                 Title: {note.title}
@@ -186,18 +195,7 @@ function SubjectNotes() {
                             <p className="text-sm text-gray-600">
                                 {note.description || 'No description'}
                             </p>
-                            <a
-                                href={note.fileUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="rounded-md py-1 px-2 bg-sky-400 hover:underline mt-2 inline-block"
-                            >
-                                View
-                            </a>
-                            <p className="text-xs text-gray-500 mt-1">
-                                Uploaded at:{' '}
-                                {new Date(note.createdAt).toLocaleString()}
-                            </p>
+
                             <div className="flex items-center justify-between mt-3">
                                 <button
                                     onClick={() => likeNotes(note._id)}
@@ -216,6 +214,13 @@ function SubjectNotes() {
                                             : 0}
                                     </span>
                                 </button>
+
+                                <Link
+                                    to={note.slug}
+                                    className="rounded-md py-1 px-2 bg-sky-400 hover:underline mt-2 inline-block"
+                                >
+                                    View
+                                </Link>
 
                                 {note.owner._id === ownerId && (
                                     <button
