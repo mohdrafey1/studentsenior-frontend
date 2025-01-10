@@ -107,11 +107,7 @@ const ResourcesPage = () => {
                                     </td>
                                     <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
                                         <Link
-                                            to={
-                                                course.courseCode
-                                                    ? course.courseCode.toLowerCase()
-                                                    : '#'
-                                            }
+                                            to={`/${collegeName}/resources/${course.courseCode.toLowerCase()}`}
                                             className="px-3 py-1 bg-sky-500 text-white rounded hover:underline transition-colors duration-200"
                                             aria-label={`View details for ${course.courseName}`}
                                         >

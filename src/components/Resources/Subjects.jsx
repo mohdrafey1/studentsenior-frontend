@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchSubjects } from '../../redux/slices/subjectSlice.js';
 import { capitalizeWords } from '../../utils/Capitalize.js';
@@ -7,6 +7,8 @@ import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 
 function Subjects() {
     const { collegeName, branchCode, courseCode } = useParams();
+    const location = useLocation();
+    const navigate = useNavigate();
     const [activeSemester, setActiveSemester] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const dispatch = useDispatch();
@@ -23,7 +25,16 @@ function Subjects() {
         dispatch(fetchSubjects(branchCode));
     }, [courseCode, branchCode, collegeName]);
 
-    // Group subjects by semester
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const semester = queryParams.get('semester');
+        if (semester) {
+            setActiveSemester(semester);
+        } else if (!activeSemester) {
+            setActiveSemester('1');
+        }
+    }, [location.search, activeSemester]);
+
     useEffect(() => {
         if (subjects.length) {
             const grouped = subjects.reduce((acc, subject) => {
@@ -36,13 +47,19 @@ function Subjects() {
             }, {});
             setGroupedSubjects(grouped);
 
-            // Set the first semester as the default active semester
             const semesters = Object.keys(grouped).sort((a, b) => a - b);
-            if (semesters.length > 0) {
+            if (semesters.length > 0 && !activeSemester) {
                 setActiveSemester(semesters[0]);
             }
         }
-    }, [subjects]);
+    }, [subjects, activeSemester]);
+
+    const handleSemesterChange = (semester) => {
+        setActiveSemester(semester);
+        const queryParams = new URLSearchParams(location.search);
+        queryParams.set('semester', semester);
+        navigate(`${location.pathname}?${queryParams.toString()}`);
+    };
 
     const filteredSubjects = Object.keys(groupedSubjects).reduce(
         (acc, semester) => {
@@ -75,7 +92,7 @@ function Subjects() {
     }
 
     return (
-        <div className="container mx-auto p-4 ">
+        <div className="container mx-auto p-4">
             <DetailPageNavbar path={`resource/${courseCode}/${branchCode}`} />
             <h1 className="text-2xl font-bold text-center mb-2">
                 {capitalizeWords(collegeName)}: {branchCode.toUpperCase()}
@@ -97,7 +114,7 @@ function Subjects() {
                                     ? 'bg-sky-500 text-white'
                                     : 'bg-gray-200 text-gray-800'
                             } hover:bg-blue-400 transition duration-200`}
-                            onClick={() => setActiveSemester(semester)}
+                            onClick={() => handleSemesterChange(semester)}
                         >
                             Sem {semester}
                         </button>
@@ -147,8 +164,9 @@ function Subjects() {
                                     <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
                                         {subject.subjectCode}
                                     </td>
-                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg  sm:px-4 py-2">
-                                        100
+                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                        {Number(subject.totalNotes || 0) +
+                                            Number(subject.totalPyqs || 0)}
                                     </td>
                                     <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-center">
                                         <Link
