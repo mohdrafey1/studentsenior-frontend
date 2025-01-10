@@ -156,7 +156,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/:collegeName/resources"
+                path="/college/:collegeName/resources"
                 element={
                     <ValidateCollegeRoute>
                         <ResourcesPage />

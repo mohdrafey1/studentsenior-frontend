@@ -164,14 +164,18 @@ function SubjectNotes() {
                             className="border p-4 rounded-lg shadow hover:shadow-lg transition duration-200"
                         >
                             <div className="flex items-center mb-2">
-                                <img
-                                    src={
-                                        note.owner?.profilePicture ||
-                                        '/default-avatar.png'
-                                    }
-                                    alt="Author Profile"
-                                    className="rounded-full w-8 h-8 mr-2"
-                                />
+                                {note.owner.profilePicture ? (
+                                    <img
+                                        src={note.owner?.profilePicture}
+                                        alt="Author Profile"
+                                        className="rounded-full w-8 h-8 mr-2"
+                                    />
+                                ) : (
+                                    <div className="flex items-center justify-center rounded-full w-8 h-8 bg-gray-300 text-white font-bold">
+                                        A
+                                    </div>
+                                )}
+
                                 <span className="text-sm font-medium">
                                     {note.owner?.username || 'Anonymous'}
                                 </span>
@@ -186,9 +190,9 @@ function SubjectNotes() {
                                 href={note.fileUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-blue-500 hover:underline mt-2 inline-block"
+                                className="rounded-md py-1 px-2 bg-sky-400 hover:underline mt-2 inline-block"
                             >
-                                View Notes
+                                View
                             </a>
                             <p className="text-xs text-gray-500 mt-1">
                                 Uploaded at:{' '}
