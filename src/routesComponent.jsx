@@ -34,6 +34,7 @@ import SubjectNotes from './components/Resources/SubjectNotes';
 import ResourcesPage from './pages/ResourcesPage';
 import SubjectPyqs from './components/Resources/SubjectPyqs';
 import NotesView from './components/Resources/NotesView';
+import PyqView from './components/Resources/PyqView';
 
 const validColleges = [
     'integral-university',
@@ -208,7 +209,7 @@ const RoutesComponent = () => {
                 path="/:collegeName/resources/:courseCode/:branchCode/pyqs/:subjectCode/:slug"
                 element={
                     <ValidateCollegeRoute>
-                        <SubjectPyqs />
+                        <PyqView />
                     </ValidateCollegeRoute>
                 }
             />

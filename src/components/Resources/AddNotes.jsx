@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { api } from '../../config/apiConfiguration';
 
-function AddNotes({ subjectCode, branchCode, college, collegeId, onSubmit }) {
+function AddNotes({
+    subjectCode,
+    subjectName,
+    branchCode,
+    collegeId,
+    onSubmit,
+}) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [file, setFile] = useState(null);
@@ -87,6 +93,14 @@ function AddNotes({ subjectCode, branchCode, college, collegeId, onSubmit }) {
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             <div>
+                <input
+                    type="text"
+                    className="w-full border p-2 rounded bg-gray-100"
+                    value={subjectName}
+                    readOnly
+                />
+            </div>
+            <div>
                 <label className="block font-semibold mb-1">Title</label>
                 <input
                     type="text"
@@ -118,26 +132,7 @@ function AddNotes({ subjectCode, branchCode, college, collegeId, onSubmit }) {
                     required
                 />
             </div>
-            <div className="flex gap-2">
-                <div>
-                    <label className="block font-semibold mb-1">Subject</label>
-                    <input
-                        type="text"
-                        className="w-full border p-2 rounded bg-gray-100"
-                        value={subjectCode.toUpperCase()}
-                        disabled
-                    />
-                </div>
-                <div>
-                    <label className="block font-semibold mb-1">College</label>
-                    <input
-                        type="text"
-                        className="w-full border p-2 rounded bg-gray-100"
-                        value={college.toUpperCase()}
-                        disabled
-                    />
-                </div>
-            </div>
+
             <button
                 type="submit"
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"

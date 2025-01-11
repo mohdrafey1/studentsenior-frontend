@@ -145,7 +145,7 @@ function Subjects() {
                                     Code
                                 </th>
                                 <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
-                                    Total Notes & Pyqs
+                                    Total Notes / Pyqs
                                 </th>
                                 <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-center">
                                     Actions
