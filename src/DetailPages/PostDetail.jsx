@@ -185,7 +185,7 @@ function PostDetail() {
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full relative">
-            <DetailPageNavbar path={'community'} />
+            <DetailPageNavbar path={`college/${collegeName}/community`} />
             <div className="main">
                 <div className="content  sm:w-4/5 sm:mx-auto">
                     <div className="profile-section m-4 flex items-center gap-4">
