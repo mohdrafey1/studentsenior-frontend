@@ -5,11 +5,11 @@ import { toast } from 'react-toastify';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 
 function NotesView() {
-    const { courseCode, branchCode, subjectCode, slug } = useParams();
+    const { courseCode, branchCode, subjectCode, slug, collegeName } =
+        useParams();
     const [note, setNote] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [pdfLoading, setPdfLoading] = useState(true);
     const [countdown, setCountdown] = useState(5);
     const [canDownload, setCanDownload] = useState(false);
 
@@ -58,10 +58,6 @@ function NotesView() {
         }, 1000);
     };
 
-    const handlePdfLoad = () => {
-        setPdfLoading(false);
-    };
-
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-screen">
@@ -82,7 +78,7 @@ function NotesView() {
     return (
         <div className="container mx-auto p-4 min-h-screen">
             <DetailPageNavbar
-                path={`resource/${courseCode}/${branchCode}/${subjectCode}/${slug}`}
+                path={`${collegeName}/resources/${courseCode}/${branchCode}/notes/${subjectCode}`}
             />
             {note ? (
                 <div>
@@ -97,26 +93,13 @@ function NotesView() {
                     </div>
 
                     {/* PDF Viewer */}
-                    <div className="mt-8">
-                        {pdfLoading && (
-                            <div className="text-center h-screen text-gray-500">
-                                <p>
-                                    Loading PDF... If not render please click
-                                    download button on the bottom
-                                </p>
-                            </div>
-                        )}
+                    <div className="flex justify-center w-full my-5">
                         <iframe
                             src={`https://docs.google.com/gview?url=${note.fileUrl}&embedded=true`}
-                            onLoad={handlePdfLoad}
-                            style={{
-                                width: '100%',
-                                height: '900px',
-                                backgroundColor: 'white',
-                            }}
-                            frameBorder="0"
-                            title="PDF View"
-                            className={pdfLoading ? 'hidden' : 'block'}
+                            width="100%"
+                            height="500"
+                            className="block max-w-screen-lg w-full rounded-md shadow-md border-none"
+                            title="PDF Viewer"
                         ></iframe>
                     </div>
                     <div className="flex justify-center">

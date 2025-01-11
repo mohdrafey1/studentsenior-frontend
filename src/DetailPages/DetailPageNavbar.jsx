@@ -12,7 +12,7 @@ const DetailPageNavbar = ({ path, handleShare = originalHandleShare }) => {
         if (window.history.length > 2) {
             navigate(-1);
         } else {
-            navigate(`/college/${collegeName}/${path}`);
+            navigate(`/${path}`);
         }
     };
 

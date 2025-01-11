@@ -51,7 +51,7 @@ const Branches = () => {
 
     return (
         <div className="container mx-auto p-4 min-h-screen">
-            <DetailPageNavbar path={`resource/${courseCode}`} />
+            <DetailPageNavbar path={`college/${collegeName}/resource`} />
             <h1 className="sm:text-2xl font-bold text-center mb-2">
                 {capitalizeWords(collegeName)}: {courseCode.toUpperCase()}
             </h1>

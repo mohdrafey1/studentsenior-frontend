@@ -93,7 +93,7 @@ function Subjects() {
 
     return (
         <div className="container mx-auto p-4">
-            <DetailPageNavbar path={`resource/${courseCode}/${branchCode}`} />
+            <DetailPageNavbar path={`${collegeName}/resources/${courseCode}`} />
             <h1 className="text-2xl font-bold text-center mb-2">
                 {capitalizeWords(collegeName)}: {branchCode.toUpperCase()}
             </h1>
@@ -134,7 +134,7 @@ function Subjects() {
 
             {/* Subjects Table */}
             {activeSemester && filteredSubjects[activeSemester]?.length > 0 ? (
-                <div className="overflow-x-auto lg:mx-20 xl:mx-40">
+                <div className="overflow-x-auto lg:mx-20 xl:mx-40 min-h-screen">
                     <table className="table-auto w-full bg-white rounded-lg shadow-md overflow-hidden">
                         <thead className="bg-sky-500 text-white">
                             <tr>

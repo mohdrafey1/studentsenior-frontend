@@ -69,7 +69,7 @@ function ProductDetail() {
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full relative">
-            <DetailPageNavbar path={'store'} />
+            <DetailPageNavbar path={`college/${collegeName}/store`} />
 
             <div className="grid gap-6 lg:grid-cols-8 sm:grid-cols-2 mt-6 lg:h-screen">
                 <div className="p-4 rounded-lg shadow-lg lg:col-span-3 flex justify-center items-center">

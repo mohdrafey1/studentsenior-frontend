@@ -82,7 +82,7 @@ function PyqDetail() {
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full relative">
-            <DetailPageNavbar path={'pyq'} />
+            <DetailPageNavbar />
             <div className="main flex">
                 <div className="flex-1 px-3 py-4">
                     <div className="flex flex-col items-center sm:px-4 space-y-4">
