@@ -165,8 +165,8 @@ function Subjects() {
                                         {subject.subjectCode}
                                     </td>
                                     <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
-                                        {Number(subject.totalNotes || 0) +
-                                            Number(subject.totalPyqs || 0)}
+                                        {subject.totalNotes || 0} /{' '}
+                                        {subject.totalPyqs || 0}
                                     </td>
                                     <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-center">
                                         <Link

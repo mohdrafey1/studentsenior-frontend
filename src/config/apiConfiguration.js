@@ -26,6 +26,8 @@ export const api = {
 
     subjectNotes: `${API_BASE_URL}/api/notes`,
 
+    newPyqs: `${API_BASE_URL}/api/newpyq`,
+
     getOpportunity: `${API_BASE_URL}/api/opportunity/getopportunities`,
 
     giveOpportunity: `${API_BASE_URL}/api/opportunity/giveopportunities`,

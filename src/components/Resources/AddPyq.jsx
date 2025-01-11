@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { api } from '../../config/apiConfiguration';
 
-function AddNotes({ subjectCode, branchCode, college, collegeId, onSubmit }) {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
+function AddPyq({ subjectCode, branchCode, college, collegeId, onSubmit }) {
+    const [year, setYear] = useState('');
+    const [examType, setExamType] = useState('');
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -15,8 +15,8 @@ function AddNotes({ subjectCode, branchCode, college, collegeId, onSubmit }) {
                 toast.error('Only PDF files are allowed.');
                 return;
             }
-            if (selectedFile.size > 50 * 1024 * 1024) {
-                toast.error('File size exceeds 50MB.');
+            if (selectedFile.size > 10 * 1024 * 1024) {
+                toast.error('File size exceeds 10MB.');
                 return;
             }
             setFile(selectedFile);
@@ -30,7 +30,7 @@ function AddNotes({ subjectCode, branchCode, college, collegeId, onSubmit }) {
             return;
         }
 
-        const fileName = `${title}-${Date.now()}.pdf`;
+        const fileName = `${subjectCode}-${Date.now()}.pdf`;
         const fileType = file.type;
 
         try {
@@ -43,7 +43,7 @@ function AddNotes({ subjectCode, branchCode, college, collegeId, onSubmit }) {
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    fileName: `ss-notes/${fileName}`,
+                    fileName: `ss-pyq/${fileName}`,
                     fileType,
                 }),
             });
@@ -54,7 +54,7 @@ function AddNotes({ subjectCode, branchCode, college, collegeId, onSubmit }) {
 
             const { uploadUrl, key } = await response.json();
 
-            toast.warning('uploading notes');
+            toast.warning('Uploading Pyq, Please Wait');
 
             // Step 2: Upload file directly to S3
             await fetch(uploadUrl, {
@@ -67,8 +67,8 @@ function AddNotes({ subjectCode, branchCode, college, collegeId, onSubmit }) {
 
             // Step 3: Submit metadata to the server
             const formData = {
-                title,
-                description,
+                year,
+                examType,
                 subjectCode,
                 branchCode,
                 college: collegeId,
@@ -87,24 +87,38 @@ function AddNotes({ subjectCode, branchCode, college, collegeId, onSubmit }) {
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-                <label className="block font-semibold mb-1">Title</label>
-                <input
-                    type="text"
+                <label className="block font-semibold mb-1">Year</label>
+                <select
                     className="w-full border p-2 rounded"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
                     required
-                />
+                >
+                    <option value="" disabled>
+                        Select Year
+                    </option>
+                    <option value="2020-21">2020-21</option>
+                    <option value="2022-23">2022-23</option>
+                    <option value="2023-24">2023-24</option>
+                    <option value="2024-25">2024-25</option>
+                </select>
             </div>
             <div>
-                <label className="block font-semibold mb-1">
-                    Description (optional)
-                </label>
-                <textarea
+                <label className="block font-semibold mb-1">Exam Type</label>
+                <select
                     className="w-full border p-2 rounded"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                ></textarea>
+                    value={examType}
+                    onChange={(e) => setExamType(e.target.value)}
+                    required
+                >
+                    <option value="" disabled>
+                        Select Exam Type
+                    </option>
+                    <option value="midsem1">Midsem 1</option>
+                    <option value="midsem2">Midsem 2</option>
+                    <option value="improvement">Improvement</option>
+                    <option value="endsem">Endsem</option>
+                </select>
             </div>
             <div>
                 <label className="block font-semibold mb-1">
@@ -145,14 +159,14 @@ function AddNotes({ subjectCode, branchCode, college, collegeId, onSubmit }) {
             >
                 {loading ? (
                     <span>
-                        <i className="fas fa-spinner fa-pulse "></i>Uploading...
+                        <i className="fas fa-spinner fa-pulse"></i> Uploading...
                     </span>
                 ) : (
-                    <> Add Note</>
+                    <> Add Pyq</>
                 )}
             </button>
         </form>
     );
 }
 
-export default AddNotes;
+export default AddPyq;

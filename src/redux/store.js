@@ -11,6 +11,7 @@ import getOpportunitiesReducer from './slices/getOpportunitySlice.js';
 import giveOpportunitiesReducer from './slices/giveOpportunitySlice.js';
 import postReducer from './slices/postSlice.js';
 import subjectNotesReducer from '../redux/slices/subjectNotesSlice.js';
+import subjectPyqsReducer from '../redux/slices/subjectPyqsSlice.js';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
     giveOpportunities: giveOpportunitiesReducer,
     posts: postReducer,
     subjectNotes: subjectNotesReducer,
+    subjectPyqs: subjectPyqsReducer,
 });
 
 const persistConfig = {
