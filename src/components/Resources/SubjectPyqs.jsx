@@ -5,7 +5,6 @@ import { useCollegeId } from '../../hooks/useCollegeId.js';
 import { api } from '../../config/apiConfiguration.js';
 import Modal from '../../utils/Dialog.jsx';
 import { toast } from 'react-toastify';
-import useApiRequest from '../../hooks/useApiRequest.js';
 import { capitalizeWords } from '../../utils/Capitalize.js';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 import AddPyq from './AddPyq.jsx';
@@ -16,8 +15,6 @@ function SubjectPyqs() {
     const collegeId = useCollegeId(collegeName);
     const [isModalOpen, setModalOpen] = useState(false);
 
-    const { apiRequest, loading: loadingApiRequest } = useApiRequest();
-
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(fetchSubjectPyqs({ subjectCode, branchCode, collegeId }));
@@ -25,6 +22,7 @@ function SubjectPyqs() {
 
     const {
         subjectPyqs,
+        subjectName,
         loading: loadingSubjectPyqs,
         error: PyqsError,
     } = useSelector((state) => state.subjectPyqs || {});
@@ -72,12 +70,10 @@ function SubjectPyqs() {
                 path={`resource/${courseCode}/${branchCode}/${subjectCode}`}
             />
             <h1 className="text-2xl font-bold text-center mb-2">
-                {capitalizeWords(collegeName)}: {subjectCode.toUpperCase()} Pyqs
+                {capitalizeWords(collegeName)}: {subjectName || subjectCode}{' '}
+                Pyqs
             </h1>
-            <h2 className="text-center text-xs">
-                Subject Code may vary across different colleges, ignore if not
-                match{' '}
-            </h2>
+
             <div className="my-5 text-center">
                 <button
                     onClick={() => setModalOpen(true)}
@@ -86,37 +82,37 @@ function SubjectPyqs() {
                     Add Pyq
                 </button>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:mx-20 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 px-4 py-6">
                 {subjectPyqs.length > 0 ? (
                     subjectPyqs.map((pyq) => (
                         <div
                             key={pyq._id}
-                            className="border p-4 rounded-lg shadow hover:shadow-lg transition duration-200"
+                            className="justify-center flex bg-white border border-gray-200 p-5 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300"
                         >
-                            <h2 className="text-lg font-semibold">
-                                Subject Name: {pyq.subject?.subjectName}
-                            </h2>
-                            <p className="text-sm text-gray-600">
-                                {pyq.year || 'No description'}
-                            </p>
-                            <p className="text-xs text-gray-500 mt-1">
-                                {pyq.examType}
-                            </p>
-
-                            <div className="flex items-center justify-between mt-3">
-                                <Link
-                                    to={pyq.slug}
-                                    className="rounded-md px-2 bg-sky-400 text-white hover:underline inline-block"
-                                >
-                                    View
-                                </Link>
+                            <div className="space-y-3">
+                                <p className="text-lg font-semibold text-gray-700">
+                                    {pyq.year || 'No description'}
+                                </p>
+                                <p className="text-sm text-gray-500">
+                                    {pyq.examType}
+                                </p>
+                                <div className="flex items-center justify-between mt-4">
+                                    <Link
+                                        to={pyq.slug}
+                                        className="bg-sky-400 text-white px-4 py-2 rounded-lg hover:bg-sky-500 transition duration-300"
+                                    >
+                                        View
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     ))
                 ) : (
-                    <div className="h-screen text-center text-gray-600">
-                        No Pyq available for this subject. Please add if you
-                        have any.
+                    <div className="col-span-4 text-center text-gray-600">
+                        <p className="text-xl">
+                            No PYQs available for this subject. Please add if
+                            you have any.
+                        </p>
                     </div>
                 )}
             </div>
@@ -136,7 +132,7 @@ function SubjectPyqs() {
                 <AddPyq
                     subjectCode={subjectCode}
                     branchCode={branchCode}
-                    college={collegeName}
+                    subjectName={subjectName}
                     collegeId={collegeId}
                     onSubmit={handleAddPyq}
                 />

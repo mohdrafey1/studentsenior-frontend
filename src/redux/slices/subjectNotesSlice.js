@@ -19,7 +19,7 @@ export const fetchSubjectNotes = createAsyncThunk(
             if (data.success === false) {
                 throw new Error(data.message);
             }
-            return data;
+            return { notes: data.notes, subjectName: data.subjectName };
         } catch (error) {
             return rejectWithValue(error.message);
         }
@@ -30,6 +30,7 @@ const subjectNotesSlice = createSlice({
     name: 'subjectNotes',
     initialState: {
         subjectNotes: [],
+        subjectName: '',
         loading: false,
         error: null,
     },
@@ -43,7 +44,8 @@ const subjectNotesSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchSubjectNotes.fulfilled, (state, action) => {
-                state.subjectNotes = action.payload;
+                state.subjectNotes = action.payload.notes;
+                state.subjectName = action.payload.subjectName;
                 state.loading = false;
             })
             .addCase(fetchSubjectNotes.rejected, (state, action) => {

@@ -31,6 +31,7 @@ function SubjectNotes() {
 
     const {
         subjectNotes,
+        subjectName,
         loading: loadingSubjectNotes,
         error: notesError,
     } = useSelector((state) => state.subjectNotes || {});
@@ -145,14 +146,10 @@ function SubjectNotes() {
             <DetailPageNavbar
                 path={`resource/${courseCode}/${branchCode}/${subjectCode}`}
             />
-            <h1 className="text-2xl font-bold text-center mb-2">
-                {capitalizeWords(collegeName)}: {subjectCode.toUpperCase()}{' '}
-                Notes
+            <h1 className="sm:text-2xl font-bold text-center mb-2">
+                {capitalizeWords(collegeName)}: {subjectName} Notes
             </h1>
-            <h2 className="text-center text-xs">
-                Subject Code may vary across different colleges, ignore if not
-                match{' '}
-            </h2>
+
             <div className="my-5 text-center">
                 <button
                     onClick={() => setModalOpen(true)}
@@ -169,7 +166,7 @@ function SubjectNotes() {
                             className="border p-4 rounded-lg shadow hover:shadow-lg transition duration-200"
                         >
                             <div className="flex justify-between mb-2">
-                                <div className="flex">
+                                <div className="flex gap-2">
                                     {note.owner.profilePicture ? (
                                         <img
                                             src={note.owner?.profilePicture}
@@ -182,7 +179,7 @@ function SubjectNotes() {
                                         </div>
                                     )}
 
-                                    <span className="text-sm font-medium">
+                                    <span className="text-sm font-medium mt-1">
                                         {note.owner?.username || 'Anonymous'}
                                     </span>
                                 </div>
@@ -248,7 +245,7 @@ function SubjectNotes() {
 
             <Modal
                 isOpen={isModalOpen}
-                title="Add Note"
+                title={`Add Note:- ${collegeName.toUpperCase()}`}
                 footer={
                     <button
                         className="p-1 py-2 flex bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer"
@@ -260,8 +257,8 @@ function SubjectNotes() {
             >
                 <AddNotes
                     subjectCode={subjectCode}
+                    subjectName={subjectName}
                     branchCode={branchCode}
-                    college={collegeName}
                     collegeId={collegeId}
                     onSubmit={handleAddNote}
                 />

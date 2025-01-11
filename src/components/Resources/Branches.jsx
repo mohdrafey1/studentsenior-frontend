@@ -76,10 +76,7 @@ const Branches = () => {
                                 Code
                             </th>
                             <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
-                                Total Notes
-                            </th>
-                            <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
-                                Total Pyqs
+                                Total Notes / Pyqs
                             </th>
                             <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
                                 Actions
@@ -96,9 +93,7 @@ const Branches = () => {
                                     {branch.branchCode || 'N/A'}
                                 </td>
                                 <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
-                                    {branch.totalNotes || 0}
-                                </td>
-                                <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                    {branch.totalNotes || 0} /{' '}
                                     {branch.totalPyqs || 0}
                                 </td>
                                 <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">

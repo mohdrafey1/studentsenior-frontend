@@ -19,7 +19,7 @@ export const fetchSubjectPyqs = createAsyncThunk(
             if (data.success === false) {
                 throw new Error(data.message);
             }
-            return data;
+            return { pyqs: data.pyqs, subjectName: data.subjectName };
         } catch (error) {
             return rejectWithValue(error.message);
         }
@@ -30,6 +30,7 @@ const subjectPyqsSlice = createSlice({
     name: 'subjectPyqs',
     initialState: {
         subjectPyqs: [],
+        subjectName: '',
         loading: false,
         error: null,
     },
@@ -43,7 +44,8 @@ const subjectPyqsSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchSubjectPyqs.fulfilled, (state, action) => {
-                state.subjectPyqs = action.payload;
+                state.subjectPyqs = action.payload.pyqs;
+                state.subjectName = action.payload.subjectName;
                 state.loading = false;
             })
             .addCase(fetchSubjectPyqs.rejected, (state, action) => {
