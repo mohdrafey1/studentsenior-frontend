@@ -146,7 +146,8 @@ function SubjectNotes() {
                 path={`resource/${courseCode}/${branchCode}/${subjectCode}`}
             />
             <h1 className="text-2xl font-bold text-center mb-2">
-                {capitalizeWords(collegeName)}: {subjectCode.toUpperCase()}
+                {capitalizeWords(collegeName)}: {subjectCode.toUpperCase()}{' '}
+                Notes
             </h1>
             <h2 className="text-center text-xs">
                 Subject Code may vary across different colleges, ignore if not
