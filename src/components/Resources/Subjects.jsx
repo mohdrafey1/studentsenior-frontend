@@ -51,6 +51,8 @@ function Subjects() {
             if (semesters.length > 0 && !activeSemester) {
                 setActiveSemester(semesters[0]);
             }
+        } else {
+            setGroupedSubjects({});
         }
     }, [subjects, activeSemester]);
 

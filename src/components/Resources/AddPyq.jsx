@@ -85,20 +85,27 @@ function AddPyq({ subjectCode, branchCode, subjectName, collegeId, onSubmit }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+            onSubmit={handleSubmit}
+            className="space-y-6 bg-white p-6 rounded-lg shadow-md border border-gray-200"
+        >
             <div>
-                <label className="block font-semibold mb-1">Subject</label>
+                <label className="block font-semibold text-sky-500 mb-2">
+                    Subject
+                </label>
                 <input
                     type="text"
-                    className="w-full border p-2 rounded bg-gray-100"
+                    className="w-full border border-gray-300 p-3 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
                     value={subjectName}
                     readOnly
                 />
             </div>
             <div>
-                <label className="block font-semibold mb-1">Year</label>
+                <label className="block font-semibold text-sky-500 mb-2">
+                    Year
+                </label>
                 <select
-                    className="w-full border p-2 rounded"
+                    className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
                     value={year}
                     onChange={(e) => setYear(e.target.value)}
                     required
@@ -113,9 +120,11 @@ function AddPyq({ subjectCode, branchCode, subjectName, collegeId, onSubmit }) {
                 </select>
             </div>
             <div>
-                <label className="block font-semibold mb-1">Exam Type</label>
+                <label className="block font-semibold text-sky-500 mb-2">
+                    Exam Type
+                </label>
                 <select
-                    className="w-full border p-2 rounded"
+                    className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
                     value={examType}
                     onChange={(e) => setExamType(e.target.value)}
                     required
@@ -130,29 +139,32 @@ function AddPyq({ subjectCode, branchCode, subjectName, collegeId, onSubmit }) {
                 </select>
             </div>
             <div>
-                <label className="block font-semibold mb-1">
-                    Upload PDF (Max 50MB)
+                <label className="block font-semibold text-sky-500 mb-2">
+                    Upload PDF (Max 10MB)
                 </label>
                 <input
+                    id="file-upload"
                     type="file"
-                    className="w-full"
+                    className="w-full border-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-500 file:text-white hover:file:bg-blue-600"
                     accept=".pdf"
                     onChange={handleFileChange}
                     required
                 />
             </div>
-
             <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                className={`w-full bg-sky-400 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-sky-500 transition-colors duration-200 ${
+                    loading ? 'opacity-70 cursor-not-allowed' : ''
+                }`}
                 disabled={loading}
             >
                 {loading ? (
-                    <span>
-                        <i className="fas fa-spinner fa-pulse"></i> Uploading...
+                    <span className="flex items-center justify-center">
+                        <i className="fas fa-spinner fa-pulse mr-2"></i>{' '}
+                        Uploading...
                     </span>
                 ) : (
-                    <> Add Pyq</>
+                    <>Add Pyq</>
                 )}
             </button>
         </form>

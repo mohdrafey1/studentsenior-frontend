@@ -12,6 +12,10 @@ export const api = {
 
     user: `${API_BASE_URL}/api/user/update`,
 
+    userData: `${API_BASE_URL}/api/user/userdata`,
+
+    userRedumption: `${API_BASE_URL}/api/user/redeempoints`,
+
     college: `${API_BASE_URL}/api/colleges`,
 
     community: `${API_BASE_URL}/api/community/posts`,
