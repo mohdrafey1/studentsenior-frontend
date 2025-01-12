@@ -52,7 +52,7 @@ function SeniorDetail() {
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to-white min-h-screen min-w-full">
-            <DetailPageNavbar path="senior" />
+            <DetailPageNavbar path={`college/${collegeName}/senior`} />
 
             <div className="main grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
                 <div className="md:col-span-1 md:sticky md:top-0 p-4 shadow-md mt-5 items-center md:h-screen">

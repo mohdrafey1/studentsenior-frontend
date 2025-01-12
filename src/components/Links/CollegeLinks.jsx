@@ -54,12 +54,12 @@ const Collegelinks = () => {
                     </div>
                 </Link>
                 <Link
-                    to={`/college/${collegeName}/notes`}
+                    to={`/college/${collegeName}/resources`}
                     className="rounded-xl hover:bg-sky-100 w-28 px-4 py-2"
                 >
                     <div className="flex flex-col items-center">
                         <i className="fa-solid fa-note-sticky"></i>
-                        <p>Notes</p>
+                        <p>Resources</p>
                     </div>
                 </Link>
                 <Link

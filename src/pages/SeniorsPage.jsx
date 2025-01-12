@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import EditSeniorModal from '../components/SeniorModal/EditSeniorModal';
 import SeniorDetailModal from '../components/SeniorModal/SeniorDetailModal';
 import CollegeLinks from '../components/Links/CollegeLinks';
@@ -9,14 +9,13 @@ import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import { toast } from 'react-toastify';
 import useApiRequest from '../hooks/useApiRequest.js';
-import useApiFetch from '../hooks/useApiFetch.js';
 import { useCollegeId } from '../hooks/useCollegeId.js';
 import SeniorCard from '../components/Cards/SeniorCard.jsx';
+import { fetchSeniors } from '../redux/slices/seniorSlice.js';
 
 const SeniorPage = () => {
     const { collegeName } = useParams();
     const collegeId = useCollegeId(collegeName);
-    const [seniors, setSeniors] = useState([]);
     const [editingSenior, setEditingSenior] = useState(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
@@ -28,19 +27,19 @@ const SeniorPage = () => {
     });
 
     const { apiRequest, loading } = useApiRequest();
-    const { useFetch, loadingFetch } = useApiFetch();
+    const dispatch = useDispatch();
 
     const url = api.senior;
 
-    const fetchSeniors = async () => {
-        try {
-            const data = await useFetch(`${url}/college/${collegeId}`);
-            setSeniors(data);
-        } catch (err) {
-            console.error('Error fetching seniors:', err);
-            toast.error('Error fetching seniors ');
-        }
-    };
+    const {
+        seniors = [],
+        loading: loadingSeniors,
+        error,
+    } = useSelector((state) => state.seniors || {});
+
+    useEffect(() => {
+        dispatch(fetchSeniors(collegeId));
+    }, [collegeName]);
 
     const handleEdit = (senior) => {
         setEditingSenior(senior);
@@ -55,16 +54,11 @@ const SeniorPage = () => {
     const handleDelete = async (seniorId) => {
         try {
             await apiRequest(`${url}/${seniorId}`, 'DELETE');
-            fetchSeniors();
             toast.success('Senior deleted successfully!');
         } catch (err) {
             console.error('Error deleting senior:', err);
         }
     };
-
-    useEffect(() => {
-        fetchSeniors();
-    }, []);
 
     // Filter seniors based on selected course
     const filteredSeniors = useMemo(() => {
@@ -135,7 +129,7 @@ const SeniorPage = () => {
                             />
                         ) : (
                             <div className="col-span-4 flex justify-center items-center py-10 w-full">
-                                {loadingFetch ? (
+                                {loadingSeniors ? (
                                     <i className="fas fa-spinner fa-pulse fa-5x"></i>
                                 ) : (
                                     <p className="text-center text-gray-500 mt-5">
@@ -179,7 +173,7 @@ const SeniorPage = () => {
                                 );
                                 toast.success('Senior updated successfully');
                                 setIsEditModalOpen(false);
-                                fetchSeniors();
+                                dispatch(fetchSeniors(collegeId));
                             } catch (err) {
                                 console.error('Error updating senior:', err);
                             }

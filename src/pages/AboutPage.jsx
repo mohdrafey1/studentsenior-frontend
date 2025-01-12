@@ -17,7 +17,7 @@ function AboutPage() {
                                 courses, access previous year's question papers
                                 <strong> (PYQs)</strong>, and download
                                 <strong> Comprehensive notes</strong>,
-                                simplifying exam preparation.
+                                simplifying <strong>exam</strong> preparation.
                             </li>
                             <li>
                                 Connecting students with experienced{' '}

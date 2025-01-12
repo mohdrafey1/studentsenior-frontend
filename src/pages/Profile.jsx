@@ -83,6 +83,7 @@ export default function Profile() {
             const data = await res.json();
             if (data.success === false) {
                 dispatch(updateUserFailure(data));
+                toast.warning(data.message);
                 return;
             }
             dispatch(updateUserSuccess(data));
@@ -309,6 +310,11 @@ export default function Profile() {
                 <p className="text-green-700 mt-5">
                     {updateSuccess && 'User is updated successfully!'}
                 </p>
+            </div>
+            <div className="">
+                <div>Reward Balance : {currentUser.rewardBalance}</div>
+                <div>Reward Points : {currentUser.rewardPoints}</div>
+                <div>Reward Redeemed : {currentUser.rewardRedeemed}</div>
             </div>
         </>
     );

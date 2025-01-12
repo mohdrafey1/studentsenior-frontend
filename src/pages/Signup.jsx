@@ -32,6 +32,7 @@ export default function SignUp() {
             // console.log(data);
             setLoading(false);
             if (data.success === false) {
+                toast.error(data.message);
                 setError(true);
                 return;
             }
@@ -81,15 +82,16 @@ export default function SignUp() {
                         className="bg-slate-100 p-3 rounded-lg"
                         onChange={handleChange}
                     />
-                    <div className='w-full flex justify-between'>
+                    <div className="w-full flex justify-between">
                         <input
                             type={passwordShown ? 'text' : 'password'}
                             id="password"
                             placeholder="Password"
                             className="bg-slate-100 rounded-lg p-3 w-full"
                             onChange={handleChange}
-
-                        /><i className="fa-solid fa-eye -translate-x-10 w-0 content-center cursor-pointer text-lg"
+                        />
+                        <i
+                            className="fa-solid fa-eye -translate-x-10 w-0 content-center cursor-pointer text-lg"
                             onClick={togglePass}
                         ></i>
                     </div>

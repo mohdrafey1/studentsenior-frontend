@@ -53,7 +53,7 @@ function BundlePyq() {
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full relative">
-            <DetailPageNavbar path={'pyq'} handleShare={shortnerHandleShare} />
+            <DetailPageNavbar handleShare={shortnerHandleShare} />
             <div className="main lg:m-auto lg:w-4/5">
                 <div className="mt-4">
                     <h2 className="text-center text-2xl font-bold my-4">

@@ -62,7 +62,7 @@ const AddSeniorPage = () => {
             )}
 
             {isSuccess && (
-                <div className="text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full w-full z-50 items-center">
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-75">
                     <div
                         role="alert"
                         className="mt-3 relative flex flex-col max-w-sm p-3 text-sm text-white bg-black rounded-md"
@@ -72,7 +72,7 @@ const AddSeniorPage = () => {
                         </p>
                         <p className="ml-4 p-3">{responseMessage}</p>
                         <button
-                            className="absolute top-1.5 right-1.5"
+                            className="absolute top-2.5 right-3"
                             onClick={closeDialog}
                         >
                             <svg
@@ -106,7 +106,7 @@ const AddSeniorPage = () => {
                     <div className="bg-white p-8 rounded-lg max-w-lg w-full  ">
                         <h1 className="text-3xl font-bold mb-6 text-center">
                             <span className="heading-class">
-                                Add Yourself As a Senior
+                                Join As a Senior
                             </span>
                         </h1>
                         <form onSubmit={handleSubmit}>

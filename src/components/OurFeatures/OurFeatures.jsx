@@ -34,14 +34,14 @@ const OurFeatures = () => {
                     {
                         features.map((feature) => (
                             <div>
-                                <div className="py-10 px-5 ">
-                                    <div className="max-w-md mx-auto bg-white shadow-lg rounded-[35px] p-6 text-center">
-                                        <div className="w-16 h-16 mx-auto mb-4">
-                                            <img src={feature.icon} alt="Icon" className="w-full rounded-full scale-150 shadow-xl -translate-y-10 h-full" />
+                                <div class="py-10 px-5 ">
+                                    <div class="max-w-md mx-auto bg-white shadow-lg rounded-[35px] p-6 text-center max-h-64">
+                                        <div class="w-16 h-16 mx-auto mb-4">
+                                            <img src={feature.icon} alt="Icon" class="w-full rounded-full scale-150 shadow-xl -translate-y-10 h-full" />
                                         </div>
                                         <div className='transform -translate-y-5'>
-                                            <h2 className="text-red-600 text-2xl font-bold mb-2">{feature.title}</h2>
-                                            <p className="text-gray-700 text-base">
+                                            <h2 class="text-red-600 text-2xl font-bold mb-2">{feature.title}</h2>
+                                            <p class="text-gray-700 text-base">
                                                 {feature.description}
                                             </p>
                                         </div>

@@ -18,7 +18,15 @@ export const api = {
 
     contactus: `${API_BASE_URL}/api/contactus`,
 
-    notes: `${API_BASE_URL}/api/notes`,
+    courses: `${API_BASE_URL}/api/resource/courses`,
+
+    branches: `${API_BASE_URL}/api/resource/branches`,
+
+    subjects: `${API_BASE_URL}/api/resource/subjects`,
+
+    subjectNotes: `${API_BASE_URL}/api/notes`,
+
+    newPyqs: `${API_BASE_URL}/api/newpyq`,
 
     getOpportunity: `${API_BASE_URL}/api/opportunity/getopportunities`,
 
@@ -31,4 +39,8 @@ export const api = {
     senior: `${API_BASE_URL}/api/seniors`,
 
     store: `${API_BASE_URL}/api/store`,
+
+    requestPyq: `${API_BASE_URL}/api/pyqs/request-pyq`,
+
+    presignedUrl: `${API_BASE_URL}/api/generate/presigned-url`,
 };

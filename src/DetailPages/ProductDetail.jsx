@@ -8,13 +8,13 @@ import ProductsCard from '../components/Cards/ProductsCard';
 import { useCollegeId } from '../hooks/useCollegeId';
 
 function ProductDetail() {
-    const { collegeName, id } = useParams();
+    const { collegeName, slug } = useParams();
     const collegeId = useCollegeId(collegeName);
     const { useFetch, loadingFetch } = useApiFetch();
     const [product, setProduct] = useState(null);
     const [suggestedProduct, setSuggestedProduct] = useState([]);
 
-    const url = `${api.store}/${id}`;
+    const url = `${api.store}/${slug}`;
 
     const fetchProduct = async () => {
         try {
@@ -29,7 +29,7 @@ function ProductDetail() {
     const fetchSuggestedProduct = async () => {
         try {
             const data = await useFetch(
-                `${api.store}/suggested/${collegeId}/${id}`
+                `${api.store}/suggested/${collegeId}/${slug}`
             );
             setSuggestedProduct(data);
         } catch (error) {
@@ -41,7 +41,7 @@ function ProductDetail() {
     useEffect(() => {
         fetchProduct();
         fetchSuggestedProduct();
-    }, [id]);
+    }, [slug]);
 
     if (loadingFetch) {
         return (
@@ -69,7 +69,7 @@ function ProductDetail() {
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full relative">
-            <DetailPageNavbar path={'store'} />
+            <DetailPageNavbar path={`college/${collegeName}/store`} />
 
             <div className="grid gap-6 lg:grid-cols-8 sm:grid-cols-2 mt-6 lg:h-screen">
                 <div className="p-4 rounded-lg shadow-lg lg:col-span-3 flex justify-center items-center">

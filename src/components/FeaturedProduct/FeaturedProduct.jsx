@@ -6,32 +6,24 @@ import { api } from '../../config/apiConfiguration';
 import { toast } from 'react-toastify';
 import { useParams, Link } from 'react-router-dom';
 import ProductCard from '../Cards/ProductsCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../../redux/slices/productSlice.js';
 
 const FeaturedSeniors = () => {
     const { collegeName } = useParams();
     const collegeId = useCollegeId(collegeName);
-    const [products, setProducts] = useState([]);
-    const { useFetch, loadingFetch } = useApiFetch();
 
-    const fetchProducts = async () => {
-        try {
-            const data = await useFetch(`${api.store}/college/${collegeId}`);
-            setProducts(data);
-        } catch (err) {
-            console.error('Error fetching seniors:', err);
-            toast.error('Error fetching seniors');
-        }
-    };
+    const dispatch = useDispatch();
+    const {
+        products,
+        loading: loadingProducts,
+        error: productError,
+    } = useSelector((state) => state.products || {});
 
-    const fake = [
-        { "no": 1 },
-        { "no": 2 },
-        { "no": 3 },
-        { "no": 4 },
-    ]
+    const fake = [{ no: 1 }, { no: 2 }, { no: 3 }, { no: 4 }];
 
     useEffect(() => {
-        fetchProducts();
+        dispatch(fetchProducts(collegeId));
     }, []);
 
     return (
@@ -44,21 +36,25 @@ const FeaturedSeniors = () => {
             <div className="container mx-auto px-5 xl:px-40">
                 <div className="main-card">
                     <div className="mobile-card cards flex gap-2 md:gap-6 w-full lg:justify-center md:justify-center">
+                        {productError && (
+                            <div className="text-red-500 text-center">
+                                Failed to load Products: {productError}
+                            </div>
+                        )}
                         {products.length > 0 ? (
                             <ProductCard products={products.slice(0, 4)} />
                         ) : (
                             <div className="col-span-4 flex justify-center items-center py-10 w-full">
-                                {loadingFetch ? (
-                                   <div className='w-full flex gap-5'>
-                                   {fake.map((item, index) => {
-                                       return <div
-                                           className="bg-white shadow-md rounded-3xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl dark:bg-slate-300 w-full lg:h-56 flex flex-col"
-                                       >
-                                           <div className='h-20 w-20 rounded-full bg-gray-400 m-auto animate-ping'>
-                                           </div>
-                                       </div>;
-                                    })}
-                               </div>
+                                {loadingProducts ? (
+                                    <div className="w-full flex gap-5">
+                                        {fake.map((item, index) => {
+                                            return (
+                                                <div className="bg-white shadow-md rounded-3xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl dark:bg-slate-300 w-full lg:h-56 flex flex-col">
+                                                    <div className="h-20 w-20 rounded-full bg-gray-400 m-auto animate-ping"></div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
                                 ) : (
                                     <p className="text-center text-gray-500 mt-5">
                                         No Senior found in your college
@@ -68,7 +64,7 @@ const FeaturedSeniors = () => {
                         )}
                     </div>
                 </div>
-                {loadingFetch ? (
+                {loadingProducts ? (
                     <></>
                 ) : (
                     <div className="text-center my-5">

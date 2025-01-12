@@ -34,7 +34,7 @@ function QuickLinks() {
 
     return (
         <div className="container mx-auto my-4 p-4 ">
-            <h1 className="text-center text-3xl">
+            <h1 className="text-center text-3xl p-4">
                 <span className="font-bold">Quick Access</span>
             </h1>
             <div className="flex justify-center items-center">
@@ -49,6 +49,18 @@ function QuickLinks() {
                         <div className="flex flex-col items-center sm:text-xl font-medium">
                             <i className="fa-solid fa-user-tie"></i>
                             <p>Seniors</p>
+                        </div>
+                    </div>
+                    <div
+                        className="px-4 py-2 rounded-full shadow-lg border-8 border-sky-100 w-28 h-28 sm:h-36 sm:w-36 flex justify-center items-center cursor-pointer 
+                        bg-gradient-to-t from-sky-300 to-white
+                          hover:bg-gradient-to-r hover:from-blue-300 hover:to-white
+                          transition-all duration-700 ease-in-out"
+                        onClick={() => handleOpenModal('resources')}
+                    >
+                        <div className="flex flex-col items-center sm:text-xl font-medium">
+                            <i className="fa-solid fa-magnifying-glass"></i>
+                            <p>Resources</p>
                         </div>
                     </div>
                     <div
@@ -97,18 +109,6 @@ function QuickLinks() {
                         <div className="flex flex-col items-center sm:text-xl font-medium">
                             <i className="fa-brands fa-whatsapp"></i>
                             <p>Groups</p>
-                        </div>
-                    </div>
-                    <div
-                        className="px-4 py-2 rounded-full shadow-lg border-8 border-sky-100 w-28 h-28 sm:h-36 sm:w-36 flex justify-center items-center cursor-pointer 
-                        bg-gradient-to-t from-sky-300 to-white
-                          hover:bg-gradient-to-r hover:from-blue-300 hover:to-white
-                          transition-all duration-700 ease-in-out"
-                        onClick={() => handleOpenModal('opportunities')}
-                    >
-                        <div className="flex flex-col items-center sm:text-xl font-medium">
-                            <i className="fa-solid fa-magnifying-glass"></i>
-                            <p>Opportunity</p>
                         </div>
                     </div>
                 </div>

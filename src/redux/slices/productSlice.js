@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api, API_KEY } from '../../config/apiConfiguration';
 
-export const fetchSeniors = createAsyncThunk(
-    'seniors/fetchSeniors',
+export const fetchProducts = createAsyncThunk(
+    'products/fetchProducts',
     async (collegeId, { rejectWithValue }) => {
         try {
-            const response = await fetch(`${api.senior}/college/${collegeId}`, {
+            const response = await fetch(`${api.store}/college/${collegeId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -23,10 +23,10 @@ export const fetchSeniors = createAsyncThunk(
     }
 );
 
-const seniorSlice = createSlice({
-    name: 'seniors',
+const productSlice = createSlice({
+    name: 'products',
     initialState: {
-        seniors: [],
+        products: [],
         loading: false,
         error: null,
     },
@@ -35,19 +35,19 @@ const seniorSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchSeniors.pending, (state) => {
+            .addCase(fetchProducts.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(fetchSeniors.fulfilled, (state, action) => {
-                state.seniors = action.payload;
+            .addCase(fetchProducts.fulfilled, (state, action) => {
+                state.products = action.payload;
                 state.loading = false;
             })
-            .addCase(fetchSeniors.rejected, (state, action) => {
+            .addCase(fetchProducts.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });
     },
 });
 
-export default seniorSlice.reducer;
+export default productSlice.reducer;
