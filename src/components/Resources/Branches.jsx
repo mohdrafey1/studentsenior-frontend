@@ -12,18 +12,9 @@ const Branches = () => {
 
     const dispatch = useDispatch();
 
-    const {
-        branches = [],
-        loading,
-        error,
-    } = useSelector((state) => state.branches || {});
-    const { courses = [] } = useSelector((state) => state.courses || {});
-
-    useEffect(() => {
-        if (!courses.length) {
-            dispatch(fetchCourses());
-        }
-    }, [collegeName]);
+    const { branches, loading, error } = useSelector(
+        (state) => state.branches || {}
+    );
 
     useEffect(() => {
         dispatch(fetchBranches(courseCode));

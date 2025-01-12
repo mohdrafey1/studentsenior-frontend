@@ -119,7 +119,7 @@ function SubjectPyqs() {
 
             <Modal
                 isOpen={isModalOpen}
-                title="Add pyq"
+                title={`PYQ - ${collegeName.toUpperCase()}`}
                 footer={
                     <button
                         className="p-1 py-2 flex bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer"

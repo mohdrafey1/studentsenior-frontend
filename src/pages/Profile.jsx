@@ -21,6 +21,8 @@ import {
 import { toast } from 'react-toastify';
 import warning from '../../public/assets/warning.png';
 import { useNavigate } from 'react-router-dom';
+import { fetchUserData } from '../redux/slices/userDataSlice.js';
+import ProfileDetails from '../DetailPages/ProfileDetails.jsx';
 
 export default function Profile() {
     const dispatch = useDispatch();
@@ -147,8 +149,23 @@ export default function Profile() {
         setPasswordShown(!passwordShown);
     };
 
+    // user data code
+    useEffect(() => {
+        dispatch(fetchUserData());
+    }, []);
+
+    const {
+        rewardPoints,
+        rewardBalance,
+        rewardRedeemed,
+        userTransaction,
+        userProductAdd,
+        userPyqAdd,
+        userNoteAdd,
+    } = useSelector((state) => state.userData || {});
+
     return (
-        <>
+        <div className="flex flex-col sm:flex-row">
             {showDialog ? (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-400 z-50 bg-opacity-75 ">
                     <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 rounded-lg lg:w-1/3 w-2/3 shadow-2xl">
@@ -194,7 +211,7 @@ export default function Profile() {
                     </div>
                 </div>
             ) : null}
-            <div className="p-3 max-w-lg mx-auto ">
+            <div className="p-3 w-96 mx-auto">
                 <h1 className="text-3xl font-semibold text-center my-7">
                     Profile
                 </h1>
@@ -311,11 +328,20 @@ export default function Profile() {
                     {updateSuccess && 'User is updated successfully!'}
                 </p>
             </div>
-            <div className="">
-                <div>Reward Balance : {currentUser.rewardBalance}</div>
-                <div>Reward Points : {currentUser.rewardPoints}</div>
-                <div>Reward Redeemed : {currentUser.rewardRedeemed}</div>
+
+            <div className="sm:w-2/3">
+                <ProfileDetails
+                    data={{
+                        rewardBalance,
+                        rewardPoints,
+                        rewardRedeemed,
+                        notes: userNoteAdd,
+                        products: userProductAdd,
+                        transactions: userTransaction,
+                        pyqs: userPyqAdd,
+                    }}
+                />
             </div>
-        </>
+        </div>
     );
 }
