@@ -8,6 +8,7 @@ function AddNotes({
     branchCode,
     collegeId,
     onSubmit,
+    submitting,
 }) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -144,17 +145,17 @@ function AddNotes({
             <button
                 type="submit"
                 className={`w-full bg-sky-400 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-sky-500 transition-colors duration-200 ${
-                    loading ? 'opacity-70 cursor-not-allowed' : ''
+                    loading || submitting ? 'opacity-70 cursor-not-allowed' : ''
                 }`}
-                disabled={loading}
+                disabled={loading || submitting}
             >
-                {loading ? (
+                {loading || submitting ? (
                     <span className="flex items-center justify-center">
                         <i className="fas fa-spinner fa-pulse mr-2"></i>
-                        Uploading...
+                        {loading ? 'Uploading...' : 'Submitting...'}
                     </span>
                 ) : (
-                    <>Add Note</>
+                    'Add Note'
                 )}
             </button>
         </form>
