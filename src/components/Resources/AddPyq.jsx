@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { api } from '../../config/apiConfiguration';
 
-function AddPyq({ subjectCode, branchCode, subjectName, collegeId, onSubmit }) {
+function AddPyq({
+    subjectCode,
+    branchCode,
+    subjectName,
+    collegeId,
+    onSubmit,
+    submitting,
+}) {
     const [year, setYear] = useState('');
     const [examType, setExamType] = useState('');
     const [file, setFile] = useState(null);
@@ -154,17 +161,17 @@ function AddPyq({ subjectCode, branchCode, subjectName, collegeId, onSubmit }) {
             <button
                 type="submit"
                 className={`w-full bg-sky-400 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-sky-500 transition-colors duration-200 ${
-                    loading ? 'opacity-70 cursor-not-allowed' : ''
+                    loading || submitting ? 'opacity-70 cursor-not-allowed' : ''
                 }`}
-                disabled={loading}
+                disabled={loading || submitting}
             >
-                {loading ? (
+                {loading || submitting ? (
                     <span className="flex items-center justify-center">
-                        <i className="fas fa-spinner fa-pulse mr-2"></i>{' '}
-                        Uploading...
+                        <i className="fas fa-spinner fa-pulse mr-2"></i>
+                        {loading ? 'Uploading...' : 'Submitting...'}
                     </span>
                 ) : (
-                    <>Add Pyq</>
+                    'Add Pyq'
                 )}
             </button>
         </form>

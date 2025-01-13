@@ -14,6 +14,7 @@ function SubjectPyqs() {
     const { collegeName, courseCode, subjectCode, branchCode } = useParams();
     const collegeId = useCollegeId(collegeName);
     const [isModalOpen, setModalOpen] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -29,6 +30,7 @@ function SubjectPyqs() {
 
     const handleAddPyq = async (formData) => {
         try {
+            setSubmitting(true);
             const response = await fetch(`${api.newPyqs}`, {
                 method: 'POST',
                 headers: {
@@ -43,12 +45,15 @@ function SubjectPyqs() {
                 return;
             }
             toast.success(data.message);
-
+            setSubmitting(false);
             setModalOpen(false);
         } catch (err) {
+            setSubmitting(false);
             console.error(err);
             toast.error('Failed to add pyq.');
             setModalOpen(false);
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -135,6 +140,7 @@ function SubjectPyqs() {
                     subjectName={subjectName}
                     collegeId={collegeId}
                     onSubmit={handleAddPyq}
+                    submitting={submitting}
                 />
             </Modal>
         </div>

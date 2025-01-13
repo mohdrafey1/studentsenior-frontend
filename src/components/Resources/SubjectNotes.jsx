@@ -18,6 +18,7 @@ function SubjectNotes() {
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [noteIdToDelete, setNoteIdToDelete] = useState(null);
     const [deleteLoading, setDeleteLoading] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
@@ -38,6 +39,7 @@ function SubjectNotes() {
 
     const handleAddNote = async (formData) => {
         try {
+            setSubmitting(true);
             const response = await fetch(`${api.subjectNotes}`, {
                 method: 'POST',
                 headers: {
@@ -52,11 +54,14 @@ function SubjectNotes() {
                 return;
             }
             toast.success(data.message);
-
+            setSubmitting(false);
             setModalOpen(false);
         } catch (err) {
             console.error(err);
             toast.error('Failed to add note.');
+            setSubmitting(false);
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -260,6 +265,7 @@ function SubjectNotes() {
                     subjectName={subjectName}
                     branchCode={branchCode}
                     collegeId={collegeId}
+                    submitting={submitting}
                     onSubmit={handleAddNote}
                 />
             </Modal>

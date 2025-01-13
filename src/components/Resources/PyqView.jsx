@@ -95,7 +95,7 @@ function PyqView() {
                         <iframe
                             src={`https://docs.google.com/gview?url=${pyq.fileUrl}&embedded=true`}
                             width="100%"
-                            height="500"
+                            height="550"
                             className="block max-w-screen-lg w-full rounded-md shadow-md border-none"
                             title="PDF Viewer"
                         ></iframe>
