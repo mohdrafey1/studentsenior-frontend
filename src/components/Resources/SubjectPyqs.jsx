@@ -9,10 +9,12 @@ import { capitalizeWords } from '../../utils/Capitalize.js';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 import AddPyq from './AddPyq.jsx';
 import { fetchSubjectPyqs } from '../../redux/slices/subjectPyqsSlice.js';
+import useRequireLogin from '../../hooks/useRequireLogin.js';
 
 function SubjectPyqs() {
     const { collegeName, courseCode, subjectCode, branchCode } = useParams();
     const collegeId = useCollegeId(collegeName);
+    const requireLogin = useRequireLogin();
     const [isModalOpen, setModalOpen] = useState(false);
     const [submitting, setSubmitting] = useState(false);
 
@@ -27,6 +29,10 @@ function SubjectPyqs() {
         loading: loadingSubjectPyqs,
         error: PyqsError,
     } = useSelector((state) => state.subjectPyqs || {});
+
+    const handleOpenAddPyqModal = () => {
+        requireLogin(() => setModalOpen(true));
+    };
 
     const handleAddPyq = async (formData) => {
         try {
@@ -81,7 +87,7 @@ function SubjectPyqs() {
 
             <div className="my-5 text-center">
                 <button
-                    onClick={() => setModalOpen(true)}
+                    onClick={handleOpenAddPyqModal}
                     className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
                 >
                     Add Pyq

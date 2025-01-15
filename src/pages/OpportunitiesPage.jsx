@@ -11,10 +11,12 @@ import useApiRequest from '../hooks/useApiRequest.js';
 import { useCollegeId } from '../hooks/useCollegeId.js';
 import { fetchGetOpportunity } from '../redux/slices/getOpportunitySlice.js';
 import { fetchGiveOpportunity } from '../redux/slices/giveOpportunitySlice.js';
+import useRequireLogin from '../hooks/useRequireLogin.js';
 
 const OpportunitiesPage = () => {
     const { collegeName } = useParams();
     const collegeId = useCollegeId(collegeName);
+    const requireLogin = useRequireLogin();
     const [showGetForm, setShowGetForm] = useState(false);
     const [showGiveForm, setShowGiveForm] = useState(false);
     const [loadingStates, setLoadingStates] = useState({});
@@ -60,6 +62,8 @@ const OpportunitiesPage = () => {
 
     const handleGetOpportunitySubmit = async (e) => {
         e.preventDefault();
+
+        if (!requireLogin()) return;
 
         if (collegeId) {
             try {
@@ -149,6 +153,8 @@ const OpportunitiesPage = () => {
 
     const handleGiveOpportunitySubmit = async (e) => {
         e.preventDefault();
+
+        if (!requireLogin()) return;
 
         if (collegeId) {
             try {

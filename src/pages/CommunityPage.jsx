@@ -13,11 +13,13 @@ import Dialog from '../utils/Dialog.jsx';
 import usePosts from '../hooks/usePosts.js';
 import { useCollegeId } from '../hooks/useCollegeId.js';
 import { fetchPosts } from '../redux/slices/postSlice.js';
+import useRequireLogin from '../hooks/useRequireLogin.js';
 
 const CommunityPage = () => {
     const navigate = useNavigate();
     const { collegeName } = useParams();
     const collegeId = useCollegeId(collegeName);
+    const requireLogin = useRequireLogin();
     const [newPostContent, setNewPostContent] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -59,7 +61,7 @@ const CommunityPage = () => {
     }, [collegeId]);
 
     const openModal = () => {
-        setShowModal(true);
+        requireLogin(() => setShowModal(true));
     };
 
     const closeModal = () => {
@@ -136,11 +138,13 @@ const CommunityPage = () => {
 
     // Add a new comment to a post
     const handleAddComment = async (postId) => {
+        if (!requireLogin()) return;
         await addComment(postId);
         dispatch(fetchPosts(collegeId));
     };
 
     const handleLikePost = async (postId) => {
+        if (!requireLogin()) return;
         await likePost(postId);
         dispatch(fetchPosts(collegeId));
     };

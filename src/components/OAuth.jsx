@@ -39,9 +39,7 @@ export default function OAuth() {
             const data = await res.json();
             // console.log(data);
             dispatch(signInSuccess(data));
-            const from =
-                location.state?.from?.pathname + location.state?.from?.search ||
-                '/';
+            const from = location.state?.from?.pathname || '/';
             navigate(from, { replace: true });
             toast.success('Log in successfull');
         } catch (error) {
