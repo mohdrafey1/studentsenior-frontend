@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import useApiRequest from '../hooks/useApiRequest';
 import { api } from '../config/apiConfiguration';
+import pyq from '../icons/pyq.jpg';
+import notes from '../icons/notes.jpg';
 
 export default function ProfileDetails({ data }) {
     const [viewMoreNotes, setViewMoreNotes] = useState(false);
@@ -29,100 +31,120 @@ export default function ProfileDetails({ data }) {
     };
 
     const renderList = (items, type, isExpanded) => {
-        const visibleItems = isExpanded ? items : items.slice(0, 5);
+        const visibleItems = isExpanded ? items : items.slice(0, 3);
+
         return (
             <>
-                <ul className="space-y-4">
+                {/* Adjusted space-y-6 to space-y-3 to reduce gaps */}
+                <ul className="space-y-3">
                     {visibleItems.map((item, index) => (
-                        <li key={index} className="p-4 bg-gray-100 rounded-lg">
+                        <li
+                            key={index}
+                            className="px-4 py-3 bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-300"
+                        >
                             {type === 'notes' && (
-                                <>
-                                    <p className="font-bold">{item.title}</p>
-                                    <p>{item.description}</p>
+                                <div className="flex justify-between items-center">
                                     <a
                                         href={item.fileUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-blue-500 underline"
+                                        className="text-blue-600 font-semibold hover:underline text-sm"
                                     >
-                                        View Notes
+                                        <p className="font-semibold text-base text-gray-800">{item.title}</p>
                                     </a>
-                                    <p>
-                                        <strong>Created At:</strong>{' '}
-                                        {new Date(
-                                            item.createdAt
-                                        ).toLocaleDateString()}
+                                    <p className="text-xs text-gray-500">
+                                        {new Date(item.createdAt).toLocaleDateString('en-US', {
+                                            weekday: 'short',
+                                            month: 'short',
+                                            day: 'numeric',
+                                            year: 'numeric',
+                                        })}
                                     </p>
-                                </>
+                                </div>
                             )}
-                            {type === 'products' && (
-                                <>
-                                    <p className="font-bold">{item.name}</p>
-                                    <p>{item.description}</p>
-                                    <p className="text-green-600">
-                                        Price: ₹{item.price}
-                                    </p>
 
-                                    <p>
-                                        <strong>Created At:</strong>{' '}
-                                        {new Date(
-                                            item.createdAt
-                                        ).toLocaleDateString()}
+                            {type === 'products' && (
+                                <div className="flex justify-between items-center">
+                                    <div>
+                                        <p className="font-semibold text-base text-gray-800">{item.name}</p>
+                                        <p className="text-green-600 text-sm font-medium">Price: ₹{item.price}</p>
+                                    </div>
+                                    <p className="text-xs text-gray-500">
+                                        {new Date(item.createdAt).toLocaleDateString('en-US', {
+                                            weekday: 'short',
+                                            month: 'short',
+                                            day: 'numeric',
+                                            year: 'numeric',
+                                        })}
                                     </p>
-                                </>
+                                </div>
                             )}
+
                             {type === 'transactions' && (
-                                <>
-                                    <p>
-                                        <strong>Type:</strong> {item.type}
-                                    </p>
-                                    <p>
-                                        <strong>Points:</strong> {item.points}
-                                    </p>
-                                    <p>
-                                        <strong>Resource Type:</strong>{' '}
-                                        {item.resourceType || 'redemption'}
-                                    </p>
-                                    <p>
-                                        <strong>Created At:</strong>{' '}
-                                        {new Date(
-                                            item.createdAt
-                                        ).toLocaleDateString()}
-                                    </p>
-                                </>
+                                <div className="flex items-center">
+                                    <div className="w-12 h-12 bg-gray-100 rounded-full flex-shrink-0">
+                                        <img
+                                            src={item.resourceType === 'notes' ? notes : pyq}
+                                            alt={item.resourceType}
+                                            className="h-full w-full object-cover p-1 rounded-full"
+                                        />
+                                    </div>
+                                    <div className="ml-4 flex justify-between w-full">
+                                        <div>
+                                            <p className="font-semibold text-base text-gray-800 capitalize">{item.resourceType}</p>
+                                            <p className="text-xs text-gray-500">
+                                                {new Date(item.createdAt).toLocaleDateString('en-US', {
+                                                    weekday: 'short',
+                                                    month: 'short',
+                                                    day: 'numeric',
+                                                    year: 'numeric',
+                                                })}
+                                            </p>
+                                        </div>
+                                        <div className="text-xl font-semibold">
+                                            <p
+                                                className={`p-2 ${item.type === 'earn' ? 'text-green-600' : 'text-red-600'
+                                                    }`}
+                                            >
+                                                {item.type === 'earn' ? '+' : '-'}{item.points}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             )}
+
                             {type === 'pyqs' && (
-                                <>
-                                    <p className="font-bold">
-                                        {item.subject?.subjectName} -{' '}
-                                        {item.examType.toUpperCase()}
-                                    </p>
-                                    <p>
-                                        <strong>Year:</strong> {item.year}
-                                    </p>
+                                <div className="flex justify-between items-center">
                                     <a
                                         href={item.fileUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-blue-500 underline"
+                                        className="text-blue-600 font-semibold hover:underline text-sm"
                                     >
-                                        View PYQ
+                                        <p className="font-semibold text-base text-gray-800">
+                                            {item.subject?.subjectName} - {item.examType.toUpperCase()}
+                                        </p>
                                     </a>
-                                    <p>
-                                        <strong>Created At:</strong>{' '}
-                                        {new Date(
-                                            item.createdAt
-                                        ).toLocaleDateString()}
+                                    <p className="text-xs text-gray-500">
+                                        {new Date(item.createdAt).toLocaleDateString('en-US', {
+                                            weekday: 'short',
+                                            month: 'short',
+                                            day: 'numeric',
+                                            year: 'numeric',
+                                        })}
                                     </p>
-                                </>
+                                </div>
                             )}
                         </li>
                     ))}
                 </ul>
+
                 {items.length > 5 && (
                     <button
                         onClick={() => toggleViewMore(type)}
-                        className="mt-4 text-blue-500 underline"
+                        className={`mt-4 px-4 py-2 rounded-lg text-sm font-medium 
+                            ${isExpanded ? 'bg-blue-500 text-white' : 'bg-white text-blue-500 border border-blue-500'} 
+                            hover:bg-blue-600 hover:text-white transition duration-300`}
                     >
                         {isExpanded ? 'View Less' : 'View More'}
                     </button>
@@ -130,6 +152,7 @@ export default function ProfileDetails({ data }) {
             </>
         );
     };
+
 
     const [showRedeemModal, setShowRedeemModal] = useState(false);
     const [upiId, setUpiId] = useState('');
@@ -178,68 +201,80 @@ export default function ProfileDetails({ data }) {
     };
 
     return (
-        <div className="p-6 space-y-8 max-w-4xl mx-auto">
+        <div className="py-6 max-w-4xl mx-auto h-[100%] overflow-scroll">
             <h1 className="text-2xl font-bold text-center">
                 Contributions Details
             </h1>
 
             {/* Reward Section */}
-            <div className="bg-white flex gap-6 shadow-md rounded-lg p-6 space-y-4">
-                <div>
-                    <h2 className="text-xl font-semibold">Rewards</h2>
-                    <p>
-                        <strong>Current Balance:</strong> {data.rewardBalance}
-                    </p>
-                    <p>
-                        <strong>Total Points Earned:</strong>{' '}
-                        {data.rewardPoints}
-                    </p>
-                    <p>
-                        <strong>Total Redeemed:</strong> {data.rewardRedeemed}
-                    </p>
+            <div className="rounded-lg space-y-6">
+                <h2 className="text-2xl font-bold text-gray-800">Rewards</h2>
+                <div className="lg:flex justify-between gap-3">
+                    <div className="bg-white text-gray-600 rounded-2xl w-full pl-4 pt-4 shadow-sm hover:shadow-lg duration-300 my-2">
+                        <strong className="text-gray-800 ">Current Balance:</strong>
+                        <p className='text-3xl font-bold text-gray-800'>{data.rewardBalance}</p>
+                         <br />
+                        <div className="relative h-2 bg-gray-200 rounded-full mb-4 w-[95%]">
+                            <div
+                                className="top-0 left-0 h-full bg-orange-400 rounded-full"
+                                style={{ width: `${data.rewardBalance > 100 ? ((100 / 100) * 100) : ((data.rewardBalance / 100) * 100)}%` }}
+                            ></div>
+                              </div>
+                              <button
+                            onClick={() => setShowRedeemModal(true)}
+                            className={`${data.rewardBalance > 100 ? ("bg-blue-500 hover:bg-blue-600"):("bg-gray-400")} text-white font-semibold py-2 px-4 rounded-md transition-all duration-300`}
+                            disabled={data.rewardBalance < 100}
+                        >
+                            Redeem Now
+                        </button>
+                        <br/>
+                        <br/>
+                    </div>
+                    <div className="bg-white text-gray-600 h-40 rounded-2xl w-full pl-4 pt-4 shadow-sm hover:shadow-lg duration-300 my-2">
+                        <strong className="text-gray-800">Total Points Earned:</strong><br/><br/>
+                        <p className='text-3xl font-bold text-gray-800'>{data.rewardPoints}</p>
+                    </div>
+                    <div className="bg-white text-gray-600 h-40 rounded-2xl w-full pl-4 pt-4 shadow-sm hover:shadow-lg duration-300 my-2">
+                        <strong className="text-gray-800">Total Redeemed:</strong><br/><br/>
+                        <p className='text-3xl font-bold text-gray-800'> {data.rewardRedeemed}</p>
+                    </div>
                 </div>
-                <div>
-                    <button
-                        onClick={() => setShowRedeemModal(true)}
-                        className="bg-yellow-300 rounded-md p-1 border-2 border-sky-500"
-                    >
-                        Redeem Now
-                    </button>
-                </div>
+
             </div>
 
+
             {/* Notes Section */}
-            <div className="bg-white shadow-md rounded-lg p-6">
+            {data.notes && data.notes.length > 0 ? (<div className="rounded-lg">
                 <h2 className="text-xl font-semibold">Notes Added</h2>
                 {data.notes && data.notes.length > 0 ? (
                     renderList(data.notes, 'notes', viewMoreNotes)
                 ) : (
-                    <p className="text-gray-500">No notes added by you</p>
+                    null
                 )}
-            </div>
+            </div>) : null}
 
             {/* Products Section */}
-            <div className="bg-white shadow-md rounded-lg p-6">
+            {data.notes && data.notes.length > 0 ? (<div className=" rounded-lg">
                 <h2 className="text-xl font-semibold">Products Added</h2>
                 {data.products && data.products.length > 0 ? (
                     renderList(data.products, 'products', viewMoreProducts)
                 ) : (
                     <p className="text-gray-500">No products added by you</p>
                 )}
-            </div>
+            </div>) : null}
 
             {/* PYQs Section */}
-            <div className="bg-white shadow-md rounded-lg p-6">
-                <h2 className="text-xl font-semibold">PYQs Added</h2>
+            {data.notes && data.notes.length > 0 ? (<div className=" rounded-lg">
+                <h2 className="text-base font-semibold">PYQs Added</h2>
                 {data.pyqs && data.pyqs.length > 0 ? (
                     renderList(data.pyqs, 'pyqs', viewMorePyqs)
                 ) : (
                     <p className="text-gray-500">No Pyq Added by you</p>
                 )}
-            </div>
+            </div>) : null}
 
             {/* Transactions Section */}
-            <div className="bg-white shadow-md rounded-lg p-6">
+            {data.notes && data.notes.length > 0 ? (<div className=" rounded-lg">
                 <h2 className="text-xl font-semibold">Transactions</h2>
                 {data.transactions && data.transactions.length > 0 ? (
                     renderList(
@@ -250,13 +285,13 @@ export default function ProfileDetails({ data }) {
                 ) : (
                     <p className="text-gray-500">No transactions available</p>
                 )}
-            </div>
+            </div>) : null}
 
             {/* Redeem Modal */}
             {showRedeemModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-gray-400 bg-opacity-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
-                        <h2 className="text-2xl font-semibold text-center mb-4">
+                <div className="fixed inset-0 !mt-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md mx-4">
+                        <h2 className="text-3xl font-bold text-center text-gray-800  mb-6">
                             Redeem Points
                         </h2>
                         <input
@@ -264,24 +299,28 @@ export default function ProfileDetails({ data }) {
                             value={upiId}
                             onChange={(e) => setUpiId(e.target.value)}
                             placeholder="Enter UPI ID"
-                            className="w-full p-3 rounded-md mb-4 border border-gray-300"
+                            className="w-full p-4 rounded-lg mb-6 border border-gray-300 focus:ring-2 focus:ring-blue-400 outline-none text-gray-700"
                         />
                         <button
                             onClick={handleRedeem}
-                            className="w-full p-3 bg-blue-500 text-white rounded-md"
+                            className={`w-full p-4 rounded-lg text-white font-semibold ${loadingRedeem
+                                ? 'bg-blue-400 cursor-not-allowed'
+                                : 'bg-blue-500 hover:bg-blue-600'
+                                }`}
                             disabled={loadingRedeem}
                         >
                             {loadingRedeem ? 'Processing...' : 'Redeem Points'}
                         </button>
                         <button
                             onClick={() => setShowRedeemModal(false)}
-                            className="mt-3 w-full p-3 bg-gray-300 text-gray-800 rounded-md"
+                            className="mt-4 w-full p-4 bg-gray-100 text-gray-800 rounded-lg font-semibold hover:bg-gray-200 transition"
                         >
                             Cancel
                         </button>
                     </div>
                 </div>
             )}
+
         </div>
     );
 }
