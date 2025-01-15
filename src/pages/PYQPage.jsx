@@ -91,7 +91,7 @@ const PYQPage = () => {
                     {capitalizeWords(collegeName)} <span>)</span>
                 </h1>
 
-                <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-2 sm:gap-4 mb-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 sm:justify-center gap-2 sm:gap-4 mb-4">
                     <input
                         type="text"
                         placeholder="Search by Subject Name"
