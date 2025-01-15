@@ -41,14 +41,14 @@ function PyqCard({ Pyqs }) {
                         <p className="mb-2 text-xs lg:text-base">
                             Branch:{' '}
                             <span className="font-normal">
-                                {pyq.subject.branch.branchName}
+                                {pyq.subject?.branch?.branchName}
                             </span>
                         </p>
                     </div>
                     <div className="mt-4 flex justify-center">
                         {isAuthenticated ? (
                             <Link
-                                to={`/${collegeName}/resources/${pyq.subject.branch.course.courseCode.toLowerCase()}/${pyq.subject.branch.branchCode.toLowerCase()}/pyqs/${pyq.subject.subjectCode.toLowerCase()}/${
+                                to={`/${collegeName}/resources/${pyq.subject?.branch?.course.courseCode.toLowerCase()}/${pyq.subject?.branch?.branchCode.toLowerCase()}/pyqs/${pyq.subject?.subjectCode.toLowerCase()}/${
                                     pyq.slug
                                 }`}
                                 className="bg-sky-500 text-white px-4 py-2 rounded-3xl text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
