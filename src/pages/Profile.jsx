@@ -165,7 +165,7 @@ export default function Profile() {
     } = useSelector((state) => state.userData || {});
 
     return (
-        <div className="flex flex-col sm:flex-row">
+        <div className="flex flex-col sm:flex-row bg-gray-100">
             {showDialog ? (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-400 z-50 bg-opacity-75 ">
                     <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 rounded-lg lg:w-1/3 w-2/3 shadow-2xl">
@@ -260,7 +260,7 @@ export default function Profile() {
                         type="text"
                         id="username"
                         placeholder="Username"
-                        className="bg-slate-100 rounded-lg p-3"
+                        className="bg-slate-200 rounded-lg p-3"
                         onChange={handleChange}
                     />
                     <input
@@ -268,7 +268,7 @@ export default function Profile() {
                         type="email"
                         id="email"
                         placeholder="Email"
-                        className="bg-slate-100 rounded-lg p-3"
+                        className="bg-slate-200 rounded-lg p-3"
                         onChange={handleChange}
                         readOnly
                     />
@@ -277,7 +277,7 @@ export default function Profile() {
                         type="text"
                         id="college"
                         placeholder="College Name"
-                        className="bg-slate-100 rounded-lg p-3"
+                        className="bg-slate-200 rounded-lg p-3"
                         onChange={handleChange}
                     />
                     <input
@@ -285,7 +285,7 @@ export default function Profile() {
                         type="number"
                         id="phone"
                         placeholder="Please Enter 10 digit Mobile No"
-                        className="bg-slate-100 rounded-lg p-3"
+                        className="bg-slate-200 rounded-lg p-3"
                         onChange={handleChange}
                     />
                     <div className="w-full flex justify-between">
@@ -293,7 +293,7 @@ export default function Profile() {
                             type={passwordShown ? 'text' : 'password'}
                             id="password"
                             placeholder="Password"
-                            className="bg-slate-100 rounded-lg p-3 w-full"
+                            className="bg-slate-200 rounded-lg p-3 w-full"
                             onChange={handleChange}
                         />
                         <i
