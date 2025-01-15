@@ -196,7 +196,10 @@ function SubjectNotes() {
                                 {note.description || 'No description'}
                             </p>
                             <p className="text-xs text-gray-500 mt-1">
-                                {new Date(note.createdAt).toLocaleDateString()}
+                                {new Date(note.createdAt).toLocaleDateString()}{' '}
+                                <span className="ml-1 mt-1 text-[8px] text-gray-500 ">
+                                    {note.clickCounts} views
+                                </span>
                             </p>
 
                             <div className="flex items-center justify-between mt-3">

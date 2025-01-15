@@ -101,6 +101,9 @@ function SubjectPyqs() {
                                 <p className="text-sm text-gray-500">
                                     {pyq.examType}
                                 </p>
+                                <span className="ml-1 mt-1 text-[8px] text-gray-500 ">
+                                    {pyq.clickCounts} views
+                                </span>
                                 <div className="flex items-center justify-between mt-4">
                                     <Link
                                         to={pyq.slug}

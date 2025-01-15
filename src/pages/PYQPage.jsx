@@ -31,7 +31,9 @@ const PYQPage = () => {
 
     // Extract unique values for filters
     const courses = [
-        ...new Set(pyqs.map((paper) => paper.subject.branch.course.courseName)),
+        ...new Set(
+            pyqs.map((paper) => paper.subject?.branch?.course?.courseName)
+        ),
     ];
     const branches = selectedCourse
         ? [
@@ -39,10 +41,10 @@ const PYQPage = () => {
                   pyqs
                       .filter(
                           (paper) =>
-                              paper.subject.branch.course.courseName ===
+                              paper.subject.branch?.course?.courseName ===
                               selectedCourse
                       )
-                      .map((paper) => paper.subject.branch.branchName)
+                      .map((paper) => paper.subject?.branch?.branchName)
               ),
           ]
         : [];
@@ -53,13 +55,13 @@ const PYQPage = () => {
         return (
             (selectedYear ? paper.year === selectedYear : true) &&
             (selectedSemester
-                ? paper.subject.semester === Number(selectedSemester)
+                ? paper.subject?.semester === Number(selectedSemester)
                 : true) &&
             (selectedBranch
-                ? paper.subject.branch.branchName === selectedBranch
+                ? paper.subject?.branch?.branchName === selectedBranch
                 : true) &&
             (selectedCourse
-                ? paper.subject.branch.course.courseName === selectedCourse
+                ? paper.subject?.branch?.course.courseName === selectedCourse
                 : true) &&
             (selectedExamType ? paper.examType === selectedExamType : true) &&
             (searchTerm
