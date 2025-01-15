@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import useApiRequest from '../hooks/useApiRequest';
 import { api } from '../config/apiConfiguration.js';
 import { colleges } from '../hooks/useCollegeId.js';
+import useRequireLogin from '../hooks/useRequireLogin.js';
 
 const AddSeniorPage = () => {
+    const requireLogin = useRequireLogin();
     const [isSuccess, setIsSuccess] = useState(false);
     const [responseMessage, setResponseMessage] = useState('');
     const [senior, setSenior] = useState({
@@ -31,6 +33,8 @@ const AddSeniorPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!requireLogin()) return;
 
         const newSenior = {
             name: senior.name,

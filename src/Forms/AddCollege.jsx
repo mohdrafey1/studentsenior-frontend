@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import useApiRequest from '../hooks/useApiRequest';
 import { api } from '../config/apiConfiguration.js';
+import useRequireLogin from '../hooks/useRequireLogin.js';
 
 function AddCollege() {
+    const requireLogin = useRequireLogin();
     const [isSuccess, setIsSuccess] = useState(false);
     const [responseMessage, setResponseMessage] = useState('');
     const [pushData, setPushData] = useState({
@@ -21,6 +23,9 @@ function AddCollege() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!requireLogin()) return;
+
         try {
             await apiRequest(url, 'POST', pushData);
             setResponseMessage(

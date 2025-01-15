@@ -13,10 +13,12 @@ import ProductsCard from '../components/Cards/ProductsCard.jsx';
 import { useCollegeId } from '../hooks/useCollegeId.js';
 import Dialog from '../utils/Dialog.jsx';
 import { fetchProducts } from '../redux/slices/productSlice.js';
+import useRequireLogin from '../hooks/useRequireLogin.js';
 
 const StorePage = () => {
     const { collegeName } = useParams();
     const collegeId = useCollegeId(collegeName);
+    const requireLogin = useRequireLogin();
     const [loadingStates, setLoadingStates] = useState({});
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [productIdtoDelete, setProductIdtoDelete] = useState(null);
@@ -76,6 +78,9 @@ const StorePage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!requireLogin()) return;
+
         const formData = new FormData();
         formData.append('name', newProduct.name);
         formData.append('price', newProduct.price);

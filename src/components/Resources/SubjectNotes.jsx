@@ -10,6 +10,7 @@ import useApiRequest from '../../hooks/useApiRequest.js';
 import { capitalizeWords } from '../../utils/Capitalize.js';
 import { fetchSubjectNotes } from '../../redux/slices/subjectNotesSlice.js';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
+import useRequireLogin from '../../hooks/useRequireLogin.js';
 
 function SubjectNotes() {
     const { collegeName, courseCode, subjectCode, branchCode } = useParams();
@@ -19,6 +20,7 @@ function SubjectNotes() {
     const [noteIdToDelete, setNoteIdToDelete] = useState(null);
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [submitting, setSubmitting] = useState(false);
+    const requireLogin = useRequireLogin();
 
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
@@ -36,6 +38,10 @@ function SubjectNotes() {
         loading: loadingSubjectNotes,
         error: notesError,
     } = useSelector((state) => state.subjectNotes || {});
+
+    const handleOpenAddNoteModal = () => {
+        requireLogin(() => setModalOpen(true));
+    };
 
     const handleAddNote = async (formData) => {
         try {
@@ -157,7 +163,7 @@ function SubjectNotes() {
 
             <div className="my-5 text-center">
                 <button
-                    onClick={() => setModalOpen(true)}
+                    onClick={handleOpenAddNoteModal}
                     className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
                 >
                     Add Note

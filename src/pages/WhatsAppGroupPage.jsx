@@ -8,9 +8,11 @@ import useApiRequest from '../hooks/useApiRequest.js';
 import { useCollegeId } from '../hooks/useCollegeId.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGroups } from '../redux/slices/groupSlice.js';
+import useRequireLogin from '../hooks/useRequireLogin.js';
 
 const WhatsAppGroupPage = () => {
     const { collegeName } = useParams();
+    const requireLogin = useRequireLogin();
     const collegeId = useCollegeId(collegeName);
     const [searchTerm, setSearchTerm] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -59,6 +61,9 @@ const WhatsAppGroupPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!requireLogin()) return;
+
         setText('Wait ...');
         try {
             await apiRequest(url, 'POST', { ...groupData, college: collegeId });
