@@ -61,7 +61,7 @@ const PYQPage = () => {
                 ? paper.subject?.branch?.branchName === selectedBranch
                 : true) &&
             (selectedCourse
-                ? paper.subject?.branch?.course.courseName === selectedCourse
+                ? paper.subject?.branch?.course?.courseName === selectedCourse
                 : true) &&
             (selectedExamType ? paper.examType === selectedExamType : true) &&
             (searchTerm
