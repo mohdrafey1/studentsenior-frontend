@@ -16,12 +16,12 @@ function PyqCard({ Pyqs }) {
                 >
                     <div className="flex-grow">
                         <h2 className="text-sm lg:text-xl font-bold mb-2">
-                            {pyq.subject.subjectName}
+                            {pyq.subject?.subjectName}
                         </h2>
                         <p className="mb-2 text-xs lg:text-base">
                             Subject Code:{' '}
                             <span className="font-normal">
-                                {pyq.subject.subjectCode}
+                                {pyq.subject?.subjectCode}
                             </span>
                         </p>
                         <p className="mb-2 text-xs lg:text-base">
@@ -35,7 +35,7 @@ function PyqCard({ Pyqs }) {
                         <p className="mb-2 text-xs lg:text-base">
                             Semester:{' '}
                             <span className="font-normal">
-                                {pyq.subject.semester}
+                                {pyq.subject?.semester}
                             </span>
                         </p>
                         <p className="mb-2 text-xs lg:text-base">
@@ -48,7 +48,7 @@ function PyqCard({ Pyqs }) {
                     <div className="mt-4 flex justify-center">
                         {isAuthenticated ? (
                             <Link
-                                to={`/${collegeName}/resources/${pyq.subject?.branch?.course.courseCode.toLowerCase()}/${pyq.subject?.branch?.branchCode.toLowerCase()}/pyqs/${pyq.subject?.subjectCode.toLowerCase()}/${
+                                to={`/${collegeName}/resources/${pyq.subject?.branch?.course?.courseCode.toLowerCase()}/${pyq.subject?.branch?.branchCode.toLowerCase()}/pyqs/${pyq.subject?.subjectCode.toLowerCase()}/${
                                     pyq.slug
                                 }`}
                                 className="bg-sky-500 text-white px-4 py-2 rounded-3xl text-center hover:bg-red-300 transition-colors text-xs lg:text-base"

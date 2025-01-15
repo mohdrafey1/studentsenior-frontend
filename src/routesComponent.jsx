@@ -93,22 +93,22 @@ const RoutesComponent = () => {
                     </ValidateCollegeRoute>
                 }
             />
-            <Route
+            {/* <Route
                 path="/college/:collegeName/pyq/bundle"
                 element={
                     <ValidateCollegeRoute>
                         <BundlePyq />
                     </ValidateCollegeRoute>
                 }
-            />
-            <Route
+            /> */}
+            {/* <Route
                 path="/college/:collegeName/pyq/:slug"
                 element={
                     <ValidateCollegeRoute>
                         <PyqDetail />
                     </ValidateCollegeRoute>
                 }
-            />
+            /> */}
             <Route
                 path="/college/:collegeName/store"
                 element={
