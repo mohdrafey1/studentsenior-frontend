@@ -5,13 +5,16 @@ export const fetchPyqs = createAsyncThunk(
     'pyqs/fetchPyqs',
     async (collegeId, { rejectWithValue }) => {
         try {
-            const response = await fetch(`${api.pyq}/college/${collegeId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': API_KEY,
-                },
-            });
+            const response = await fetch(
+                `${api.newPyqs}/college/${collegeId}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': API_KEY,
+                    },
+                }
+            );
             const data = await response.json();
             if (data.success === false) {
                 throw new Error(data.message);

@@ -76,7 +76,7 @@ function NotesView() {
     }
 
     return (
-        <div className="container mx-auto p-4 min-h-screen">
+        <div className="container mx-auto px-4 sm:px-2 min-h-screen">
             <DetailPageNavbar
                 path={`${collegeName}/resources/${courseCode}/${branchCode}/notes/${subjectCode}`}
             />
@@ -97,7 +97,7 @@ function NotesView() {
                         <iframe
                             src={`https://docs.google.com/gview?url=${note.fileUrl}&embedded=true`}
                             width="100%"
-                            height="550"
+                            height="600"
                             className="block max-w-screen-lg w-full rounded-md shadow-md border-none"
                             title="PDF Viewer"
                         ></iframe>

@@ -16,12 +16,12 @@ function PyqCard({ Pyqs }) {
                 >
                     <div className="flex-grow">
                         <h2 className="text-sm lg:text-xl font-bold mb-2">
-                            {pyq.subjectName}
+                            {pyq.subject.subjectName}
                         </h2>
                         <p className="mb-2 text-xs lg:text-base">
                             Subject Code:{' '}
                             <span className="font-normal">
-                                {pyq.subjectCode}
+                                {pyq.subject.subjectCode}
                             </span>
                         </p>
                         <p className="mb-2 text-xs lg:text-base">
@@ -34,21 +34,23 @@ function PyqCard({ Pyqs }) {
                         </p>
                         <p className="mb-2 text-xs lg:text-base">
                             Semester:{' '}
-                            <span className="font-normal">{pyq.semester}</span>
+                            <span className="font-normal">
+                                {pyq.subject.semester}
+                            </span>
                         </p>
                         <p className="mb-2 text-xs lg:text-base">
                             Branch:{' '}
                             <span className="font-normal">
-                                {Array.isArray(pyq.branch)
-                                    ? pyq.branch.join(', ')
-                                    : pyq.branch}
+                                {pyq.subject.branch.branchName}
                             </span>
                         </p>
                     </div>
                     <div className="mt-4 flex justify-center">
                         {isAuthenticated ? (
                             <Link
-                                to={`/college/${collegeName}/pyq/${pyq.slug}`}
+                                to={`/${collegeName}/resources/${pyq.subject.branch.course.courseCode.toLowerCase()}/${pyq.subject.branch.branchCode.toLowerCase()}/pyqs/${pyq.subject.subjectCode.toLowerCase()}/${
+                                    pyq.slug
+                                }`}
                                 className="bg-sky-500 text-white px-4 py-2 rounded-3xl text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
                             >
                                 View PDF

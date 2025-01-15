@@ -23,35 +23,47 @@ const PYQPage = () => {
     const [selectedExamType, setSelectedExamType] = useState('');
 
     const dispatch = useDispatch();
-
-    const { pyqs, loading, error } = useSelector((state) => state.pyqs || {});
+    const { pyqs, loading } = useSelector((state) => state.pyqs || {});
 
     useEffect(() => {
         dispatch(fetchPyqs(collegeId));
     }, [collegeId]);
 
-    // Filter options
-    const courses = [...new Set(pyqs.map((paper) => paper.course))];
+    // Extract unique values for filters
+    const courses = [
+        ...new Set(pyqs.map((paper) => paper.subject.branch.course.courseName)),
+    ];
     const branches = selectedCourse
         ? [
               ...new Set(
                   pyqs
-                      .filter((paper) => paper.course === selectedCourse)
-                      .flatMap((paper) => paper.branch)
+                      .filter(
+                          (paper) =>
+                              paper.subject.branch.course.courseName ===
+                              selectedCourse
+                      )
+                      .map((paper) => paper.subject.branch.branchName)
               ),
           ]
         : [];
     const examTypes = [...new Set(pyqs.map((paper) => paper.examType))];
 
+    // Filtered papers
     const filteredPapers = pyqs.filter((paper) => {
         return (
             (selectedYear ? paper.year === selectedYear : true) &&
-            (selectedSemester ? paper.semester === selectedSemester : true) &&
-            (selectedBranch ? paper.branch.includes(selectedBranch) : true) &&
-            (selectedCourse ? paper.course === selectedCourse : true) &&
+            (selectedSemester
+                ? paper.subject.semester === Number(selectedSemester)
+                : true) &&
+            (selectedBranch
+                ? paper.subject.branch.branchName === selectedBranch
+                : true) &&
+            (selectedCourse
+                ? paper.subject.branch.course.courseName === selectedCourse
+                : true) &&
             (selectedExamType ? paper.examType === selectedExamType : true) &&
             (searchTerm
-                ? paper.subjectName
+                ? paper.subject.subjectName
                       .toLowerCase()
                       .includes(searchTerm.toLowerCase())
                 : true)
@@ -93,10 +105,10 @@ const PYQPage = () => {
                         value={selectedYear}
                     >
                         <option value="">All Years</option>
-                        <option value="2021-2022">2021-2022</option>
-                        <option value="2022-2023">2022-2023</option>
-                        <option value="2023-2024">2023-2024</option>
-                        <option value="2024-2025">2024-2025</option>
+                        <option value="2021-22">2021-2022</option>
+                        <option value="2022-23">2022-2023</option>
+                        <option value="2023-24">2023-2024</option>
+                        <option value="2024-25">2024-2025</option>
                     </select>
                     <select
                         className="p-2 px-3 border rounded-3xl w-full sm:w-auto"
@@ -159,28 +171,26 @@ const PYQPage = () => {
                         <PyqCard Pyqs={currentPapers} />
                     </div>
                 ) : (
-                    <>
-                        <div className="col-span-4 flex justify-center items-center py-10 w-full">
-                            {loading ? (
-                                <i className="fas fa-spinner fa-pulse fa-5x"></i>
-                            ) : (
-                                <div className="text-center p-4 bg-white rounded-lg shadow-3xl">
-                                    <p className="text-xl font-semibold text-gray-700">
-                                        No papers found matching the criteria.
-                                        Try adjusting your filters.
-                                        <br /> If You have any PYQ paper, Please
-                                        Provide us{' '}
-                                        <Link
-                                            to={`/${collegeName}/resources`}
-                                            className="text-blue-500"
-                                        >
-                                            Click
-                                        </Link>
-                                    </p>
-                                </div>
-                            )}
-                        </div>
-                    </>
+                    <div className="col-span-4 flex justify-center items-center py-10 w-full">
+                        {loading ? (
+                            <i className="fas fa-spinner fa-pulse fa-5x"></i>
+                        ) : (
+                            <div className="text-center p-4 bg-white rounded-lg shadow-3xl">
+                                <p className="text-xl font-semibold text-gray-700">
+                                    No papers found matching the criteria. Try
+                                    adjusting your filters.
+                                    <br /> If You have any PYQ paper, Please
+                                    Provide us{' '}
+                                    <Link
+                                        to={`/${collegeName}/resources`}
+                                        className="text-blue-500"
+                                    >
+                                        Click
+                                    </Link>
+                                </p>
+                            </div>
+                        )}
+                    </div>
                 )}
 
                 <div className="flex justify-center mt-6">
@@ -251,7 +261,6 @@ const PYQPage = () => {
                     </Link>
                 </div>
             </div>
-            {/* <Footer /> */}
             <Collegelink2 />
         </div>
     );
