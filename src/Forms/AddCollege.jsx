@@ -21,11 +21,14 @@ function AddCollege() {
         setPushData({ ...pushData, [name]: value });
     };
 
-    const handleSubmit = async (e) => {
+    const handleAddCollege = (e) => {
         e.preventDefault();
+        requireLogin(() => {
+            handleSubmit(e);
+        });
+    };
 
-        if (!requireLogin()) return;
-
+    const handleSubmit = async (e) => {
         try {
             await apiRequest(url, 'POST', pushData);
             setResponseMessage(
@@ -101,7 +104,7 @@ function AddCollege() {
                     </div>
                     <div className="formData w-full pl-8 pr-8">
                         <form
-                            onSubmit={handleSubmit}
+                            onSubmit={handleAddCollege}
                             className="max-w-lg mx-auto bg-white p-6 rounded-lg "
                         >
                             <h1 className="text-3xl font-bold mb-6 text-center">

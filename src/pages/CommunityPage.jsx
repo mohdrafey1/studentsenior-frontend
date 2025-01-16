@@ -138,15 +138,25 @@ const CommunityPage = () => {
 
     // Add a new comment to a post
     const handleAddComment = async (postId) => {
-        if (!requireLogin()) return;
-        await addComment(postId);
-        dispatch(fetchPosts(collegeId));
+        requireLogin(async () => {
+            try {
+                await addComment(postId);
+                dispatch(fetchPosts(collegeId));
+            } catch (error) {
+                console.error('Error adding comment:', error);
+            }
+        });
     };
 
     const handleLikePost = async (postId) => {
-        if (!requireLogin()) return;
-        await likePost(postId);
-        dispatch(fetchPosts(collegeId));
+        requireLogin(async () => {
+            try {
+                await likePost(postId);
+                dispatch(fetchPosts(collegeId));
+            } catch (error) {
+                console.error('Error liking post:', error);
+            }
+        });
     };
 
     useEffect(() => {

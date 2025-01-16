@@ -31,11 +31,14 @@ const AddSeniorPage = () => {
         window.location.href = '../';
     };
 
-    const handleSubmit = async (e) => {
+    const handleAddSenior = (e) => {
         e.preventDefault();
+        requireLogin(() => {
+            handleSubmit(e);
+        });
+    };
 
-        if (!requireLogin()) return;
-
+    const handleSubmit = async (e) => {
         const newSenior = {
             name: senior.name,
             branch: senior.branch,
@@ -113,7 +116,7 @@ const AddSeniorPage = () => {
                                 Join As a Senior
                             </span>
                         </h1>
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleAddSenior}>
                             <div className="lg:flex lg:flex-wrap justify-evenly">
                                 <div className="mb-4">
                                     <label className="block text-gray-700 font-bold mb-2">
