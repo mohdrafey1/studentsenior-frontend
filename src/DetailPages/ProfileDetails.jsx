@@ -51,10 +51,14 @@ export default function ProfileDetails({ data }) {
                                         rel="noopener noreferrer"
                                         className="text-blue-600 font-semibold hover:underline text-sm"
                                     >
-                                        <p className="font-semibold text-base text-gray-800">{item.title}</p>
+                                        <p className="font-semibold text-base text-gray-800">
+                                            {item.title}
+                                        </p>
                                     </a>
                                     <p className="text-xs text-gray-500">
-                                        {new Date(item.createdAt).toLocaleDateString('en-US', {
+                                        {new Date(
+                                            item.createdAt
+                                        ).toLocaleDateString('en-US', {
                                             weekday: 'short',
                                             month: 'short',
                                             day: 'numeric',
@@ -67,11 +71,17 @@ export default function ProfileDetails({ data }) {
                             {type === 'products' && (
                                 <div className="flex justify-between items-center">
                                     <div>
-                                        <p className="font-semibold text-base text-gray-800">{item.name}</p>
-                                        <p className="text-green-600 text-sm font-medium">Price: ₹{item.price}</p>
+                                        <p className="font-semibold text-base text-gray-800">
+                                            {item.name}
+                                        </p>
+                                        <p className="text-green-600 text-sm font-medium">
+                                            Price: ₹{item.price}
+                                        </p>
                                     </div>
                                     <p className="text-xs text-gray-500">
-                                        {new Date(item.createdAt).toLocaleDateString('en-US', {
+                                        {new Date(
+                                            item.createdAt
+                                        ).toLocaleDateString('en-US', {
                                             weekday: 'short',
                                             month: 'short',
                                             day: 'numeric',
@@ -85,23 +95,37 @@ export default function ProfileDetails({ data }) {
                                 <div className="flex items-center">
                                     <div className="w-12 h-12 bg-gray-100 rounded-full flex-shrink-0">
                                         <img
-                                            src={item.resourceType === 'notes'
-                                                ? notes
-                                                : item.resourceType === 'pyq'
+                                            src={
+                                                item.resourceType === 'notes'
+                                                    ? notes
+                                                    : item.resourceType ===
+                                                      'pyq'
                                                     ? pyq
                                                     : item.type === 'redeem'
-                                                        ? redeem
-                                                        : item.type === 'bonus'
-                                                            ? redeem : null}
-                                            alt={item.resourceType ? item.resourceType : item.type}
+                                                    ? redeem
+                                                    : item.type === 'bonus'
+                                                    ? redeem
+                                                    : null
+                                            }
+                                            alt={
+                                                item.resourceType
+                                                    ? item.resourceType
+                                                    : item.type
+                                            }
                                             className="h-full w-full object-cover p-1 rounded-full"
                                         />
                                     </div>
                                     <div className="ml-4 flex justify-between w-full">
                                         <div>
-                                            <p className="font-semibold text-base text-gray-800 capitalize">{item.resourceType ? item.resourceType : item.type}</p>
+                                            <p className="font-semibold text-base text-gray-800 capitalize">
+                                                {item.resourceType
+                                                    ? item.resourceType
+                                                    : item.type}
+                                            </p>
                                             <p className="text-xs text-gray-500">
-                                                {new Date(item.createdAt).toLocaleDateString('en-US', {
+                                                {new Date(
+                                                    item.createdAt
+                                                ).toLocaleDateString('en-US', {
                                                     weekday: 'short',
                                                     month: 'short',
                                                     day: 'numeric',
@@ -111,10 +135,24 @@ export default function ProfileDetails({ data }) {
                                         </div>
                                         <div className="text-xl font-semibold">
                                             <p
-                                                className={`p-2 ${item.type === 'earn' ? "text-green-600" : item.type === 'redeem' ? 'text-red-600' : item.type === 'bonus' ? 'text-green-600' : null
-                                                    }`}
+                                                className={`p-2 ${
+                                                    item.type === 'earn'
+                                                        ? 'text-green-600'
+                                                        : item.type === 'redeem'
+                                                        ? 'text-red-600'
+                                                        : item.type === 'bonus'
+                                                        ? 'text-green-600'
+                                                        : null
+                                                }`}
                                             >
-                                                {item.type === 'earn' ? '+' : item.type === 'redeem' ? '-' : item.type === 'bonus' ? '+' : '-'}{item.points}
+                                                {item.type === 'earn'
+                                                    ? '+'
+                                                    : item.type === 'redeem'
+                                                    ? '-'
+                                                    : item.type === 'bonus'
+                                                    ? '+'
+                                                    : '-'}
+                                                {item.points}
                                             </p>
                                         </div>
                                     </div>
@@ -130,11 +168,14 @@ export default function ProfileDetails({ data }) {
                                         className="text-blue-600 font-semibold hover:underline text-sm"
                                     >
                                         <p className="font-semibold text-base text-gray-800">
-                                            {item.subject?.subjectName} - {item.examType.toUpperCase()}
+                                            {item.subject?.subjectName} -{' '}
+                                            {item.examType.toUpperCase()}
                                         </p>
                                     </a>
                                     <p className="text-xs text-gray-500">
-                                        {new Date(item.createdAt).toLocaleDateString('en-US', {
+                                        {new Date(
+                                            item.createdAt
+                                        ).toLocaleDateString('en-US', {
                                             weekday: 'short',
                                             month: 'short',
                                             day: 'numeric',
@@ -151,16 +192,21 @@ export default function ProfileDetails({ data }) {
                     <button
                         onClick={() => toggleViewMore(type)}
                         className={`mt-4 px-4 py-2 rounded-lg text-sm font-medium 
-                            ${isExpanded ? 'bg-blue-500 text-white' : 'bg-white text-blue-500 border border-blue-500'} 
+                            ${
+                            isExpanded
+                                ? 'bg-blue-500 text-white'
+                                : 'bg-white text-blue-500 border border-blue-500'
+                        } 
                             hover:bg-blue-600 hover:text-white transition duration-300`}
                     >
                         {isExpanded ? 'View Less' : 'View More'}
                     </button>
-                )}<br /><br />
+                )}
+                <br />
+                <br />
             </>
         );
     };
-
 
     const [showRedeemModal, setShowRedeemModal] = useState(false);
     const [upiId, setUpiId] = useState('');
@@ -190,11 +236,10 @@ export default function ProfileDetails({ data }) {
 
             const response = await apiRequest(api.userRedumption, 'POST', body);
 
-            const responseData = await response.json();
-
-            if (responseData.success === false) {
-                toast.error(responseData.message || 'Something went wrong');
+            if (response.success === false) {
+                toast.error(response.message || 'Something went wrong');
                 setShowRedeemModal(false);
+                return;
             }
             toast.success(
                 'Points Redemption Successful, Amount will be transferred soon'
@@ -219,19 +264,33 @@ export default function ProfileDetails({ data }) {
                 <h2 className="text-2xl font-bold text-gray-800">Rewards</h2>
                 <div className="lg:flex justify-between gap-3">
                     <div className="bg-white text-gray-600 rounded-2xl w-full pl-4 pt-4 shadow-sm hover:shadow-lg duration-300 my-2">
-                        <strong className="text-gray-800 ">Current Balance:</strong>
-                        <p className='text-3xl font-bold text-gray-800'>{data.rewardBalance}</p>
+                        <strong className="text-gray-800 ">
+                            Current Balance:
+                        </strong>
+                        <p className="text-3xl font-bold text-gray-800">
+                            {data.rewardBalance}
+                        </p>
                         <br />
                         <div className="relative h-2 bg-gray-200 rounded-full mb-4 w-[95%]">
                             <div
                                 className="top-0 left-0 h-full bg-orange-400 rounded-full"
-                                style={{ width: `${data.rewardBalance > 100 ? ((100 / 100) * 100) : ((data.rewardBalance / 100) * 100)}%` }}
+                                style={{
+                                    width: `${
+                                        data.rewardBalance > 100
+                                            ? (100 / 100) * 100
+                                            : (data.rewardBalance / 100) * 100
+                                    }%`,
+                                }}
                             ></div>
                         </div>
                         <div className="flex items-center">
                             <button
                                 onClick={() => setShowRedeemModal(true)}
-                                className={`${data.rewardBalance > 100 ? ("bg-blue-500 hover:bg-blue-600") : ("bg-gray-400")} text-white font-semibold py-2 px-4 rounded-md transition-all duration-300`}
+                                className={`${
+                                    data.rewardBalance > 100
+                                        ? 'bg-blue-500 hover:bg-blue-600'
+                                        : 'bg-gray-400'
+                                } text-white font-semibold py-2 px-4 rounded-md transition-all duration-300`}
                                 disabled={data.rewardBalance < 100}
                             >
                                 Redeem Now
@@ -241,7 +300,10 @@ export default function ProfileDetails({ data }) {
                                     <i className="text-3xl fa-solid fa-circle-info"></i>
                                 </button>
                                 <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 px-4 py-3 text-sm text-white bg-gray-700 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out shadow-lg z-10">
-                                    <p>You can redeem your points only after accumulating 100 points.</p>
+                                    <p>
+                                        You can redeem your points only after
+                                        accumulating 100 points.
+                                    </p>
                                     <p>5 points = ₹1</p>
                                 </div>
                             </div>
@@ -249,61 +311,84 @@ export default function ProfileDetails({ data }) {
                         <br />
                     </div>
                     <div className="bg-white text-gray-600 h-40 rounded-2xl w-full pl-4 pt-4 shadow-sm hover:shadow-lg duration-300 my-2">
-                        <strong className="text-gray-800">Total Points Earned:</strong><br /><br />
-                        <p className='text-3xl font-bold text-gray-800'>{data.rewardPoints}</p>
+                        <strong className="text-gray-800">
+                            Total Points Earned:
+                        </strong>
+                        <br />
+                        <br />
+                        <p className="text-3xl font-bold text-gray-800">
+                            {data.rewardPoints}
+                        </p>
                     </div>
                     <div className="bg-white text-gray-600 h-40 rounded-2xl w-full pl-4 pt-4 shadow-sm hover:shadow-lg duration-300 my-2">
-                        <strong className="text-gray-800">Total Redeemed:</strong><br /><br />
-                        <p className='text-3xl font-bold text-gray-800'> {data.rewardRedeemed}</p>
+                        <strong className="text-gray-800">
+                            Total Redeemed:
+                        </strong>
+                        <br />
+                        <br />
+                        <p className="text-3xl font-bold text-gray-800">
+                            {' '}
+                            {data.rewardRedeemed}
+                        </p>
                     </div>
                 </div>
-
             </div>
 
-
             {/* Notes Section */}
-            {data.notes && data.notes.length > 0 ? (<div className="rounded-lg">
-                <h2 className="text-xl font-semibold mb-2">Notes Added</h2>
-                {data.notes && data.notes.length > 0 ? (
-                    renderList(data.notes, 'notes', viewMoreNotes)
-                ) : (
-                    null
-                )}
-            </div>) : null}
+            {data.notes && data.notes.length > 0 ? (
+                <div className="rounded-lg">
+                    <h2 className="text-xl font-semibold mb-2">Notes Added</h2>
+                    {data.notes && data.notes.length > 0
+                        ? renderList(data.notes, 'notes', viewMoreNotes)
+                        : null}
+                </div>
+            ) : null}
 
             {/* Products Section */}
-            {data.notes && data.notes.length > 0 ? (<div className=" rounded-lg">
-                <h2 className="text-xl font-semibold mb-2">Products Added</h2>
-                {data.products && data.products.length > 0 ? (
-                    renderList(data.products, 'products', viewMoreProducts)
-                ) : (
-                    <p className="text-gray-500">No products added by you</p>
-                )}
-            </div>) : null}
+            {data.notes && data.notes.length > 0 ? (
+                <div className=" rounded-lg">
+                    <h2 className="text-xl font-semibold mb-2">
+                        Products Added
+                    </h2>
+                    {data.products && data.products.length > 0 ? (
+                        renderList(data.products, 'products', viewMoreProducts)
+                    ) : (
+                        <p className="text-gray-500">
+                            No products added by you
+                        </p>
+                    )}
+                </div>
+            ) : null}
 
             {/* PYQs Section */}
-            {data.notes && data.notes.length > 0 ? (<div className=" rounded-lg">
-                <h2 className="text-xl font-semibold mb-2">PYQs Added</h2>
-                {data.pyqs && data.pyqs.length > 0 ? (
-                    renderList(data.pyqs, 'pyqs', viewMorePyqs)
-                ) : (
-                    <p className="text-gray-500">No Pyq Added by you</p>
-                )}
-            </div>) : null}
+            {data.notes && data.notes.length > 0 ? (
+                <div className=" rounded-lg">
+                    <h2 className="text-xl font-semibold mb-2">PYQs Added</h2>
+                    {data.pyqs && data.pyqs.length > 0 ? (
+                        renderList(data.pyqs, 'pyqs', viewMorePyqs)
+                    ) : (
+                        <p className="text-gray-500">No Pyq Added by you</p>
+                    )}
+                </div>
+            ) : null}
 
             {/* Transactions Section */}
-            {data.notes && data.notes.length > 0 ? (<div className=" rounded-lg">
-                <h2 className="text-xl font-semibold mb-2">Transactions</h2>
-                {data.transactions && data.transactions.length > 0 ? (
-                    renderList(
-                        data.transactions,
-                        'transactions',
-                        viewMoreTransactions
-                    )
-                ) : (
-                    <p className="text-gray-500">No transactions available</p>
-                )}
-            </div>) : null}
+            {data.notes && data.notes.length > 0 ? (
+                <div className=" rounded-lg">
+                    <h2 className="text-xl font-semibold mb-2">Transactions</h2>
+                    {data.transactions && data.transactions.length > 0 ? (
+                        renderList(
+                            data.transactions,
+                            'transactions',
+                            viewMoreTransactions
+                        )
+                    ) : (
+                        <p className="text-gray-500">
+                            No transactions available
+                        </p>
+                    )}
+                </div>
+            ) : null}
 
             {/* Redeem Modal */}
             {showRedeemModal && (
@@ -321,10 +406,11 @@ export default function ProfileDetails({ data }) {
                         />
                         <button
                             onClick={handleRedeem}
-                            className={`w-full p-4 rounded-lg text-white font-semibold ${loadingRedeem
-                                ? 'bg-blue-400 cursor-not-allowed'
-                                : 'bg-blue-500 hover:bg-blue-600'
-                                }`}
+                            className={`w-full p-4 rounded-lg text-white font-semibold ${
+                                loadingRedeem
+                                    ? 'bg-blue-400 cursor-not-allowed'
+                                    : 'bg-blue-500 hover:bg-blue-600'
+                            }`}
                             disabled={loadingRedeem}
                         >
                             {loadingRedeem ? 'Processing...' : 'Redeem Points'}
@@ -338,7 +424,6 @@ export default function ProfileDetails({ data }) {
                     </div>
                 </div>
             )}
-
         </div>
     );
 }
