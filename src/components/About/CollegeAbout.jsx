@@ -37,7 +37,7 @@ const CollegeAbout = () => {
                     )}
                 </h3>
                 <p className="text-gray-500 text-xl">
-                    {collegeData?.description || 'no description provided'}
+                    {collegeData?.description || ' '}
                 </p>
             </div>
         </section>

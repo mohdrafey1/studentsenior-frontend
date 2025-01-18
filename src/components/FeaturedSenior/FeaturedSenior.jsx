@@ -47,11 +47,11 @@ const FeaturedSeniors = () => {
             <div className="container mx-auto px-5 xl:px-40">
                 <div className="main-card">
                     <div className="mobile-card cards gap-2 flex md:gap-6 w-full lg:justify-center md:justify-center">
-                        {seniorError && (
+                        {/* {seniorError && (
                             <div className="text-red-500 text-center">
                                 Failed to load Seniors: {seniorError}
                             </div>
-                        )}
+                        )} */}
                         {seniors.length > 0 ? (
                             <SeniorCard
                                 seniors={seniors.slice(0, 4)}
