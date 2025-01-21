@@ -90,13 +90,13 @@ function SubjectPyqs() {
                     onClick={handleOpenAddPyqModal}
                     className="px-4 py-2 bg-blue-500 text-white rounded-md"
                 >
-                    <i className="fa-solid fa-plus"></i> Add Note
+                    <i className="fa-solid fa-plus"></i> Add PYQs
                 </button>
                 <div className="relative group">
                     <button className="content-center rounded-full px-2 py-3">
                         <i className="text-3xl fa-solid fa-circle-info"></i>
                     </button>
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-max px-4 py-2 text-sm text-white bg-gray-700 rounded-md opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+                    <div className="absolute top-full -translate-x-1/2 mt-2 px-4 py-2 text-sm text-white bg-gray-700 rounded-md opacity-0 group-hover:opacity-100 transition-opacity shadow-lg w-max max-w-xs break-words overflow-hidden">     
                         <p>You can upload PYQs and earn reward points:</p>
                         <p className="mt-2">Here are the rules for earning reward points:</p>
                         <ul className="list-disc ml-4 mt-2">
