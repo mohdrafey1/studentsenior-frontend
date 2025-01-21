@@ -130,7 +130,7 @@ export default function Profile() {
 
             if (response.ok) {
                 dispatch(signOut());
-                navigate('/login');
+                navigate('/sign-in');
                 setLoading1(false);
                 toast.warning('You are Logout Now');
             } else {

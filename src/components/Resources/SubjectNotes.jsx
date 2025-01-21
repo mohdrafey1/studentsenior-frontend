@@ -172,19 +172,28 @@ function SubjectNotes() {
                     <button className="content-center rounded-full px-2 py-3">
                         <i className="text-3xl fa-solid fa-circle-info"></i>
                     </button>
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-max px-4 py-2 text-sm text-white bg-gray-700 rounded-md opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+                    <div className="absolute top-full -translate-x-1/2 mt-2 px-4 py-2 text-sm text-white bg-blue-500 rounded-md opacity-0 group-hover:opacity-100 transition-opacity shadow-lg w-max max-w-xs break-words overflow-hidden">     
                         <p>You can add notes and earn reward points:</p>
-                        <p className="mt-2">Here are the rules for earning reward points:</p>
+                        <p className="mt-2">
+                            Here are the rules for earning reward points:
+                        </p>
                         <ul className="list-disc ml-4 mt-2">
-                            <li>1 note = 5 reward points</li>
-                            <li>5 reward points = ₹1</li>
-                            <li>Rewards will be given only after the notes are approved</li>
-                            <li>Duplicate notes are not allowed</li>
+                            <li>1 unit note = 5 reward points</li>
+                            <li>
+                                You can upload 1 unit or the whole in one upload
+                            </li>
+                            <li>
+                                Rewards will be given only after the notes are
+                                approved
+                            </li>
+                            <li>Duplicate and invalid notes are not allowed</li>
+                            <li>
+                                Labs will be approved only once unless they are
+                                better than the previous submission
+                            </li>
                         </ul>
                     </div>
-
                 </div>
-
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:mx-20 gap-4">
@@ -229,11 +238,12 @@ function SubjectNotes() {
                             <div className="flex items-center justify-between mt-3">
                                 <button
                                     onClick={() => likeNotes(note._id)}
-                                    className={`flex items-center space-x-1 ${Array.isArray(note.likes) &&
+                                    className={`flex items-center space-x-1 ${
+                                        Array.isArray(note.likes) &&
                                         note.likes.includes(ownerId)
-                                        ? 'text-red-500'
-                                        : 'text-gray-600'
-                                        } hover:text-red-500`}
+                                            ? 'text-red-500'
+                                            : 'text-gray-600'
+                                    } hover:text-red-500`}
                                     title="Like this note"
                                 >
                                     <i className="fa-regular fa-heart"></i>

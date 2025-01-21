@@ -96,18 +96,22 @@ function SubjectPyqs() {
                     <button className="content-center rounded-full px-2 py-3">
                         <i className="text-3xl fa-solid fa-circle-info"></i>
                     </button>
-                    <div className="absolute top-full -translate-x-1/2 mt-2 px-4 py-2 text-sm text-white bg-gray-700 rounded-md opacity-0 group-hover:opacity-100 transition-opacity shadow-lg w-max max-w-xs break-words overflow-hidden">     
+                    <div className="absolute top-full -translate-x-1/2 mt-2 px-4 py-2 text-sm text-white bg-blue-500 rounded-md opacity-0 group-hover:opacity-100 transition-opacity shadow-lg w-max max-w-xs break-words overflow-hidden">     
                         <p>You can upload PYQs and earn reward points:</p>
-                        <p className="mt-2">Here are the rules for earning reward points:</p>
+                        <p className="mt-2">
+                            Here are the rules for earning reward points:
+                        </p>
                         <ul className="list-disc ml-4 mt-2">
-                            <li>1 PYQ upload = 5 reward points</li>
-                            <li>5 reward points = ₹1</li>
-                            <li>Rewards will be given only after the PYQs are approved</li>
+                            <li>1 PYQ upload = 10 reward points</li>
+                            <li>
+                                Rewards will be given only after the PYQs are
+                                approved
+                            </li>
                             <li>Duplicate PYQs are not allowed</li>
+                            <li>PYQs should not be older than 2 years</li>
                         </ul>
                     </div>
                 </div>
-
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 px-4 py-6">
