@@ -178,6 +178,9 @@ function SubjectNotes() {
                     <i className="text-3xl fa-solid fa-circle-info"></i>
                 </button>
             </div>
+            <p className='text-center dark:text-gray-500 -translate-y-2'>
+            Like good notes to keep them on top
+            </p>
             {
                 showEarnDialog && (<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
                     <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg lg:m-4 m-6 dark:bg-gray-800">
@@ -190,6 +193,7 @@ function SubjectNotes() {
                                     <i class="fa-solid fa-xmark text-2xl"></i>
                                 </button>
                             </div>
+                            <div className='text-gray-900 dark:text-white'>
                             <p>You can add notes and earn reward points:</p>
                             <p className="mt-2">
                                 Here are the rules for earning reward points:
@@ -209,6 +213,7 @@ function SubjectNotes() {
                                     better than the previous submission
                                 </li>
                             </ul>
+                            </div>
                         </div>
                     </div>
                 </div>)

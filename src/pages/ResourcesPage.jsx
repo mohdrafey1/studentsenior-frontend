@@ -32,7 +32,7 @@ const ResourcesPage = () => {
     });
 
     return (
-        <div className="container bg-gradient-to-t from-sky-200 to bg-white min-w-full sm:pb-8">
+        <div className="container bg-gradient-to-t from-sky-200 to-white min-w-full sm:pb-8 grid place-items-center">
             <CollegeLinks />
             <div className="max-w-7xl mx-auto px-5 min-h-full">
                 <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
@@ -63,57 +63,60 @@ const ResourcesPage = () => {
                 )}
 
                 {filteredCourses.length > 0 ? (
-                    <table className="table-auto w-full bg-white rounded-lg shadow-md overflow-hidden">
-                        <thead className="bg-sky-500 text-white">
-                            <tr>
-                                <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
-                                    Course Name
-                                </th>
-                                <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
-                                    Subject Code
-                                </th>
-                                <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
-                                    Total Notes / Pyqs
-                                </th>
-                                <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredCourses.map((course, index) => (
-                                <tr
-                                    key={course._id}
-                                    className={
-                                        index % 2 === 0
-                                            ? 'bg-gray-100'
-                                            : 'bg-white'
-                                    }
-                                >
-                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
-                                        {course.courseName}
-                                    </td>
-                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
-                                        {course.courseCode}
-                                    </td>
-                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
-                                        {course.totalNotes || 0} /{' '}
-                                        {course.totalPyqs || 0}
-                                    </td>
-
-                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
-                                        <Link
-                                            to={`/${collegeName}/resources/${course.courseCode.toLowerCase()}`}
-                                            className="px-3 py-1 bg-sky-500 text-white rounded hover:underline transition-colors duration-200"
-                                            aria-label={`View details for ${course.courseName}`}
+                    <div className="flex justify-center items-center min-h-screen min-w-screen">
+                        <div className="w-full max-w-6xl px-4">
+                            <table className="table-auto w-full bg-white rounded-lg shadow-md overflow-hidden">
+                                <thead className="bg-sky-500 text-white">
+                                    <tr>
+                                        <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
+                                            Course Name
+                                        </th>
+                                        <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
+                                            Subject Code
+                                        </th>
+                                        <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
+                                            Total Notes / Pyqs
+                                        </th>
+                                        <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filteredCourses.map((course, index) => (
+                                        <tr
+                                            key={course._id}
+                                            className={
+                                                index % 2 === 0
+                                                    ? 'bg-gray-100'
+                                                    : 'bg-white'
+                                            }
                                         >
-                                            Explore
-                                        </Link>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                                            <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                                {course.courseName}
+                                            </td>
+                                            <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                                {course.courseCode}
+                                            </td>
+                                            <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                                {course.totalNotes || 0} /{' '}
+                                                {course.totalPyqs || 0}
+                                            </td>
+                                            <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                                <Link
+                                                    to={`/${collegeName}/resources/${course.courseCode.toLowerCase()}`}
+                                                    className="px-3 py-1 bg-sky-500 text-white rounded hover:underline transition-colors duration-200"
+                                                    aria-label={`View details for ${course.courseName}`}
+                                                >
+                                                    Explore
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 ) : (
                     <div className="flex justify-center items-center min-h-screen">
                         {loading ? (
