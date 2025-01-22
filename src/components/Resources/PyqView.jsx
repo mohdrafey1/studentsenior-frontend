@@ -12,6 +12,7 @@ function PyqView() {
     const [error, setError] = useState(null);
     const [countdown, setCountdown] = useState(5);
     const [canDownload, setCanDownload] = useState(false);
+    const [showCountdown, setShowCountdown] = useState(false); // State for showing countdown
 
     useEffect(() => {
         const fetchpyq = async () => {
@@ -43,7 +44,8 @@ function PyqView() {
     }, [slug]);
 
     const handleDownloadClick = () => {
-        setCanDownload(false);
+        setCanDownload(false); // Disable download initially
+        setShowCountdown(true); // Show countdown when button is clicked
         let timer = countdown;
 
         const interval = setInterval(() => {
@@ -51,9 +53,10 @@ function PyqView() {
             setCountdown(timer);
 
             if (timer === 0) {
-                clearInterval(interval);
-                setCanDownload(true);
-                setCountdown(5);
+                clearInterval(interval); // Clear the interval once countdown reaches 0
+                setCanDownload(true); // Enable download
+                setShowCountdown(false); // Hide countdown
+                setCountdown(5); // Reset countdown for next use
             }
         }, 1000);
     };
@@ -110,17 +113,15 @@ function PyqView() {
                             title="Download pyq PDF"
                         >
                             {canDownload ? (
-                                <>
-                                    <a
-                                        href={pyq.fileUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        Download now
-                                    </a>
-                                </>
+                                <a
+                                    href={pyq.fileUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Download now
+                                </a>
                             ) : (
-                                `Download ${countdown}s`
+                                showCountdown ? `Download ${countdown}s`:"Download"
                             )}
                         </button>
                     </div>
