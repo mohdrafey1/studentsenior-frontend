@@ -112,7 +112,8 @@ function SubjectPyqs() {
                                     <button onClick={handleEarnDialog}>
                                         <i class="fa-solid fa-xmark text-2xl"></i>
                                     </button>
-                                </div>
+                                </div> 
+                                <div className='text-gray-900 dark:text-white'>
                                 <p>You can upload PYQs and earn reward points:</p>
                                 <p className="mt-2">
                                     Here are the rules for earning reward points:
@@ -126,6 +127,7 @@ function SubjectPyqs() {
                                     <li>Duplicate PYQs are not allowed</li>
                                     <li>PYQs should not be older than 2 years</li>
                                 </ul>
+                                    </div>
                             </div>
                         </div>
                     </div>)
