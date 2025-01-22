@@ -21,6 +21,8 @@ function SubjectNotes() {
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const requireLogin = useRequireLogin();
+    const [showEarnDialog, setShowEarnDialog] = useState(false);
+
 
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
@@ -41,6 +43,10 @@ function SubjectNotes() {
 
     const handleOpenAddNoteModal = () => {
         requireLogin(() => setModalOpen(true));
+    };
+
+    const handleEarnDialog = () => {
+        setShowEarnDialog(!showEarnDialog);
     };
 
     const handleAddNote = async (formData) => {
@@ -168,33 +174,45 @@ function SubjectNotes() {
                 >
                     <i className="fa-solid fa-plus"></i> Add Note
                 </button>
-                <div className="relative group">
-                    <button className="content-center rounded-full px-2 py-3">
-                        <i className="text-3xl fa-solid fa-circle-info"></i>
-                    </button>
-                    <div className="absolute top-full -translate-x-1/2 mt-2 px-4 py-2 text-sm text-white bg-blue-500 rounded-md opacity-0 group-hover:opacity-100 transition-opacity shadow-lg w-max max-w-xs break-words overflow-hidden">     
-                        <p>You can add notes and earn reward points:</p>
-                        <p className="mt-2">
-                            Here are the rules for earning reward points:
-                        </p>
-                        <ul className="list-disc ml-4 mt-2">
-                            <li>1 unit note = 5 reward points</li>
-                            <li>
-                                You can upload 1 unit or the whole in one upload
-                            </li>
-                            <li>
-                                Rewards will be given only after the notes are
-                                approved
-                            </li>
-                            <li>Duplicate and invalid notes are not allowed</li>
-                            <li>
-                                Labs will be approved only once unless they are
-                                better than the previous submission
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <button className="content-center rounded-full px-2 py-3" onClick={handleEarnDialog}>
+                    <i className="text-3xl fa-solid fa-circle-info"></i>
+                </button>
             </div>
+            {
+                showEarnDialog && (<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg lg:m-4 m-6 dark:bg-gray-800">
+                        <div className="items-center mb-4 text-white">
+                            <div className='flex justify-between items-center'>
+                                <h2 className="text-xl sm:text-2xl pb-1 font-bold text-gray-900 dark:text-white ">
+                                    Earn Money
+                                </h2>
+                                <button onClick={handleEarnDialog}>
+                                    <i class="fa-solid fa-xmark text-2xl"></i>
+                                </button>
+                            </div>
+                            <p>You can add notes and earn reward points:</p>
+                            <p className="mt-2">
+                                Here are the rules for earning reward points:
+                            </p>
+                            <ul className="list-disc ml-4 mt-2">
+                                <li>1 unit note = 5 reward points</li>
+                                <li>
+                                    You can upload 1 unit or the whole in one upload
+                                </li>
+                                <li>
+                                    Rewards will be given only after the notes are
+                                    approved
+                                </li>
+                                <li>Duplicate and invalid notes are not allowed</li>
+                                <li>
+                                    Labs will be approved only once unless they are
+                                    better than the previous submission
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>)
+            }
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:mx-20 gap-4">
                 {subjectNotes.length > 0 ? (
@@ -238,12 +256,11 @@ function SubjectNotes() {
                             <div className="flex items-center justify-between mt-3">
                                 <button
                                     onClick={() => likeNotes(note._id)}
-                                    className={`flex items-center space-x-1 ${
-                                        Array.isArray(note.likes) &&
+                                    className={`flex items-center space-x-1 ${Array.isArray(note.likes) &&
                                         note.likes.includes(ownerId)
-                                            ? 'text-red-500'
-                                            : 'text-gray-600'
-                                    } hover:text-red-500`}
+                                        ? 'text-red-500'
+                                        : 'text-gray-600'
+                                        } hover:text-red-500`}
                                     title="Like this note"
                                 >
                                     <i className="fa-regular fa-heart"></i>
