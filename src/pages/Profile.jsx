@@ -130,9 +130,10 @@ export default function Profile() {
 
             if (response.ok) {
                 dispatch(signOut());
-                navigate('/sign-in');
                 setLoading1(false);
                 toast.warning('You are Logout Now');
+                localStorage.removeItem('authExpiry');
+                navigate('/sign-in');
             } else {
                 console.error('Signout failed:', response.data);
                 toast.error('Signout failed');

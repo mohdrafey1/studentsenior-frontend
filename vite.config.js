@@ -13,7 +13,7 @@ const collegePages = [
     '',
     '/pyq',
     '/seniors',
-    '/notes',
+    '/resources',
     '/whatsapp-group',
     '/store',
     '/community',
@@ -22,12 +22,15 @@ const collegePages = [
 
 const staticRoutes = [
     '/',
+    '/becomesenior',
     '/about-us',
     '/contact-us',
     '/privacy-policy',
     '/sign-in',
     '/sign-up',
     '/install',
+    '/integral-university/resources/cse',
+    '/integral-university/resources/cse/btech-cse?semester=1',
 ];
 
 const dynamicRoutes = colleges.flatMap((college) =>
