@@ -32,8 +32,8 @@ const OurFeatures = () => {
             <div>
                 <div className='lg:flex md:block justify-center items-center p-8'>
                     {
-                        features.map((feature) => (
-                            <div>
+                        features.map((feature,index) => (
+                            <div key={index}>
                                 <div className="py-10 px-5 ">
                                     <div className="max-w-md mx-auto bg-white shadow-lg rounded-[35px] p-6 text-center max-h-64">
                                         <div className="w-16 h-16 mx-auto mb-4">
