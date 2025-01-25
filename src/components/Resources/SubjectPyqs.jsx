@@ -110,7 +110,7 @@ function SubjectPyqs() {
                                         Earn Money
                                     </h2>
                                     <button onClick={handleEarnDialog}>
-                                        <i class="fa-solid fa-xmark text-2xl"></i>
+                                    <i className="fa-solid fa-xmark text-2xl text-gray-900 dark:text-white"></i>
                                     </button>
                                 </div> 
                                 <div className='text-gray-900 dark:text-white'>

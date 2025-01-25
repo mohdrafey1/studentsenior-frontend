@@ -10,7 +10,7 @@ function NotesView() {
     const [note, setNote] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [countdown, setCountdown] = useState(5); // Initial countdown
+    const [countdown, setCountdown] = useState(45); // Initial countdown
     const [canDownload, setCanDownload] = useState(false); // Button state
     const [showCountdown, setShowCountdown] = useState(false); // Control showing countdown
 
