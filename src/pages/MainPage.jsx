@@ -65,7 +65,7 @@ const MainPage = () => {
             </Hero>
             <QuickLinks />
             <OurFeatures />
-            <Testimonials />
+            {/* <Testimonials /> */}
             <About />
         </div>
     );
