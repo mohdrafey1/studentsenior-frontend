@@ -11,7 +11,6 @@ import AddPyq from './AddPyq.jsx';
 import { fetchSubjectPyqs } from '../../redux/slices/subjectPyqsSlice.js';
 import useRequireLogin from '../../hooks/useRequireLogin.js';
 
-
 function SubjectPyqs() {
     const { collegeName, courseCode, subjectCode, branchCode } = useParams();
     const collegeId = useCollegeId(collegeName);
@@ -110,24 +109,24 @@ function SubjectPyqs() {
                                         Earn Money
                                     </h2>
                                     <button onClick={handleEarnDialog}>
-                                        <i class="fa-solid fa-xmark text-2xl"></i>
+                                        <i className="fa-solid fa-xmark text-2xl text-gray-900 dark:text-white"></i>
                                     </button>
-                                </div> 
+                                </div>
                                 <div className='text-gray-900 dark:text-white'>
-                                <p>You can upload PYQs and earn reward points:</p>
-                                <p className="mt-2">
-                                    Here are the rules for earning reward points:
-                                </p>
-                                <ul className="list-disc ml-4 mt-2">
-                                    <li>1 PYQ upload = 10 reward points</li>
-                                    <li>
-                                        Rewards will be given only after the PYQs are
-                                        approved
-                                    </li>
-                                    <li>Duplicate PYQs are not allowed</li>
-                                    <li>PYQs should not be older than 2 years</li>
-                                </ul>
-                                    </div>
+                                    <p>You can upload PYQs and earn reward points:</p>
+                                    <p className="mt-2">
+                                        Here are the rules for earning reward points:
+                                    </p>
+                                    <ul className="list-disc ml-4 mt-2">
+                                        <li>1 PYQ upload = 10 reward points</li>
+                                        <li>
+                                            Rewards will be given only after the PYQs are
+                                            approved
+                                        </li>
+                                        <li>Duplicate PYQs are not allowed</li>
+                                        <li>PYQs should not be older than 2 years</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>)

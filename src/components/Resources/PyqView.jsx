@@ -10,7 +10,7 @@ function PyqView() {
     const [pyq, setPyq] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [countdown, setCountdown] = useState(5);
+    const [countdown, setCountdown] = useState(45);
     const [canDownload, setCanDownload] = useState(false);
     const [showCountdown, setShowCountdown] = useState(false); // State for showing countdown
 
@@ -56,7 +56,7 @@ function PyqView() {
                 clearInterval(interval); // Clear the interval once countdown reaches 0
                 setCanDownload(true); // Enable download
                 setShowCountdown(false); // Hide countdown
-                setCountdown(5); // Reset countdown for next use
+                setCountdown(45); // Reset countdown for next use
             }
         }, 1000);
     };
@@ -103,7 +103,7 @@ function PyqView() {
                             title="PDF Viewer"
                         ></iframe>
                     </div>
-                    <div className="flex justify-center">
+                    <div className="flex justify-center mb-5">
                         <button
                             onClick={handleDownloadClick}
                             disabled={canDownload}

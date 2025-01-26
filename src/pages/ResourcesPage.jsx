@@ -63,8 +63,8 @@ const ResourcesPage = () => {
                 )}
 
                 {filteredCourses.length > 0 ? (
-                    <div className="flex justify-center items-center min-h-screen min-w-screen">
-                        <div className="w-full max-w-6xl px-4">
+                    <div className="flex justify-center min-h-screen min-w-screen">
+                        <div className="w-full max-w-6xl lg:px-4">
                             <table className="table-auto w-full bg-white rounded-lg shadow-md overflow-hidden">
                                 <thead className="bg-sky-500 text-white">
                                     <tr>
