@@ -35,7 +35,7 @@ function QuickLinks() {
     return (
         <div className="container mx-auto my-4 p-4 ">
             <h1 className="text-center text-3xl p-4">
-                <span className="font-bold">Quick Access</span>
+                <span className="text-3xl sm:text-4xl font-extrabold text-gray-800">Quick Access</span>
             </h1>
             <div className="flex justify-center items-center">
                 <div className="p-5 flex flex-wrap gap-8 w-full justify-center">

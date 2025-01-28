@@ -21,7 +21,7 @@ const OurFeatures = () => {
             id: 3,
             title: 'Store',
             icon: store,
-            description: 'Discover calculators, books, lab coats, aprons, and affordable stationery essentials in our store to boost your preparation and achieve your academic goals.'
+            description: 'Discover and sell calculators, books, lab coats, aprons, and affordable stationery essentials in our store to boost your preparation and achieve your academic goals .'
         },
     ]
     const achievements = [
@@ -120,7 +120,7 @@ const OurFeatures = () => {
 
 
             <h1 className="text-center text-3xl">
-                <span className="font-bold">Our Features</span>
+                <span className="text-3xl sm:text-4xl font-extrabold text-gray-800">Our Features</span>
             </h1>
             <div>
                 <div className='lg:flex md:block justify-center items-center p-8'>
@@ -128,13 +128,13 @@ const OurFeatures = () => {
                         features.map((feature, index) => (
                             <div key={index}>
                                 <div className="py-10 px-5 ">
-                                    <div className="max-w-md mx-auto bg-white shadow-lg rounded-[35px] p-6 text-center max-h-64">
+                                    <div className="max-w-md mx-auto bg-white shadow-lg rounded-[35px] p-6 text-center h-full">
                                         <div className="w-16 h-16 mx-auto mb-4">
                                             <img src={feature.icon} alt="Icon" className="w-full bg-white rounded-full scale-150 shadow-xl -translate-y-10 h-full" />
                                         </div>
                                         <div className='transform -translate-y-5'>
                                             <h2 className="text-red-600 text-2xl font-bold mb-2">{feature.title}</h2>
-                                            <p className="text-gray-700 text-base">
+                                            <p className="text-gray-600 text-base sm:text-lg mt-2">
                                                 {feature.description}
                                             </p>
                                         </div>

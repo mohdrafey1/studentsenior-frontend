@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Hero from '../components/Hero/Hero';
-import Testimonials from '../components/Testimonials/Testimonials';
 import OurFeatures from '../components/OurFeatures/OurFeatures';
 import About from '../components/About/About';
 import '../App.css';
 import { colleges } from '../hooks/useCollegeId';
 import QuickLinks from '../components/Links/QuickLinks';
+import { toast } from 'react-toastify';
+
 
 const MainPage = () => {
     const [selectedCollege, setSelectedCollege] = useState('');
@@ -24,6 +25,8 @@ const MainPage = () => {
                 .replace(/\s+/g, '')
                 .toLowerCase();
             navigate(`/college/${formattedCollegeName}`);
+        } else {
+            toast.error('Please Select a College!');
         }
     };
 
@@ -33,9 +36,9 @@ const MainPage = () => {
                 <div className="flex flex-col items-center my-10">
                     <div className="text-black bg-white px-4 py-2 border-radius-38 border-4 border-sky-300 flex flex-col sm:flex-row items-center my-10">
                         <div className="text-xl sm:text-2xl flex items-center mb-4 sm:mb-0">
-                            <i className="fa-solid fa-building mr-2"></i>
-                            <select
-                                className="p-2 rounded-md"
+                        <i className="fas fa-building text-sky-500 text-xl mr-3"></i>
+                                                    <select
+                                className="p-2 rounded-md outline-none"
                                 value={selectedCollege}
                                 onChange={handleCollegeChange}
                             >
@@ -56,9 +59,8 @@ const MainPage = () => {
                         </div>
                         <button
                             onClick={handleCollegeSelect}
-                            className="bg-sky-300 mt-4 sm:mt-0 sm:ml-4 px-4 py-2 border-radius-38 hover:bg-blue-400"
-                        >
-                            Submit
+                            className="bg-gradient-to-br from-sky-500 to-indigo-500 text-white font-semibold py-2 px-4 rounded-full hover:bg-gradient-to-bl focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                        >                            Submit
                         </button>
                     </div>
                 </div>
