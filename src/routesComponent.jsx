@@ -35,6 +35,7 @@ import ResourcesPage from './pages/ResourcesPage';
 import SubjectPyqs from './components/Resources/SubjectPyqs';
 import NotesView from './components/Resources/NotesView';
 import PyqView from './components/Resources/PyqView';
+import OpportunityDetails from './pages/OpportunityDetails';
 
 const validColleges = [
     'integral-university',
@@ -210,6 +211,14 @@ const RoutesComponent = () => {
                 element={
                     <ValidateCollegeRoute>
                         <PyqView />
+                    </ValidateCollegeRoute>
+                }
+            />
+              <Route
+                path="/college/:collegeName/opportunities/:slug"
+                element={
+                    <ValidateCollegeRoute>
+                        <OpportunityDetails />
                     </ValidateCollegeRoute>
                 }
             />

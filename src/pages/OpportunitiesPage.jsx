@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Collegelink2 from '../components/Links/CollegeLink2';
 import { capitalizeWords } from '../utils/Capitalize.js';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { api } from '../config/apiConfiguration.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -194,24 +194,10 @@ const OpportunitiesPage = () => {
         setIsModalOpen(true);
     };
 
-    const handleEditGiveOpportunitySubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await apiRequest(
-                `${api.giveOpportunity}/${editingOpportunity}`,
-                'PUT',
-                editedOpportunity
-            );
+    const details = (val) => {
+        alert(val);
 
-            dispatch(fetchGiveOpportunity(collegeId));
-
-            setEditingOpportunity(null);
-            setIsModalOpen(false);
-            toast.success('Give opportunity updated successfully');
-        } catch (error) {
-            console.error('Error updating opportunity:', error);
-        }
-    };
+    }
 
     const DeleteGiveOpportunity = async (giveOpportunitiesId) => {
         setLoadingStates((prev) => ({ ...prev, [giveOpportunitiesId]: true }));
@@ -235,463 +221,139 @@ const OpportunitiesPage = () => {
     };
 
     return (
-        <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full">
+        <div className="container bg-gradient-to-t from-sky-200 to-white min-h-screen min-w-full px-6 py-8">
             <CollegeLinks />
-            <div className="max-w-7xl mx-auto p-5">
-                <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
-                    Opportunities - {capitalizeWords(collegeName)}
-                </h1>
-                <p className="italic text-center text-xs sm:text-base">
-                    "Explore opportunities to work in various positions across
-                    different companies."
-                </p>
-                <br />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Get Opportunities */}
-                    <div>
-                        <div className="flex justify-between items-center mb-5">
-                            <button
-                                onClick={() => setShowGetForm(!showGetForm)}
-                                className="px-4 py-2 bg-sky-500 text-white rounded-md"
-                            >
-                                {showGetForm ? 'Close Form' : 'Get Opportunity'}
-                            </button>
-                        </div>
 
-                        {showGetForm && (
-                            <form
-                                onSubmit={handleGetOpportunitySubmit}
-                                className="mb-5 p-5 bg-white shadow-md rounded-md"
-                            >
-                                <h3 className="text-xl font-bold mb-3">
-                                    Fill Your Expertise
-                                </h3>
-
-                                <input
-                                    type="text"
-                                    placeholder="Job Name You Needed"
-                                    value={newGetOpportunity.name}
-                                    onChange={(e) =>
-                                        setNewGetOpportunity({
-                                            ...newGetOpportunity,
-                                            name: e.target.value,
-                                        })
-                                    }
-                                    className="p-2 border rounded-md mb-3 w-full"
-                                    required
-                                />
-
-                                <textarea
-                                    placeholder="Description"
-                                    value={newGetOpportunity.description}
-                                    onChange={(e) =>
-                                        setNewGetOpportunity({
-                                            ...newGetOpportunity,
-                                            description: e.target.value,
-                                        })
-                                    }
-                                    className="p-2 border rounded-md mb-3 w-full"
-                                    required
-                                ></textarea>
-
-                                <input
-                                    type="number"
-                                    placeholder="Whatsapp Number (optional)"
-                                    value={newGetOpportunity.whatsapp}
-                                    onChange={(e) =>
-                                        setNewGetOpportunity({
-                                            ...newGetOpportunity,
-                                            whatsapp: e.target.value,
-                                        })
-                                    }
-                                    className="p-2 border rounded-md mb-3 w-full"
-                                />
-
-                                <input
-                                    type="email"
-                                    placeholder="Email"
-                                    value={newGetOpportunity.email}
-                                    onChange={(e) =>
-                                        setNewGetOpportunity({
-                                            ...newGetOpportunity,
-                                            email: e.target.value,
-                                        })
-                                    }
-                                    className="p-2 border rounded-md mb-3 w-full"
-                                    required
-                                />
-
-                                <button
-                                    type="submit"
-                                    className="px-4 py-2 bg-sky-500 text-white rounded-md"
-                                    disabled={loading}
-                                >
-                                    {loading ? (
-                                        <i className="fa fa-spinner fa-spin"></i>
-                                    ) : (
-                                        <>Submit</>
-                                    )}
-                                </button>
-                            </form>
-                        )}
-
-                        <div className="grid grid-cols-1 gap-6">
-                            {getOpportunitiesError && (
-                                <div className="text-red-500 text-center">
-                                    Failed to load opportunities: {error}
-                                </div>
-                            )}
-                            {getOpportunities.length > 0 ? (
-                                <>
-                                    {getOpportunities.map((opportunity) => (
-                                        <div
-                                            key={opportunity._id}
-                                            className="bg-white p-5 shadow-md rounded-md"
-                                        >
-                                            <h3 className="mb-2">
-                                                <strong>Job Name :</strong>{' '}
-                                                {opportunity.name}
-                                            </h3>
-                                            <div className="bg-gray-100 mb-2 rounded-md max-h-40 sm:h-40">
-                                                <p className="p-2 h-full overflow-scroll">
-                                                    {opportunity.description}
-                                                </p>
-                                            </div>
-                                            <div className="flex gap-4">
-                                                <a
-                                                    href={`https://api.whatsapp.com/send?phone=${opportunity.whatsapp}`}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                >
-                                                    <button className="py-2 px-1 sm:px-4 bg-sky-500 hover:bg-blue-500 text-white rounded-md">
-                                                        Hire Me{' '}
-                                                    </button>
-                                                </a>
-                                                <a
-                                                    href={`mailto:${opportunity.email}`}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                >
-                                                    <button className="py-2 px-1 sm:px-4 bg-sky-500 hover:bg-blue-500 text-white rounded-md">
-                                                        Email Me
-                                                    </button>
-                                                </a>
-                                                {opportunity.owner._id ===
-                                                    ownerId && (
-                                                    <>
-                                                        <button
-                                                            onClick={() =>
-                                                                handleEditClick(
-                                                                    opportunity
-                                                                )
-                                                            }
-                                                            className="sm:px-4 p-2 bg-yellow-500 hover:bg-yellow-200 text-white rounded-md ml-2"
-                                                        >
-                                                            <i className="fa-regular fa-pen-to-square"></i>
-                                                        </button>
-
-                                                        <button
-                                                            onClick={() =>
-                                                                DeleteGetOpportunity(
-                                                                    opportunity._id
-                                                                )
-                                                            }
-                                                            className="sm:px-4 p-2 bg-red-500 hover:bg-red-200 text-white rounded-md"
-                                                            disabled={
-                                                                loadingStates[
-                                                                    opportunity
-                                                                        ._id
-                                                                ]
-                                                            }
-                                                        >
-                                                            {loadingStates[
-                                                                opportunity._id
-                                                            ] ? (
-                                                                <i className="fa fa-spinner fa-spin"></i>
-                                                            ) : (
-                                                                <i className="fa-solid fa-trash"></i>
-                                                            )}
-                                                        </button>
-                                                    </>
-                                                )}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </>
-                            ) : (
-                                <div className="flex justify-center items-center min-h-screen">
-                                    {loading ? (
-                                        <i className="fas fa-spinner fa-pulse fa-5x"></i>
-                                    ) : (
-                                        <div className="flex justify-center">
-                                            No Get Opportunity Found{' '}
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    <Modal
-                        isOpen={isModalOpen}
-                        onClose={() => setIsModalOpen(false)}
-                        onSubmit={
-                            isEditing
-                                ? handleEditOpportunitySubmit
-                                : handleEditGiveOpportunitySubmit
-                        }
+            <div className="max-w-4xl mx-auto">
+                <div className="flex justify-between items-center mb-6">
+                    <button
+                        onClick={() => setShowGiveForm(!showGiveForm)}
+                        className="px-5 py-3 bg-green-500 hover:bg-green-600 transition text-white rounded-lg shadow-md"
                     >
-                        <h3 className="text-xl font-bold mb-3">
-                            {isEditing
-                                ? 'Edit Opportunity'
-                                : 'Give Opportunity'}
-                        </h3>
+                        {showGiveForm ? 'Close Form' : 'Give Opportunity'}
+                    </button>
+                </div>
+
+                {showGiveForm && (
+                    <form
+                        onSubmit={handleGiveOpportunitySubmit}
+                        className="p-6 bg-white shadow-lg rounded-lg"
+                    >
+                        <h3 className="text-2xl font-semibold mb-4">Provide Job Details</h3>
+
                         <input
                             type="text"
                             placeholder="Job Name"
-                            value={editedOpportunity.name}
-                            onChange={(e) =>
-                                setEditedOpportunity({
-                                    ...editedOpportunity,
-                                    name: e.target.value,
-                                })
-                            }
-                            className="p-2 border rounded-md mb-3 w-full"
+                            value={newGiveOpportunity.name}
+                            onChange={(e) => setNewGiveOpportunity({ ...newGiveOpportunity, name: e.target.value })}
+                            className="p-3 border rounded-lg mb-4 w-full focus:outline-none focus:ring-2 focus:ring-sky-500"
                             required
                         />
+
                         <textarea
-                            placeholder="Description"
-                            value={editedOpportunity.description}
-                            onChange={(e) =>
-                                setEditedOpportunity({
-                                    ...editedOpportunity,
-                                    description: e.target.value,
-                                })
-                            }
-                            className="p-2 border rounded-md mb-3 w-full"
+                            placeholder="Job Description"
+                            value={newGiveOpportunity.description}
+                            onChange={(e) => setNewGiveOpportunity({ ...newGiveOpportunity, description: e.target.value })}
+                            className="p-3 border rounded-lg mb-4 w-full focus:outline-none focus:ring-2 focus:ring-sky-500"
                             required
                         ></textarea>
+
                         <input
                             type="number"
-                            placeholder="Whatsapp Number (optional)"
-                            value={editedOpportunity.whatsapp}
-                            onChange={(e) =>
-                                setEditedOpportunity({
-                                    ...editedOpportunity,
-                                    whatsapp: e.target.value,
-                                })
-                            }
-                            className="p-2 border rounded-md mb-3 w-full"
+                            placeholder="WhatsApp Number (Optional)"
+                            value={newGiveOpportunity.whatsapp}
+                            onChange={(e) => setNewGiveOpportunity({ ...newGiveOpportunity, whatsapp: e.target.value })}
+                            className="p-3 border rounded-lg mb-4 w-full focus:outline-none focus:ring-2 focus:ring-sky-500"
                         />
+
                         <input
                             type="email"
                             placeholder="Email"
-                            value={editedOpportunity.email}
-                            onChange={(e) =>
-                                setEditedOpportunity({
-                                    ...editedOpportunity,
-                                    email: e.target.value,
-                                })
-                            }
-                            className="p-2 border rounded-md mb-3 w-full"
+                            value={newGiveOpportunity.email}
+                            onChange={(e) => setNewGiveOpportunity({ ...newGiveOpportunity, email: e.target.value })}
+                            className="p-3 border rounded-lg mb-4 w-full focus:outline-none focus:ring-2 focus:ring-sky-500"
                             required
                         />
-                        <button
-                            type="submit"
-                            className="px-4 py-2 bg-sky-500 text-white rounded-md"
-                            disabled={loading}
-                        >
-                            {loading ? (
-                                <i className="fa fa-spinner fa-spin"></i>
-                            ) : (
-                                <>Update</>
-                            )}
+
+                        <button type="submit" className="px-5 py-3 bg-sky-500 hover:bg-sky-600 transition text-white rounded-lg shadow-md">
+                            Submit
                         </button>
-                    </Modal>
+                    </form>
+                )}
 
-                    {/* Right Column: Give Opportunities */}
-                    <div>
-                        <div className="flex justify-between items-center mb-5">
-                            <button
-                                onClick={() => setShowGiveForm(!showGiveForm)}
-                                className="px-4 py-2 bg-green-500 text-white rounded-md"
-                            >
-                                {showGiveForm
-                                    ? 'Close Form'
-                                    : 'Give Opportunity'}
-                            </button>
+                <div className="grid grid-cols-1 gap-6 mt-8">
+                    {giveOpportunitiesError && (
+                        <div className="text-red-500 text-center">
+                            Failed to load opportunities: {error}
                         </div>
-                        {showGiveForm && (
-                            <form
-                                onSubmit={handleGiveOpportunitySubmit}
-                                className="mb-5 p-5 bg-white shadow-md rounded-md"
-                            >
-                                <h3 className="text-xl font-bold mb-3">
-                                    Fill the Job You Provide
-                                </h3>
+                    )}
 
-                                <input
-                                    type="text"
-                                    placeholder="Job Name You Provide"
-                                    value={newGiveOpportunity.name}
-                                    onChange={(e) =>
-                                        setNewGiveOpportunity({
-                                            ...newGiveOpportunity,
-                                            name: e.target.value,
-                                        })
-                                    }
-                                    className="p-2 border rounded-md mb-3 w-full"
-                                    required
-                                />
+                    {giveOpportunities.length > 0 ? (
+                        giveOpportunities.map((opportunity) => (
+                            <Link to={`./${opportunity.slug}`}>
+                                <div key={opportunity._id} className="bg-white p-6 shadow-lg rounded-lg">
+                                    <h3 className="mb-2 text-lg font-semibold">
+                                        <strong>Job Name:</strong> {opportunity.name}{console.log(opportunity)}
+                                    </h3>
 
-                                <textarea
-                                    placeholder="Description"
-                                    value={newGiveOpportunity.description}
-                                    onChange={(e) =>
-                                        setNewGiveOpportunity({
-                                            ...newGiveOpportunity,
-                                            description: e.target.value,
-                                        })
-                                    }
-                                    className="p-2 border rounded-md mb-3 w-full"
-                                    required
-                                ></textarea>
+                                    <div className="bg-gray-100 mb-3 rounded-lg max-h-40 overflow-y-auto p-3">
+                                        <p>{opportunity.description}</p>
+                                    </div>
 
-                                <input
-                                    type="number"
-                                    placeholder="Whatsapp Number (optional)"
-                                    value={newGiveOpportunity.whatsapp}
-                                    onChange={(e) =>
-                                        setNewGiveOpportunity({
-                                            ...newGiveOpportunity,
-                                            whatsapp: e.target.value,
-                                        })
-                                    }
-                                    className="p-2 border rounded-md mb-3 w-full"
-                                />
+                                    <div className="flex gap-3">
+                                        <a href={`https://api.whatsapp.com/send?phone=${opportunity.whatsapp}`} target="_blank" rel="noreferrer">
+                                            <button className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg">
+                                                Contact Us
+                                            </button>
+                                        </a>
 
-                                <input
-                                    type="email"
-                                    placeholder="Email"
-                                    value={newGiveOpportunity.email}
-                                    onChange={(e) =>
-                                        setNewGiveOpportunity({
-                                            ...newGiveOpportunity,
-                                            email: e.target.value,
-                                        })
-                                    }
-                                    className="p-2 border rounded-md mb-3 w-full"
-                                    required
-                                />
+                                        <a href={`mailto:${opportunity.email}`} target="_blank" rel="noreferrer">
+                                            <button className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg">
+                                                Email Us
+                                            </button>
+                                        </a>
 
-                                <button
-                                    type="submit"
-                                    className="px-4 py-2 bg-sky-500 text-white rounded-md"
-                                >
-                                    Submit
-                                </button>
-                            </form>
-                        )}
-                        <div className="grid grid-cols-1 gap-6">
-                            {giveOpportunitiesError && (
-                                <div className="text-red-500 text-center">
-                                    Failed to load opportunities: {error}
+                                        {opportunity.owner._id === ownerId && (
+                                            <>
+                                                <button
+                                                    onClick={() => handleGiveOpportunityClick(opportunity)}
+                                                    className="px-4 py-2 bg-yellow-500 hover:bg-yellow-400 transition text-white rounded-lg"
+                                                >
+                                                    <i className="fa-regular fa-pen-to-square"></i>
+                                                </button>
+
+                                                <button
+                                                    onClick={() => DeleteGiveOpportunity(opportunity._id)}
+                                                    className="px-4 py-2 bg-red-500 hover:bg-red-400 transition text-white rounded-lg"
+                                                    disabled={loading[opportunity._id]}
+                                                >
+                                                    {loadingStates[opportunity._id] ? (
+                                                        <i className="fa fa-spinner fa-spin"></i>
+                                                    ) : (
+                                                        <i className="fa-solid fa-trash"></i>
+                                                    )}
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
-                            )}
-                            {giveOpportunities.length > 0 ? (
-                                <>
-                                    {giveOpportunities.map((opportunity) => (
-                                        <div
-                                            key={opportunity._id}
-                                            className="bg-white p-5 shadow-md rounded-md"
-                                        >
-                                            <h3 className="mb-2">
-                                                <strong>Job Name :</strong>{' '}
-                                                {opportunity.name}
-                                            </h3>
-                                            <div className="bg-gray-100 mb-2 rounded-md max-h-40 sm:h-40">
-                                                <p className="p-2 h-full overflow-scroll">
-                                                    {opportunity.description}
-                                                </p>
-                                            </div>
-                                            <div className="flex gap-4">
-                                                <a
-                                                    href={`https://api.whatsapp.com/send?phone=${opportunity.whatsapp}`}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                >
-                                                    <button className="py-2 px-1 sm:px-4 bg-sky-500 hover:bg-blue-500 text-white rounded-md">
-                                                        Contact Us{' '}
-                                                    </button>
-                                                </a>
-                                                <a
-                                                    href={`mailto:${opportunity.email}`}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                >
-                                                    <button className="py-2 px-1 sm:px-4 bg-sky-500 hover:bg-blue-500 text-white rounded-md">
-                                                        Email Us
-                                                    </button>
-                                                </a>
-                                                {opportunity.owner._id ===
-                                                    ownerId && (
-                                                    <>
-                                                        <button
-                                                            onClick={() =>
-                                                                handleGiveOpportunityClick(
-                                                                    opportunity
-                                                                )
-                                                            }
-                                                            className="sm:px-4 p-2 bg-yellow-500 hover:bg-yellow-200 text-white rounded-md ml-2"
-                                                        >
-                                                            <i className="fa-regular fa-pen-to-square"></i>
-                                                        </button>
-                                                        <button
-                                                            onClick={() =>
-                                                                DeleteGiveOpportunity(
-                                                                    opportunity._id
-                                                                )
-                                                            }
-                                                            className="sm:px-4 p-2 bg-red-500 hover:bg-red-200 text-white rounded-md"
-                                                            disabled={
-                                                                loading[
-                                                                    opportunity
-                                                                        ._id
-                                                                ]
-                                                            }
-                                                        >
-                                                            {loadingStates[
-                                                                opportunity._id
-                                                            ] ? (
-                                                                <i className="fa fa-spinner fa-spin"></i>
-                                                            ) : (
-                                                                <i className="fa-solid fa-trash"></i>
-                                                            )}
-                                                        </button>
-                                                    </>
-                                                )}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </>
+                            </Link>
+                        ))
+                    ) : (
+                        <div className="flex justify-center items-center min-h-screen">
+                            {giveOpportunitiesLoading ? (
+                                <i className="fas fa-spinner fa-pulse fa-5x"></i>
                             ) : (
-                                <div className="flex justify-center items-center min-h-screen">
-                                    {giveOpportunitiesLoading ? (
-                                        <i className="fas fa-spinner fa-pulse fa-5x"></i>
-                                    ) : (
-                                        <p>
-                                            No Opportunity available at the
-                                            moment.
-                                        </p>
-                                    )}
-                                </div>
+                                <p>No Opportunity available at the moment.</p>
                             )}
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
-            {/* <Footer /> */}
+
             <Collegelink2 />
         </div>
+
     );
 };
 
