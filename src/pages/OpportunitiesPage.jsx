@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CollegeLinks from '../components/Links/CollegeLinks';
 import Collegelink2 from '../components/Links/CollegeLink2';
 import { capitalizeWords } from '../utils/Capitalize.js';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { api } from '../config/apiConfiguration.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -194,24 +194,10 @@ const OpportunitiesPage = () => {
         setIsModalOpen(true);
     };
 
-    const handleEditGiveOpportunitySubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await apiRequest(
-                `${api.giveOpportunity}/${editingOpportunity}`,
-                'PUT',
-                editedOpportunity
-            );
+    const details = (val) => {
+        alert(val);
 
-            dispatch(fetchGiveOpportunity(collegeId));
-
-            setEditingOpportunity(null);
-            setIsModalOpen(false);
-            toast.success('Give opportunity updated successfully');
-        } catch (error) {
-            console.error('Error updating opportunity:', error);
-        }
-    };
+    }
 
     const DeleteGiveOpportunity = async (giveOpportunitiesId) => {
         setLoadingStates((prev) => ({ ...prev, [giveOpportunitiesId]: true }));
@@ -235,136 +221,138 @@ const OpportunitiesPage = () => {
     };
 
     return (
-<div className="container bg-gradient-to-t from-sky-200 to-white min-h-screen min-w-full px-6 py-8">
-    <CollegeLinks />
+        <div className="container bg-gradient-to-t from-sky-200 to-white min-h-screen min-w-full px-6 py-8">
+            <CollegeLinks />
 
-    <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-            <button
-                onClick={() => setShowGiveForm(!showGiveForm)}
-                className="px-5 py-3 bg-green-500 hover:bg-green-600 transition text-white rounded-lg shadow-md"
-            >
-                {showGiveForm ? 'Close Form' : 'Give Opportunity'}
-            </button>
-        </div>
-
-        {showGiveForm && (
-            <form
-                onSubmit={handleGiveOpportunitySubmit}
-                className="p-6 bg-white shadow-lg rounded-lg"
-            >
-                <h3 className="text-2xl font-semibold mb-4">Provide Job Details</h3>
-
-                <input
-                    type="text"
-                    placeholder="Job Name"
-                    value={newGiveOpportunity.name}
-                    onChange={(e) => setNewGiveOpportunity({ ...newGiveOpportunity, name: e.target.value })}
-                    className="p-3 border rounded-lg mb-4 w-full focus:outline-none focus:ring-2 focus:ring-sky-500"
-                    required
-                />
-
-                <textarea
-                    placeholder="Job Description"
-                    value={newGiveOpportunity.description}
-                    onChange={(e) => setNewGiveOpportunity({ ...newGiveOpportunity, description: e.target.value })}
-                    className="p-3 border rounded-lg mb-4 w-full focus:outline-none focus:ring-2 focus:ring-sky-500"
-                    required
-                ></textarea>
-
-                <input
-                    type="number"
-                    placeholder="WhatsApp Number (Optional)"
-                    value={newGiveOpportunity.whatsapp}
-                    onChange={(e) => setNewGiveOpportunity({ ...newGiveOpportunity, whatsapp: e.target.value })}
-                    className="p-3 border rounded-lg mb-4 w-full focus:outline-none focus:ring-2 focus:ring-sky-500"
-                />
-
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={newGiveOpportunity.email}
-                    onChange={(e) => setNewGiveOpportunity({ ...newGiveOpportunity, email: e.target.value })}
-                    className="p-3 border rounded-lg mb-4 w-full focus:outline-none focus:ring-2 focus:ring-sky-500"
-                    required
-                />
-
-                <button type="submit" className="px-5 py-3 bg-sky-500 hover:bg-sky-600 transition text-white rounded-lg shadow-md">
-                    Submit
-                </button>
-            </form>
-        )}
-
-        <div className="grid grid-cols-1 gap-6 mt-8">
-            {giveOpportunitiesError && (
-                <div className="text-red-500 text-center">
-                    Failed to load opportunities: {error}
+            <div className="max-w-4xl mx-auto">
+                <div className="flex justify-between items-center mb-6">
+                    <button
+                        onClick={() => setShowGiveForm(!showGiveForm)}
+                        className="px-5 py-3 bg-green-500 hover:bg-green-600 transition text-white rounded-lg shadow-md"
+                    >
+                        {showGiveForm ? 'Close Form' : 'Give Opportunity'}
+                    </button>
                 </div>
-            )}
 
-            {giveOpportunities.length > 0 ? (
-                giveOpportunities.map((opportunity) => (
-                    <div key={opportunity._id} className="bg-white p-6 shadow-lg rounded-lg">
-                        <h3 className="mb-2 text-lg font-semibold">
-                            <strong>Job Name:</strong> {opportunity.name}
-                        </h3>
+                {showGiveForm && (
+                    <form
+                        onSubmit={handleGiveOpportunitySubmit}
+                        className="p-6 bg-white shadow-lg rounded-lg"
+                    >
+                        <h3 className="text-2xl font-semibold mb-4">Provide Job Details</h3>
 
-                        <div className="bg-gray-100 mb-3 rounded-lg max-h-40 overflow-y-auto p-3">
-                            <p>{opportunity.description}</p>
+                        <input
+                            type="text"
+                            placeholder="Job Name"
+                            value={newGiveOpportunity.name}
+                            onChange={(e) => setNewGiveOpportunity({ ...newGiveOpportunity, name: e.target.value })}
+                            className="p-3 border rounded-lg mb-4 w-full focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            required
+                        />
+
+                        <textarea
+                            placeholder="Job Description"
+                            value={newGiveOpportunity.description}
+                            onChange={(e) => setNewGiveOpportunity({ ...newGiveOpportunity, description: e.target.value })}
+                            className="p-3 border rounded-lg mb-4 w-full focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            required
+                        ></textarea>
+
+                        <input
+                            type="number"
+                            placeholder="WhatsApp Number (Optional)"
+                            value={newGiveOpportunity.whatsapp}
+                            onChange={(e) => setNewGiveOpportunity({ ...newGiveOpportunity, whatsapp: e.target.value })}
+                            className="p-3 border rounded-lg mb-4 w-full focus:outline-none focus:ring-2 focus:ring-sky-500"
+                        />
+
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={newGiveOpportunity.email}
+                            onChange={(e) => setNewGiveOpportunity({ ...newGiveOpportunity, email: e.target.value })}
+                            className="p-3 border rounded-lg mb-4 w-full focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            required
+                        />
+
+                        <button type="submit" className="px-5 py-3 bg-sky-500 hover:bg-sky-600 transition text-white rounded-lg shadow-md">
+                            Submit
+                        </button>
+                    </form>
+                )}
+
+                <div className="grid grid-cols-1 gap-6 mt-8">
+                    {giveOpportunitiesError && (
+                        <div className="text-red-500 text-center">
+                            Failed to load opportunities: {error}
                         </div>
+                    )}
 
-                        <div className="flex gap-3">
-                            <a href={`https://api.whatsapp.com/send?phone=${opportunity.whatsapp}`} target="_blank" rel="noreferrer">
-                                <button className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg">
-                                    Contact Us
-                                </button>
-                            </a>
+                    {giveOpportunities.length > 0 ? (
+                        giveOpportunities.map((opportunity) => (
+                            <Link to={`./${opportunity.slug}`}>
+                                <div key={opportunity._id} className="bg-white p-6 shadow-lg rounded-lg">
+                                    <h3 className="mb-2 text-lg font-semibold">
+                                        <strong>Job Name:</strong> {opportunity.name}{console.log(opportunity)}
+                                    </h3>
 
-                            <a href={`mailto:${opportunity.email}`} target="_blank" rel="noreferrer">
-                                <button className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg">
-                                    Email Us
-                                </button>
-                            </a>
+                                    <div className="bg-gray-100 mb-3 rounded-lg max-h-40 overflow-y-auto p-3">
+                                        <p>{opportunity.description}</p>
+                                    </div>
 
-                            {opportunity.owner._id === ownerId && (
-                                <>
-                                    <button
-                                        onClick={() => handleGiveOpportunityClick(opportunity)}
-                                        className="px-4 py-2 bg-yellow-500 hover:bg-yellow-400 transition text-white rounded-lg"
-                                    >
-                                        <i className="fa-regular fa-pen-to-square"></i>
-                                    </button>
+                                    <div className="flex gap-3">
+                                        <a href={`https://api.whatsapp.com/send?phone=${opportunity.whatsapp}`} target="_blank" rel="noreferrer">
+                                            <button className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg">
+                                                Contact Us
+                                            </button>
+                                        </a>
 
-                                    <button
-                                        onClick={() => DeleteGiveOpportunity(opportunity._id)}
-                                        className="px-4 py-2 bg-red-500 hover:bg-red-400 transition text-white rounded-lg"
-                                        disabled={loading[opportunity._id]}
-                                    >
-                                        {loadingStates[opportunity._id] ? (
-                                            <i className="fa fa-spinner fa-spin"></i>
-                                        ) : (
-                                            <i className="fa-solid fa-trash"></i>
+                                        <a href={`mailto:${opportunity.email}`} target="_blank" rel="noreferrer">
+                                            <button className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg">
+                                                Email Us
+                                            </button>
+                                        </a>
+
+                                        {opportunity.owner._id === ownerId && (
+                                            <>
+                                                <button
+                                                    onClick={() => handleGiveOpportunityClick(opportunity)}
+                                                    className="px-4 py-2 bg-yellow-500 hover:bg-yellow-400 transition text-white rounded-lg"
+                                                >
+                                                    <i className="fa-regular fa-pen-to-square"></i>
+                                                </button>
+
+                                                <button
+                                                    onClick={() => DeleteGiveOpportunity(opportunity._id)}
+                                                    className="px-4 py-2 bg-red-500 hover:bg-red-400 transition text-white rounded-lg"
+                                                    disabled={loading[opportunity._id]}
+                                                >
+                                                    {loadingStates[opportunity._id] ? (
+                                                        <i className="fa fa-spinner fa-spin"></i>
+                                                    ) : (
+                                                        <i className="fa-solid fa-trash"></i>
+                                                    )}
+                                                </button>
+                                            </>
                                         )}
-                                    </button>
-                                </>
+                                    </div>
+                                </div>
+                            </Link>
+                        ))
+                    ) : (
+                        <div className="flex justify-center items-center min-h-screen">
+                            {giveOpportunitiesLoading ? (
+                                <i className="fas fa-spinner fa-pulse fa-5x"></i>
+                            ) : (
+                                <p>No Opportunity available at the moment.</p>
                             )}
                         </div>
-                    </div>
-                ))
-            ) : (
-                <div className="flex justify-center items-center min-h-screen">
-                    {giveOpportunitiesLoading ? (
-                        <i className="fas fa-spinner fa-pulse fa-5x"></i>
-                    ) : (
-                        <p>No Opportunity available at the moment.</p>
                     )}
                 </div>
-            )}
-        </div>
-    </div>
+            </div>
 
-    <Collegelink2 />
-</div>
+            <Collegelink2 />
+        </div>
 
     );
 };
