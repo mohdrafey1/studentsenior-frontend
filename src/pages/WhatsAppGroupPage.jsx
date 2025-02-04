@@ -9,6 +9,7 @@ import { useCollegeId } from '../hooks/useCollegeId.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGroups } from '../redux/slices/groupSlice.js';
 import useRequireLogin from '../hooks/useRequireLogin.js';
+import { api } from '../config/apiConfiguration.js';
 
 const WhatsAppGroupPage = () => {
     const { collegeName } = useParams();
@@ -59,14 +60,22 @@ const WhatsAppGroupPage = () => {
         }));
     };
 
+    const handleAddGroup = (e) => {
+        e.preventDefault();
+        requireLogin(() => {
+            handleSubmit(e);
+        });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!requireLogin()) return;
-
         setText('Wait ...');
         try {
-            await apiRequest(url, 'POST', { ...groupData, college: collegeId });
+            await apiRequest(`${api.group}`, 'POST', {
+                ...groupData,
+                college: collegeId,
+            });
             toast.success(
                 'Group Submitted Successfully , Available Once Approved'
             );
@@ -157,7 +166,7 @@ const WhatsAppGroupPage = () => {
                         <h2 className="text-xl font-bold mb-4">
                             Add WhatsApp Group
                         </h2>
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleAddGroup}>
                             <div className="mb-4">
                                 <label className="block mb-2" htmlFor="title">
                                     Title

@@ -111,11 +111,10 @@ function Subjects() {
                     .map((semester) => (
                         <button
                             key={semester}
-                            className={`min-w-16 px-2 sm:px-4 py-2 rounded ${
-                                activeSemester === semester
+                            className={`min-w-16 px-2 sm:px-4 py-2 rounded ${activeSemester === semester
                                     ? 'bg-sky-500 text-white'
                                     : 'bg-gray-200 text-gray-800'
-                            } hover:bg-blue-400 transition duration-200`}
+                                } hover:bg-blue-400 transition duration-200`}
                             onClick={() => handleSemesterChange(semester)}
                         >
                             Sem {semester}

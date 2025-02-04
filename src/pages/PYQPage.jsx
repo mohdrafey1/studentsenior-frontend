@@ -184,7 +184,7 @@ const PYQPage = () => {
                                     <br /> If You have any PYQ paper, Please
                                     Provide us{' '}
                                     <Link
-                                        to={`/${collegeName}/resources`}
+                                        to={`/college/${collegeName}/resources`}
                                         className="text-blue-500"
                                     >
                                         Click

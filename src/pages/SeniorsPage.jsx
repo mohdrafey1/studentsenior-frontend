@@ -55,6 +55,7 @@ const SeniorPage = () => {
         try {
             await apiRequest(`${url}/${seniorId}`, 'DELETE');
             toast.success('Senior deleted successfully!');
+            dispatch(fetchSeniors(collegeId));
         } catch (err) {
             console.error('Error deleting senior:', err);
         }

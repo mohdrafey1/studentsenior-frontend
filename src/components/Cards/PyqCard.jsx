@@ -10,6 +10,10 @@ function PyqCard({ Pyqs }) {
     return (
         <>
             {Pyqs.map((pyq) => (
+                <Link
+                to={`/${collegeName}/resources/${pyq.subject?.branch?.course?.courseCode.toLowerCase()}/${pyq.subject?.branch?.branchCode.toLowerCase()}/pyqs/${pyq.subject?.subjectCode.toLowerCase()}/${
+                    pyq.slug
+                }`}>
                 <div
                     key={pyq._id}
                     className="bg-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition duration-300 flex flex-col mb-4"
@@ -69,6 +73,7 @@ function PyqCard({ Pyqs }) {
                         )}
                     </div>
                 </div>
+                </Link>
             ))}
         </>
     );

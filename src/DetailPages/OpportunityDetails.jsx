@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useCollegeId } from '../hooks/useCollegeId.js';
 import { api, API_KEY } from '../config/apiConfiguration.js';
+import DetailPageNavbar from '../DetailPages/DetailPageNavbar.jsx';
 
 const OpportunityDetails = () => {
     const { collegeName, slug } = useParams();
     const collegeId = useCollegeId(collegeName);
     const [opportunity, setOpportunity] = useState();
     const [similarOpportunity, setSimilarOpportunity] = useState();
-    const [loading, setLoading] = useState(true); 
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const getDetails = async () => {
@@ -39,7 +40,7 @@ const OpportunityDetails = () => {
             const filter = data.filter((item) => item.slug === slug);
             setOpportunity(filter);
             setSimilarOpportunity(data);
-            setLoading(false); 
+            setLoading(false);
         };
 
         if (collegeId) {
@@ -55,7 +56,6 @@ const OpportunityDetails = () => {
                         <div className="animate-pulse bg-gradient-to-r from-gray-200 to-gray-100 p-8 rounded-2xl shadow-lg space-y-6 h-40" />
                         <div className="animate-pulse bg-gradient-to-r from-gray-200 to-gray-100 p-8 rounded-2xl shadow-lg space-y-6 h-40" />
                     </div>
-
                     <div id="forSimilar" className="w-full md:w-1/3 space-y-6">
                         <div className="animate-pulse bg-gradient-to-r from-gray-200 to-gray-100 p-6 rounded-lg shadow-md h-24" />
                         <div className="animate-pulse bg-gradient-to-r from-gray-200 to-gray-100 p-6 rounded-lg shadow-md h-24" />
@@ -65,7 +65,8 @@ const OpportunityDetails = () => {
 
         );
     }
-    return (
+    return (<div>
+        <DetailPageNavbar />
         <div className="bg-gray-100 py-16 px-8 md:px-32 min-h-screen">
             <div className="flex flex-col md:flex-row gap-16">
                 <div id="forDetails" className="space-y-8 w-full md:w-3/4">
@@ -87,6 +88,19 @@ const OpportunityDetails = () => {
                                     <p className="font-semibold text-xl text-gray-700">Job Description</p>
                                     <p className="text-gray-600">{item.description}</p>
                                 </div>
+                                <div className='flex gap-3'>
+                                <a href={`https://api.whatsapp.com/send?phone=${item.whatsapp}`} target="_blank" rel="noreferrer">
+                                    <button className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg">
+                                        Contact Us
+                                    </button>
+                                </a>
+
+                                <a href={`mailto:${item.email}`} target="_blank" rel="noreferrer">
+                                    <button className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg">
+                                        Email Us
+                                    </button>
+                                </a>
+                                    </div>
                             </div>
                         ))
                     ) : (
@@ -98,19 +112,24 @@ const OpportunityDetails = () => {
 
                     {similarOpportunity && similarOpportunity.length > 0 ? (
                         similarOpportunity.map((item) => (
-                            <div
-                                key={item.id}
-                                className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow"
+                            <Link to={`../college/${collegeName}/opportunities/${item.slug}`}
+                                className='p-6'
                             >
-                                <h3 className="font-medium text-lg text-gray-800 line-clamp-2">{item.name}</h3>
-                                <p className="text-sm text-gray-500 mt-2 line-clamp-2">{item.description}</p>
-                            </div>
+                                <div
+                                    key={item.id}
+                                    className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow"
+                                >
+                                    <h3 className="font-medium text-lg text-gray-800 line-clamp-2">{item.name}</h3>
+                                    <p className="text-sm text-gray-500 mt-2 line-clamp-2">{item.description}</p>
+                                </div>
+                            </Link>
                         ))
                     ) : (
                         null)}
                 </div>
             </div>
         </div>
+    </div>
     );
 };
 

@@ -78,10 +78,14 @@ const Branches = () => {
                         {filteredBranches.map((branch) => (
                             <tr key={branch._id} className="hover:bg-gray-100">
                                 <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
-                                    {branch.branchName}
+                                    <Link
+                                        to={`${branch.branchCode.toLowerCase()}?semester=1`}
+                                    >{branch.branchName}</Link>
                                 </td>
                                 <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
-                                    {branch.branchCode || 'N/A'}
+                                <Link
+                                        to={`${branch.branchCode.toLowerCase()}?semester=1`}
+                                    >{branch.branchCode || 'N/A'}</Link>
                                 </td>
                                 <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
                                     {branch.totalNotes || 0} /{' '}

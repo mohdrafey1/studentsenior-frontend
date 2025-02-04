@@ -23,9 +23,9 @@ import ContactUs from './Forms/ContactUs';
 import PrivacyPolicy from './others/PrivacyPolicy';
 import PostDetail from './DetailPages/PostDetail';
 import FAQPage from './others/FAQPage';
-import BundlePyq from './DetailPages/BundlePyq';
+// import BundlePyq from './DetailPages/BundlePyq';
 import ProductDetail from './DetailPages/ProductDetail';
-import PyqDetail from './DetailPages/PyqDetail';
+// import PyqDetail from './DetailPages/PyqDetail';
 import SeniorDetailPage from './DetailPages/SeniorDetailPage';
 import RequestPYQ from './Forms/RequestPYQ';
 import Branches from './components/Resources/Branches';
@@ -35,7 +35,7 @@ import ResourcesPage from './pages/ResourcesPage';
 import SubjectPyqs from './components/Resources/SubjectPyqs';
 import NotesView from './components/Resources/NotesView';
 import PyqView from './components/Resources/PyqView';
-import OpportunityDetails from './pages/OpportunityDetails';
+import OpportunityDetails from './DetailPages/OpportunityDetails';
 
 const validColleges = [
     'integral-university',
@@ -214,7 +214,7 @@ const RoutesComponent = () => {
                     </ValidateCollegeRoute>
                 }
             />
-              <Route
+            <Route
                 path="/college/:collegeName/opportunities/:slug"
                 element={
                     <ValidateCollegeRoute>
