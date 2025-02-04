@@ -49,6 +49,12 @@ const useApiRequest = () => {
                 throw new Error('Unauthorized');
             }
 
+            if (data.success === 400) {
+                console.log(response);
+                toast.error(data.message);
+                throw new Error('wrong input');
+            }
+
             return data;
         } catch (error) {
             setError(error.message);
