@@ -733,22 +733,32 @@ const PostPreview = ({ post }) => {
     const previewContent = getPreviewText(post.content);
 
     return (
-        <div className="bg-sky-100 px-4 py-2 rounded-lg my-4 text-lg md:h-60">
+        <div className="bg-sky-100 px-4 pt-2 pb-8 sm:pb-2 rounded-lg my-4 text-lg md:h-60 overflow-hidden relative">
             <div className="post-content">
-                <p>
+                <p
+                    className="break-words"
+                    style={{
+                        display: '-webkit-box',
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: 7,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        maxHeight: '16rem',
+                    }}
+                >
                     <span
                         dangerouslySetInnerHTML={{ __html: previewContent }}
-                        style={{ display: 'inline' }}
                     />
-                    {post.content.length > 200 && (
-                        <Link
-                            to={`/college/${collegeName}/community/post/${post._id}`}
-                            className="text-blue-500 underline ml-1 inline"
-                        >
-                            Read More
-                        </Link>
-                    )}
                 </p>
+
+                {post.content.length > 200 && (
+                    <Link
+                        to={`/college/${collegeName}/community/post/${post._id}`}
+                        className="text-blue-500 underline absolute bottom-2 right-2"
+                    >
+                        Read More
+                    </Link>
+                )}
             </div>
         </div>
     );

@@ -79,28 +79,28 @@ const StorePage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!requireLogin()) return;
+        requireLogin(async () => {
+            const formData = new FormData();
+            formData.append('name', newProduct.name);
+            formData.append('price', newProduct.price);
+            formData.append('description', newProduct.description);
+            formData.append('whatsapp', newProduct.whatsapp);
+            formData.append('telegram', newProduct.telegram);
+            formData.append('college', collegeId);
+            formData.append('image', newProduct.image);
+            formData.append('available', newProduct.available);
 
-        const formData = new FormData();
-        formData.append('name', newProduct.name);
-        formData.append('price', newProduct.price);
-        formData.append('description', newProduct.description);
-        formData.append('whatsapp', newProduct.whatsapp);
-        formData.append('telegram', newProduct.telegram);
-        formData.append('college', collegeId);
-        formData.append('image', newProduct.image);
-        formData.append('available', newProduct.available);
-
-        try {
-            await apiRequest(`${api.store}`, 'POST', formData, true);
-            setIsModalOpen(false);
-            toast.success(
-                'Your request has been received. The item will display once approved.',
-                { autoClose: 10000 }
-            );
-        } catch (err) {
-            console.error('Error adding product:', err);
-        }
+            try {
+                await apiRequest(`${api.store}`, 'POST', formData, true);
+                setIsModalOpen(false);
+                toast.success(
+                    'Your request has been received. The item will display once approved.',
+                    { autoClose: 10000 }
+                );
+            } catch (err) {
+                console.error('Error adding product:', err);
+            }
+        });
     };
 
     const handleUpdate = async (e) => {
