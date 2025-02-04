@@ -47,12 +47,12 @@ const useApiRequest = () => {
                     { autoClose: 10000 }
                 );
                 throw new Error('Unauthorized');
+                return;
             }
 
-            if (data.statusCode === 400) {
-                console.log(response);
-                toast.error(data.message);
-                throw new Error('wrong input');
+            if (!data.success) {
+                toast.error(data.message || 'Request failed');
+                throw new Error(data.message || 'Request failed');
             }
 
             return data;
