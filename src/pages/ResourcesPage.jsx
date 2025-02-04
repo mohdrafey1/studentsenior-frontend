@@ -84,6 +84,7 @@ const ResourcesPage = () => {
                                 </thead>
                                 <tbody>
                                     {filteredCourses.map((course, index) => (
+
                                         <tr
                                             key={course._id}
                                             className={
@@ -93,10 +94,14 @@ const ResourcesPage = () => {
                                             }
                                         >
                                             <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
-                                                {course.courseName}
+                                                <Link
+                                                    to={`/${collegeName}/resources/${course.courseCode.toLowerCase()}`}
+                                                >{course.courseName}</Link>
                                             </td>
                                             <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
-                                                {course.courseCode}
+                                                <Link
+                                                    to={`/${collegeName}/resources/${course.courseCode.toLowerCase()}`}
+                                                >{course.courseCode}</Link>
                                             </td>
                                             <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
                                                 {course.totalNotes || 0} /{' '}

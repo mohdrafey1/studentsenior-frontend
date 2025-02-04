@@ -293,15 +293,15 @@ const OpportunitiesPage = () => {
                             <Link to={`./${opportunity.slug}`}>
                                 <div key={opportunity._id} className="bg-white p-6 shadow-lg rounded-lg">
                                     <h3 className="mb-2 text-lg font-semibold">
-                                        <strong>Job Name:</strong> {opportunity.name}{console.log(opportunity)}
+                                        <strong>Job Name:</strong> {opportunity.name}
                                     </h3>
 
-                                    <div className="bg-gray-100 mb-3 rounded-lg max-h-40 overflow-y-auto p-3">
-                                        <p>{opportunity.description}</p>
+                                    <div className="bg-gray-100 mb-3 rounded-lg max-h-40 overflow-y-auto p-3 ">
+                                        <p className='lg:line-clamp-none line-clamp-2'>{opportunity.description}</p>
                                     </div>
 
                                     <div className="flex gap-3">
-                                        <a href={`https://api.whatsapp.com/send?phone=${opportunity.whatsapp}`} target="_blank" rel="noreferrer">
+                                        {/* <a href={`https://api.whatsapp.com/send?phone=${opportunity.whatsapp}`} target="_blank" rel="noreferrer">
                                             <button className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg">
                                                 Contact Us
                                             </button>
@@ -311,7 +311,7 @@ const OpportunitiesPage = () => {
                                             <button className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg">
                                                 Email Us
                                             </button>
-                                        </a>
+                                        </a> */}
 
                                         {opportunity.owner._id === ownerId && (
                                             <>
