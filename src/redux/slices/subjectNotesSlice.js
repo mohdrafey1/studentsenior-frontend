@@ -35,8 +35,18 @@ const subjectNotesSlice = createSlice({
         error: null,
     },
     reducers: {
-        // Optional: Define additional reducers if needed
+        updateNoteLikes: (state, action) => {
+            const { noteId, ownerId } = action.payload;
+            const note = state.subjectNotes.find((note) => note._id === noteId);
+            if (note) {
+                const isLiked = note.likes.includes(ownerId);
+                note.likes = isLiked
+                    ? note.likes.filter((id) => id !== ownerId)
+                    : [...note.likes, ownerId];
+            }
+        },
     },
+
     extraReducers: (builder) => {
         builder
             .addCase(fetchSubjectNotes.pending, (state) => {
@@ -55,4 +65,5 @@ const subjectNotesSlice = createSlice({
     },
 });
 
+export const { updateNoteLikes } = subjectNotesSlice.actions;
 export default subjectNotesSlice.reducer;
