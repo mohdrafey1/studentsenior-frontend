@@ -50,11 +50,6 @@ const useApiRequest = () => {
                 return;
             }
 
-            if (!data.success) {
-                toast.error(data.message || 'Request failed');
-                throw new Error(data.message || 'Request failed');
-            }
-
             return data;
         } catch (error) {
             setError(error.message);
