@@ -8,7 +8,10 @@ import AddNotes from './AddNotes.jsx';
 import { toast } from 'react-toastify';
 import useApiRequest from '../../hooks/useApiRequest.js';
 import { capitalizeWords } from '../../utils/Capitalize.js';
-import { fetchSubjectNotes } from '../../redux/slices/subjectNotesSlice.js';
+import {
+    fetchSubjectNotes,
+    updateNoteLikes,
+} from '../../redux/slices/subjectNotesSlice.js';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 import useRequireLogin from '../../hooks/useRequireLogin.js';
 
@@ -22,7 +25,6 @@ function SubjectNotes() {
     const [submitting, setSubmitting] = useState(false);
     const requireLogin = useRequireLogin();
     const [showEarnDialog, setShowEarnDialog] = useState(false);
-
 
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
@@ -110,26 +112,7 @@ function SubjectNotes() {
 
     const likeNotes = async (noteId) => {
         try {
-            // Optimistically update the UI for better UX
-            const updatedNotes = subjectNotes.map((note) => {
-                if (note._id === noteId) {
-                    const isLiked = note.likes.includes(ownerId);
-                    return {
-                        ...note,
-                        likes: isLiked
-                            ? note.likes.filter((id) => id !== ownerId)
-                            : [...note.likes, ownerId],
-                    };
-                }
-                return note;
-            });
-
-            dispatch({
-                type: 'subjectNotes/updateNotes',
-                payload: updatedNotes,
-            });
-
-            // Make the API request
+            dispatch(updateNoteLikes({ noteId, ownerId }));
             const response = await apiRequest(
                 `${api.subjectNotes}/${noteId}/like`,
                 'POST'
@@ -137,9 +120,6 @@ function SubjectNotes() {
             toast.success(
                 response.message || 'Note liked/unliked successfully.'
             );
-
-            // Sync UI with the server response
-            dispatch(fetchSubjectNotes({ subjectCode, branchCode, collegeId }));
         } catch (err) {
             console.error('Error liking/unliking note:', err);
             toast.error('Failed to like/unlike the note. Please try again.');
@@ -174,18 +154,21 @@ function SubjectNotes() {
                 >
                     <i className="fa-solid fa-plus"></i> Add Note
                 </button>
-                <button className="content-center rounded-full px-2 py-3" onClick={handleEarnDialog}>
+                <button
+                    className="content-center rounded-full px-2 py-3"
+                    onClick={handleEarnDialog}
+                >
                     <i className="text-3xl fa-solid fa-circle-info"></i>
                 </button>
             </div>
-            <p className='text-center dark:text-gray-500 -translate-y-2'>
-            Like good notes to keep them on top
+            <p className="text-center dark:text-gray-500 -translate-y-2">
+                Like good notes to keep them on top
             </p>
-            {
-                showEarnDialog && (<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+            {showEarnDialog && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
                     <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg lg:m-4 m-6 dark:bg-gray-800">
                         <div className="items-center mb-4 text-white">
-                            <div className='flex justify-between items-center'>
+                            <div className="flex justify-between items-center">
                                 <h2 className="text-xl sm:text-2xl pb-1 font-bold text-gray-900 dark:text-white ">
                                     Earn Money
                                 </h2>
@@ -193,31 +176,37 @@ function SubjectNotes() {
                                     <i className="fa-solid fa-xmark text-2xl text-gray-900 dark:text-white"></i>
                                 </button>
                             </div>
-                            <div className='text-gray-900 dark:text-white'>
-                            <p>You can add notes and earn reward points:</p>
-                            <p className="mt-2">
-                                Here are the rules for earning reward points:
-                            </p>
-                            <ul className="list-disc ml-4 mt-2">
-                                <li>1 unit note = 5 reward points</li>
-                                <li>
-                                    You can upload 1 unit or the whole in one upload
-                                </li>
-                                <li>
-                                    Rewards will be given only after the notes are
-                                    approved
-                                </li>
-                                <li>Duplicate and invalid notes are not allowed</li>
-                                <li>
-                                    Labs will be approved only once unless they are
-                                    better than the previous submission
-                                </li>
-                            </ul>
+                            <div className="text-gray-900 dark:text-white">
+                                <p>You can add notes and earn reward points:</p>
+                                <p className="mt-2">
+                                    Here are the rules for earning reward
+                                    points:
+                                </p>
+                                <ul className="list-disc ml-4 mt-2">
+                                    <li>1 unit note = 5 reward points</li>
+                                    <li>
+                                        You can upload 1 unit or the whole in
+                                        one upload
+                                    </li>
+                                    <li>
+                                        Rewards will be given only after the
+                                        notes are approved
+                                    </li>
+                                    <li>
+                                        Duplicate and invalid notes are not
+                                        allowed
+                                    </li>
+                                    <li>
+                                        Labs will be approved only once unless
+                                        they are better than the previous
+                                        submission
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                </div>)
-            }
+                </div>
+            )}
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:mx-20 gap-4">
                 {subjectNotes.length > 0 ? (
@@ -260,12 +249,16 @@ function SubjectNotes() {
 
                             <div className="flex items-center justify-between mt-3">
                                 <button
-                                    onClick={() => likeNotes(note._id)}
-                                    className={`flex items-center space-x-1 ${Array.isArray(note.likes) &&
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        likeNotes(note._id);
+                                    }}
+                                    className={`flex items-center space-x-1 ${
+                                        Array.isArray(note.likes) &&
                                         note.likes.includes(ownerId)
-                                        ? 'text-red-500'
-                                        : 'text-gray-600'
-                                        } hover:text-red-500`}
+                                            ? 'text-red-500'
+                                            : 'text-gray-600'
+                                    } hover:text-red-500`}
                                     title="Like this note"
                                 >
                                     <i className="fa-regular fa-heart"></i>
