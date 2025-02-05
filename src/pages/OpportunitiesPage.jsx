@@ -170,7 +170,7 @@ const OpportunitiesPage = () => {
     };
 
     return (
-        <div className="container bg-gradient-to-t from-sky-200 to-white min-h-screen px-6 py-8">
+        <div className="container bg-gradient-to-t from-sky-200 to-white min-h-screen px-6 py-8 min-w-full">
             <CollegeLinks />
 
             <div className="max-w-7xl mx-auto">
@@ -192,7 +192,7 @@ const OpportunitiesPage = () => {
                     <Modal onClose={() => setShowModal(false)}>
                         <form
                             onSubmit={handleGiveOpportunitySubmit}
-                            className="p-6 bg-white shadow-lg rounded-lg"
+                            className="p-6 bg-white rounded-lg"
                         >
                             <h3 className="text-2xl font-semibold mb-4">
                                 Provide Job Details
@@ -359,13 +359,14 @@ const OpportunitiesPage = () => {
                                             <>
                                                 <span>Confirm</span>
                                                 &nbsp;
-                                                <i className="fa-solid fa-trash fa-xl"></i>
+                                                <i className="fa-solid fa-trash fa-xl text-sm"></i>
                                             </>
                                         )}
                                     </button>
                                 </div>
                             }
                         >
+
                             <p>Are you sure you want to delete this item?</p>
                             <p className="text-sm text-gray-500">
                                 This action cannot be undone.
@@ -376,7 +377,7 @@ const OpportunitiesPage = () => {
                         <Modal onClose={() => setShowEditModal(false)}>
                             <form
                                 onSubmit={handleUpdateOpportunity}
-                                className="p-6 bg-white shadow-lg rounded-lg"
+                                className="p-6 bg-white"
                             >
                                 <h3 className="text-2xl font-semibold mb-4">
                                     Edit Job Details
@@ -450,10 +451,10 @@ const OpportunitiesPage = () => {
 
 const Modal = ({ onClose, children }) => (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-        <div className="bg-white p-6 rounded-md shadow-md w-full max-w-lg">
+        <div className="bg-white p-2 lg:m-0 m-4 rounded-2xl shadow-md w-full max-w-lg">
             <button
                 onClick={onClose}
-                className="text-gray-500 hover:text-gray-700 float-right"
+                className="text-gray-500 text-4xl hover:text-gray-700 float-right pr-4 pt-2"
             >
                 &times;
             </button>
