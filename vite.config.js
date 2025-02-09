@@ -50,6 +50,7 @@ export default defineConfig({
             registerType: 'autoUpdate',
             workbox: {
                 cleanupOutdatedCaches: true,
+                maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
             },
             manifest: {
                 name: 'Student Senior',

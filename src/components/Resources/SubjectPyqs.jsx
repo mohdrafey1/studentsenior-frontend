@@ -10,6 +10,7 @@ import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 import AddPyq from './AddPyq.jsx';
 import { fetchSubjectPyqs } from '../../redux/slices/subjectPyqsSlice.js';
 import useRequireLogin from '../../hooks/useRequireLogin.js';
+import Seo from '../SEO/Seo.jsx';
 
 function SubjectPyqs() {
     const { collegeName, courseCode, subjectCode, branchCode } = useParams();
@@ -89,6 +90,8 @@ function SubjectPyqs() {
                 {capitalizeWords(collegeName)}: {subjectName || subjectCode}{' '}
                 Pyqs
             </h1>
+            <Seo title={` ${capitalizeWords(collegeName)}: ${subjectName || subjectCode}{' '}
+                Pyqs` } desc={subjectPyqs.map((pyq) => `${pyq.year} ${pyq.examType}`).join(' ')} />
 
             <div className="flex justify-center items-center mb-4">
                 <button

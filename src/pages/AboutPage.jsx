@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
+import Seo from '../components/SEO/Seo';
 
 function AboutPage() {
     return (
@@ -10,6 +11,7 @@ function AboutPage() {
                 {/* Hero Section */}
                 <section className="relative py-10">
                     <div className="container mx-auto px-6 text-center relative">
+                        <Seo title='About Us' desc={`A one-stop platform for students to select courses, access previous year's question papers (PYQs) , and download Comprehensive notes, simplifying exam preparation.`} />
                         <h1 className="text-4xl font-bold mb-6">About Us</h1>
                         <ul className="space-y-4 text-base max-w-5xl mx-auto text-start">
                             <li>

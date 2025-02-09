@@ -11,6 +11,7 @@ import { useCollegeId } from '../hooks/useCollegeId.js';
 import { fetchGiveOpportunity } from '../redux/slices/giveOpportunitySlice.js';
 import useRequireLogin from '../hooks/useRequireLogin.js';
 import Dialog from '../utils/Dialog.jsx';
+import Seo from '../components/SEO/Seo.jsx';
 
 const OpportunitiesPage = () => {
     const { collegeName } = useParams();
@@ -177,7 +178,7 @@ const OpportunitiesPage = () => {
                 <h1 className="text-lg sm:text-3xl font-bold mb-4 text-center">
                     Opportunities - {capitalizeWords(collegeName)}
                 </h1>
-
+                <Seo title={`Opportunities - ${capitalizeWords(collegeName)}`} desc='Get job and internship opportunities in your college.' />
                 <div className="flex justify-center items-center my-3">
                     <button
                         onClick={() => setShowModal(true)}

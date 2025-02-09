@@ -14,6 +14,7 @@ import {
 } from '../../redux/slices/subjectNotesSlice.js';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 import useRequireLogin from '../../hooks/useRequireLogin.js';
+import Seo from '../SEO/Seo.jsx';
 
 function SubjectNotes() {
     const { collegeName, courseCode, subjectCode, branchCode } = useParams();
@@ -146,6 +147,7 @@ function SubjectNotes() {
             <h1 className="sm:text-2xl font-bold text-center mb-2">
                 {capitalizeWords(collegeName)}: {subjectName} Notes
             </h1>
+            <Seo title={`${capitalizeWords(collegeName)}: ${subjectName} Notes`} desc={subjectNotes.slice(0, 5).map((note) => note.title).join(' ')} />
 
             <div className="flex justify-center items-center mb-4">
                 <button
@@ -253,12 +255,11 @@ function SubjectNotes() {
                                         e.stopPropagation();
                                         likeNotes(note._id);
                                     }}
-                                    className={`flex items-center space-x-1 ${
-                                        Array.isArray(note.likes) &&
-                                        note.likes.includes(ownerId)
+                                    className={`flex items-center space-x-1 ${Array.isArray(note.likes) &&
+                                            note.likes.includes(ownerId)
                                             ? 'text-red-500'
                                             : 'text-gray-600'
-                                    } hover:text-red-500`}
+                                        } hover:text-red-500`}
                                     title="Like this note"
                                 >
                                     <i className="fa-regular fa-heart"></i>

@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchCourses } from '../redux/slices/courseSlice';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
+import Seo from '../components/SEO/Seo.jsx';
 
 const ResourcesPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -37,6 +38,9 @@ const ResourcesPage = () => {
             <div className="max-w-7xl mx-auto px-5 min-h-full">
                 <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
                     Resources - {capitalizeWords(collegeName)}
+                    <Seo title={capitalizeWords(collegeName)} desc=' "Get concise and clear notes to boost your exam
+                    preparation."' />
+
                 </h1>
                 <p className="italic text-center text-xs sm:text-base">
                     "Get concise and clear notes to boost your exam

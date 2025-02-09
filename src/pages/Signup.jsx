@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import OAuth from '../components/OAuth';
 import { api, API_KEY } from '../config/apiConfiguration.js'; //correction
 import { toast } from 'react-toastify';
+import Seo from '../components/SEO/Seo.jsx';
 
 export default function SignUp() {
     const [formData, setFormData] = useState({});
@@ -52,6 +53,7 @@ export default function SignUp() {
             <div className="p-3 max-w-lg mx-auto">
                 <h1 className="text-3xl text-center font-semibold my-7">
                     Sign Up
+                    <Seo title='Sign Up' desc='Create an Account to access all resources' />
                 </h1>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <input

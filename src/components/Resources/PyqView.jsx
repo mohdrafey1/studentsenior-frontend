@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { api, API_KEY } from '../../config/apiConfiguration.js';
 import { toast } from 'react-toastify';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
+import Seo from '../SEO/Seo.jsx';
 
 function PyqView() {
     const { courseCode, branchCode, subjectCode, slug, collegeName } =
@@ -90,6 +91,7 @@ function PyqView() {
                         <p className="text-lg text-gray-600 mt-2">
                             Subject: {pyq.subject.subjectName} ( {pyq.examType}{' '}
                             - {pyq.year} )
+                            <Seo title={`${pyq.subject.subjectName} (${pyq.examType} - ${pyq.year})`} />
                         </p>
                     </div>
 

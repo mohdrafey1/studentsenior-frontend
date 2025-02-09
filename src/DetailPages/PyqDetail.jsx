@@ -6,6 +6,7 @@ import { api } from '../config/apiConfiguration';
 import DetailPageNavbar from './DetailPageNavbar';
 import PyqCard from '../components/Cards/PyqCard';
 import { useCollegeId } from '../hooks/useCollegeId';
+import Seo from '../components/SEO/Seo';
 
 function PyqDetail() {
     const { collegeName, slug } = useParams();
@@ -88,6 +89,7 @@ function PyqDetail() {
                     <div className="flex flex-col items-center sm:px-4 space-y-4">
                         <h2 className="text-2xl font-semibold text-gray-800">
                             {pyq?.subjectName}
+                            <Seo title={pyq?.subjectName} />
                         </h2>
                         <div className="flex md:flex-row md:justify-around w-full max-w-screen-lg bg-white rounded-md shadow-lg p-3">
                             <div className="text-gray-600 mb-3 md:mb-0 w-1/2">

@@ -12,6 +12,7 @@ import useApiRequest from '../hooks/useApiRequest.js';
 import { useCollegeId } from '../hooks/useCollegeId.js';
 import SeniorCard from '../components/Cards/SeniorCard.jsx';
 import { fetchSeniors } from '../redux/slices/seniorSlice.js';
+import Seo from '../components/SEO/Seo.jsx';
 
 const SeniorPage = () => {
     const { collegeName } = useParams();
@@ -80,6 +81,8 @@ const SeniorPage = () => {
                 <div className="flex flex-col justify-center items-center">
                     <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
                         Seniors - {capitalizeWords(collegeName)}
+                        <Seo title={capitalizeWords(collegeName)} desc='Reach out to seniors for mentorship and expert guidance
+                        on your journey' />
                     </h1>
                     <p className="italic text-center text-xs sm:text-base">
                         Reach out to seniors for mentorship and expert guidance

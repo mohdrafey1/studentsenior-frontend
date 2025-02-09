@@ -14,6 +14,7 @@ import usePosts from '../hooks/usePosts.js';
 import { useCollegeId } from '../hooks/useCollegeId.js';
 import { fetchPosts } from '../redux/slices/postSlice.js';
 import useRequireLogin from '../hooks/useRequireLogin.js';
+import Seo from '../components/SEO/Seo.jsx';
 
 const CommunityPage = () => {
     const navigate = useNavigate();
@@ -226,6 +227,8 @@ const CommunityPage = () => {
                     "Connect, share, and ask your questions and doubts through
                     the community."
                 </p>
+                <Seo title={`Community - ${capitalizeWords(collegeName)}`} desc='Connect, share, and ask your questions and doubts through
+                    the community.' />
                 <br />
                 <div className="mb-5 text-center">
                     <button
@@ -318,19 +321,19 @@ const CommunityPage = () => {
                                                 {post.isAnonymous
                                                     ? 'Anonymous'
                                                     : post.author.username
-                                                          .length >
-                                                      (post.author._id ===
-                                                      ownerId
-                                                          ? 8
-                                                          : 20)
-                                                    ? post.author.username.slice(
-                                                          0,
-                                                          post.author._id ===
-                                                              ownerId
-                                                              ? 8
-                                                              : 20
-                                                      ) + '...'
-                                                    : post.author.username}
+                                                        .length >
+                                                        (post.author._id ===
+                                                            ownerId
+                                                            ? 8
+                                                            : 20)
+                                                        ? post.author.username.slice(
+                                                            0,
+                                                            post.author._id ===
+                                                                ownerId
+                                                                ? 8
+                                                                : 20
+                                                        ) + '...'
+                                                        : post.author.username}
                                             </h2>
                                         </div>
 
@@ -445,7 +448,7 @@ const CommunityPage = () => {
                                                                     disabled={
                                                                         hookLoadingStates
                                                                             .deletePost[
-                                                                            postIdToDelete
+                                                                        postIdToDelete
                                                                         ]
                                                                     }
                                                                 >
@@ -500,17 +503,16 @@ const CommunityPage = () => {
                                             </Link>
                                         </>
                                         <button
-                                            className={`mt-1 px-3 border-2 border-sky-500 rounded-lg ${
-                                                post.likes.includes(ownerId)
+                                            className={`mt-1 px-3 border-2 border-sky-500 rounded-lg ${post.likes.includes(ownerId)
                                                     ? 'text-white bg-sky-500'
                                                     : 'text-black'
-                                            }`}
+                                                }`}
                                             onClick={() =>
                                                 handleLikePost(post._id)
                                             }
                                             disabled={
                                                 hookLoadingStates.likePost[
-                                                    post._id
+                                                post._id
                                                 ]
                                             }
                                         >
@@ -568,19 +570,18 @@ const CommunityPage = () => {
                                                     </p>
                                                     <div className="flex items-center justify-between mt-2">
                                                         <button
-                                                            className={`text-blue-500 ${
-                                                                likedComments.includes(
+                                                            className={`text-blue-500 ${likedComments.includes(
+                                                                post
+                                                                    .comments[
                                                                     post
-                                                                        .comments[
-                                                                        post
-                                                                            .comments
-                                                                            .length -
-                                                                            1
-                                                                    ]._id
-                                                                )
+                                                                        .comments
+                                                                        .length -
+                                                                    1
+                                                                ]._id
+                                                            )
                                                                     ? 'opacity-50 cursor-not-allowed'
                                                                     : ''
-                                                            }`}
+                                                                }`}
                                                             onClick={() =>
                                                                 likeComment(
                                                                     post._id,
@@ -589,7 +590,7 @@ const CommunityPage = () => {
                                                                         post
                                                                             .comments
                                                                             .length -
-                                                                            1
+                                                                        1
                                                                     ]._id
                                                                 )
                                                             }
@@ -598,7 +599,7 @@ const CommunityPage = () => {
                                                                     post
                                                                         .comments
                                                                         .length -
-                                                                        1
+                                                                    1
                                                                 ]._id
                                                             )}
                                                         >
@@ -609,7 +610,7 @@ const CommunityPage = () => {
                                                                     post
                                                                         .comments
                                                                         .length -
-                                                                        1
+                                                                    1
                                                                 ].likes
                                                             }
                                                             )
@@ -619,37 +620,37 @@ const CommunityPage = () => {
                                                                 .length - 1
                                                         ].author._id ===
                                                             ownerId && (
-                                                            <button
-                                                                className="text-red-500"
-                                                                onClick={() =>
-                                                                    handleDeleteComment(
-                                                                        post._id,
-                                                                        post
-                                                                            .comments[
+                                                                <button
+                                                                    className="text-red-500"
+                                                                    onClick={() =>
+                                                                        handleDeleteComment(
+                                                                            post._id,
                                                                             post
-                                                                                .comments
-                                                                                .length -
+                                                                                .comments[
+                                                                                post
+                                                                                    .comments
+                                                                                    .length -
                                                                                 1
-                                                                        ]._id
-                                                                    )
-                                                                }
-                                                                disabled={
-                                                                    hookLoadingStates
+                                                                            ]._id
+                                                                        )
+                                                                    }
+                                                                    disabled={
+                                                                        hookLoadingStates
+                                                                            .deleteComment[
+                                                                        post._id
+                                                                        ]
+                                                                    }
+                                                                >
+                                                                    {hookLoadingStates
                                                                         .deleteComment[
                                                                         post._id
-                                                                    ]
-                                                                }
-                                                            >
-                                                                {hookLoadingStates
-                                                                    .deleteComment[
-                                                                    post._id
-                                                                ] ? (
-                                                                    <i className="fa fa-spinner fa-spin"></i>
-                                                                ) : (
-                                                                    <i className="fa-solid fa-trash"></i>
-                                                                )}
-                                                            </button>
-                                                        )}
+                                                                    ] ? (
+                                                                        <i className="fa fa-spinner fa-spin"></i>
+                                                                    ) : (
+                                                                        <i className="fa-solid fa-trash"></i>
+                                                                    )}
+                                                                </button>
+                                                            )}
                                                     </div>
                                                 </li>
                                             )}
@@ -674,30 +675,30 @@ const CommunityPage = () => {
                                             {commentContent[
                                                 post._id
                                             ]?.trim() && (
-                                                <button
-                                                    onClick={() =>
-                                                        handleAddComment(
+                                                    <button
+                                                        onClick={() =>
+                                                            handleAddComment(
+                                                                post._id
+                                                            )
+                                                        }
+                                                        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+                                                        disabled={
+                                                            hookLoadingStates
+                                                                .addComment[
                                                             post._id
-                                                        )
-                                                    }
-                                                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
-                                                    disabled={
-                                                        hookLoadingStates
+                                                            ]
+                                                        }
+                                                    >
+                                                        {hookLoadingStates
                                                             .addComment[
                                                             post._id
-                                                        ]
-                                                    }
-                                                >
-                                                    {hookLoadingStates
-                                                        .addComment[
-                                                        post._id
-                                                    ] ? (
-                                                        <i className="fa fa-spinner fa-spin"></i>
-                                                    ) : (
-                                                        'Comment'
-                                                    )}
-                                                </button>
-                                            )}
+                                                        ] ? (
+                                                            <i className="fa fa-spinner fa-spin"></i>
+                                                        ) : (
+                                                            'Comment'
+                                                        )}
+                                                    </button>
+                                                )}
                                         </div>
                                     </div>
                                 </div>
