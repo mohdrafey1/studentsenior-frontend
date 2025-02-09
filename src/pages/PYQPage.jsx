@@ -212,22 +212,6 @@ const PYQPage = () => {
             </div>
             <div className="lg:flex w-full justify-center gap-5">
                 <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
-                    <img src={pyq} alt="pyq sell" className="w-36 mx-auto" />
-                    <p className="mb-4">
-                        Get solved questions for just ₹29. <br />
-                        <a className="text-sm text-gray-500">
-                            Terms and conditions apply.
-                        </a>
-                    </p>
-                    <a
-                        target="_blank"
-                        href="https://forms.gle/NwFvj1Jz5gxvmHfdA"
-                        className="inline-block px-6 py-3 w-full bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors duration-200"
-                    >
-                        Buy Solved Question Paper
-                    </a>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
                     <img
                         src={notesandpyq}
                         alt="pyq upload"

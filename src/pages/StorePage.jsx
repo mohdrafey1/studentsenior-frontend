@@ -70,6 +70,17 @@ const StorePage = () => {
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
+         if (file) {
+                    if (file.type !== 'application/pdf') {
+                        toast.error('Only PDF files are allowed.');
+                        return;
+                    }
+                    if (file.size > 10 * 1024 * 1024) {
+                        toast.error('File size exceeds 10MB.');
+                        return;
+                    }
+                    setFile(file);
+                }
         if (editingProduct) {
             setEditingProduct({ ...editingProduct, image: file });
         } else {

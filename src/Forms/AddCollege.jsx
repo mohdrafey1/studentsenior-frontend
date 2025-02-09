@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import useApiRequest from '../hooks/useApiRequest';
 import { api } from '../config/apiConfiguration.js';
 import useRequireLogin from '../hooks/useRequireLogin.js';
+import Seo from '../components/SEO/Seo.jsx';
 
 function AddCollege() {
     const requireLogin = useRequireLogin();
@@ -58,9 +59,8 @@ function AddCollege() {
             )}
 
             <div
-                className={`${
-                    isSuccess ? 'block' : 'hidden'
-                } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full w-full z-50 items-center`}
+                className={`${isSuccess ? 'block' : 'hidden'
+                    } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full w-full z-50 items-center`}
             >
                 <div
                     role="alert"
@@ -112,6 +112,7 @@ function AddCollege() {
                                     Add New College
                                 </span>
                             </h1>
+                            <Seo title='Add Your College' desc="Didn't found you college ? Add it here" />
                             <div className="mb-4">
                                 <label
                                     className="block text-gray-700 font-bold mb-2"

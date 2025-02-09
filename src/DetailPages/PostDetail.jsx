@@ -11,6 +11,8 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import DetailPageNavbar from './DetailPageNavbar';
 import { originalHandleShare } from '../utils/handleShare';
+import Seo from '../components/SEO/Seo';
+import { capitalizeWords } from '../utils/Capitalize';
 
 function PostDetail() {
     const { collegeName, id } = useParams();
@@ -186,6 +188,7 @@ function PostDetail() {
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full relative">
             <DetailPageNavbar path={`college/${collegeName}/community`} />
+            <Seo title={`Post Details - ${capitalizeWords(collegeName)}`} desc={post.content.slice(0, 100)} />
             <div className="main">
                 <div className="content  sm:w-4/5 sm:mx-auto">
                     <div className="profile-section m-4 flex items-center gap-4">

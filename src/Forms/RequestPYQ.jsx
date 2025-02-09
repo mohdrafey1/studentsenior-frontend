@@ -3,6 +3,7 @@ import { api } from '../config/apiConfiguration';
 import useApiRequest from '../hooks/useApiRequest';
 import { colleges } from '../hooks/useCollegeId.js';
 import useRequireLogin from '../hooks/useRequireLogin.js';
+import Seo from '../components/SEO/Seo.jsx';
 
 const RequestPYQ = () => {
     const requireLogin = useRequireLogin();
@@ -68,6 +69,7 @@ const RequestPYQ = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-t from-sky-200 to bg-white flex items-center justify-center p-4">
+            <Seo title='Request PYQ' desc="Didn't found PYQ you are looking for? Request here" />
             {loading && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-75">
                     <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>

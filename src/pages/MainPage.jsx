@@ -8,6 +8,7 @@ import { colleges } from '../hooks/useCollegeId';
 import QuickLinks from '../components/Links/QuickLinks';
 import { toast } from 'react-toastify';
 import Seo from '../components/SEO/Seo';
+import FAQPage from '../others/FAQPage';
 
 
 const MainPage = () => {
@@ -34,7 +35,7 @@ const MainPage = () => {
     return (
         <div className='bg-gray-100'>
             <Hero>
-           <Seo title="Student Senior" desc={'A platform offering mentorship, past year papers, and a student marketplace to support learning, career growth, and community engagement in college life.'} />
+           <Seo title="Student Senior: Your Academic Companion" desc={'A platform offering mentorship, past year papers, and a student marketplace to support learning, career growth, and community engagement in college life.'} />
                 <div className="flex flex-col items-center my-10">
                     <div className="text-black bg-white px-4 py-2 border-radius-38 border-4 border-sky-300 flex flex-col sm:flex-row items-center my-10">
                         <div className="text-xl sm:text-2xl flex items-center mb-4 sm:mb-0">
@@ -71,6 +72,7 @@ const MainPage = () => {
             <OurFeatures />
             {/* <Testimonials /> */}
             <About />
+            <FAQPage />
         </div>
     );
 };

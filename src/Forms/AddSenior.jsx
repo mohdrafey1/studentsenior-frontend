@@ -3,6 +3,7 @@ import useApiRequest from '../hooks/useApiRequest';
 import { api } from '../config/apiConfiguration.js';
 import { colleges } from '../hooks/useCollegeId.js';
 import useRequireLogin from '../hooks/useRequireLogin.js';
+import Seo from '../components/SEO/Seo.jsx';
 
 const AddSeniorPage = () => {
     const requireLogin = useRequireLogin();
@@ -115,6 +116,7 @@ const AddSeniorPage = () => {
                             <span className="heading-class">
                                 Join As a Senior
                             </span>
+                            <Seo title=" Join As a Senior" desc='Apply for Senior and help students in their academic journey' />
                         </h1>
                         <form onSubmit={handleAddSenior}>
                             <div className="lg:flex lg:flex-wrap justify-evenly">

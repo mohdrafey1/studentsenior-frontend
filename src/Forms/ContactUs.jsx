@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { api } from "../config/apiConfiguration";
 import useApiRequest from "../hooks/useApiRequest";
 import Dialog from "../utils/Dialog";
+import Seo from "../components/SEO/Seo";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -44,6 +45,7 @@ const ContactUs = () => {
   return (
     <div 
     className="flex justify-center items-center h-full lg:min-h-screen bg-gradient-to-t from-blue-200 to bg-white py-20 px-6">
+      <Seo title='Contact Us' desc='Get in Touch with us' />
   <div className="bg-white rounded-2xl shadow-2xl p-10 w-full max-w-lg">
     <h2 className="text-4xl font-semibold text-gray-700 text-center mb-8">Get in Touch</h2>
     {error && (
