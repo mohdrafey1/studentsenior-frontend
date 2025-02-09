@@ -5,6 +5,7 @@ import { useCollegeId } from '../hooks/useCollegeId';
 import { toast } from 'react-toastify';
 import useApiFetch from '../hooks/useApiFetch';
 import { api } from '../config/apiConfiguration';
+import Seo from '../components/SEO/Seo';
 
 function SeniorDetail() {
     const { collegeName, slug } = useParams();
@@ -74,6 +75,7 @@ function SeniorDetail() {
                             alt={senior.name}
                             className="h-48 w-48 rounded-full mx-auto shadow-lg transform transition duration-300 hover:scale-110"
                         />
+                        <Seo title={`${senior.name} - Student Senior`} desc={`${senior.name} - ${senior.branch} - ${senior.domain} - ${senior.year}`} />
                         <h3 className="mt-6 text-2xl font-bold text-gray-900">{senior.name}</h3>
                         <p className="text-md text-gray-700 font-medium">Course: {senior.branch}</p>
                         <p className="text-md text-gray-700">Year: {senior.year}</p>

@@ -23,6 +23,7 @@ import warning from '/assets/warning.png';
 import { useNavigate } from 'react-router-dom';
 import { fetchUserData } from '../redux/slices/userDataSlice.js';
 import ProfileDetails from '../DetailPages/ProfileDetails.jsx';
+import Seo from '../components/SEO/Seo.jsx';
 
 export default function Profile() {
     const dispatch = useDispatch();
@@ -215,6 +216,7 @@ export default function Profile() {
                 <h1 className="text-3xl font-semibold text-center my-7">
                     Profile
                 </h1>
+                <Seo title={`Profile - ${currentUser.username}`} />
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <div className="relative flex justify-center">
                         <input

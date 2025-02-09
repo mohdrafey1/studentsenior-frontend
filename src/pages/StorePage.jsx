@@ -70,10 +70,29 @@ const StorePage = () => {
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        if (editingProduct) {
-            setEditingProduct({ ...editingProduct, image: file });
-        } else {
-            setNewProduct({ ...newProduct, image: file });
+        if (file) {
+            const allowedTypes = [
+                'image/png',
+                'image/jpeg',
+                'image/jpg',
+                'image/webp',
+            ];
+            if (!allowedTypes.includes(file.type)) {
+                toast.error(
+                    'Only image files (PNG, JPEG, JPG, WEBP) are allowed.'
+                );
+                return;
+            }
+            if (file.size > 2 * 1024 * 1024) {
+                toast.error('File size exceeds 2MB.');
+                return;
+            }
+
+            if (editingProduct) {
+                setEditingProduct((prev) => ({ ...prev, image: file }));
+            } else {
+                setNewProduct((prev) => ({ ...prev, image: file }));
+            }
         }
     };
 
@@ -92,12 +111,14 @@ const StorePage = () => {
             formData.append('available', newProduct.available);
 
             try {
-                await apiRequest(`${api.store}`, 'POST', formData, true);
-                setIsModalOpen(false);
-                toast.success(
-                    'Your request has been received. The item will display once approved.',
-                    { autoClose: 10000 }
+                const response = await apiRequest(
+                    `${api.store}`,
+                    'POST',
+                    formData,
+                    true
                 );
+                setIsModalOpen(false);
+                toast.success(response.message, { autoClose: 10000 });
             } catch (err) {
                 console.error('Error adding product:', err);
             }
@@ -164,9 +185,12 @@ const StorePage = () => {
     const handleConfirmDelete = async () => {
         setDeleteLoading(true);
         try {
-            await apiRequest(`${api.store}/${productIdtoDelete}`, 'DELETE');
+            const response = await apiRequest(
+                `${api.store}/${productIdtoDelete}`,
+                'DELETE'
+            );
             dispatch(fetchProducts(collegeId));
-            toast.success('Your request has been deleted successfully');
+            toast.success(response.message);
             setShowDeleteDialog(false);
             setProductIdtoDelete(null);
             setDeleteLoading(false);
@@ -187,9 +211,11 @@ const StorePage = () => {
                 <div className="flex flex-col justify-center items-center">
                     <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
                         Product Store - {capitalizeWords(collegeName)}
-                        <Seo title={capitalizeWords(collegeName)} desc='Buy and sell your stationery and gadgets easily to your
-                        juniors.' />
-
+                        <Seo
+                            title={capitalizeWords(collegeName)}
+                            desc="Buy and sell your stationery and gadgets easily to your
+                        juniors."
+                        />
                     </h1>
                     <p className="italic text-center text-xs sm:text-base">
                         "Buy and sell your stationery and gadgets easily to your

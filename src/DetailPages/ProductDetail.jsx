@@ -6,6 +6,9 @@ import { useParams, Link } from 'react-router-dom';
 import DetailPageNavbar from './DetailPageNavbar';
 import ProductsCard from '../components/Cards/ProductsCard';
 import { useCollegeId } from '../hooks/useCollegeId';
+import Seo from '../components/SEO/Seo';
+import { capitalizeWords } from '../utils/Capitalize.js';
+
 
 function ProductDetail() {
     const { collegeName, slug } = useParams();
@@ -94,6 +97,7 @@ function ProductDetail() {
                             {product.description}
                         </p>
                     </div>
+                    <Seo title={`${product.name} - ${capitalizeWords(collegeName)}`} description={product.description} />
                     <div className="flex items-center gap-4 mt-6">
                         <a
                             target="_blank"

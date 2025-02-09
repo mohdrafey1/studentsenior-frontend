@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Seo from '../components/SEO/Seo';
 
 const FAQPage = () => {
     const faqs = [
@@ -31,7 +32,7 @@ const FAQPage = () => {
     };
 
     return (
-        <div className="min-h-screen p-8 bg-gray-50">
+        <div className="min-h-screen p-8">
             <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
                 Frequently Asked Questions
             </h1>
@@ -40,23 +41,20 @@ const FAQPage = () => {
                     <div key={index} className="mb-4 border-b border-gray-300">
                         <button
                             onClick={() => toggleFAQ(index)}
-                            className="w-full flex justify-between items-center py-4 px-6 text-left bg-white text-gray-700 hover:bg-gray-100 focus:outline-none"
+                            className="w-full flex justify-between items-center py-4 px-6 text-left bg-white text-gray-900 hover:bg-gray-200 focus:outline-none"
                         >
-                            <span className="text-lg font-medium">
-                                {faq.question}
-                            </span>
-                            <span className="text-gray-500">
-                                {openIndex === index ? '−' : '+'}
-                            </span>
+                            <span className="text-lg font-semibold">{faq.question}</span>
+                            <span className="text-gray-700">{openIndex === index ? '−' : '+'}</span>
                         </button>
                         {openIndex === index && (
-                            <div className="px-6 pb-4 text-gray-600">
+                            <div className="px-6 py-4 text-gray-800 bg-gray-100 rounded-b-lg">
                                 {faq.answer}
                             </div>
                         )}
                     </div>
                 ))}
             </div>
+
         </div>
     );
 };

@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useCollegeId } from '../hooks/useCollegeId.js';
 import { api, API_KEY } from '../config/apiConfiguration.js';
 import DetailPageNavbar from '../DetailPages/DetailPageNavbar.jsx';
+import Seo from '../components/SEO/Seo.jsx';
 
 const OpportunityDetails = () => {
     const { collegeName, slug } = useParams();
@@ -72,10 +73,13 @@ const OpportunityDetails = () => {
                 <div id="forDetails" className="space-y-8 w-full md:w-3/4">
                     {opportunity && opportunity.length > 0 ? (
                         opportunity.map((item) => (
+
                             <div
                                 key={item.id}
                                 className="bg-white p-8 rounded-2xl shadow-lg space-y-6"
                             >
+                                <Seo title={item.name} description={item.description.slice(0, 100)} />
+
                                 <h1 className="font-semibold text-3xl text-blue-600">
                                     {item.name}
                                 </h1>
@@ -89,18 +93,18 @@ const OpportunityDetails = () => {
                                     <p className="text-gray-600">{item.description}</p>
                                 </div>
                                 <div className='flex gap-3'>
-                                <a href={`https://api.whatsapp.com/send?phone=${item.whatsapp}`} target="_blank" rel="noreferrer">
-                                    <button className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg">
-                                        Contact Us
-                                    </button>
-                                </a>
+                                    <a href={`https://api.whatsapp.com/send?phone=${item.whatsapp}`} target="_blank" rel="noreferrer">
+                                        <button className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg">
+                                            Contact Us
+                                        </button>
+                                    </a>
 
-                                <a href={`mailto:${item.email}`} target="_blank" rel="noreferrer">
-                                    <button className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg">
-                                        Email Us
-                                    </button>
-                                </a>
-                                    </div>
+                                    <a href={`mailto:${item.email}`} target="_blank" rel="noreferrer">
+                                        <button className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg">
+                                            Email Us
+                                        </button>
+                                    </a>
+                                </div>
                             </div>
                         ))
                     ) : (
