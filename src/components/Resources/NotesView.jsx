@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { api, API_KEY } from '../../config/apiConfiguration.js';
 import { toast } from 'react-toastify';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
+import Seo from '../SEO/Seo.jsx';
 
 function NotesView() {
     const { courseCode, branchCode, subjectCode, slug, collegeName } =
@@ -92,6 +93,9 @@ function NotesView() {
                         <p className="text-lg text-gray-600 mt-2">
                             Subject: {note.subject.subjectName} (
                             {note.subject.subjectCode})
+
+                            <Seo title={`${note.subject.subjectName} (
+                            ${note.subject.subjectCode}`} />
                         </p>
                     </div>
 

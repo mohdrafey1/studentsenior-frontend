@@ -14,6 +14,7 @@ import { useCollegeId } from '../hooks/useCollegeId.js';
 import Dialog from '../utils/Dialog.jsx';
 import { fetchProducts } from '../redux/slices/productSlice.js';
 import useRequireLogin from '../hooks/useRequireLogin.js';
+import Seo from '../components/SEO/Seo.jsx';
 
 const StorePage = () => {
     const { collegeName } = useParams();
@@ -186,6 +187,9 @@ const StorePage = () => {
                 <div className="flex flex-col justify-center items-center">
                     <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
                         Product Store - {capitalizeWords(collegeName)}
+                        <Seo title={capitalizeWords(collegeName)} desc='Buy and sell your stationery and gadgets easily to your
+                        juniors.' />
+
                     </h1>
                     <p className="italic text-center text-xs sm:text-base">
                         "Buy and sell your stationery and gadgets easily to your

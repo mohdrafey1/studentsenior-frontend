@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchSubjects } from '../../redux/slices/subjectSlice.js';
 import { capitalizeWords } from '../../utils/Capitalize.js';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
+import Seo from '../SEO/Seo.jsx';
 
 function Subjects() {
     const { collegeName, branchCode, courseCode } = useParams();
@@ -99,6 +100,15 @@ function Subjects() {
             <h1 className="text-2xl font-bold text-center mb-2">
                 {capitalizeWords(collegeName)}: {branchCode.toUpperCase()}
             </h1>
+            <Seo
+                title={`${capitalizeWords(collegeName)}: ${branchCode.toUpperCase()}`}
+                desc={Object.keys(groupedSubjects)
+                    .slice(0, 5)
+                    .sort((a, b) => a - b)
+                    .map((semester) => semester)
+                    .join(", ")}
+            />
+
             <h2 className="text-xs sm:text-lg text-center mb-4">
                 Semester subjects or Code may vary across different colleges,
                 please adjust accordingly
@@ -112,8 +122,8 @@ function Subjects() {
                         <button
                             key={semester}
                             className={`min-w-16 px-2 sm:px-4 py-2 rounded ${activeSemester === semester
-                                    ? 'bg-sky-500 text-white'
-                                    : 'bg-gray-200 text-gray-800'
+                                ? 'bg-sky-500 text-white'
+                                : 'bg-gray-200 text-gray-800'
                                 } hover:bg-blue-400 transition duration-200`}
                             onClick={() => handleSemesterChange(semester)}
                         >

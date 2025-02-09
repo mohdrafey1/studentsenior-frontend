@@ -5,6 +5,7 @@ import { fetchBranches } from '../../redux/slices/branchSlice.js';
 import { fetchCourses } from '../../redux/slices/courseSlice.js';
 import { capitalizeWords } from '../../utils/Capitalize.js';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
+import Seo from '../SEO/Seo.jsx';
 
 const Branches = () => {
     const { collegeName, courseCode } = useParams();
@@ -45,6 +46,8 @@ const Branches = () => {
             <DetailPageNavbar path={`college/${collegeName}/resource`} />
             <h1 className="sm:text-2xl font-bold text-center mb-2">
                 {capitalizeWords(collegeName)}: {courseCode.toUpperCase()}
+                <Seo title={`${capitalizeWords(collegeName)} : ${courseCode.toUpperCase()}`} />
+        
             </h1>
             {/* Search Input */}
             <div className="mb-2 flex justify-center">

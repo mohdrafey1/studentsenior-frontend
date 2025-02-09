@@ -5,12 +5,13 @@ import { Link, useParams } from 'react-router-dom';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import PyqCard from '../components/Cards/PyqCard.jsx';
-import pyq from '../../public/assets/pyq.png';
-import notesandpyq from '../../public/assets/notes&pyq.png';
-import request from '../../public/assets/request.png';
+import pyq from '/assets/pyq.png';
+import notesandpyq from '/assets/notes&pyq.png';
+import request from '/assets/request.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPyqs } from '../redux/slices/pyqSlice.js';
 import { useCollegeId } from '../hooks/useCollegeId.js';
+import Seo from '../components/SEO/Seo.jsx';
 
 const PYQPage = () => {
     const { collegeName } = useParams();
@@ -37,16 +38,16 @@ const PYQPage = () => {
     ];
     const branches = selectedCourse
         ? [
-              ...new Set(
-                  pyqs
-                      .filter(
-                          (paper) =>
-                              paper.subject.branch?.course?.courseName ===
-                              selectedCourse
-                      )
-                      .map((paper) => paper.subject?.branch?.branchName)
-              ),
-          ]
+            ...new Set(
+                pyqs
+                    .filter(
+                        (paper) =>
+                            paper.subject.branch?.course?.courseName ===
+                            selectedCourse
+                    )
+                    .map((paper) => paper.subject?.branch?.branchName)
+            ),
+        ]
         : [];
     const examTypes = [...new Set(pyqs.map((paper) => paper.examType))];
 
@@ -66,8 +67,8 @@ const PYQPage = () => {
             (selectedExamType ? paper.examType === selectedExamType : true) &&
             (searchTerm
                 ? paper.subject.subjectName
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase())
                 : true)
         );
     });
@@ -92,6 +93,7 @@ const PYQPage = () => {
                     <span>( </span>
                     {capitalizeWords(collegeName)} <span>)</span>
                 </h1>
+                <Seo title={`${capitalizeWords(collegeName)} - PYQ`} desc='Access past year question papers, understand trends, improve strategies, and ace exams confidently with a well-organized, easy-to-use database for students.' />
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 sm:justify-center gap-2 sm:gap-4 mb-4">
                     <input

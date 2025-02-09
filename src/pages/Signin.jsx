@@ -9,8 +9,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import OAuth from '../components/OAuth';
 import { api, API_KEY } from '../config/apiConfiguration.js';
 import { toast } from 'react-toastify';
-import icon from '../../public/assets/image192.png';
-import login from '../../public/assets/login.png';
+import icon from '/assets/image192.png';
+import login from '/assets/login.png';
+import Seo from '../components/SEO/Seo.jsx';
 
 export default function SignIn() {
     const [formData, setFormData] = useState({});
@@ -58,6 +59,7 @@ export default function SignIn() {
 
     return (
         <>
+        <Seo title='Login - Student Senior' />
             {/* <Header /> */}
             <div className="lg:flex bg-gradient-to-t from-sky-200 to bg-white">
                 <div className="p-3 max-w-lg lg:mx-auto lg:my-5 lg:bg-white lg:w-2/4 md:mx-auto py-10 rounded-xl mx-5 my-10">

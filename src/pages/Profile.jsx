@@ -19,7 +19,7 @@ import {
     signOut,
 } from '../redux/user/userSlice';
 import { toast } from 'react-toastify';
-import warning from '../../public/assets/warning.png';
+import warning from '/assets/warning.png';
 import { useNavigate } from 'react-router-dom';
 import { fetchUserData } from '../redux/slices/userDataSlice.js';
 import ProfileDetails from '../DetailPages/ProfileDetails.jsx';

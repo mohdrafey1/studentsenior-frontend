@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
+import Seo from '../components/SEO/Seo';
 
 function InstallPage() {
     const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -50,6 +51,8 @@ function InstallPage() {
                     Get a better experience by installing the Student Senior
                     app.
                 </p>
+                <Seo title="Install Our App" desc='Get a better experience by installing the Student Senior
+                    app.' />
                 {isInstallable ? (
                     <button
                         onClick={handleInstallClick}
