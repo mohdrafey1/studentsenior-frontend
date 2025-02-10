@@ -125,8 +125,7 @@ const OpportunityDetails = () => {
                                 >
                                     <h3 className="font-medium text-lg text-gray-800 line-clamp-2">{item.name}</h3>
                                     <p className="text-sm text-gray-500 mt-2 line-clamp-2">{item.description}</p>
-                                    <Link
-                                        to={`./${opportunity.slug}`}
+                                    <Link to={`../college/${collegeName}/opportunities/${item.slug}`}
                                         className="py-4 text-sky-500 rounded-lg w-fit"
                                     >View Details</Link>
                                 </div>

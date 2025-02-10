@@ -15,10 +15,10 @@ const DetailPageNavbar = ({ path, handleShare = originalHandleShare }) => {
     const url = api.contactus;
     const { currentUser } = useSelector((state) => state.user);
 
-    const userDetail = `Name : ${currentUser.username}
-        Email : ${currentUser.email}`;
+    const userDetail = `Name : ${currentUser?.username}
+        Email : ${currentUser?.email}`;
     const [formData, setFormData] = useState({
-        email: userDetail,
+        email: userDetail.length > 0 ? userDetail : "User Not Logged In",
         subject: "Reported URL: " + window.location.href,
         description: "",
     });
