@@ -38,7 +38,7 @@ const ResourcesPage = () => {
             <div className="max-w-7xl mx-auto px-5 min-h-full">
                 <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
                     Resources - {capitalizeWords(collegeName)}
-                    <Seo title={capitalizeWords(collegeName)} desc=' "Get concise and clear notes to boost your exam
+                    <Seo title={`Resources - ${capitalizeWords(collegeName)}`} desc=' "Get concise and clear notes to boost your exam
                     preparation."' />
 
                 </h1>

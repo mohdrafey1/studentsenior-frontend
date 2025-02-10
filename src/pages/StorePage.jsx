@@ -212,7 +212,7 @@ const StorePage = () => {
                     <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
                         Product Store - {capitalizeWords(collegeName)}
                         <Seo
-                            title={capitalizeWords(collegeName)}
+                            title={`Product Store - ${capitalizeWords(collegeName)}`}
                             desc="Buy and sell your stationery and gadgets easily to your
                         juniors."
                         />

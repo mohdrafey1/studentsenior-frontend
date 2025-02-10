@@ -90,8 +90,7 @@ function SubjectPyqs() {
                 {capitalizeWords(collegeName)}: {subjectName || subjectCode}{' '}
                 Pyqs
             </h1>
-            <Seo title={` ${capitalizeWords(collegeName)}: ${subjectName || subjectCode}{' '}
-                Pyqs` } desc={subjectPyqs.map((pyq) => `${pyq.year} ${pyq.examType}`).join(' ')} />
+            <Seo title={` ${capitalizeWords(collegeName)}: ${subjectName || subjectCode} Pyqs`} desc={subjectPyqs.map((pyq) => `${pyq.year} ${pyq.examType}`).join(' ')} />
 
             <div className="flex justify-center items-center mb-4">
                 <button
