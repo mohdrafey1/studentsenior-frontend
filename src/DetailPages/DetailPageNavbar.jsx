@@ -4,6 +4,8 @@ import { api } from "../config/apiConfiguration";
 import useApiRequest from "../hooks/useApiRequest";
 import { originalHandleShare } from '../utils/handleShare';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+
 
 const DetailPageNavbar = ({ path, handleShare = originalHandleShare }) => {
     const navigate = useNavigate();
@@ -11,9 +13,12 @@ const DetailPageNavbar = ({ path, handleShare = originalHandleShare }) => {
     const [showReportModal, setShowReportModal] = useState(false);
     const { apiRequest, apiloading, error } = useApiRequest();
     const url = api.contactus;
+    const { currentUser } = useSelector((state) => state.user);
 
+    const userDetail = `Name : ${currentUser.username}
+        Email : ${currentUser.email}`;
     const [formData, setFormData] = useState({
-        email: "studentsenior12@gmail.com",
+        email: userDetail,
         subject: "Reported URL: " + window.location.href,
         description: "",
     });
