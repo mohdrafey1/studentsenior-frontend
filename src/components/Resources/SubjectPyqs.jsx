@@ -199,15 +199,9 @@ function SubjectPyqs() {
 
             <Modal
                 isOpen={isModalOpen}
+                onClose={() => setModalOpen(false)}
                 title={`PYQ - ${collegeName.toUpperCase()}`}
-                footer={
-                    <button
-                        className="p-1 py-2 flex bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer"
-                        onClick={() => setModalOpen(false)}
-                    >
-                        Cancel
-                    </button>
-                }
+                
             >
                 <AddPyq
                     subjectCode={subjectCode}
