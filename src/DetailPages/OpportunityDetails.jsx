@@ -115,7 +115,7 @@ const OpportunityDetails = () => {
                     <h2 className="text-2xl font-semibold text-gray-800 mb-6">Similar Opportunities</h2>
 
                     {similarOpportunity && similarOpportunity.length > 0 ? (
-                        similarOpportunity.map((item) => (
+                        similarOpportunity.slice(0, 3).map((item) => (
                             <Link to={`../college/${collegeName}/opportunities/${item.slug}`}
                                 className='p-6'
                             >
@@ -125,6 +125,10 @@ const OpportunityDetails = () => {
                                 >
                                     <h3 className="font-medium text-lg text-gray-800 line-clamp-2">{item.name}</h3>
                                     <p className="text-sm text-gray-500 mt-2 line-clamp-2">{item.description}</p>
+                                    <Link
+                                        to={`./${opportunity.slug}`}
+                                        className="py-4 text-sky-500 rounded-lg w-fit"
+                                    >View Details</Link>
                                 </div>
                             </Link>
                         ))

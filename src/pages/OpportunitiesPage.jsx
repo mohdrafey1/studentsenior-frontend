@@ -289,7 +289,12 @@ const OpportunitiesPage = () => {
                                             <p className="text-gray-600 line-clamp-2">
                                                 {opportunity.description}
                                             </p>
+
                                         </div>
+                                        <Link
+                                            to={`./${opportunity.slug}`}
+                                            className="block bg-sky-400 py-1 px-4 rounded-lg w-fit text-gray-100"
+                                        >View</Link>
                                     </Link>
                                     <div className="flex justify-between items-center mt-3">
                                         {opportunity.owner._id === ownerId && (

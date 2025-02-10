@@ -99,7 +99,7 @@ const WhatsAppGroupPage = () => {
             <div className="max-w-7xl mx-auto p-5">
                 <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
                     WhatsApp Groups - {capitalizeWords(collegeName)}
-                    <Seo title={capitalizeWords(collegeName)} desc='Join WhatsApp groups to connect with like-minded people and
+                    <Seo title={`WhatsApp Groups - ${capitalizeWords(collegeName)}`} desc='Join WhatsApp groups to connect with like-minded people and
                     stay updated.' />
 
                 </h1>

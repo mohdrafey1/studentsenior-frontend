@@ -1,8 +1,13 @@
 import React from 'react';
+import Seo from '../components/SEO/Seo';
 
 const PrivacyPolicy = () => {
     return (
         <div className="bg-gradient-to-t from-sky-200 to bg-white">
+            <Seo title='Privacy Policy - Student Senior' desc={` Welcome to Student Senior! This privacy policy explains how
+                    we collect, use, and protect your personal information when
+                    you visit our website. By using Student Senior, you agree to
+                    the terms of this policy.`} />
             <div className="container mx-auto px-4 py-10 max-w-6xl ">
                 <h1 className="text-4xl font-bold mb-6">Privacy Policy</h1>
                 <p className="mb-4">
