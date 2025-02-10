@@ -12,6 +12,7 @@ function AddPyq({
 }) {
     const [year, setYear] = useState('');
     const [examType, setExamType] = useState('');
+    const [solved, setSolved] = useState(false);
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -76,6 +77,7 @@ function AddPyq({
             const formData = {
                 year,
                 examType,
+                solved,
                 subjectCode,
                 branchCode,
                 college: collegeId,
@@ -157,6 +159,18 @@ function AddPyq({
                     onChange={handleFileChange}
                     required
                 />
+            </div>
+            <div className="mt-4 flex gap-4">
+                <p>Is This Solved</p>
+                <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked={solved}
+                        onChange={(e) => setSolved(e.target.checked)}
+                        className="sr-only peer "
+                    />
+                    <div className="w-9 h-6 bg-gray-200 hover:bg-gray-300 peer-focus:outline-0 peer-focus:ring-transparent rounded-full peer transition-all ease-in-out duration-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600 hover:peer-checked:bg-indigo-700"></div>
+                </label>
             </div>
             <button
                 type="submit"
