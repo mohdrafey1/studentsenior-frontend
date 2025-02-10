@@ -96,10 +96,10 @@ function AddPyq({
     return (
         <form
             onSubmit={handleSubmit}
-            className="space-y-6 bg-white p-6 rounded-lg shadow-md border border-gray-200"
+            className="space-y-2 bg-white p-4"
         >
             <div>
-                <label className="block font-semibold text-sky-500 mb-2">
+                <label className="block font-semibold text-sky-500 mb-1">
                     Subject
                 </label>
                 <input
@@ -110,7 +110,7 @@ function AddPyq({
                 />
             </div>
             <div>
-                <label className="block font-semibold text-sky-500 mb-2">
+                <label className="block font-semibold text-sky-500 mb-1">
                     Year
                 </label>
                 <select
@@ -129,7 +129,7 @@ function AddPyq({
                 </select>
             </div>
             <div>
-                <label className="block font-semibold text-sky-500 mb-2">
+                <label className="block font-semibold text-sky-500 mb-1">
                     Exam Type
                 </label>
                 <select
@@ -148,7 +148,7 @@ function AddPyq({
                 </select>
             </div>
             <div>
-                <label className="block font-semibold text-sky-500 mb-2">
+                <label className="block font-semibold text-sky-500 mb-1">
                     Upload PDF (Max 10MB)
                 </label>
                 <input

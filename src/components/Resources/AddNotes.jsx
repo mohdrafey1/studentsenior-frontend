@@ -94,7 +94,7 @@ function AddNotes({
     return (
         <form
             onSubmit={handleSubmit}
-            className="space-y-6 bg-white p-6 rounded-lg shadow-md border border-gray-200"
+            className="space-y-2 bg-white p-6"
         >
             <div>
                 <label className="block font-semibold text-sky-500 mb-2">
