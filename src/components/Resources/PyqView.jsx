@@ -91,8 +91,15 @@ function PyqView() {
                         <p className="text-lg text-gray-600 mt-2">
                             Subject: {pyq.subject.subjectName} ( {pyq.examType}{' '}
                             - {pyq.year} )
-                            <Seo title={`${pyq.subject.subjectName} (${pyq.examType} - ${pyq.year})`} />
+                            <Seo
+                                title={`${pyq.subject.subjectName} (${pyq.examType} - ${pyq.year})`}
+                            />
                         </p>
+                        {pyq.solved && (
+                            <span className="bg-green-200 rounded-md px-2 py-1 font-bold">
+                                Solved
+                            </span>
+                        )}
                     </div>
 
                     {/* PDF Viewer */}
@@ -105,28 +112,32 @@ function PyqView() {
                             title="PDF Viewer"
                         ></iframe>
                     </div>
-                    <div className="flex justify-center mb-5">
-                        <button
-                            onClick={handleDownloadClick}
-                            disabled={canDownload}
-                            className={`bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 ${
-                                canDownload ? '' : 'cursor-not-allowed'
-                            }`}
-                            title="Download pyq PDF"
-                        >
-                            {canDownload ? (
-                                <a
-                                    href={pyq.fileUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Download now
-                                </a>
-                            ) : (
-                                showCountdown ? `Download ${countdown}s`:"Download"
-                            )}
-                        </button>
-                    </div>
+                    {!pyq.solved && (
+                        <div className="flex justify-center mb-5">
+                            <button
+                                onClick={handleDownloadClick}
+                                disabled={canDownload}
+                                className={`bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 ${
+                                    canDownload ? '' : 'cursor-not-allowed'
+                                }`}
+                                title="Download pyq PDF"
+                            >
+                                {canDownload ? (
+                                    <a
+                                        href={pyq.fileUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Download now
+                                    </a>
+                                ) : showCountdown ? (
+                                    `Download ${countdown}s`
+                                ) : (
+                                    'Download'
+                                )}
+                            </button>
+                        </div>
+                    )}
                 </div>
             ) : (
                 <p className="text-center text-gray-600">pyq not found.</p>
