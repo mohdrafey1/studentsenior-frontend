@@ -35,7 +35,12 @@ function PyqCard({ Pyqs = [] }) {
                     >
                         <div className="flex-grow">
                             <h2 className="text-sm lg:text-xl font-bold mb-2">
-                                {pyq.subject?.subjectName}
+                                {pyq.subject?.subjectName}{' '}
+                                {pyq.solved && (
+                                    <span className="bg-green-200 rounded-md px-2 py-1 font-bold">
+                                        Solved
+                                    </span>
+                                )}
                             </h2>
                             <p className="mb-2 text-xs lg:text-base">
                                 Subject Code:{' '}
