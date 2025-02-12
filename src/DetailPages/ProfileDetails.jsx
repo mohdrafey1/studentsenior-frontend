@@ -48,9 +48,16 @@ export default function ProfileDetails({ data }) {
                                     <a
                                         href={`${
                                             item.college?.slug
-                                        }/resources/${(item.subject?.branch?.course?.courseCode).toLowerCase()}/${(item.subject?.branch?.branchCode).toLowerCase()}/notes/${(item.subject?.subjectCode).toLowerCase()}/${
-                                            item.slug
-                                        }`}
+                                        }/resources/${
+                                            item.subject?.branch?.course?.courseCode?.toLowerCase() ||
+                                            ''
+                                        }/${
+                                            item.subject?.branch?.branchCode?.toLowerCase() ||
+                                            ''
+                                        }/notes/${
+                                            item.subject?.subjectCode?.toLowerCase() ||
+                                            ''
+                                        }/${item.slug}`}
                                         rel="noopener noreferrer"
                                         className="text-blue-600 font-semibold hover:underline text-sm"
                                     >
@@ -173,9 +180,16 @@ export default function ProfileDetails({ data }) {
                                     <a
                                         href={`${
                                             item.college?.slug
-                                        }/resources/${(item.subject?.branch?.course?.courseCode).toLowerCase()}/${(item.subject?.branch?.branchCode).toLowerCase()}/pyqs/${(item.subject?.subjectCode).toLowerCase()}/${
-                                            item.slug
-                                        }`}
+                                        }/resources/${
+                                            item.subject?.branch?.course?.courseCode?.toLowerCase() ||
+                                            ''
+                                        }/${
+                                            item.subject?.branch?.branchCode?.toLowerCase() ||
+                                            ''
+                                        }/pyqs/${
+                                            item.subject?.subjectCode?.toLowerCase() ||
+                                            ''
+                                        }/${item.slug}`}
                                         rel="noopener noreferrer"
                                         className="text-blue-600 font-semibold hover:underline text-sm"
                                     >

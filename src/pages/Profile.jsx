@@ -165,16 +165,6 @@ export default function Profile() {
         userNoteAdd,
     } = useSelector((state) => state.userData || {});
 
-    console.log('User Data:', {
-        rewardPoints,
-        rewardBalance,
-        rewardRedeemed,
-        userTransaction,
-        userProductAdd,
-        userPyqAdd,
-        userNoteAdd,
-    });
-
     return (
         <div className="flex flex-col sm:flex-row bg-gray-100">
             {showDialog ? (
