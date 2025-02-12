@@ -51,10 +51,8 @@ const AddSeniorPage = () => {
         };
 
         try {
-            await apiRequest(url, 'POST', newSenior);
-            setResponseMessage(
-                "🎉 Your request for becoming a senior has been successfully submitted! 👍 It'll be available once approved. Thanks for your patience!"
-            );
+            const response = await apiRequest(url, 'POST', newSenior);
+            setResponseMessage(response.message);
             setIsSuccess(true);
         } catch (err) {
             setResponseMessage(err.message || 'Failed to submit your request.');
@@ -116,7 +114,10 @@ const AddSeniorPage = () => {
                             <span className="heading-class">
                                 Join As a Senior
                             </span>
-                            <Seo title=" Join As a Senior" desc='Apply for Senior and help students in their academic journey' />
+                            <Seo
+                                title=" Join As a Senior"
+                                desc="Apply for Senior and help students in their academic journey"
+                            />
                         </h1>
                         <form onSubmit={handleAddSenior}>
                             <div className="lg:flex lg:flex-wrap justify-evenly">

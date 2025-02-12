@@ -46,8 +46,18 @@ export default function ProfileDetails({ data }) {
                             {type === 'notes' && (
                                 <div className="flex justify-between items-center">
                                     <a
-                                        href={item.fileUrl}
-                                        target="_blank"
+                                        href={`${
+                                            item.college?.slug
+                                        }/resources/${
+                                            item.subject?.branch?.course?.courseCode?.toLowerCase() ||
+                                            ''
+                                        }/${
+                                            item.subject?.branch?.branchCode?.toLowerCase() ||
+                                            ''
+                                        }/notes/${
+                                            item.subject?.subjectCode?.toLowerCase() ||
+                                            ''
+                                        }/${item.slug}`}
                                         rel="noopener noreferrer"
                                         className="text-blue-600 font-semibold hover:underline text-sm"
                                     >
@@ -71,9 +81,15 @@ export default function ProfileDetails({ data }) {
                             {type === 'products' && (
                                 <div className="flex justify-between items-center">
                                     <div>
-                                        <p className="font-semibold text-base text-gray-800">
-                                            {item.name}
-                                        </p>
+                                        <a
+                                            href={`/college/${item.college?.slug}/store/${item.slug}`}
+                                            rel="noopener noreferrer"
+                                            className="text-blue-600 font-semibold hover:underline text-sm"
+                                        >
+                                            <p className="font-semibold text-base text-gray-800">
+                                                {item.name}
+                                            </p>
+                                        </a>
                                         <p className="text-green-600 text-sm font-medium">
                                             Price: ₹{item.price}
                                         </p>
@@ -162,8 +178,18 @@ export default function ProfileDetails({ data }) {
                             {type === 'pyqs' && (
                                 <div className="flex justify-between items-center">
                                     <a
-                                        href={item.fileUrl}
-                                        target="_blank"
+                                        href={`${
+                                            item.college?.slug
+                                        }/resources/${
+                                            item.subject?.branch?.course?.courseCode?.toLowerCase() ||
+                                            ''
+                                        }/${
+                                            item.subject?.branch?.branchCode?.toLowerCase() ||
+                                            ''
+                                        }/pyqs/${
+                                            item.subject?.subjectCode?.toLowerCase() ||
+                                            ''
+                                        }/${item.slug}`}
                                         rel="noopener noreferrer"
                                         className="text-blue-600 font-semibold hover:underline text-sm"
                                     >
@@ -345,7 +371,7 @@ export default function ProfileDetails({ data }) {
             ) : null}
 
             {/* Products Section */}
-            {data.notes && data.notes.length > 0 ? (
+            {data.products && data.products.length > 0 ? (
                 <div className=" rounded-lg">
                     <h2 className="text-xl font-semibold mb-2">
                         Products Added
@@ -361,7 +387,7 @@ export default function ProfileDetails({ data }) {
             ) : null}
 
             {/* PYQs Section */}
-            {data.notes && data.notes.length > 0 ? (
+            {data.pyqs && data.pyqs.length > 0 ? (
                 <div className=" rounded-lg">
                     <h2 className="text-xl font-semibold mb-2">PYQs Added</h2>
                     {data.pyqs && data.pyqs.length > 0 ? (
@@ -373,7 +399,7 @@ export default function ProfileDetails({ data }) {
             ) : null}
 
             {/* Transactions Section */}
-            {data.notes && data.notes.length > 0 ? (
+            {data.transactions && data.transactions.length > 0 ? (
                 <div className=" rounded-lg">
                     <h2 className="text-xl font-semibold mb-2">Transactions</h2>
                     {data.transactions && data.transactions.length > 0 ? (

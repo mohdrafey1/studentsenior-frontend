@@ -13,6 +13,7 @@ const useApiFetch = () => {
                     'Content-Type': 'application/json',
                     'x-api-key': API_KEY,
                 },
+                credentials: 'include',
             });
             const data = await response.json();
             if (data.success === 'false') {

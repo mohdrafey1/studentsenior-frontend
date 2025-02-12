@@ -31,10 +31,8 @@ function AddCollege() {
 
     const handleSubmit = async (e) => {
         try {
-            await apiRequest(url, 'POST', pushData);
-            setResponseMessage(
-                'Your college has been submitted and will be added once approved.'
-            );
+            const response = await apiRequest(url, 'POST', pushData);
+            setResponseMessage(response.message);
             setIsSuccess(true);
         } catch (error) {
             const errorData = error.response
@@ -59,8 +57,9 @@ function AddCollege() {
             )}
 
             <div
-                className={`${isSuccess ? 'block' : 'hidden'
-                    } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full w-full z-50 items-center`}
+                className={`${
+                    isSuccess ? 'block' : 'hidden'
+                } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full w-full z-50 items-center`}
             >
                 <div
                     role="alert"
@@ -112,7 +111,10 @@ function AddCollege() {
                                     Add New College
                                 </span>
                             </h1>
-                            <Seo title='Add Your College' desc="Didn't found you college ? Add it here" />
+                            <Seo
+                                title="Add Your College"
+                                desc="Didn't found you college ? Add it here"
+                            />
                             <div className="mb-4">
                                 <label
                                     className="block text-gray-700 font-bold mb-2"
