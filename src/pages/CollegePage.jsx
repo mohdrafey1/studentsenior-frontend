@@ -15,7 +15,6 @@ import { api } from '../config/apiConfiguration.js';
 import useApiFetch from '../hooks/useApiFetch.js';
 import { capitalizeWords } from '../utils/Capitalize.js';
 
-
 const CollegePage = () => {
     const { collegeName } = useParams();
     const collegeId = useCollegeId(collegeName);
@@ -24,8 +23,8 @@ const CollegePage = () => {
     const { useFetch, loadingFetch } = useApiFetch();
     const url = api.college;
 
-
     useEffect(() => {
+        fetchCollege();
         dispatch(fetchSeniors(collegeId));
         dispatch(fetchProducts(collegeId));
     }, [collegeName]);
@@ -42,7 +41,10 @@ const CollegePage = () => {
     return (
         <div style={{ scrollBehavior: 'smooth' }}>
             <CollegeHero tagline={`${collegeName}`}>
-                <Seo title={capitalizeWords(collegeName)} desc={collegeData?.description || ' '} />
+                <Seo
+                    title={capitalizeWords(collegeName)}
+                    desc={collegeData?.description || ' '}
+                />
                 <Collegelinks />
             </CollegeHero>
             <FeaturedSeniors />
