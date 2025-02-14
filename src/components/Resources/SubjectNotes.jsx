@@ -147,15 +147,27 @@ function SubjectNotes() {
             <h1 className="sm:text-2xl font-bold text-center mb-2">
                 {capitalizeWords(collegeName)}: {subjectName} Notes
             </h1>
-            <Seo title={`${capitalizeWords(collegeName)}: ${subjectName} Notes`} desc={subjectNotes.slice(0, 5).map((note) => note.title).join(' ')} />
+            <Seo
+                title={`${capitalizeWords(collegeName)}: ${subjectName} Notes`}
+                desc={subjectNotes
+                    .slice(0, 5)
+                    .map((note) => note.title)
+                    .join(' ')}
+            />
 
-            <div className="flex justify-center items-center mb-4">
+            <div className="flex justify-center gap-2 items-center mb-4">
                 <button
                     onClick={handleOpenAddNoteModal}
                     className="px-4 py-2 bg-blue-500 text-white rounded-md"
                 >
                     <i className="fa-solid fa-plus"></i> Add Note
                 </button>
+                <Link
+                    to={`/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}`}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                >
+                    View PYQs
+                </Link>
                 <button
                     className="content-center rounded-full px-2 py-3"
                     onClick={handleEarnDialog}
@@ -213,93 +225,93 @@ function SubjectNotes() {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:mx-20 gap-4">
                 {subjectNotes.length > 0 ? (
                     subjectNotes.map((note) => (
-                        
-                            <div
-                                key={note._id}
-                                className="border p-4 rounded-lg shadow hover:shadow-lg transition duration-200"
-                            >
-                                <div className="flex justify-between mb-2">
-                                    <div className="flex gap-2">
-                                        {note.owner.profilePicture ? (
-                                            <img
-                                                src={note.owner?.profilePicture}
-                                                alt="Author Profile"
-                                                className="rounded-full w-8 h-8 sm:mr-2"
-                                            />
-                                        ) : (
-                                            <div className="flex items-center justify-center rounded-full w-8 h-8 bg-gray-300 text-white font-bold">
-                                                A
-                                            </div>
-                                        )}
+                        <div
+                            key={note._id}
+                            className="border p-4 rounded-lg shadow hover:shadow-lg transition duration-200"
+                        >
+                            <div className="flex justify-between mb-2">
+                                <div className="flex gap-2">
+                                    {note.owner.profilePicture ? (
+                                        <img
+                                            src={note.owner?.profilePicture}
+                                            alt="Author Profile"
+                                            className="rounded-full w-8 h-8 sm:mr-2"
+                                        />
+                                    ) : (
+                                        <div className="flex items-center justify-center rounded-full w-8 h-8 bg-gray-300 text-white font-bold">
+                                            A
+                                        </div>
+                                    )}
 
-                                        <span className="text-sm font-medium mt-1">
-                                            {note.owner?.username || 'Anonymous'}
-                                        </span>
-                                    </div>
+                                    <span className="text-sm font-medium mt-1">
+                                        {note.owner?.username || 'Anonymous'}
+                                    </span>
                                 </div>
-                               <Link to={note.slug}>
-                               <h2 className="text-lg font-semibold">
+                            </div>
+                            <Link to={note.slug}>
+                                <h2 className="text-lg font-semibold">
                                     Title: {note.title}
                                 </h2>
                                 <p className="text-sm text-gray-600">
                                     {note.description || 'No description'}
                                 </p>
                                 <p className="text-xs text-gray-500 mt-1">
-                                    {new Date(note.createdAt).toLocaleDateString('en-US', {
+                                    {new Date(
+                                        note.createdAt
+                                    ).toLocaleDateString('en-US', {
                                         weekday: 'long',
                                         day: 'numeric',
                                         year: 'numeric',
                                         month: 'long',
                                     })}{' '}
-                                   
                                 </p>
-
-                               </Link>
-                                <div className="flex items-center justify-between mt-3">
+                            </Link>
+                            <div className="flex flex-wrap items-center justify-between mt-3">
                                 <span className="ml-1 mt-1 text-[8px] text-gray-500 ">
-                                        {note.clickCounts} views
-                                    </span>
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            likeNotes(note._id);
-                                        }}
-                                        className={`flex items-cent px-4 space-x-1 ${Array.isArray(note.likes) &&
-                                            note.likes.includes(ownerId)
+                                    {note.clickCounts} views
+                                </span>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        likeNotes(note._id);
+                                    }}
+                                    className={`flex items-cent px-4 space-x-1 ${
+                                        Array.isArray(note.likes) &&
+                                        note.likes.includes(ownerId)
                                             ? 'text-red-500'
                                             : 'text-gray-600'
-                                            } hover:text-red-500`}
-                                        title="Like this note"
+                                    } hover:text-red-500`}
+                                    title="Like this note"
+                                >
+                                    <i className="fa-regular fa-heart"></i>
+                                    <span>
+                                        {Array.isArray(note.likes)
+                                            ? note.likes.length
+                                            : 0}
+                                    </span>
+                                </button>
+
+                                <Link
+                                    to={note.slug}
+                                    className="rounded-md px-2 bg-sky-400 text-white hover:underline inline-block"
+                                >
+                                    View
+                                </Link>
+
+                                {note.owner._id === ownerId && (
+                                    <button
+                                        className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleDeleteClick(note._id);
+                                        }}
+                                        title="Delete Note"
                                     >
-                                        <i className="fa-regular fa-heart"></i>
-                                        <span>
-                                            {Array.isArray(note.likes)
-                                                ? note.likes.length
-                                                : 0}
-                                        </span>
+                                        <i className="fa-solid fa-trash"></i>
                                     </button>
-
-                                    <Link
-                                        to={note.slug}
-                                        className="rounded-md px-2 bg-sky-400 text-white hover:underline inline-block"
-                                    >
-                                        View
-                                    </Link>
-
-                                    {note.owner._id === ownerId && (
-                                        <button
-                                            className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                handleDeleteClick(note._id);
-                                            }}
-                                            title="Delete Note"
-                                        >
-                                            <i className="fa-solid fa-trash"></i>
-                                        </button>
-                                    )}
-                                </div>
+                                )}
                             </div>
+                        </div>
                     ))
                 ) : (
                     <div className="h-screen text-center text-gray-600">
@@ -313,7 +325,6 @@ function SubjectNotes() {
                 isOpen={isModalOpen}
                 title={`Add Note:- ${collegeName.toUpperCase()}`}
                 onClose={() => setModalOpen(false)}
-                
             >
                 <AddNotes
                     subjectCode={subjectCode}
