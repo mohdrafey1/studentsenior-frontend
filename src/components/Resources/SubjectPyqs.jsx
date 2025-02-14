@@ -99,13 +99,19 @@ function SubjectPyqs() {
                     .join(' ')}
             />
 
-            <div className="flex justify-center items-center mb-4">
+            <div className="flex justify-center gap-2 items-center mb-4">
                 <button
                     onClick={handleOpenAddPyqModal}
                     className="px-4 py-2 bg-blue-500 text-white rounded-md"
                 >
                     <i className="fa-solid fa-plus"></i> Add PYQs
                 </button>
+                <Link
+                    to={`/${collegeName}/resources/${courseCode}/${branchCode}/notes/${subjectCode}`}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                >
+                    View Notes
+                </Link>
                 <button
                     className="content-center rounded-full px-2 py-3"
                     onClick={handleEarnDialog}
@@ -201,7 +207,6 @@ function SubjectPyqs() {
                 isOpen={isModalOpen}
                 onClose={() => setModalOpen(false)}
                 title={`PYQ - ${collegeName.toUpperCase()}`}
-                
             >
                 <AddPyq
                     subjectCode={subjectCode}

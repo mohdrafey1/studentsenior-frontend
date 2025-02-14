@@ -162,7 +162,7 @@ function NotesView() {
     }
 
     return (
-        <div className="container mx-auto px-4 sm:px-2 min-h-screen">
+        <div className="container mx-auto sm:px-2 min-h-screen">
             <DetailPageNavbar
                 path={`${collegeName}/resources/${courseCode}/${branchCode}/notes/${subjectCode}`}
             />
@@ -183,7 +183,7 @@ function NotesView() {
 
                     {/* PDF Viewer */}
                     <div className="flex justify-center w-full my-5">
-                        <div className="pdf-viewer md:w-4/5">
+                        <div className="pdf-viewer md:w-4/5 lg:w-3/5">
                             {pdfDoc ? (
                                 Array.from({ length: pdfDoc.numPages }).map(
                                     (_, index) => (
