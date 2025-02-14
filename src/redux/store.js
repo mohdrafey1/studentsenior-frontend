@@ -13,6 +13,7 @@ import postReducer from './slices/postSlice.js';
 import subjectNotesReducer from '../redux/slices/subjectNotesSlice.js';
 import subjectPyqsReducer from '../redux/slices/subjectPyqsSlice.js';
 import userDataReducer from '../redux/slices/userDataSlice.js';
+import collegeReducer from '../redux/slices/collegeSlice.js';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
     subjectNotes: subjectNotesReducer,
     subjectPyqs: subjectPyqsReducer,
     userData: userDataReducer,
+    colleges: collegeReducer,
 });
 
 const persistConfig = {

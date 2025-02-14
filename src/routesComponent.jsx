@@ -36,6 +36,7 @@ import SubjectPyqs from './components/Resources/SubjectPyqs';
 import NotesView from './components/Resources/NotesView';
 import PyqView from './components/Resources/PyqView';
 import OpportunityDetails from './DetailPages/OpportunityDetails';
+import DonationPage from './others/DonationPage';
 
 const validColleges = [
     'integral-university',
@@ -247,6 +248,8 @@ const RoutesComponent = () => {
             <Route path="/not-found" element={<NotFoundPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/faq" element={<FAQPage />} />
+
+            <Route path="/donation" element={<DonationPage />} />
 
             {/* Catch-all for undefined routes */}
             <Route path="*" element={<NotFoundPage />} />

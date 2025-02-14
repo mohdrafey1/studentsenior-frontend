@@ -14,6 +14,9 @@ const Footer = () => {
                 </div>
                 <div className="text-center mt-4">
                     <div className="flex justify-evenly p-2">
+                        <Link to="/donation">
+                            <p>Donate</p>
+                        </Link>
                         <Link to="/contact-us">
                             <p>Contact Us</p>
                         </Link>
