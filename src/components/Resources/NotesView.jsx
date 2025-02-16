@@ -110,22 +110,82 @@ function NotesView() {
     }, [slug]);
 
     // Once note is fetched and we have a file URL, load the PDF document.
+    // Load PDF Document for Viewing
     useEffect(() => {
-        const loadPdf = async () => {
+        const fetchSignedUrlForView = async () => {
             if (note && note.fileUrl) {
                 try {
-                    const loadingTask = pdfjsLib.getDocument(note.fileUrl);
-                    const pdf = await loadingTask.promise;
-                    setPdfDoc(pdf);
+                    // Request signed URL for viewing
+                    const response = await fetch(
+                        `${api.getSignedUrl}?fileUrl=${note.fileUrl}`,
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'x-api-key': API_KEY,
+                            },
+                        }
+                    );
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        // Load the PDF using the signed URL
+                        const loadingTask = pdfjsLib.getDocument(
+                            data.signedUrl
+                        );
+                        const pdf = await loadingTask.promise;
+                        setPdfDoc(pdf);
+                    } else {
+                        throw new Error(
+                            data.message || 'Failed to get signed URL.'
+                        );
+                    }
                 } catch (err) {
-                    console.error('Error loading PDF document:', err);
+                    console.error('Error getting signed URL for view:', err);
                     setError('Failed to load PDF document.');
                 }
             }
         };
 
-        loadPdf();
+        fetchSignedUrlForView();
     }, [note]);
+
+    // Fetch Signed URL for Download
+    useEffect(() => {
+        const fetchSignedUrlForDownload = async () => {
+            if (canDownload && note && note.fileUrl) {
+                try {
+                    const response = await fetch(
+                        `${api.getSignedUrl}?fileUrl=${note.fileUrl}`,
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'x-api-key': API_KEY,
+                            },
+                        }
+                    );
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        setSignedUrl(data.signedUrl); // Store Signed URL for download
+                    } else {
+                        throw new Error(
+                            data.message ||
+                                'Failed to get signed URL for download.'
+                        );
+                    }
+                } catch (error) {
+                    console.error(
+                        'Error fetching signed URL for download:',
+                        error
+                    );
+                }
+            }
+        };
+
+        fetchSignedUrlForDownload();
+    }, [canDownload, note]);
 
     // Download countdown logic.
     const handleDownloadClick = () => {
@@ -213,7 +273,7 @@ function NotesView() {
                         >
                             {canDownload ? (
                                 <a
-                                    href={note.fileUrl}
+                                    href={signedUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >

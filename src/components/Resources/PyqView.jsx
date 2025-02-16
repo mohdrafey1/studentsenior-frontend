@@ -75,6 +75,7 @@ function PyqView() {
     const [countdown, setCountdown] = useState(45);
     const [canDownload, setCanDownload] = useState(false);
     const [showCountdown, setShowCountdown] = useState(false);
+    const [signedUrl, setSignedUrl] = useState('');
 
     // Fetch pyq data from the backend
     useEffect(() => {
@@ -106,25 +107,84 @@ function PyqView() {
         fetchpyq();
     }, [slug]);
 
-    // Once pyq is fetched and a fileUrl is available, load the PDF document.
+    // Load PDF Document for Viewing
     useEffect(() => {
-        const loadPdf = async () => {
+        const fetchSignedUrlForView = async () => {
             if (pyq && pyq.fileUrl) {
                 try {
-                    const loadingTask = pdfjsLib.getDocument(pyq.fileUrl);
-                    const pdf = await loadingTask.promise;
-                    setPdfDoc(pdf);
+                    // Request signed URL for viewing
+                    const response = await fetch(
+                        `${api.getSignedUrl}?fileUrl=${pyq.fileUrl}`,
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'x-api-key': API_KEY,
+                            },
+                        }
+                    );
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        // Load the PDF using the signed URL
+                        const loadingTask = pdfjsLib.getDocument(
+                            data.signedUrl
+                        );
+                        const pdf = await loadingTask.promise;
+                        setPdfDoc(pdf);
+                    } else {
+                        throw new Error(
+                            data.message || 'Failed to get signed URL.'
+                        );
+                    }
                 } catch (err) {
-                    console.error('Error loading PDF document:', err);
+                    console.error('Error getting signed URL for view:', err);
                     setError('Failed to load PDF document.');
                 }
             }
         };
 
-        loadPdf();
+        fetchSignedUrlForView();
     }, [pyq]);
 
-    // Download countdown handler
+    // Fetch Signed URL for Download
+    useEffect(() => {
+        const fetchSignedUrlForDownload = async () => {
+            if (canDownload && pyq && pyq.fileUrl) {
+                try {
+                    const response = await fetch(
+                        `${api.getSignedUrl}?fileUrl=${pyq.fileUrl}`,
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'x-api-key': API_KEY,
+                            },
+                        }
+                    );
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        setSignedUrl(data.signedUrl); // Store Signed URL for download
+                    } else {
+                        throw new Error(
+                            data.message ||
+                                'Failed to get signed URL for download.'
+                        );
+                    }
+                } catch (error) {
+                    console.error(
+                        'Error fetching signed URL for download:',
+                        error
+                    );
+                }
+            }
+        };
+
+        fetchSignedUrlForDownload();
+    }, [canDownload, pyq]);
+
+    // Download Button Logic
     const handleDownloadClick = () => {
         setCanDownload(false);
         setShowCountdown(true);
@@ -213,7 +273,7 @@ function PyqView() {
                             >
                                 {canDownload ? (
                                     <a
-                                        href={pyq.fileUrl}
+                                        href={signedUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
