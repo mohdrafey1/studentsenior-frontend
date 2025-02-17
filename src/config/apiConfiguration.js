@@ -14,6 +14,8 @@ export const api = {
 
     userData: `${API_BASE_URL}/api/user/userdata`,
 
+    addPoints: `${API_BASE_URL}/api/user/add-points`,
+
     userRedumption: `${API_BASE_URL}/api/user/redeempoints`,
 
     college: `${API_BASE_URL}/api/colleges`,

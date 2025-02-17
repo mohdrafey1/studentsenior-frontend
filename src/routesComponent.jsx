@@ -37,6 +37,7 @@ import NotesView from './components/Resources/NotesView';
 import PyqView from './components/Resources/PyqView';
 import OpportunityDetails from './DetailPages/OpportunityDetails';
 import DonationPage from './others/DonationPage';
+import AddPointsPage from './components/AddPoints/AddPointsPage';
 
 const validColleges = [
     'integral-university',
@@ -225,6 +226,7 @@ const RoutesComponent = () => {
             {/* Private Routes */}
             <Route element={<PrivateRoute />}>
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/add-points" element={<AddPointsPage />} />
                 <Route
                     path="/:collegeName/resources/:courseCode/:branchCode/notes/:subjectCode/:slug"
                     element={

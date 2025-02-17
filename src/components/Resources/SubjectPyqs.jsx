@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCollegeId } from '../../hooks/useCollegeId.js';
 import { api } from '../../config/apiConfiguration.js';
@@ -11,6 +11,7 @@ import AddPyq from './AddPyq.jsx';
 import { fetchSubjectPyqs } from '../../redux/slices/subjectPyqsSlice.js';
 import useRequireLogin from '../../hooks/useRequireLogin.js';
 import Seo from '../SEO/Seo.jsx';
+import { fetchUserData } from '../../redux/slices/userDataSlice.js';
 
 function SubjectPyqs() {
     const { collegeName, courseCode, subjectCode, branchCode } = useParams();
@@ -20,10 +21,33 @@ function SubjectPyqs() {
     const [submitting, setSubmitting] = useState(false);
     const [showEarnDialog, setShowEarnDialog] = useState(false);
 
+    const [isBuyNowModalOpen, setBuyNowModalOpen] = useState(false);
+    const [selectedPyq, setSelectedPyq] = useState(null);
+
+    const navigate = useNavigate();
+
+    const handleBuyNowClick = (pyq) => {
+        setSelectedPyq(pyq);
+        setBuyNowModalOpen(true);
+    };
+
+    const handleCloseBuyNowModal = () => {
+        setBuyNowModalOpen(false);
+        setSelectedPyq(null);
+    };
+
+    const currentUser = useSelector((state) => state.user.currentUser);
+    const ownerId = currentUser?._id;
+
     const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fetchUserData());
+    }, []);
     useEffect(() => {
         dispatch(fetchSubjectPyqs({ subjectCode, branchCode, collegeId }));
     }, [collegeId, subjectCode, branchCode]);
+
+    const { rewardBalance } = useSelector((state) => state.userData || {});
 
     const {
         subjectPyqs,
@@ -66,6 +90,32 @@ function SubjectPyqs() {
             setModalOpen(false);
         } finally {
             setSubmitting(false);
+        }
+    };
+
+    const handleConfirmPurchase = async () => {
+        try {
+            const response = await fetch(
+                `${api.newPyqs}/purchase/${selectedPyq._id}`,
+                {
+                    method: 'POST',
+                    credentials: 'include',
+                }
+            );
+            const data = await response.json();
+
+            if (data.success) {
+                toast.success(data.message || 'Purchase successful');
+                setBuyNowModalOpen(false);
+                navigate(
+                    `/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}/${selectedPyq.slug}`
+                );
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            console.error('Error purchasing PYQ:', error);
+            toast.error('Failed to purchase PYQ');
         }
     };
 
@@ -165,34 +215,66 @@ function SubjectPyqs() {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-6 sm:px-4 py-6">
                 {subjectPyqs.length > 0 ? (
                     subjectPyqs.map((pyq) => (
-                        <Link to={pyq.slug} key={pyq._id} className="relative">
-                            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 relative overflow-hidden">
-                                {pyq.solved && (
-                                    <span className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
-                                        Solved
-                                    </span>
-                                )}
-                                <div className="space-y-3">
-                                    <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-                                        {pyq.year}
-                                    </h3>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                                        {pyq.examType}
-                                    </p>
-                                    <span className="block text-xs text-gray-500 dark:text-gray-400">
-                                        {pyq.clickCounts} views
-                                    </span>
-                                    <div className="flex items-center justify-center mt-4">
+                        <div
+                            key={pyq._id}
+                            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 relative overflow-hidden"
+                        >
+                            {pyq.solved && (
+                                <span className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
+                                    Solved
+                                </span>
+                            )}
+                            <div className="space-y-3">
+                                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+                                    {pyq.year}
+                                </h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    {pyq.examType}
+                                </p>
+                                <span className="block text-xs text-gray-500 dark:text-gray-400">
+                                    {pyq.clickCounts} views
+                                </span>
+                                <div className="flex items-center justify-center mt-4">
+                                    {pyq.isPaid ? (
+                                        // Check if the current user is the owner of the PYQ
+                                        pyq.owner._id === ownerId ? (
+                                            <Link
+                                                to={pyq.slug}
+                                                className="bg-sky-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105"
+                                            >
+                                                View
+                                            </Link>
+                                        ) : // Check if the current user has purchased the PYQ
+                                        pyq.purchasedBy.includes(ownerId) ? (
+                                            <Link
+                                                to={pyq.slug}
+                                                className="bg-sky-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105"
+                                            >
+                                                View
+                                            </Link>
+                                        ) : (
+                                            // If not the owner and not purchased, show the Buy Now button
+                                            <button
+                                                onClick={() =>
+                                                    handleBuyNowClick(pyq)
+                                                }
+                                                className="bg-sky-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105"
+                                            >
+                                                Buy Now {pyq.price}P
+                                            </button>
+                                        )
+                                    ) : (
+                                        // If the PYQ is not paid, show the View link
                                         <Link
                                             to={pyq.slug}
                                             className="bg-sky-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105"
                                         >
                                             View
                                         </Link>
-                                    </div>
+                                    )}
                                 </div>
                             </div>
-                        </Link>
+                        </div>
                     ))
                 ) : (
                     <div className="col-span-4 text-center text-gray-600 dark:text-gray-400">
@@ -217,6 +299,51 @@ function SubjectPyqs() {
                     onSubmit={handleAddPyq}
                     submitting={submitting}
                 />
+            </Modal>
+            <Modal
+                isOpen={isBuyNowModalOpen}
+                onClose={handleCloseBuyNowModal}
+                title="Buy this PYQ"
+            >
+                {selectedPyq && (
+                    <div className="space-y-4">
+                        <h2 className="text-xl font-semibold">
+                            Available Points: {rewardBalance}
+                        </h2>
+                        <p>Price for this PYQ: {selectedPyq.price} Points</p>
+
+                        <div className="flex justify-center items-end gap-4 mt-4">
+                            {rewardBalance >= selectedPyq.price ? (
+                                <button
+                                    onClick={handleConfirmPurchase}
+                                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
+                                >
+                                    Confirm Purchase
+                                </button>
+                            ) : (
+                                <p className="text-red-500">
+                                    Insufficient points. You need{' '}
+                                    {selectedPyq.price - rewardBalance} more
+                                    points.
+                                </p>
+                            )}
+                            <Link
+                                to="/profile"
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+                            >
+                                Add Points
+                            </Link>
+                            <a
+                                href={selectedPyq.demoUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md"
+                            >
+                                View Demo
+                            </a>
+                        </div>
+                    </div>
+                )}
             </Modal>
         </div>
     );

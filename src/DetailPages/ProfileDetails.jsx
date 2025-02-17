@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 import useApiRequest from '../hooks/useApiRequest';
 import { api } from '../config/apiConfiguration';
 import pyq from '../icons/pyq.jpg';
@@ -166,6 +167,8 @@ export default function ProfileDetails({ data }) {
                                                     : item.type === 'redeem'
                                                     ? '-'
                                                     : item.type === 'bonus'
+                                                    ? '-'
+                                                    : item.type === 'add-point'
                                                     ? '+'
                                                     : '-'}
                                                 {item.points}
@@ -309,7 +312,7 @@ export default function ProfileDetails({ data }) {
                                 }}
                             ></div>
                         </div>
-                        <div className="flex items-center">
+                        <div className="flex items-center gap-2">
                             <button
                                 onClick={() => setShowRedeemModal(true)}
                                 className={`${
@@ -321,6 +324,12 @@ export default function ProfileDetails({ data }) {
                             >
                                 Redeem Now
                             </button>
+                            <Link
+                                to={'/add-points'}
+                                className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition-all duration-300"
+                            >
+                                Add Points
+                            </Link>
                             <div className="relative group">
                                 <button className="content-center rounded-full px-2">
                                     <i className="text-3xl fa-solid fa-circle-info"></i>
