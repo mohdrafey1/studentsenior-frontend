@@ -46,8 +46,11 @@ export default function SignIn() {
             }
             dispatch(signInSuccess(data));
             toast.success('Sign In successful');
-            const from = location.state?.from?.pathname || '/';
-            navigate(from, { replace: true });
+            setTimeout(() => {
+                const from = location.state?.from?.pathname || '/';
+                console.log('Redirecting to:', from);
+                navigate(from, { replace: true });
+            }, 100);
         } catch (error) {
             dispatch(signInFailure(error));
             toast.error('Sign In Failed');
@@ -59,7 +62,7 @@ export default function SignIn() {
 
     return (
         <>
-        <Seo title='Login - Student Senior' />
+            <Seo title="Login - Student Senior" />
             {/* <Header /> */}
             <div className="lg:flex bg-gradient-to-t from-sky-200 to bg-white">
                 <div className="p-3 max-w-lg lg:mx-auto lg:my-5 lg:bg-white lg:w-2/4 md:mx-auto py-10 rounded-xl mx-5 my-10">

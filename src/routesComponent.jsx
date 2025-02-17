@@ -199,22 +199,7 @@ const RoutesComponent = () => {
                     </ValidateCollegeRoute>
                 }
             />
-            <Route
-                path="/:collegeName/resources/:courseCode/:branchCode/notes/:subjectCode/:slug"
-                element={
-                    <ValidateCollegeRoute>
-                        <NotesView />
-                    </ValidateCollegeRoute>
-                }
-            />
-            <Route
-                path="/:collegeName/resources/:courseCode/:branchCode/pyqs/:subjectCode/:slug"
-                element={
-                    <ValidateCollegeRoute>
-                        <PyqView />
-                    </ValidateCollegeRoute>
-                }
-            />
+
             <Route
                 path="/college/:collegeName/opportunities/:slug"
                 element={
@@ -240,6 +225,22 @@ const RoutesComponent = () => {
             {/* Private Routes */}
             <Route element={<PrivateRoute />}>
                 <Route path="/profile" element={<Profile />} />
+                <Route
+                    path="/:collegeName/resources/:courseCode/:branchCode/notes/:subjectCode/:slug"
+                    element={
+                        <ValidateCollegeRoute>
+                            <NotesView />
+                        </ValidateCollegeRoute>
+                    }
+                />
+                <Route
+                    path="/:collegeName/resources/:courseCode/:branchCode/pyqs/:subjectCode/:slug"
+                    element={
+                        <ValidateCollegeRoute>
+                            <PyqView />
+                        </ValidateCollegeRoute>
+                    }
+                />
             </Route>
 
             {/* Other Pages */}

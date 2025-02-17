@@ -6,6 +6,8 @@ import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 import Seo from '../SEO/Seo.jsx';
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
 import 'pdfjs-dist/legacy/web/pdf_viewer.css';
+import { useDispatch } from 'react-redux';
+import { signOut } from '../../redux/user/userSlice.js';
 
 // Set up PDF.js worker (adjust the path if you host it yourself)
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
@@ -77,6 +79,8 @@ function PyqView() {
     const [showCountdown, setShowCountdown] = useState(false);
     const [signedUrl, setSignedUrl] = useState('');
 
+    const dispatch = useDispatch();
+
     // Fetch pyq data from the backend
     useEffect(() => {
         const fetchpyq = async () => {
@@ -88,12 +92,16 @@ function PyqView() {
                         'Content-Type': 'application/json',
                         'x-api-key': API_KEY,
                     },
+                    credentials: 'include',
                 });
                 const data = await response.json();
+                if (data.statusCode === 401 && data.success === false) {
+                    dispatch(signOut());
+                    toast.error('Please log in again to see the notes');
+                    throw new Error('Unauthorized');
+                }
                 if (response.ok) {
                     setPyq(data.pyq);
-                } else {
-                    throw new Error(data.message || 'Failed to fetch pyq.');
                 }
             } catch (err) {
                 console.error(err);

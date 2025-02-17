@@ -47,7 +47,6 @@ const useApiRequest = () => {
                     { autoClose: 10000 }
                 );
                 throw new Error('Unauthorized');
-                return;
             }
 
             return data;

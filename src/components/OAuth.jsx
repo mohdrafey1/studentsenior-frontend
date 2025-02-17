@@ -39,9 +39,12 @@ export default function OAuth() {
             const data = await res.json();
             // console.log(data);
             dispatch(signInSuccess(data));
-            const from = location.state?.from?.pathname || '/';
-            navigate(from, { replace: true });
             toast.success('Log in successfull');
+            setTimeout(() => {
+                const from = location.state?.from?.pathname || '/';
+                console.log('Redirecting to:', from);
+                navigate(from, { replace: true });
+            }, 100); // Delay of 100ms for redux discarding the location
         } catch (error) {
             console.log('Could not login with Google', error);
             toast.error('login failed');
