@@ -333,14 +333,13 @@ function SubjectPyqs() {
                             >
                                 Add Points
                             </Link>
-                            <a
-                                href={selectedPyq.demoUrl}
-                                target="_blank"
+                            <Link
+                                to={selectedPyq.slug}
                                 rel="noopener noreferrer"
                                 className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md"
                             >
                                 View Demo
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 )}
