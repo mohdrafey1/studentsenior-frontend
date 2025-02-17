@@ -78,7 +78,19 @@ function SubjectPyqs() {
     }
 
     if (PyqsError) {
-        return <p className="text-center text-red-500">Error: {PyqsError}</p>;
+        return (
+            <div className="h-screen flex justify-center items-center">
+                <div>
+                    <p className="text-center text-red-500 mb-4">{PyqsError}</p>
+                    <Link
+                        to={`/${collegeName}/resources/${courseCode}/${branchCode}`}
+                        className="bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600"
+                    >
+                        See Other Branches
+                    </Link>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -86,115 +98,104 @@ function SubjectPyqs() {
             <DetailPageNavbar
                 path={`${collegeName}/resources/${courseCode}/${branchCode}`}
             />
-            <h1 className="text-2xl font-bold text-center mb-2">
+            <h1 className="sm:text-2xl font-extrabold text-center sm:mb-6 text-gray-800 dark:text-white">
                 {capitalizeWords(collegeName)}: {subjectName || subjectCode}{' '}
-                Pyqs
+                PYQs
             </h1>
             <Seo
                 title={` ${capitalizeWords(collegeName)}: ${
                     subjectName || subjectCode
-                } Pyqs`}
+                } PYQs`}
                 desc={subjectPyqs
                     .map((pyq) => `${pyq.year} ${pyq.examType}`)
                     .join(' ')}
             />
 
-            <div className="flex justify-center gap-2 items-center mb-4">
+            <div className="flex justify-center gap-4 items-center sm:mb-8">
                 <button
                     onClick={handleOpenAddPyqModal}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow-md transition-transform transform hover:scale-105"
                 >
                     <i className="fa-solid fa-plus"></i> Add PYQs
                 </button>
                 <Link
                     to={`/${collegeName}/resources/${courseCode}/${branchCode}/notes/${subjectCode}`}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md shadow-md transition-transform transform hover:scale-105"
                 >
                     View Notes
                 </Link>
                 <button
-                    className="content-center rounded-full px-2 py-3"
+                    className="rounded-full p-3 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
                     onClick={handleEarnDialog}
                 >
-                    <i className="text-3xl fa-solid fa-circle-info"></i>
+                    <i className="text-3xl fa-solid fa-circle-info text-gray-600 dark:text-gray-300"></i>
                 </button>
-                {showEarnDialog && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
-                        <div className="bg-white p-6 rounded-lg shadow-lg w-full lg:m-4 m-6 max-w-lg dark:bg-gray-800">
-                            <div className="items-center mb-4 text-white">
-                                <div className="flex justify-between items-center">
-                                    <h2 className="text-xl sm:text-2xl pb-1 font-bold text-gray-900 dark:text-white ">
-                                        Earn Money
-                                    </h2>
-                                    <button onClick={handleEarnDialog}>
-                                        <i className="fa-solid fa-xmark text-2xl text-gray-900 dark:text-white"></i>
-                                    </button>
-                                </div>
-                                <div className="text-gray-900 dark:text-white">
-                                    <p>
-                                        You can upload PYQs and earn reward
-                                        points:
-                                    </p>
-                                    <p className="mt-2">
-                                        Here are the rules for earning reward
-                                        points:
-                                    </p>
-                                    <ul className="list-disc ml-4 mt-2">
-                                        <li>1 PYQ upload = 10 reward points</li>
-                                        <li>
-                                            Rewards will be given only after the
-                                            PYQs are approved
-                                        </li>
-                                        <li>Duplicate PYQs are not allowed</li>
-                                        <li>
-                                            PYQs should not be older than 2
-                                            years
-                                        </li>
-                                    </ul>
-                                </div>
+            </div>
+
+            {showEarnDialog && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-xl w-full lg:m-4 m-6 max-w-lg dark:bg-gray-800">
+                        <div className="items-center mb-4 text-white">
+                            <div className="flex justify-between items-center">
+                                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                                    Earn Money
+                                </h2>
+                                <button onClick={handleEarnDialog}>
+                                    <i className="fa-solid fa-xmark text-2xl text-gray-900 dark:text-white"></i>
+                                </button>
+                            </div>
+                            <div className="text-gray-800 dark:text-gray-300 mt-2">
+                                <p>
+                                    You can upload PYQs and earn reward points:
+                                </p>
+                                <ul className="list-disc ml-6 mt-2">
+                                    <li>1 PYQ upload = 10 reward points</li>
+                                    <li>Rewards are given after approval</li>
+                                    <li>Duplicate PYQs are not allowed</li>
+                                    <li>
+                                        PYQs should not be older than 2 years
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                )}
-            </div>
+                </div>
+            )}
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 px-4 py-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-6 sm:px-4 py-6">
                 {subjectPyqs.length > 0 ? (
                     subjectPyqs.map((pyq) => (
-                        <div
-                            key={pyq._id}
-                            className="justify-center flex bg-white border border-gray-200 p-5 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300"
-                        >
-                            <div className="space-y-3">
+                        <Link to={pyq.slug} key={pyq._id} className="relative">
+                            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 relative overflow-hidden">
                                 {pyq.solved && (
-                                    <div className="block">
-                                        <span className="bg-green-200 rounded-md p-2 font-bold">
-                                            Solved
-                                        </span>
-                                    </div>
+                                    <span className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
+                                        Solved
+                                    </span>
                                 )}
-                                <p className="text-lg font-semibold text-gray-700">
-                                    {pyq.year}
-                                </p>
-                                <p className="text-sm text-gray-500">
-                                    {pyq.examType}
-                                </p>
-                                <span className="ml-1 mt-1 text-[8px] text-gray-500 ">
-                                    {pyq.clickCounts} views
-                                </span>
-                                <div className="flex items-center justify-between mt-4">
-                                    <Link
-                                        to={pyq.slug}
-                                        className="bg-sky-400 text-white px-4 py-2 rounded-lg hover:bg-sky-500 transition duration-300"
-                                    >
-                                        View
-                                    </Link>
+                                <div className="space-y-3">
+                                    <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+                                        {pyq.year}
+                                    </h3>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                                        {pyq.examType}
+                                    </p>
+                                    <span className="block text-xs text-gray-500 dark:text-gray-400">
+                                        {pyq.clickCounts} views
+                                    </span>
+                                    <div className="flex items-center justify-center mt-4">
+                                        <Link
+                                            to={pyq.slug}
+                                            className="bg-sky-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105"
+                                        >
+                                            View
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     ))
                 ) : (
-                    <div className="col-span-4 text-center text-gray-600">
+                    <div className="col-span-4 text-center text-gray-600 dark:text-gray-400">
                         <p className="text-xl">
                             No PYQs available for this subject. Please add if
                             you have any.

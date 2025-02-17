@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { api, API_KEY } from '../../config/apiConfiguration.js';
 import { toast } from 'react-toastify';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
@@ -97,8 +97,8 @@ function PyqView() {
                 }
             } catch (err) {
                 console.error(err);
-                setError('Failed to fetch pyq.');
-                toast.error('Failed to fetch pyq.');
+                setError(err.message || 'Failed to fetch pyq.');
+                toast.error(err.message || 'Failed to fetch pyq.');
             } finally {
                 setLoading(false);
             }
@@ -213,7 +213,19 @@ function PyqView() {
     }
 
     if (error) {
-        return <p className="text-center text-red-500">{error}</p>;
+        return (
+            <div className="h-screen flex justify-center items-center">
+                <div>
+                    <p className="text-center text-red-500 mb-4">{error}</p>
+                    <Link
+                        to={`/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}`}
+                        className="bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600"
+                    >
+                        See Other Pyq
+                    </Link>
+                </div>
+            </div>
+        );
     }
 
     return (
