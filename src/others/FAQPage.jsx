@@ -5,7 +5,7 @@ const FAQPage = () => {
     const faqs = [
         {
             question: 'What is Student Senior?',
-            answer: 'Student Senior is a platform that connects college students with resources, seniors for guidance, and a marketplace for buying and selling items.',
+            answer: 'Student Senior is a website which connects college students for mentorship, guidance, and community building. Students can askquestions, share knowledge, and trade items in a dedicated store. Senior students can register to mentor juniors,creating a dynamic ecosystem of knowledge sharing. The                   platform also offers a repository of academic resources,including notes and past exam papers, tailored to eachcolleges needs. Our goal is to foster interaction, support,and academic success among students, promotingsustainability and resourcefulness within the collegecommunity. By joining, students can tap into valuable insights, advice, and resources to enhance their college experience...',
         },
         {
             question: 'How do I register?',
@@ -43,8 +43,12 @@ const FAQPage = () => {
                             onClick={() => toggleFAQ(index)}
                             className="w-full flex justify-between items-center py-4 px-6 text-left bg-white text-gray-900 hover:bg-gray-200 focus:outline-none"
                         >
-                            <span className="text-lg font-semibold">{faq.question}</span>
-                            <span className="text-gray-700">{openIndex === index ? '−' : '+'}</span>
+                            <span className="text-lg font-semibold">
+                                {faq.question}
+                            </span>
+                            <span className="text-gray-700">
+                                {openIndex === index ? '−' : '+'}
+                            </span>
                         </button>
                         {openIndex === index && (
                             <div className="px-6 py-4 text-gray-800 bg-gray-100 rounded-b-lg">
@@ -54,7 +58,6 @@ const FAQPage = () => {
                     </div>
                 ))}
             </div>
-
         </div>
     );
 };

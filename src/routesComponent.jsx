@@ -23,9 +23,7 @@ import ContactUs from './Forms/ContactUs';
 import PrivacyPolicy from './others/PrivacyPolicy';
 import PostDetail from './DetailPages/PostDetail';
 import FAQPage from './others/FAQPage';
-// import BundlePyq from './DetailPages/BundlePyq';
 import ProductDetail from './DetailPages/ProductDetail';
-// import PyqDetail from './DetailPages/PyqDetail';
 import SeniorDetailPage from './DetailPages/SeniorDetailPage';
 import RequestPYQ from './Forms/RequestPYQ';
 import Branches from './components/Resources/Branches';
@@ -98,22 +96,7 @@ const RoutesComponent = () => {
                     </ValidateCollegeRoute>
                 }
             />
-            {/* <Route
-                path="/college/:collegeName/pyq/bundle"
-                element={
-                    <ValidateCollegeRoute>
-                        <BundlePyq />
-                    </ValidateCollegeRoute>
-                }
-            /> */}
-            {/* <Route
-                path="/college/:collegeName/pyq/:slug"
-                element={
-                    <ValidateCollegeRoute>
-                        <PyqDetail />
-                    </ValidateCollegeRoute>
-                }
-            /> */}
+
             <Route
                 path="/college/:collegeName/store"
                 element={
