@@ -13,6 +13,8 @@ function AddNotes({
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [file, setFile] = useState(null);
+    const [isPaid, setIsPaid] = useState(false);
+    const [price, setPrice] = useState('');
     const [loading, setLoading] = useState(false);
 
     const handleFileChange = (e) => {
@@ -61,7 +63,7 @@ function AddNotes({
 
             const { uploadUrl, key } = await response.json();
 
-            toast.warning('uploading notes');
+            toast.warning('Uploading notes');
 
             // Step 2: Upload file directly to S3
             await fetch(uploadUrl, {
@@ -79,6 +81,8 @@ function AddNotes({
                 subjectCode,
                 branchCode,
                 college: collegeId,
+                isPaid,
+                price: isPaid ? price : 0,
                 fileUrl: `https://studentsenior.s3.ap-south-1.amazonaws.com/${key}`,
             };
 
@@ -92,10 +96,7 @@ function AddNotes({
     };
 
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="space-y-2 bg-white p-6"
-        >
+        <form onSubmit={handleSubmit} className="space-y-2 bg-white p-6">
             <div>
                 <label className="block font-semibold text-sky-500 mb-2">
                     Subject
@@ -142,6 +143,37 @@ function AddNotes({
                     required
                 />
             </div>
+
+            <div className="mt-4 space-y-2">
+                <div className="flex items-center">
+                    <p>Is Paid </p>
+                    <label className="relative inline-flex items-center cursor-pointer ml-2">
+                        <input
+                            type="checkbox"
+                            checked={isPaid}
+                            onChange={(e) => setIsPaid(e.target.checked)}
+                            className="sr-only peer"
+                        />
+                        <div className="w-9 h-6 bg-gray-200 hover:bg-gray-300 peer-focus:outline-0 peer-focus:ring-transparent rounded-full peer transition-all ease-in-out duration-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600 hover:peer-checked:bg-indigo-700"></div>
+                    </label>
+                </div>
+
+                {isPaid && (
+                    <div>
+                        <label className="block font-semibold text-sky-500 mb-1">
+                            Price (in Points - 5 points = 1 INR)
+                        </label>
+                        <input
+                            type="number"
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
+                            className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
+                            required
+                        />
+                    </div>
+                )}
+            </div>
+
             <button
                 type="submit"
                 className={`w-full bg-sky-400 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-sky-500 transition-colors duration-200 ${

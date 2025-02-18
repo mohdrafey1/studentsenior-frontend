@@ -23,6 +23,9 @@ const Footer = () => {
                         <Link to="/privacy-policy">
                             <p>Privacy Policy</p>
                         </Link>
+                        <Link to="/terms-and-conditions">
+                            <p>T&C</p>
+                        </Link>
                     </div>
                     <p className="text-gray-400">
                         &copy; 2024 Student Senior. All rights reserved.

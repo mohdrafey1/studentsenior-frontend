@@ -242,13 +242,9 @@ function PyqView() {
             );
             const data = await response.json();
 
-            if (data.success) {
-                toast.success(data.message || 'Purchase successful');
-                setBuyNowModalOpen(false);
-                fetchpyq();
-            } else {
-                toast.error(data.message);
-            }
+            toast.success(data.message || 'Purchase successful');
+            setBuyNowModalOpen(false);
+            fetchpyq();
         } catch (error) {
             console.error('Error purchasing PYQ:', error);
             toast.error('Failed to purchase PYQ');
@@ -289,7 +285,7 @@ function PyqView() {
             />
             {pyq ? (
                 <div>
-                    <div className="flex flex-col items-center">
+                    <div className="flex flex-col items-center px-2">
                         <h1 className="text-2xl font-bold text-gray-800">
                             {pyq.title}
                         </h1>
@@ -309,7 +305,7 @@ function PyqView() {
 
                     {/* PDF Viewer */}
                     <div className="flex justify-center w-full my-5">
-                        <div className="pdf-viewer md:w-4/5 lg:w-3/5">
+                        <div className="pdf-viewer md:w-4/5 lg:w-3/5 px-1">
                             {pdfDoc ? (
                                 <>
                                     {pyq.isPaid &&
@@ -421,7 +417,7 @@ function PyqView() {
                                 </p>
                             )}
                             <Link
-                                to="/profile"
+                                to="/add-points"
                                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
                             >
                                 Add Points

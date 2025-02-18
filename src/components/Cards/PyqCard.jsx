@@ -30,57 +30,65 @@ function PyqCard({ Pyqs = [] }) {
                 return (
                     <div
                         key={pyq._id}
-                        className="bg-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition duration-300 flex flex-col mb-4 cursor-pointer"
+                        className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col mb-6 cursor-pointer"
                         onClick={(e) => handleCardClick(pyqUrl, e)}
                     >
-                        <div className="flex-grow">
-                            <h2 className="text-sm lg:text-xl font-bold mb-2">
-                                {pyq.subject?.subjectName}{' '}
+                        <div className="flex justify-between items-start mb-4">
+                            <h2 className="text-xl font-semibold text-gray-800">
+                                {pyq.subject?.subjectName}
+                            </h2>
+                            <div className="flex space-x-2">
                                 {pyq.solved && (
-                                    <span className="bg-green-200 rounded-md px-2 py-1 font-bold">
+                                    <span className="bg-green-200 text-green-800 rounded-full px-3 py-1 text-xs font-semibold">
                                         Solved
                                     </span>
                                 )}
-                            </h2>
-                            <p className="mb-2 text-xs lg:text-base">
-                                Subject Code:{' '}
-                                <span className="font-normal">
-                                    {pyq.subject?.subjectCode}
-                                </span>
+                                {pyq.isPaid && (
+                                    <span className="bg-red-200 text-red-800 rounded-full px-3 py-1 text-xs font-semibold">
+                                        Paid
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="text-sm text-gray-600 mb-4 space-y-1">
+                            <p>
+                                <strong>Subject Code:</strong>{' '}
+                                {pyq.subject?.subjectCode}
                             </p>
-                            <p className="mb-2 text-xs lg:text-base">
-                                Exam Type:{' '}
-                                <span className="font-normal">
-                                    {pyq.examType}
-                                </span>
+                            <p>
+                                <strong>Exam Type:</strong> {pyq.examType}
                             </p>
-                            <p className="mb-2 text-xs lg:text-base">
-                                Year:{' '}
-                                <span className="font-normal">{pyq.year}</span>
+                            <p>
+                                <strong>Year:</strong> {pyq.year}
                             </p>
-                            <p className="mb-2 text-xs lg:text-base">
-                                Semester:{' '}
-                                <span className="font-normal">
-                                    {pyq.subject?.semester}
-                                </span>
+                            <p>
+                                <strong>Semester:</strong>{' '}
+                                {pyq.subject?.semester}
                             </p>
-                            <p className="mb-2 text-xs lg:text-base">
-                                Branch:{' '}
-                                <span className="font-normal">
-                                    {pyq.subject?.branch?.branchName}
-                                </span>
+                            <p>
+                                <strong>Branch:</strong>{' '}
+                                {pyq.subject?.branch?.branchName}
                             </p>
                         </div>
-                        <div className="mt-4 flex justify-center">
+
+                        <div className="flex justify-center">
                             {isAuthenticated ? (
                                 <Link
                                     to={pyqUrl}
-                                    className="bg-sky-500 text-white px-4 py-2 rounded-3xl text-center hover:bg-red-300 transition-colors text-xs lg:text-base"
+                                    className="bg-sky-500 text-white px-6 py-2 rounded-3xl text-center hover:bg-sky-600 transition-colors text-sm lg:text-base flex items-center justify-center space-x-2"
                                 >
-                                    View
+                                    {pyq.isPaid ? (
+                                        <>
+                                            <i className="fa-solid fa-cart-shopping text-sm" />
+                                            <span>Buy Now {pyq.price}P</span>
+                                        </>
+                                    ) : (
+                                        <>View</>
+                                    )}
                                 </Link>
                             ) : (
-                                <p className="text-red-500">
+                                <p className="text-red-500 text-center">
                                     Please log in to view the PDF.
                                 </p>
                             )}
