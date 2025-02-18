@@ -9,7 +9,7 @@ const AddPointsPage = () => {
     const [transactionId, setTransactionId] = useState('');
     const [qrCodeUrl, setQrCodeUrl] = useState('');
     const [copySuccess, setCopySuccess] = useState(false);
-    const [loading, setLoading] = useState(false); // State to handle the loading spinner
+    const [loading, setLoading] = useState(false);
 
     const currentUser = useSelector((state) => state.user.currentUser);
 
@@ -48,7 +48,7 @@ const AddPointsPage = () => {
             transactionId,
         };
 
-        setLoading(true); // Start loading
+        setLoading(true);
 
         try {
             const response = await fetch(`${api.addPoints}`, {
@@ -76,7 +76,7 @@ const AddPointsPage = () => {
             console.error('Error:', error);
             toast.error('An error occurred. Please try again.');
         } finally {
-            setLoading(false); // Stop loading
+            setLoading(false);
         }
     };
 
@@ -104,7 +104,7 @@ const AddPointsPage = () => {
                         value={rupees}
                         onChange={(e) => setRupees(e.target.value)}
                         readOnly
-                        className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100"
                     />
 
                     <input
@@ -118,14 +118,13 @@ const AddPointsPage = () => {
 
                     <button
                         type="submit"
-                        className="w-full py-3 rounded-lg font-semibold text-white bg-green-500 hover:bg-green-600 transition-all"
-                        disabled={loading} // Disable the button while loading
+                        className="w-full py-3 rounded-lg font-semibold text-white bg-green-500 hover:bg-green-600 transition-all flex items-center justify-center"
+                        disabled={loading}
                     >
                         {loading ? (
-                            <i className="fas fa-spinner fa-pulse text-blue-600"></i>
-                        ) : (
-                            'Submit'
-                        )}
+                            <i className="fas fa-spinner fa-pulse mr-2"></i>
+                        ) : null}
+                        {loading ? 'Processing...' : 'Submit'}
                     </button>
                 </form>
 
@@ -163,6 +162,26 @@ const AddPointsPage = () => {
                     {copySuccess && (
                         <p className="text-green-500 text-sm mt-1">Copied!</p>
                     )}
+                </div>
+
+                <div className="mt-6 text-center">
+                    <p className="text-sm text-gray-500">
+                        By proceeding, you agree to our{' '}
+                        <a
+                            href="/terms-and-conditions"
+                            className="text-blue-500 hover:underline"
+                        >
+                            Terms and Conditions
+                        </a>{' '}
+                        and{' '}
+                        <a
+                            href="/refund-policy"
+                            className="text-blue-500 hover:underline"
+                        >
+                            Refund Policy
+                        </a>
+                        .
+                    </p>
                 </div>
             </div>
         </div>

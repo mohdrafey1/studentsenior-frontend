@@ -38,6 +38,8 @@ import PyqView from './components/Resources/PyqView';
 import OpportunityDetails from './DetailPages/OpportunityDetails';
 import DonationPage from './others/DonationPage';
 import AddPointsPage from './components/AddPoints/AddPointsPage';
+import RefundPolicy from './others/RefundPolicy';
+import TermsAndConditions from './others/TermsAndConditions';
 
 const validColleges = [
     'integral-university',
@@ -251,6 +253,11 @@ const RoutesComponent = () => {
             <Route path="/not-found" element={<NotFoundPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/faq" element={<FAQPage />} />
+            <Route
+                path="/terms-and-conditions"
+                element={<TermsAndConditions />}
+            />
+            <Route path="/refund-policy" element={<RefundPolicy />} />
 
             <Route path="/donation" element={<DonationPage />} />
 
