@@ -97,10 +97,10 @@ const TermsAndConditions = () => {
                     9. Governing Law
                 </h2>
                 <p className="mb-4">
-                    These terms and conditions are governed by the laws of [Your
-                    Country], without regard to its conflict of law principles.
-                    Any disputes arising from these terms will be resolved in
-                    the competent courts of [Your Country].
+                    These terms and conditions are governed by the laws of
+                    India, without regard to its conflict of law principles. Any
+                    disputes arising from these terms will be resolved in the
+                    competent courts of India.
                 </p>
 
                 <h2 className="text-2xl font-semibold mb-3">

@@ -65,8 +65,7 @@ const RefundPolicy = () => {
                     these steps:
                     <ul className="list-disc pl-6">
                         <li>
-                            Contact our support team within [X] days of
-                            purchase.
+                            Contact our support team within 2 days of purchase.
                         </li>
                         <li>
                             Provide your order details, including your order
@@ -74,7 +73,7 @@ const RefundPolicy = () => {
                         </li>
                         <li>
                             Our team will review your request and get back to
-                            you with a resolution within [X] business days.
+                            you with a resolution within 3 business days.
                         </li>
                     </ul>
                 </p>
@@ -84,8 +83,8 @@ const RefundPolicy = () => {
                 </h2>
                 <p className="mb-4">
                     If your refund request is approved, we will process the
-                    refund within [X] business days. The refund will be issued
-                    to the original payment method, and the transaction may take
+                    refund within 2 business days. The refund will be issued to
+                    the original payment method, and the transaction may take
                     additional time depending on your payment provider's
                     policies.
                 </p>
