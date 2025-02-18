@@ -1,60 +1,84 @@
-import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import '../../App.css';
 
 const Collegelink2 = () => {
     const { collegeName } = useParams();
-    const [isOpen, setisOpen] = useState(false);
+    const location = useLocation();
+    const [isOpen, setIsOpen] = useState(false);
+
     const handleMore = () => {
-        if (!isOpen) {
-            setisOpen(true);
-        } else {
-            setisOpen(false);
-        }
+        setIsOpen(!isOpen);
     };
 
+    const mainLinks = [
+        {
+            to: `/college/${collegeName}`,
+            icon: 'fa-solid fa-building',
+            text: 'College',
+        },
+        {
+            to: `/college/${collegeName}/resources`,
+            icon: 'fa-solid fa-bolt',
+            text: 'Resources',
+        },
+        {
+            to: `/college/${collegeName}/store`,
+            icon: 'fa-solid fa-store',
+            text: 'Store',
+        },
+        {
+            to: `/college/${collegeName}/community`,
+            icon: 'fa-solid fa-users',
+            text: 'Community',
+        },
+    ];
+
+    const moreLinks = [
+        {
+            to: `/college/${collegeName}/seniors`,
+            icon: 'fa-solid fa-user-tie',
+            text: 'Seniors',
+        },
+        {
+            to: `/college/${collegeName}/pyq`,
+            icon: 'fa-solid fa-note-sticky',
+            text: 'PYQs',
+        },
+        {
+            to: `/college/${collegeName}/whatsapp-group`,
+            icon: 'fa-brands fa-square-whatsapp',
+            text: 'Groups',
+        },
+        {
+            to: `/college/${collegeName}/opportunities`,
+            icon: 'fa-solid fa-magnifying-glass',
+            text: 'Opportunity',
+        },
+    ];
+
     return (
-        <section className=" lg:hidden min-w-full flex justify-center items-center text-center my-7">
+        <section className="lg:hidden min-w-full flex justify-center items-center text-center my-7">
+            {/* Fixed Bottom Navigation Bar */}
             <div className="fixed z-30 bottom-0 rounded-t-2xl bg-sky-300 inline-flex justify-around items-center text-center w-full py-2">
-                <Link
-                    to={`/college/${collegeName}`}
-                    className="rounded-xl hover:bg-sky-100  px-3 py-2"
-                >
-                    <div className="flex flex-col items-center min-w-full text-sm">
-                        <i className="fa-solid fa-building"></i>
-                        <p>College</p>
-                    </div>
-                </Link>
-                <Link
-                    to={`/college/${collegeName}/resources`}
-                    className="rounded-xl hover:bg-sky-100  px-3 py-2"
-                >
-                    <div className="flex flex-col items-center text-sm">
-                        <i className="fa-solid fa-bolt"></i>
-                        <p>Resources</p>
-                    </div>
-                </Link>
-                <Link
-                    to={`/college/${collegeName}/store`}
-                    className="rounded-xl hover:bg-sky-100  px-3 py-2"
-                >
-                    <div className="flex flex-col items-center text-sm">
-                        <i className="fa-solid fa-store"></i>
-                        <p>Store</p>
-                    </div>
-                </Link>
-                <Link
-                    to={`/college/${collegeName}/community`}
-                    className="rounded-xl hover:bg-sky-100  px-3 py-2"
-                >
-                    <div className="flex flex-col items-center text-sm">
-                        <i className="fa-solid fa-users"></i>
-                        <p>Community</p>
-                    </div>
-                </Link>
+                {mainLinks.map((link, index) => (
+                    <Link
+                        key={index}
+                        to={link.to}
+                        className={`rounded-xl hover:bg-sky-100 px-3 py-2 ${
+                            location.pathname === link.to ? 'bg-sky-100' : ''
+                        }`}
+                    >
+                        <div className="flex flex-col items-center min-w-full text-sm">
+                            <i className={link.icon}></i>
+                            <p>{link.text}</p>
+                        </div>
+                    </Link>
+                ))}
+                {/* More Button */}
                 <div
                     onClick={handleMore}
-                    className="rounded-xl hover:bg-sky-100  px-3 py-2"
+                    className="rounded-xl hover:bg-sky-100 px-3 py-2 cursor-pointer"
                 >
                     <div className="flex flex-col items-center text-sm">
                         <i
@@ -66,67 +90,40 @@ const Collegelink2 = () => {
                     </div>
                 </div>
             </div>
-            {isOpen ? (
-                <div
-                    className={` fixed inset-0 flex items-center justify-center bg-white z-20 bg-opacity-75`}
-                >
+
+            {/* More Menu (Overlay) */}
+            {isOpen && (
+                <div className="fixed inset-0 flex items-center justify-center bg-white z-20 bg-opacity-75">
                     <ul
-                        id="list"
-                        className={`bg-sky-300 rounded-b-2xl absolute right-0.5 top-0 z-20 py-3 w-full
-                        transition-all duration-700 ease-in-out transform overflow-hidden
-                        ${
+                        className={`bg-sky-300 rounded-b-2xl absolute right-0.5 top-0 z-20 py-3 w-full transition-all duration-700 ease-in-out transform ${
                             isOpen
-                                ? ' opacity-100 translate-y-0'
-                                : ' max-h-0 opacity-0 -translate-y-10'
+                                ? 'opacity-100 translate-y-0'
+                                : 'max-h-0 opacity-0 -translate-y-10'
                         }`}
                     >
-                        <li className="flex justify-center mb-2">
-                            <Link
-                                to={`/college/${collegeName}/seniors`}
-                                className="rounded-lg hover:bg-sky-100 px-4 py-2 text-center w-11/12"
+                        {moreLinks.map((link, index) => (
+                            <li
+                                key={index}
+                                className="flex justify-center mb-2"
                             >
-                                <div className="flex items-center justify-center space-x-2 text-lg font-bold">
-                                    <i className="fa-solid fa-user-tie"></i>
-                                    <p>Senior</p>
-                                </div>
-                            </Link>
-                        </li>
-                        <li className="flex justify-center mb-2">
-                            <Link
-                                to={`/college/${collegeName}/pyq`}
-                                className="rounded-lg hover:bg-sky-100 px-4 py-2 text-center w-11/12"
-                            >
-                                <div className="flex items-center justify-center space-x-2 text-lg font-bold">
-                                    <i className="fa-solid fa-note-sticky"></i>
-                                    <p>PYQs</p>
-                                </div>
-                            </Link>
-                        </li>
-                        <li className="flex justify-center mb-2">
-                            <Link
-                                to={`/college/${collegeName}/whatsapp-group`}
-                                className="rounded-lg hover:bg-sky-100 px-4 py-2 text-center w-11/12"
-                            >
-                                <div className="flex items-center justify-center space-x-2 text-lg font-bold">
-                                    <i className="fa-brands fa-square-whatsapp"></i>
-                                    <p>Groups</p>
-                                </div>
-                            </Link>
-                        </li>
-                        <li className="flex justify-center">
-                            <Link
-                                to={`/college/${collegeName}/opportunities`}
-                                className="rounded-lg hover:bg-sky-100 px-4 py-2 text-center w-11/12"
-                            >
-                                <div className="flex items-center justify-center space-x-2 text-lg font-bold">
-                                    <i className="fa-solid fa-magnifying-glass"></i>
-                                    <p>Opportunity</p>
-                                </div>
-                            </Link>
-                        </li>
+                                <Link
+                                    to={link.to}
+                                    className={`rounded-lg hover:bg-sky-100 px-4 py-2 text-center w-11/12 ${
+                                        location.pathname === link.to
+                                            ? 'bg-sky-100'
+                                            : ''
+                                    }`}
+                                >
+                                    <div className="flex items-center justify-center space-x-2 text-lg font-bold">
+                                        <i className={link.icon}></i>
+                                        <p>{link.text}</p>
+                                    </div>
+                                </Link>
+                            </li>
+                        ))}
                     </ul>
                 </div>
-            ) : null}
+            )}
         </section>
     );
 };
