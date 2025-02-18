@@ -6,6 +6,8 @@ import { api } from '../config/apiConfiguration';
 import pyq from '../icons/pyq.jpg';
 import notes from '../icons/notes.jpg';
 import redeem from '../icons/redeem.png';
+import { fetchUserData } from '../redux/slices/userDataSlice';
+import { useDispatch } from 'react-redux';
 
 export default function ProfileDetails({ data }) {
     const [viewMoreNotes, setViewMoreNotes] = useState(false);
@@ -241,8 +243,10 @@ export default function ProfileDetails({ data }) {
 
     const [showRedeemModal, setShowRedeemModal] = useState(false);
     const [upiId, setUpiId] = useState('');
+    const [amount, setAmount] = useState('');
     const [loadingRedeem, setLoadingRedeem] = useState(false);
 
+    const dispatch = useDispatch();
     const { apiRequest, loading } = useApiRequest();
 
     const handleRedeem = async () => {
@@ -258,9 +262,24 @@ export default function ProfileDetails({ data }) {
                 return;
             }
 
+            if (!amount || isNaN(amount) || amount <= 0) {
+                toast.error('Please enter valid points');
+                return;
+            }
+
+            if (amount > data.rewardBalance) {
+                toast.error('Insufficient points for this amount');
+                return;
+            }
+
+            if (amount < 100) {
+                toast.error('Minimum points is 100 for withdrawl');
+                return;
+            }
+
             const body = {
                 upiId,
-                rewardBalance: data.rewardBalance,
+                rewardBalance: amount,
             };
 
             setLoadingRedeem(true);
@@ -272,9 +291,11 @@ export default function ProfileDetails({ data }) {
                 setShowRedeemModal(false);
                 return;
             }
+            setShowRedeemModal(false);
             toast.success(
                 'Points Redemption Successful, Amount will be transferred soon'
             );
+            dispatch(fetchUserData());
         } catch (error) {
             toast.error(error.message);
             setShowRedeemModal(false);
@@ -431,7 +452,7 @@ export default function ProfileDetails({ data }) {
             {showRedeemModal && (
                 <div className="fixed inset-0 !mt-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md mx-4">
-                        <h2 className="text-3xl font-bold text-center text-gray-800  mb-6">
+                        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
                             Redeem Points
                         </h2>
                         <input
@@ -439,8 +460,20 @@ export default function ProfileDetails({ data }) {
                             value={upiId}
                             onChange={(e) => setUpiId(e.target.value)}
                             placeholder="Enter UPI ID"
-                            className="w-full p-4 rounded-lg mb-6 border border-gray-300 focus:ring-2 focus:ring-blue-400 outline-none text-gray-700"
+                            className="w-full p-4 rounded-lg mb-4 border border-gray-300 focus:ring-2 focus:ring-blue-400 outline-none text-gray-700"
                         />
+                        <input
+                            type="number"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                            placeholder="Enter Points"
+                            className="w-full p-4 rounded-lg mb-4 border border-gray-300 focus:ring-2 focus:ring-blue-400 outline-none text-gray-700"
+                        />
+                        {amount && (
+                            <p className="text-gray-600 mb-4">
+                                You will receive ₹{(amount / 5).toFixed(2)}
+                            </p>
+                        )}
                         <button
                             onClick={handleRedeem}
                             className={`w-full p-4 rounded-lg text-white font-semibold ${
