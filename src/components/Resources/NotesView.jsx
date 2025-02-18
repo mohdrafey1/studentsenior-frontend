@@ -291,11 +291,11 @@ function NotesView() {
             />
             {note ? (
                 <div>
-                    <div className="flex flex-col items-center">
-                        <h1 className="text-2xl font-bold text-gray-800 mt-4">
+                    <div className="flex flex-col items-center px-2">
+                        <h1 className="text-2xl font-bold text-gray-800 mt-4 ">
                             {note.title}
                         </h1>
-                        <p className="text-lg text-gray-600 mt-2">
+                        <p className="text-lg text-gray-600 mt-2 ">
                             Subject: {note.subject.subjectName} (
                             {note.subject.subjectCode})
                             <Seo
@@ -306,7 +306,7 @@ function NotesView() {
 
                     {/* PDF Viewer */}
                     <div className="flex justify-center w-full my-5">
-                        <div className="pdf-viewer md:w-4/5 lg:w-3/5">
+                        <div className="pdf-viewer md:w-4/5 lg:w-3/5 p-1">
                             {pdfDoc ? (
                                 <>
                                     {note.isPaid &&

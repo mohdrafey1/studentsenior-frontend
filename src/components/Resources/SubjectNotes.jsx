@@ -250,7 +250,7 @@ function SubjectNotes() {
             <DetailPageNavbar
                 path={`${collegeName}/resources/${courseCode}/${branchCode}`}
             />
-            <h1 className="sm:text-2xl font-extrabold text-center sm:mb-6 text-gray-800 dark:text-white">
+            <h1 className="sm:text-2xl font-extrabold text-center sm:mb-6 text-gray-800">
                 {capitalizeWords(collegeName)}: {subjectName} Notes
             </h1>
             <Seo
@@ -366,7 +366,7 @@ function SubjectNotes() {
                                 </div>
 
                                 {/* Note Title and Description */}
-                                <h2 className="text-lg font-bold text-gray-800 mb-1 line-clamp-1">
+                                <h2 className="text-lg font-bold text-gray-800 dark:text-white mb-1 line-clamp-1">
                                     {note.title}
                                 </h2>
                                 <p className="text-sm text-gray-600 line-clamp-2">

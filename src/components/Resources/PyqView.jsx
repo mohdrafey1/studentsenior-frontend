@@ -285,7 +285,7 @@ function PyqView() {
             />
             {pyq ? (
                 <div>
-                    <div className="flex flex-col items-center">
+                    <div className="flex flex-col items-center px-2">
                         <h1 className="text-2xl font-bold text-gray-800">
                             {pyq.title}
                         </h1>
@@ -305,7 +305,7 @@ function PyqView() {
 
                     {/* PDF Viewer */}
                     <div className="flex justify-center w-full my-5">
-                        <div className="pdf-viewer md:w-4/5 lg:w-3/5">
+                        <div className="pdf-viewer md:w-4/5 lg:w-3/5 px-1">
                             {pdfDoc ? (
                                 <>
                                     {pyq.isPaid &&
