@@ -269,10 +269,10 @@ function SubjectNotes() {
                     <i className="fa-solid fa-plus"></i> Add Note
                 </button>
                 <Link
-                    to={`/${collegeName}/resources/${courseCode}/${branchCode}/notes/${subjectCode}`}
+                    to={`/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}`}
                     className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md shadow-md transition-transform transform hover:scale-105"
                 >
-                    View notes
+                    View PYQs
                 </Link>
                 <button
                     className="rounded-full p-3 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
@@ -333,7 +333,7 @@ function SubjectNotes() {
                     subjectNotes.map((note) => (
                         <div
                             key={note._id}
-                            className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between h-full"
+                            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between h-full"
                         >
                             {/* Note Header Section */}
                             <div className="p-4">
