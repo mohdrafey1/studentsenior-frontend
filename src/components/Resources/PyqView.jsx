@@ -242,13 +242,9 @@ function PyqView() {
             );
             const data = await response.json();
 
-            if (data.success) {
-                toast.success(data.message || 'Purchase successful');
-                setBuyNowModalOpen(false);
-                fetchpyq();
-            } else {
-                toast.error(data.message);
-            }
+            toast.success(data.message || 'Purchase successful');
+            setBuyNowModalOpen(false);
+            fetchpyq();
         } catch (error) {
             console.error('Error purchasing PYQ:', error);
             toast.error('Failed to purchase PYQ');
@@ -421,7 +417,7 @@ function PyqView() {
                                 </p>
                             )}
                             <Link
-                                to="/profile"
+                                to="/add-points"
                                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
                             >
                                 Add Points

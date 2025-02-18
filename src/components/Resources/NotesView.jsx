@@ -2,12 +2,14 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { api, API_KEY } from '../../config/apiConfiguration.js';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from '../../redux/user/userSlice.js';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 import Seo from '../SEO/Seo.jsx';
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
 import 'pdfjs-dist/legacy/web/pdf_viewer.css';
+import { fetchUserData } from '../../redux/slices/userDataSlice.js';
+import Modal from '../../utils/Dialog.jsx';
 
 // Set up PDF.js worker (adjust the path if you host it yourself)
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
@@ -81,39 +83,60 @@ function NotesView() {
     const [canDownload, setCanDownload] = useState(false);
     const [showCountdown, setShowCountdown] = useState(false);
 
+    const [isBuyNowModalOpen, setBuyNowModalOpen] = useState(false);
+    const [selectedNote, setSelectedNote] = useState(null);
+
+    const handleBuyNowClick = (note) => {
+        setSelectedNote(note);
+        setBuyNowModalOpen(true);
+    };
+
+    const handleCloseBuyNowModal = () => {
+        setBuyNowModalOpen(false);
+        setSelectedNote(null);
+    };
+
     const dispatch = useDispatch();
 
-    // Fetch the note data from your backend API.
-    useEffect(() => {
-        const fetchNote = async () => {
-            try {
-                setLoading(true);
-                const response = await fetch(`${api.subjectNotes}/${slug}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': API_KEY,
-                    },
-                    credentials: 'include',
-                });
-                const data = await response.json();
-                if (data.statusCode === 401 && data.success === false) {
-                    dispatch(signOut());
-                    toast.error('Please log in again to see the notes');
-                    throw new Error('Unauthorized');
-                }
-                if (response.ok) {
-                    setNote(data.note);
-                }
-            } catch (err) {
-                console.error(err);
-                setError('Failed to fetch note.');
-                toast.error('Failed to fetch note.');
-            } finally {
-                setLoading(false);
-            }
-        };
+    const currentUser = useSelector((state) => state.user.currentUser);
+    const ownerId = currentUser?._id;
 
+    useEffect(() => {
+        dispatch(fetchUserData());
+    }, []);
+    const { rewardBalance } = useSelector((state) => state.userData || {});
+
+    // Fetch the note data from your backend API.
+    const fetchNote = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch(`${api.subjectNotes}/${slug}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': API_KEY,
+                },
+                credentials: 'include',
+            });
+            const data = await response.json();
+            if (data.statusCode === 401 && data.success === false) {
+                dispatch(signOut());
+                toast.error('Please log in again to see the notes');
+                throw new Error('Unauthorized');
+            }
+            if (response.ok) {
+                setNote(data.note);
+            }
+        } catch (err) {
+            console.error(err);
+            setError('Failed to fetch note.');
+            toast.error('Failed to fetch note.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
         fetchNote();
     }, [slug]);
 
@@ -212,6 +235,26 @@ function NotesView() {
         }, 1000);
     };
 
+    const handleConfirmPurchase = async () => {
+        try {
+            const response = await fetch(
+                `${api.subjectNotes}/purchase/${selectedNote._id}`,
+                {
+                    method: 'POST',
+                    credentials: 'include',
+                }
+            );
+            const data = await response.json();
+
+            toast.success(data.message || 'Purchase successful');
+            setBuyNowModalOpen(false);
+            fetchNote();
+        } catch (error) {
+            console.error('Error purchasing Notes:', error);
+            toast.error('Failed to purchase Notes');
+        }
+    };
+
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-screen">
@@ -265,16 +308,51 @@ function NotesView() {
                     <div className="flex justify-center w-full my-5">
                         <div className="pdf-viewer md:w-4/5 lg:w-3/5">
                             {pdfDoc ? (
-                                Array.from({ length: pdfDoc.numPages }).map(
-                                    (_, index) => (
-                                        <LazyPDFPage
-                                            key={index}
-                                            pdf={pdfDoc}
-                                            pageNum={index + 1}
-                                            scale={1.5}
-                                        />
-                                    )
-                                )
+                                <>
+                                    {note.isPaid &&
+                                    note.owner._id !== ownerId &&
+                                    !note.purchasedBy.includes(ownerId) ? (
+                                        // If the Note is paid and user is not owner or buyer, show only the first 2 pages
+                                        <>
+                                            {Array.from({
+                                                length: Math.min(
+                                                    2,
+                                                    pdfDoc.numPages
+                                                ),
+                                            }).map((_, index) => (
+                                                <LazyPDFPage
+                                                    key={index}
+                                                    pdf={pdfDoc}
+                                                    pageNum={index + 1}
+                                                    scale={1.5}
+                                                />
+                                            ))}
+                                            <div className="text-center mt-5">
+                                                <button
+                                                    onClick={() =>
+                                                        handleBuyNowClick(note)
+                                                    }
+                                                    className="bg-sky-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105"
+                                                >
+                                                    Purchase to View All Pages (
+                                                    {note.price}P)
+                                                </button>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        // If user is the owner or has bought it, show all pages
+                                        Array.from({
+                                            length: pdfDoc.numPages,
+                                        }).map((_, index) => (
+                                            <LazyPDFPage
+                                                key={index}
+                                                pdf={pdfDoc}
+                                                pageNum={index + 1}
+                                                scale={1.5}
+                                            />
+                                        ))
+                                    )}
+                                </>
                             ) : (
                                 <p>Loading PDF...</p>
                             )}
@@ -282,34 +360,73 @@ function NotesView() {
                     </div>
 
                     {/* Download Button */}
-                    <div className="flex justify-center mb-4">
-                        <button
-                            onClick={handleDownloadClick}
-                            disabled={canDownload}
-                            className={`bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 ${
-                                canDownload ? '' : 'cursor-not-allowed'
-                            }`}
-                            title="Download Note PDF"
-                        >
-                            {canDownload ? (
-                                <a
-                                    href={signedUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Download now
-                                </a>
-                            ) : showCountdown ? (
-                                `Download ${countdown}s`
-                            ) : (
-                                'Download'
-                            )}
-                        </button>
-                    </div>
+                    {!note.isPaid && (
+                        <div className="flex justify-center mb-4">
+                            <button
+                                onClick={handleDownloadClick}
+                                disabled={canDownload}
+                                className={`bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 ${
+                                    canDownload ? '' : 'cursor-not-allowed'
+                                }`}
+                                title="Download Note PDF"
+                            >
+                                {canDownload ? (
+                                    <a
+                                        href={signedUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Download now
+                                    </a>
+                                ) : showCountdown ? (
+                                    `Download ${countdown}s`
+                                ) : (
+                                    'Download'
+                                )}
+                            </button>
+                        </div>
+                    )}
                 </div>
             ) : (
                 <p className="text-center text-gray-600">Note not found.</p>
             )}
+            <Modal
+                isOpen={isBuyNowModalOpen}
+                onClose={handleCloseBuyNowModal}
+                title="Buy this PYQ"
+            >
+                {selectedNote && (
+                    <div className="space-y-4">
+                        <h2 className="text-xl font-semibold">
+                            Available Points: {rewardBalance}
+                        </h2>
+                        <p>Price for this PYQ: {selectedNote.price} Points</p>
+
+                        <div className="flex justify-center items-end gap-4 mt-4">
+                            {rewardBalance >= selectedNote.price ? (
+                                <button
+                                    onClick={handleConfirmPurchase}
+                                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
+                                >
+                                    Confirm Purchase
+                                </button>
+                            ) : (
+                                <p className="text-red-500">
+                                    Insufficient points. You need{' '}
+                                    {selectedNote.price - rewardBalance} more
+                                    points.
+                                </p>
+                            )}
+                            <Link
+                                to="/add-points"
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+                            >
+                                Add Points
+                            </Link>
+                        </div>
+                    </div>
+                )}
+            </Modal>
         </div>
     );
 }

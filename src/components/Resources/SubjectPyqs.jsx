@@ -106,15 +106,11 @@ function SubjectPyqs() {
             );
             const data = await response.json();
 
-            if (data.success) {
-                toast.success(data.message || 'Purchase successful');
-                setBuyNowModalOpen(false);
-                navigate(
-                    `/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}/${selectedPyq.slug}`
-                );
-            } else {
-                toast.error(data.message);
-            }
+            toast.success(data.message || 'Purchase successful');
+            setBuyNowModalOpen(false);
+            navigate(
+                `/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}/${selectedPyq.slug}`
+            );
         } catch (error) {
             console.error('Error purchasing PYQ:', error);
             toast.error('Failed to purchase PYQ');
@@ -190,15 +186,10 @@ function SubjectPyqs() {
                 body: JSON.stringify(editPyqData),
             });
             const data = await response.json();
-            if (data.success) {
-                toast.success('PYQ updated successfully.');
-                setIsEditModalOpen(false);
-                dispatch(
-                    fetchSubjectPyqs({ subjectCode, branchCode, collegeId })
-                );
-            } else {
-                toast.error(data.message);
-            }
+
+            toast.success('PYQ updated successfully.');
+            setIsEditModalOpen(false);
+            dispatch(fetchSubjectPyqs({ subjectCode, branchCode, collegeId }));
         } catch (error) {
             console.error('Failed to update PYQ:', error);
             toast.error('Failed to update PYQ.');
@@ -300,7 +291,7 @@ function SubjectPyqs() {
                 </div>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 px-4 py-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:mx-40 xl:grid-cols-4 gap-6 px-4 py-6">
                 {subjectPyqs.length > 0 ? (
                     subjectPyqs.map((pyq) => (
                         <div
