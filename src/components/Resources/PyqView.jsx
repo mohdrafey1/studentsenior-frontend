@@ -1,13 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import Modal from '../../utils/Dialog.jsx';
 import { api, API_KEY } from '../../config/apiConfiguration.js';
 import { toast } from 'react-toastify';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 import Seo from '../SEO/Seo.jsx';
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
 import 'pdfjs-dist/legacy/web/pdf_viewer.css';
+import { signOut } from '../../redux/user/userSlice.js';
+import { fetchUserData } from '../../redux/slices/userDataSlice.js';
 
-// Set up PDF.js worker (adjust the path if you host it yourself)
+// Set up PDF.js worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
 // LazyPDFPage component – renders its page only when it scrolls into view.
@@ -77,33 +81,59 @@ function PyqView() {
     const [showCountdown, setShowCountdown] = useState(false);
     const [signedUrl, setSignedUrl] = useState('');
 
+    const [isBuyNowModalOpen, setBuyNowModalOpen] = useState(false);
+    const [selectedPyq, setSelectedPyq] = useState(null);
+
+    const handleBuyNowClick = (pyq) => {
+        setSelectedPyq(pyq);
+        setBuyNowModalOpen(true);
+    };
+
+    const handleCloseBuyNowModal = () => {
+        setBuyNowModalOpen(false);
+        setSelectedPyq(null);
+    };
+
+    const dispatch = useDispatch();
+    const currentUser = useSelector((state) => state.user.currentUser);
+    const ownerId = currentUser?._id;
+
+    useEffect(() => {
+        dispatch(fetchUserData());
+    }, []);
+    const { rewardBalance } = useSelector((state) => state.userData || {});
+
+    const fetchpyq = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch(`${api.newPyqs}/${slug}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': API_KEY,
+                },
+                credentials: 'include',
+            });
+            const data = await response.json();
+            if (data.statusCode === 401 && data.success === false) {
+                dispatch(signOut());
+                toast.error('Please log in again to see the notes');
+                throw new Error('Unauthorized');
+            }
+            if (response.ok) {
+                setPyq(data.pyq);
+            }
+        } catch (err) {
+            console.error(err);
+            setError(err.message || 'Failed to fetch pyq.');
+            toast.error(err.message || 'Failed to fetch pyq.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // Fetch pyq data from the backend
     useEffect(() => {
-        const fetchpyq = async () => {
-            try {
-                setLoading(true);
-                const response = await fetch(`${api.newPyqs}/${slug}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': API_KEY,
-                    },
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    setPyq(data.pyq);
-                } else {
-                    throw new Error(data.message || 'Failed to fetch pyq.');
-                }
-            } catch (err) {
-                console.error(err);
-                setError('Failed to fetch pyq.');
-                toast.error('Failed to fetch pyq.');
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchpyq();
     }, [slug]);
 
@@ -201,6 +231,30 @@ function PyqView() {
         }, 1000);
     };
 
+    const handleConfirmPurchase = async () => {
+        try {
+            const response = await fetch(
+                `${api.newPyqs}/purchase/${selectedPyq._id}`,
+                {
+                    method: 'POST',
+                    credentials: 'include',
+                }
+            );
+            const data = await response.json();
+
+            if (data.success) {
+                toast.success(data.message || 'Purchase successful');
+                setBuyNowModalOpen(false);
+                fetchpyq();
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            console.error('Error purchasing PYQ:', error);
+            toast.error('Failed to purchase PYQ');
+        }
+    };
+
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-screen">
@@ -213,7 +267,19 @@ function PyqView() {
     }
 
     if (error) {
-        return <p className="text-center text-red-500">{error}</p>;
+        return (
+            <div className="h-screen flex justify-center items-center">
+                <div>
+                    <p className="text-center text-red-500 mb-4">{error}</p>
+                    <Link
+                        to={`/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}`}
+                        className="bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600"
+                    >
+                        See Other Pyq
+                    </Link>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -245,16 +311,51 @@ function PyqView() {
                     <div className="flex justify-center w-full my-5">
                         <div className="pdf-viewer md:w-4/5 lg:w-3/5">
                             {pdfDoc ? (
-                                Array.from({ length: pdfDoc.numPages }).map(
-                                    (_, index) => (
-                                        <LazyPDFPage
-                                            key={index}
-                                            pdf={pdfDoc}
-                                            pageNum={index + 1}
-                                            scale={1.5}
-                                        />
-                                    )
-                                )
+                                <>
+                                    {pyq.isPaid &&
+                                    pyq.owner._id !== ownerId &&
+                                    !pyq.purchasedBy.includes(ownerId) ? (
+                                        // If the PYQ is paid and user is not owner or buyer, show only the first 2 pages
+                                        <>
+                                            {Array.from({
+                                                length: Math.min(
+                                                    2,
+                                                    pdfDoc.numPages
+                                                ),
+                                            }).map((_, index) => (
+                                                <LazyPDFPage
+                                                    key={index}
+                                                    pdf={pdfDoc}
+                                                    pageNum={index + 1}
+                                                    scale={1.5}
+                                                />
+                                            ))}
+                                            <div className="text-center mt-5">
+                                                <button
+                                                    onClick={() =>
+                                                        handleBuyNowClick(pyq)
+                                                    }
+                                                    className="bg-sky-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105"
+                                                >
+                                                    Purchase to View All Pages (
+                                                    {pyq.price}P)
+                                                </button>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        // If user is the owner or has bought it, show all pages
+                                        Array.from({
+                                            length: pdfDoc.numPages,
+                                        }).map((_, index) => (
+                                            <LazyPDFPage
+                                                key={index}
+                                                pdf={pdfDoc}
+                                                pageNum={index + 1}
+                                                scale={1.5}
+                                            />
+                                        ))
+                                    )}
+                                </>
                             ) : (
                                 <p>Loading PDF...</p>
                             )}
@@ -291,6 +392,44 @@ function PyqView() {
             ) : (
                 <p className="text-center text-gray-600">pyq not found.</p>
             )}
+
+            <Modal
+                isOpen={isBuyNowModalOpen}
+                onClose={handleCloseBuyNowModal}
+                title="Buy this PYQ"
+            >
+                {selectedPyq && (
+                    <div className="space-y-4">
+                        <h2 className="text-xl font-semibold">
+                            Available Points: {rewardBalance}
+                        </h2>
+                        <p>Price for this PYQ: {selectedPyq.price} Points</p>
+
+                        <div className="flex justify-center items-end gap-4 mt-4">
+                            {rewardBalance >= selectedPyq.price ? (
+                                <button
+                                    onClick={handleConfirmPurchase}
+                                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
+                                >
+                                    Confirm Purchase
+                                </button>
+                            ) : (
+                                <p className="text-red-500">
+                                    Insufficient points. You need{' '}
+                                    {selectedPyq.price - rewardBalance} more
+                                    points.
+                                </p>
+                            )}
+                            <Link
+                                to="/profile"
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+                            >
+                                Add Points
+                            </Link>
+                        </div>
+                    </div>
+                )}
+            </Modal>
         </div>
     );
 }

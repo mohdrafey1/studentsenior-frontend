@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchBranches } from '../../redux/slices/branchSlice.js';
-import { fetchCourses } from '../../redux/slices/courseSlice.js';
 import { capitalizeWords } from '../../utils/Capitalize.js';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 import Seo from '../SEO/Seo.jsx';
@@ -38,7 +37,19 @@ const Branches = () => {
     }
 
     if (error) {
-        return <p className="text-center text-red-500">Error: {error}</p>;
+        return (
+            <div className="h-screen flex justify-center items-center">
+                <div>
+                    <p className="text-center text-red-500 mb-4">{error}</p>
+                    <Link
+                        to={`/${collegeName}/resources/${courseCode}`}
+                        className="bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600"
+                    >
+                        See Other Course
+                    </Link>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -46,8 +57,11 @@ const Branches = () => {
             <DetailPageNavbar path={`college/${collegeName}/resource`} />
             <h1 className="sm:text-2xl font-bold text-center mb-2">
                 {capitalizeWords(collegeName)}: {courseCode.toUpperCase()}
-                <Seo title={`${capitalizeWords(collegeName)} : ${courseCode.toUpperCase()}`} />
-        
+                <Seo
+                    title={`${capitalizeWords(
+                        collegeName
+                    )} : ${courseCode.toUpperCase()}`}
+                />
             </h1>
             {/* Search Input */}
             <div className="mb-2 flex justify-center">
@@ -83,12 +97,16 @@ const Branches = () => {
                                 <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
                                     <Link
                                         to={`${branch.branchCode.toLowerCase()}?semester=1`}
-                                    >{branch.branchName}</Link>
+                                    >
+                                        {branch.branchName}
+                                    </Link>
                                 </td>
                                 <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
-                                <Link
+                                    <Link
                                         to={`${branch.branchCode.toLowerCase()}?semester=1`}
-                                    >{branch.branchCode || 'N/A'}</Link>
+                                    >
+                                        {branch.branchCode || 'N/A'}
+                                    </Link>
                                 </td>
                                 <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
                                     {branch.totalNotes || 0} /{' '}

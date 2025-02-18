@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { api, API_KEY } from '../../config/apiConfiguration.js';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { signOut } from '../../redux/user/userSlice.js';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 import Seo from '../SEO/Seo.jsx';
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
@@ -79,6 +81,8 @@ function NotesView() {
     const [canDownload, setCanDownload] = useState(false);
     const [showCountdown, setShowCountdown] = useState(false);
 
+    const dispatch = useDispatch();
+
     // Fetch the note data from your backend API.
     useEffect(() => {
         const fetchNote = async () => {
@@ -90,12 +94,16 @@ function NotesView() {
                         'Content-Type': 'application/json',
                         'x-api-key': API_KEY,
                     },
+                    credentials: 'include',
                 });
                 const data = await response.json();
+                if (data.statusCode === 401 && data.success === false) {
+                    dispatch(signOut());
+                    toast.error('Please log in again to see the notes');
+                    throw new Error('Unauthorized');
+                }
                 if (response.ok) {
                     setNote(data.note);
-                } else {
-                    throw new Error(data.message || 'Failed to fetch note.');
                 }
             } catch (err) {
                 console.error(err);
@@ -218,7 +226,19 @@ function NotesView() {
     }
 
     if (error) {
-        return <p className="text-center text-red-500">{error}</p>;
+        return (
+            <div className="h-screen flex justify-center items-center">
+                <div>
+                    <p className="text-center text-red-500 mb-4">{error}</p>
+                    <Link
+                        to={`/${collegeName}/resources/${courseCode}/${branchCode}/notes/${subjectCode}`}
+                        className="bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600"
+                    >
+                        See Other Notes
+                    </Link>
+                </div>
+            </div>
+        );
     }
 
     return (
