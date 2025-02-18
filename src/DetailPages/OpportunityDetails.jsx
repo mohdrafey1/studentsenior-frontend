@@ -8,12 +8,15 @@ import Seo from '../components/SEO/Seo.jsx';
 const OpportunityDetails = () => {
     const { collegeName, slug } = useParams();
     const collegeId = useCollegeId(collegeName);
-    const [opportunity, setOpportunity] = useState();
-    const [similarOpportunity, setSimilarOpportunity] = useState();
+    const [opportunity, setOpportunity] = useState(null);
+    const [similarOpportunities, setSimilarOpportunities] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        const getDetails = async () => {
+        const fetchOpportunityDetails = async () => {
+            if (!collegeId) return;
+
             try {
                 const response = await fetch(
                     `${api.giveOpportunity}/college/${collegeId}`,
@@ -25,118 +28,147 @@ const OpportunityDetails = () => {
                         },
                     }
                 );
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+
                 const data = await response.json();
                 if (data.success === false) {
                     throw new Error(data.message);
                 }
-                return data;
+
+                const filteredOpportunity = data.filter(
+                    (item) => item.slug === slug
+                );
+                setOpportunity(filteredOpportunity[0]);
+                setSimilarOpportunities(data);
             } catch (error) {
                 console.error('Error fetching data:', error);
+                setError(error.message);
+            } finally {
+                setLoading(false);
             }
         };
 
-        const fetchData = async () => {
-            setLoading(true);
-            const data = await getDetails();
-            const filter = data.filter((item) => item.slug === slug);
-            setOpportunity(filter);
-            setSimilarOpportunity(data);
-            setLoading(false);
-        };
-
-        if (collegeId) {
-            fetchData();
-        }
+        fetchOpportunityDetails();
     }, [collegeId, slug]);
 
     if (loading) {
         return (
-            <div className="bg-gray-100 py-16 px-8 md:px-">
+            <div className="bg-gray-100 py-16 px-8 md:px-32 min-h-screen">
+                <DetailPageNavbar />
                 <div className="flex flex-col md:flex-row gap-16">
-                    <div id="forDetails" className="space-y-8 w-full md:w-3/4 animate-pulse">
+                    {/* Skeleton Loader for Details */}
+                    <div className="space-y-8 w-full md:w-3/4">
                         <div className="animate-pulse bg-gradient-to-r from-gray-200 to-gray-100 p-8 rounded-2xl shadow-lg space-y-6 h-40" />
                         <div className="animate-pulse bg-gradient-to-r from-gray-200 to-gray-100 p-8 rounded-2xl shadow-lg space-y-6 h-40" />
                     </div>
-                    <div id="forSimilar" className="w-full md:w-1/3 space-y-6">
+                    {/* Skeleton Loader for Similar Opportunities */}
+                    <div className="w-full md:w-1/3 space-y-6">
                         <div className="animate-pulse bg-gradient-to-r from-gray-200 to-gray-100 p-6 rounded-lg shadow-md h-24" />
                         <div className="animate-pulse bg-gradient-to-r from-gray-200 to-gray-100 p-6 rounded-lg shadow-md h-24" />
                     </div>
                 </div>
             </div>
-
         );
     }
-    return (<div>
-        <DetailPageNavbar />
-        <div className="bg-gray-100 py-16 px-8 md:px-32 min-h-screen">
-            <div className="flex flex-col md:flex-row gap-16">
-                <div id="forDetails" className="space-y-8 w-full md:w-3/4">
-                    {opportunity && opportunity.length > 0 ? (
-                        opportunity.map((item) => (
 
-                            <div
-                                key={item.id}
-                                className="bg-white p-8 rounded-2xl shadow-lg space-y-6"
-                            >
-                                <Seo title={item.name} description={item.description.slice(0, 100)} />
-
-                                <h1 className="font-semibold text-3xl text-blue-600">
-                                    {item.name}
-                                </h1>
-
-                                <p className="text-gray-600 text-sm">Posted by: {item.owner.username}</p>
-
-                                <hr className="my-4 border-t border-gray-300" />
-
-                                <div className="space-y-4">
-                                    <p className="font-semibold text-xl text-gray-700">Job Description</p>
-                                    <p className="text-gray-600">{item.description}</p>
-                                </div>
-                                <div className='flex gap-3'>
-                                    <a href={`https://api.whatsapp.com/send?phone=${item.whatsapp}`} target="_blank" rel="noreferrer">
-                                        <button className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg">
-                                            Contact Us
-                                        </button>
-                                    </a>
-
-                                    <a href={`mailto:${item.email}`} target="_blank" rel="noreferrer">
-                                        <button className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg">
-                                            Email Us
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        null)}
+    if (error) {
+        return (
+            <div className="bg-gray-100 py-16 px-8 md:px-32 min-h-screen">
+                <DetailPageNavbar />
+                <div className="text-center text-red-500">
+                    <p>Error: {error}</p>
                 </div>
+            </div>
+        );
+    }
 
-                <div id="forSimilar" className="w-full md:w-1/3 space-y-6">
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-6">Similar Opportunities</h2>
+    if (!opportunity) {
+        return (
+            <div className="bg-gray-100 py-16 px-8 md:px-32 min-h-screen">
+                <div className="text-center text-gray-600">
+                    <p>No opportunity found.</p>
+                </div>
+            </div>
+        );
+    }
 
-                    {similarOpportunity && similarOpportunity.length > 0 ? (
-                        similarOpportunity.slice(0, 3).map((item) => (
-                            <Link to={`../college/${collegeName}/opportunities/${item.slug}`}
-                                className='p-6'
-                            >
-                                <div
-                                    key={item.id}
-                                    className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow"
+    return (
+        <div>
+            <DetailPageNavbar />
+            <Seo
+                title={opportunity.name}
+                description={opportunity.description.slice(0, 100)}
+            />
+            <div className="bg-gray-100 py-16 px-8 md:px-32 min-h-screen">
+                <div className="flex flex-col md:flex-row gap-16">
+                    {/* Opportunity Details */}
+                    <div className="space-y-8 w-full md:w-3/4">
+                        <div className="bg-white p-8 rounded-2xl shadow-lg space-y-6">
+                            <h1 className="font-semibold text-3xl text-blue-600">
+                                {opportunity.name}
+                            </h1>
+                            <p className="text-gray-600 text-sm">
+                                Posted by: {opportunity.owner.username}
+                            </p>
+                            <hr className="my-4 border-t border-gray-300" />
+                            <div className="space-y-4">
+                                <p className="font-semibold text-xl text-gray-700">
+                                    Job Description
+                                </p>
+                                <p className="text-gray-600">
+                                    {opportunity.description}
+                                </p>
+                            </div>
+                            <div className="flex gap-3">
+                                <a
+                                    href={`https://api.whatsapp.com/send?phone=${opportunity.whatsapp}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg"
                                 >
-                                    <h3 className="font-medium text-lg text-gray-800 line-clamp-2">{item.name}</h3>
-                                    <p className="text-sm text-gray-500 mt-2 line-clamp-2">{item.description}</p>
-                                    <Link to={`../college/${collegeName}/opportunities/${item.slug}`}
-                                        className="py-4 text-sky-500 rounded-lg w-fit"
-                                    >View Details</Link>
+                                    Contact Us
+                                </a>
+                                <a
+                                    href={`mailto:${opportunity.email}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg"
+                                >
+                                    Email Us
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Similar Opportunities */}
+                    <div className="w-full md:w-1/3 space-y-6">
+                        <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+                            Similar Opportunities
+                        </h2>
+                        {similarOpportunities.slice(0, 3).map((item) => (
+                            <Link
+                                key={item._id}
+                                to={`../college/${collegeName}/opportunities/${item.slug}`}
+                                className="block p-6 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow"
+                            >
+                                <h3 className="font-medium text-lg text-gray-800 line-clamp-2">
+                                    {item.name}
+                                </h3>
+                                <p className="text-sm text-gray-500 mt-2 line-clamp-2">
+                                    {item.description}
+                                </p>
+                                <div className="mt-4 text-sky-500">
+                                    View Details
                                 </div>
                             </Link>
-                        ))
-                    ) : (
-                        null)}
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     );
 };
 
