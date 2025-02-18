@@ -38,16 +38,16 @@ const PYQPage = () => {
     ];
     const branches = selectedCourse
         ? [
-            ...new Set(
-                pyqs
-                    .filter(
-                        (paper) =>
-                            paper.subject.branch?.course?.courseName ===
-                            selectedCourse
-                    )
-                    .map((paper) => paper.subject?.branch?.branchName)
-            ),
-        ]
+              ...new Set(
+                  pyqs
+                      .filter(
+                          (paper) =>
+                              paper.subject.branch?.course?.courseName ===
+                              selectedCourse
+                      )
+                      .map((paper) => paper.subject?.branch?.branchName)
+              ),
+          ]
         : [];
     const examTypes = [...new Set(pyqs.map((paper) => paper.examType))];
 
@@ -67,8 +67,8 @@ const PYQPage = () => {
             (selectedExamType ? paper.examType === selectedExamType : true) &&
             (searchTerm
                 ? paper.subject.subjectName
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase())
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase())
                 : true)
         );
     });
@@ -93,7 +93,10 @@ const PYQPage = () => {
                     <span>( </span>
                     {capitalizeWords(collegeName)} <span>)</span>
                 </h1>
-                <Seo title={`${capitalizeWords(collegeName)} - PYQ`} desc='Access past year question papers, understand trends, improve strategies, and ace exams confidently with a well-organized, easy-to-use database for students.' />
+                <Seo
+                    title={`${capitalizeWords(collegeName)} - PYQ`}
+                    desc="Access past year question papers, understand trends, improve strategies, and ace exams confidently with a well-organized, easy-to-use database for students."
+                />
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 sm:justify-center gap-2 sm:gap-4 mb-4">
                     <input
@@ -171,7 +174,7 @@ const PYQPage = () => {
                 </div>
 
                 {currentPapers.length > 0 ? (
-                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3  gap-2 lg:gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-2 lg:gap-6">
                         <PyqCard Pyqs={currentPapers} />
                     </div>
                 ) : (

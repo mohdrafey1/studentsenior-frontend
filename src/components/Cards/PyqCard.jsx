@@ -72,7 +72,7 @@ function PyqCard({ Pyqs = [] }) {
                             </p>
                         </div>
 
-                        <div className="mt-6 flex justify-center">
+                        <div className="flex justify-center">
                             {isAuthenticated ? (
                                 <Link
                                     to={pyqUrl}
