@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { api } from '../../config/apiConfiguration';
+import useApiRequest from '../../hooks/useApiRequest';
 
 const AddPointsPage = () => {
     const [points, setPoints] = useState('');
     const [rupees, setRupees] = useState('');
-    const [transactionId, setTransactionId] = useState('');
     const [qrCodeUrl, setQrCodeUrl] = useState('');
     const [copySuccess, setCopySuccess] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -40,38 +40,26 @@ const AddPointsPage = () => {
         setTimeout(() => setCopySuccess(false), 2000);
     };
 
+    const { apiRequest } = useApiRequest();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = {
             points,
             rupees,
-            transactionId,
         };
 
         setLoading(true);
 
         try {
-            const response = await fetch(`${api.addPoints}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                body: JSON.stringify(data),
-            });
+            const response = await apiRequest(`${api.addPoints}`, 'POST', data);
 
-            if (response.ok) {
-                const responseData = await response.json();
-                toast.success(
-                    responseData.message ||
-                        'Points added and will be reflected within 4 hours'
-                );
-                setPoints('');
-                setRupees('');
-                setTransactionId('');
-            } else {
-                toast.error('Failed to add points.');
-            }
+            toast.success(
+                response.message ||
+                    'Points added and will be reflected within 4 hours'
+            );
+            setPoints('');
+            setRupees('');
         } catch (error) {
             console.error('Error:', error);
             toast.error('An error occurred. Please try again.');
@@ -105,15 +93,6 @@ const AddPointsPage = () => {
                         onChange={(e) => setRupees(e.target.value)}
                         readOnly
                         className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100"
-                    />
-
-                    <input
-                        type="text"
-                        placeholder="Transaction ID"
-                        value={transactionId}
-                        onChange={(e) => setTransactionId(e.target.value)}
-                        required
-                        className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
 
                     <button

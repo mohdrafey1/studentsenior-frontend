@@ -125,9 +125,9 @@ export default function ProfileDetails({ data }) {
                                                     : null
                                             }
                                             alt={
-                                                item.resourceType
-                                                    ? item.resourceType
-                                                    : item.type
+                                                item.type
+                                                    ? item.type
+                                                    : item.resourceType
                                             }
                                             className="h-full w-full object-cover p-1 rounded-full"
                                         />
@@ -135,9 +135,7 @@ export default function ProfileDetails({ data }) {
                                     <div className="ml-4 flex justify-between w-full">
                                         <div>
                                             <p className="font-semibold text-base text-gray-800 capitalize">
-                                                {item.resourceType
-                                                    ? item.resourceType
-                                                    : item.type}
+                                                {item.type}
                                             </p>
                                             <p className="text-xs text-gray-500">
                                                 {new Date(
@@ -169,6 +167,10 @@ export default function ProfileDetails({ data }) {
                                                     : item.type === 'bonus'
                                                     ? '-'
                                                     : item.type === 'add-point'
+                                                    ? '+'
+                                                    : item.type === 'pyq-sale'
+                                                    ? '+'
+                                                    : item.type === 'note-sale'
                                                     ? '+'
                                                     : '-'}
                                                 {item.points}
