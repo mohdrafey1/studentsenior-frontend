@@ -10,7 +10,6 @@ import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
 import 'pdfjs-dist/legacy/web/pdf_viewer.css';
 import { fetchUserData } from '../../redux/slices/userDataSlice.js';
 import Modal from '../../utils/Dialog.jsx';
-import '../../App.css';
 
 // Set up PDF.js worker (adjust the path if you host it yourself)
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
@@ -327,8 +326,6 @@ function NotesView() {
 
     return (
         <div className="container mx-auto sm:px-2 min-h-screen">
-            <div className="screenshot-prevention"></div>
-
             <DetailPageNavbar
                 path={`${collegeName}/resources/${courseCode}/${branchCode}/notes/${subjectCode}`}
             />

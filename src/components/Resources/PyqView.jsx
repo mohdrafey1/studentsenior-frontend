@@ -10,7 +10,6 @@ import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
 import 'pdfjs-dist/legacy/web/pdf_viewer.css';
 import { signOut } from '../../redux/user/userSlice.js';
 import { fetchUserData } from '../../redux/slices/userDataSlice.js';
-import '../../App.css';
 
 // Set up PDF.js worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
@@ -196,7 +195,7 @@ function PyqView() {
 
                     const data = await response.json();
                     if (response.ok) {
-                        setSignedUrl(data.signedUrl); // Store Signed URL for download
+                        setSignedUrl(data.signedUrl);
                     } else {
                         throw new Error(
                             data.message ||
@@ -320,8 +319,6 @@ function PyqView() {
 
     return (
         <div className="container mx-auto sm:px-4 min-h-screen">
-            <div className="screenshot-prevention"></div>
-
             <DetailPageNavbar
                 path={`${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}`}
             />
