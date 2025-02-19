@@ -7,8 +7,7 @@ import DetailPageNavbar from './DetailPageNavbar';
 import ProductsCard from '../components/Cards/ProductsCard';
 import { useCollegeId } from '../hooks/useCollegeId';
 import Seo from '../components/SEO/Seo';
-import { capitalizeWords } from '../utils/Capitalize.js';
-
+import { capitalizeWords } from '../utils/Capitalize';
 
 function ProductDetail() {
     const { collegeName, slug } = useParams();
@@ -46,6 +45,44 @@ function ProductDetail() {
         fetchSuggestedProduct();
     }, [slug]);
 
+    const renderSocialLinks = (product) => {
+        const socialLinks = [];
+
+        if (product.whatsapp) {
+            socialLinks.push(
+                <a
+                    key="whatsapp"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`https://wa.me/${product.whatsapp}`}
+                    aria-label="WhatsApp"
+                    className="text-green-600 hover:text-green-500 transition text-3xl"
+                >
+                    <i className="fa-brands fa-whatsapp"></i>
+                </a>
+            );
+        }
+
+        if (product.telegram) {
+            socialLinks.push(
+                <a
+                    key="telegram"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`https://t.me/+91${product.telegram}`}
+                    aria-label="Telegram"
+                    className="text-blue-600 hover:text-blue-500 transition text-3xl"
+                >
+                    <i className="fa-brands fa-telegram"></i>
+                </a>
+            );
+        }
+
+        return socialLinks.length > 0 ? (
+            <div className="flex items-center gap-4 mt-6">{socialLinks}</div>
+        ) : null;
+    };
+
     if (loadingFetch) {
         return (
             <div className="flex justify-center items-center min-h-screen">
@@ -72,9 +109,14 @@ function ProductDetail() {
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full relative">
+            <Seo
+                title={`${product.name} - ${capitalizeWords(collegeName)}`}
+                description={product.description}
+            />
             <DetailPageNavbar path={`college/${collegeName}/store`} />
 
             <div className="grid gap-6 lg:grid-cols-8 sm:grid-cols-2 mt-6 lg:h-screen">
+                {/* Product Image Section */}
                 <div className="p-4 rounded-lg shadow-lg lg:col-span-3 flex justify-center items-center">
                     <div className="rounded-xl">
                         <img
@@ -85,41 +127,17 @@ function ProductDetail() {
                     </div>
                 </div>
 
-                <div className=" p-6 rounded-lg shadow-lg lg:col-span-3 flex flex-col">
-                    <div>
-                        <h1 className="text-3xl font-bold mb-2">
-                            {product.name}
-                        </h1>
-                        <p className="text-2xl text-gray-800 mb-4">
-                            ₹{product.price}
-                        </p>
-                        <p className="text-gray-700 mb-4">
-                            {product.description}
-                        </p>
-                    </div>
-                    <Seo title={`${product.name} - ${capitalizeWords(collegeName)}`} description={product.description} />
-                    <div className="flex items-center gap-4 mt-6">
-                        <a
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href={`https://wa.me/${product.whatsapp}`}
-                            aria-label="WhatsApp"
-                            className="text-green-600 hover:text-green-500 transition text-3xl"
-                        >
-                            <i className="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <a
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href={`https://t.me/+91${product.telegram}`}
-                            aria-label="Telegram"
-                            className="text-blue-600 hover:text-blue-500 transition text-3xl"
-                        >
-                            <i className="fa-brands fa-telegram"></i>
-                        </a>
-                    </div>
+                {/* Product Details Section */}
+                <div className="p-6 rounded-lg shadow-lg lg:col-span-3 flex flex-col">
+                    <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+                    <p className="text-2xl text-gray-800 mb-4">
+                        ₹{product.price}
+                    </p>
+                    <p className="text-gray-700 mb-4">{product.description}</p>
+                    {renderSocialLinks(product)}
                 </div>
 
+                {/* Suggested Products Section */}
                 <div className="p-4 rounded-lg shadow-lg sm:col-span-5 lg:col-span-2 overflow-y-auto">
                     <h2 className="text-center text-xl font-bold mb-2">
                         Suggested Products
