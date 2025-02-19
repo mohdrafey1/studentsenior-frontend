@@ -274,3 +274,22 @@ body {
         width: calc(99%);
     }
 }
+
+
+.screenshot-prevention {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0);
+    z-index: 9999;
+    pointer-events: none;
+}
+
+/* Add this to your global CSS file */
+@media print {
+    body {
+        display: none !important;
+    }
+}

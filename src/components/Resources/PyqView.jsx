@@ -10,6 +10,7 @@ import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
 import 'pdfjs-dist/legacy/web/pdf_viewer.css';
 import { signOut } from '../../redux/user/userSlice.js';
 import { fetchUserData } from '../../redux/slices/userDataSlice.js';
+import '../../App.css';
 
 // Set up PDF.js worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
@@ -251,6 +252,45 @@ function PyqView() {
         }
     };
 
+    useEffect(() => {
+        const handleContextMenu = (e) => e.preventDefault();
+        const handleKeyDown = (e) => {
+            if (
+                e.ctrlKey &&
+                (e.key === 'p' || e.key === 's' || e.key === 'u')
+            ) {
+                e.preventDefault();
+            }
+        };
+
+        document.addEventListener('contextmenu', handleContextMenu);
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('contextmenu', handleContextMenu);
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+
+    useEffect(() => {
+        const blockDevTools = (e) => {
+            if (
+                e.keyCode === 123 || // F12
+                (e.ctrlKey &&
+                    e.shiftKey &&
+                    (e.key === 'I' || e.key === 'J' || e.key === 'C')) || // Ctrl+Shift+I/J/C
+                (e.metaKey && e.altKey && (e.key === 'I' || e.key === 'J')) // Cmd+Option+I/J (Mac)
+            ) {
+                e.preventDefault();
+            }
+        };
+
+        document.addEventListener('keydown', blockDevTools);
+        return () => {
+            document.removeEventListener('keydown', blockDevTools);
+        };
+    }, []);
+
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-screen">
@@ -280,6 +320,8 @@ function PyqView() {
 
     return (
         <div className="container mx-auto sm:px-4 min-h-screen">
+            <div className="screenshot-prevention"></div>
+
             <DetailPageNavbar
                 path={`${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}`}
             />
