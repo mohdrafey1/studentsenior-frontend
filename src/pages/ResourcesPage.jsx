@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import CollegeLinks from '../components/Links/CollegeLinks';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCourses } from '../redux/slices/courseSlice';
-import Collegelink2 from '../components/Links/CollegeLink2.jsx';
-import { capitalizeWords } from '../utils/Capitalize.js';
-import Seo from '../components/SEO/Seo.jsx';
+import CollegeLinks from '../components/Links/CollegeLinks';
+import Collegelink2 from '../components/Links/CollegeLink2';
+import { capitalizeWords } from '../utils/Capitalize';
+import Seo from '../components/SEO/Seo';
 
 const ResourcesPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -20,7 +20,7 @@ const ResourcesPage = () => {
 
     useEffect(() => {
         dispatch(fetchCourses());
-    }, [collegeName]);
+    }, [collegeName, dispatch]);
 
     const filteredCourses = courses.filter((course) => {
         const courseNameMatch = course.courseName
@@ -38,9 +38,10 @@ const ResourcesPage = () => {
             <div className="max-w-7xl mx-auto px-5 min-h-full">
                 <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
                     Resources - {capitalizeWords(collegeName)}
-                    <Seo title={`Resources - ${capitalizeWords(collegeName)}`} desc=' "Get concise and clear notes to boost your exam
-                    preparation."' />
-
+                    <Seo
+                        title={`Resources - ${capitalizeWords(collegeName)}`}
+                        desc="Get concise and clear notes to boost your exam preparation."
+                    />
                 </h1>
                 <p className="italic text-center text-xs sm:text-base">
                     "Get concise and clear notes to boost your exam
@@ -79,7 +80,7 @@ const ResourcesPage = () => {
                                             Subject Code
                                         </th>
                                         <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
-                                            Total Notes / Pyqs
+                                            Total Notes / PYQs
                                         </th>
                                         <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
                                             Actions
@@ -88,7 +89,6 @@ const ResourcesPage = () => {
                                 </thead>
                                 <tbody>
                                     {filteredCourses.map((course, index) => (
-
                                         <tr
                                             key={course._id}
                                             className={
@@ -100,12 +100,16 @@ const ResourcesPage = () => {
                                             <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
                                                 <Link
                                                     to={`/${collegeName}/resources/${course.courseCode.toLowerCase()}`}
-                                                >{course.courseName}</Link>
+                                                >
+                                                    {course.courseName}
+                                                </Link>
                                             </td>
                                             <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
                                                 <Link
                                                     to={`/${collegeName}/resources/${course.courseCode.toLowerCase()}`}
-                                                >{course.courseCode}</Link>
+                                                >
+                                                    {course.courseCode}
+                                                </Link>
                                             </td>
                                             <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
                                                 {course.totalNotes || 0} /{' '}
@@ -136,29 +140,6 @@ const ResourcesPage = () => {
                     </div>
                 )}
             </div>
-
-            {/* <div className="lg:flex w-full justify-center gap-5">
-                <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
-                    <img
-                        src={pyq}
-                        alt="Buy solved question paper"
-                        className="w-36 mx-auto"
-                    />
-                    <p className="mb-4">
-                        Get solved questions for just ₹29. <br />
-                        <a className="text-sm text-gray-500">
-                            Terms and conditions apply.
-                        </a>
-                    </p>
-                    <a
-                        target="_blank"
-                        href="https://forms.gle/NwFvj1Jz5gxvmHfdA"
-                        className="inline-block px-6 py-3 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors duration-200"
-                    >
-                        Buy Solved Question Paper
-                    </a>
-                </div>
-            </div> */}
 
             <Collegelink2 />
         </div>

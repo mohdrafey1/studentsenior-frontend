@@ -82,6 +82,7 @@ function NotesView() {
     const [countdown, setCountdown] = useState(45);
     const [canDownload, setCanDownload] = useState(false);
     const [showCountdown, setShowCountdown] = useState(false);
+    const [signedUrl, setSignedUrl] = useState(null);
 
     const [isBuyNowModalOpen, setBuyNowModalOpen] = useState(false);
     const [selectedNote, setSelectedNote] = useState(null);
@@ -220,6 +221,7 @@ function NotesView() {
 
     // Download countdown logic.
     const handleDownloadClick = () => {
+        if (showCountdown) return;
         setCanDownload(false);
         setShowCountdown(true);
         let timer = countdown;
@@ -230,7 +232,6 @@ function NotesView() {
                 clearInterval(interval);
                 setCanDownload(true);
                 setShowCountdown(false);
-                setCountdown(45); // Reset countdown for next use.
             }
         }, 1000);
     };
@@ -254,6 +255,45 @@ function NotesView() {
             toast.error('Failed to purchase Notes');
         }
     };
+
+    useEffect(() => {
+        const handleContextMenu = (e) => e.preventDefault();
+        const handleKeyDown = (e) => {
+            if (
+                e.ctrlKey &&
+                (e.key === 'p' || e.key === 's' || e.key === 'u')
+            ) {
+                e.preventDefault();
+            }
+        };
+
+        document.addEventListener('contextmenu', handleContextMenu);
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('contextmenu', handleContextMenu);
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+
+    useEffect(() => {
+        const blockDevTools = (e) => {
+            if (
+                e.keyCode === 123 || // F12
+                (e.ctrlKey &&
+                    e.shiftKey &&
+                    (e.key === 'I' || e.key === 'J' || e.key === 'C')) || // Ctrl+Shift+I/J/C
+                (e.metaKey && e.altKey && (e.key === 'I' || e.key === 'J')) // Cmd+Option+I/J (Mac)
+            ) {
+                e.preventDefault();
+            }
+        };
+
+        document.addEventListener('keydown', blockDevTools);
+        return () => {
+            document.removeEventListener('keydown', blockDevTools);
+        };
+    }, []);
 
     if (loading) {
         return (

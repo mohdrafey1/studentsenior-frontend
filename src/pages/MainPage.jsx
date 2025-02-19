@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Hero from '../components/Hero/Hero';
 import OurFeatures from '../components/OurFeatures/OurFeatures';
-import About from '../components/About/About';
 import '../App.css';
 import QuickLinks from '../components/Links/QuickLinks';
 import { toast } from 'react-toastify';
@@ -83,8 +82,7 @@ const MainPage = () => {
             </Hero>
             <QuickLinks />
             <OurFeatures />
-            {/* <Testimonials /> */}
-            <About />
+
             <FAQPage />
         </div>
     );
