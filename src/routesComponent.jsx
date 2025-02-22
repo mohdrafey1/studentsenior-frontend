@@ -39,12 +39,7 @@ import AddPointsPage from './components/AddPoints/AddPointsPage';
 import RefundPolicy from './others/RefundPolicy';
 import TermsAndConditions from './others/TermsAndConditions';
 
-const validColleges = [
-    'integral-university',
-    'mpec-kanpur',
-    'gcet-noida',
-    'kmc-university',
-];
+const validColleges = ['integral-university', 'mpec-kanpur'];
 
 const ValidateCollegeRoute = ({ children }) => {
     const { collegeName } = useParams();
