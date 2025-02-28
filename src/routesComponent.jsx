@@ -41,6 +41,7 @@ import TermsAndConditions from './others/TermsAndConditions';
 import LeaderBoardPage from './pages/LeaderBoardPage';
 import LostFoundPage from './pages/LostFoundPage';
 import NotesPage from './pages/NotesPage';
+import LostFoundItemDetail from './DetailPages/LostFoundItemDetail';
 
 const validColleges = ['integral-university', 'mpec-kanpur'];
 
@@ -207,6 +208,15 @@ const RoutesComponent = () => {
                 element={
                     <ValidateCollegeRoute>
                         <LostFoundPage />
+                    </ValidateCollegeRoute>
+                }
+            />
+
+            <Route
+                path="/college/:collegeName/lost-found/:slug"
+                element={
+                    <ValidateCollegeRoute>
+                        <LostFoundItemDetail />
                     </ValidateCollegeRoute>
                 }
             />

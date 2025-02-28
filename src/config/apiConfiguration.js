@@ -53,4 +53,6 @@ export const api = {
     getSignedUrl: `${API_BASE_URL}/api/get-signed-url`,
 
     leaderboard: `${API_BASE_URL}/api/user/leaderboard`,
+
+    lostfound: `${API_BASE_URL}/api/lostfound`,
 };
