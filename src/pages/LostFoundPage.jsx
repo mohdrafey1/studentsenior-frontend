@@ -14,6 +14,9 @@ import { API_KEY } from '../config/apiConfiguration';
 import { capitalizeWords } from '../utils/Capitalize';
 
 const LostFoundItem = ({ item, imageUrl }) => {
+    const handleWhatsAppClick = (e) => {
+        e.stopPropagation();
+    };
     return (
         <Link
             to={`${item.slug}`}
@@ -74,6 +77,7 @@ const LostFoundItem = ({ item, imageUrl }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-4 inline-flex items-center justify-center px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors duration-300"
+                    onClick={handleWhatsAppClick}
                 >
                     Contact on WhatsApp
                 </a>
