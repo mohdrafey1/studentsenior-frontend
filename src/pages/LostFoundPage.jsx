@@ -150,7 +150,7 @@ const LostFoundPage = () => {
     }, [lostfound, imageUrls, fetchSignedImageUrl]);
 
     return (
-        <div className="container bg-gradient-to-t from-sky-200 to-white min-h-screen w-full">
+        <div className=" mx-auto bg-gradient-to-t from-sky-200 to-white min-h-screen w-full">
             <CollegeLinks />
             <div className="max-w-7xl mx-auto p-4 text-center">
                 <div>
