@@ -184,31 +184,32 @@ const LostFoundPage = () => {
                     onSubmit={handleSubmit}
                 />
                 <div className="flex justify-center items-center py-8">
-                    {loading ? (
-                        <p className="text-center text-gray-600">
-                            Loading items...
-                        </p>
-                    ) : error ? (
+                    {error && (
                         <p className="text-center text-red-500">
                             Error fetching items
                         </p>
-                    ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl w-full px-4">
-                            {lostfound.length > 0 ? (
-                                lostfound.map((item) => (
-                                    <LostFoundItem
-                                        key={item._id}
-                                        item={item}
-                                        imageUrl={imageUrls[item._id]}
-                                    />
-                                ))
-                            ) : (
-                                <p className="text-center col-span-full text-gray-500">
-                                    No lost or found items available
-                                </p>
-                            )}
-                        </div>
                     )}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl w-full px-4">
+                        {lostfound.length > 0 ? (
+                            lostfound.map((item) => (
+                                <LostFoundItem
+                                    key={item._id}
+                                    item={item}
+                                    imageUrl={imageUrls[item._id]}
+                                />
+                            ))
+                        ) : (
+                            <div className="flex justify-center items-center min-h-[300px]">
+                                {loading ? (
+                                    <i className="fas fa-spinner fa-pulse fa-5x text-sky-500"></i>
+                                ) : (
+                                    <p className="text-gray-600 text-lg">
+                                        No lost or found items available
+                                    </p>
+                                )}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
