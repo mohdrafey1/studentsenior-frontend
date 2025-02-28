@@ -196,11 +196,14 @@ const LostFoundItemDetail = () => {
                         </div>
                     )}
 
-                    <div className="space-y-4">
-                        <p>
-                            <strong className="text-sky-700">Status:</strong>{' '}
+                    <div className="space-y-6">
+                        {/* Status */}
+                        <div className="flex items-center space-x-2">
+                            <strong className="text-sky-700 text-lg">
+                                Status:
+                            </strong>
                             <span
-                                className={`px-2 py-1 rounded-full text-sm font-semibold ${
+                                className={`px-3 py-1 rounded-full text-sm font-semibold ${
                                     lostFoundItem.currentStatus === 'pending'
                                         ? 'bg-yellow-100 text-yellow-800'
                                         : lostFoundItem.currentStatus ===
@@ -211,31 +214,65 @@ const LostFoundItemDetail = () => {
                             >
                                 {lostFoundItem.currentStatus}
                             </span>
-                        </p>
-                        <p>
-                            <strong className="text-sky-700">Location:</strong>{' '}
-                            {lostFoundItem.location}
-                        </p>
-                        <p>
-                            <strong className="text-sky-700">
-                                Description:
-                            </strong>{' '}
-                            {lostFoundItem.description}
-                        </p>
-                        <p>
-                            <strong className="text-sky-700">Type:</strong>{' '}
-                            {lostFoundItem.isLost ? 'Lost' : 'Found'}
-                        </p>
-                    </div>
+                        </div>
 
-                    {ownerId === lostFoundItem.owner?._id && (
-                        <button
-                            className="mt-4 px-6 py-3 bg-sky-600 hover:bg-sky-700 transition text-white rounded-lg shadow-md"
-                            onClick={() => setIsEditing(true)}
-                        >
-                            Edit Details
-                        </button>
-                    )}
+                        {/* Location */}
+                        <div>
+                            <strong className="text-sky-700 text-lg">
+                                Location:
+                            </strong>
+                            <p className="text-gray-700 mt-1">
+                                {lostFoundItem.location}
+                            </p>
+                        </div>
+
+                        {/* Description */}
+                        <div>
+                            <strong className="text-sky-700 text-lg">
+                                Description:
+                            </strong>
+                            <p className="text-gray-700 mt-1">
+                                {lostFoundItem.description}
+                            </p>
+                        </div>
+
+                        {/* Type */}
+                        <div>
+                            <strong className="text-sky-700 text-lg">
+                                Type:
+                            </strong>
+                            <p
+                                className={`mt-1 text-sm font-semibold ${
+                                    lostFoundItem.isLost
+                                        ? 'text-red-500'
+                                        : 'text-green-500'
+                                }`}
+                            >
+                                {lostFoundItem.isLost ? 'Lost' : 'Found'}
+                            </p>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="mt-6">
+                            {ownerId === lostFoundItem.owner?._id ? (
+                                <button
+                                    className="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"
+                                    onClick={() => setIsEditing(true)}
+                                >
+                                    Edit Details
+                                </button>
+                            ) : (
+                                <a
+                                    href={`https://wa.me/${lostFoundItem.whatsapp}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center justify-center px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"
+                                >
+                                    Contact on WhatsApp
+                                </a>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
 
