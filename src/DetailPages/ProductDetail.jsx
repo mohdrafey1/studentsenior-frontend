@@ -99,7 +99,7 @@ function ProductDetail() {
                 </h1>
                 <Link
                     to={`/college/${collegeName}/store`}
-                    className="mt-6 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                    className="mt-6 px-4 py-2 text-white bg-sky-500 rounded hover:bg-sky-600"
                 >
                     See Other Products
                 </Link>

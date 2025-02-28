@@ -15,6 +15,7 @@ import { useCollegeId } from '../hooks/useCollegeId';
 import { fetchPosts } from '../redux/slices/postSlice';
 import useRequireLogin from '../hooks/useRequireLogin';
 import Seo from '../components/SEO/Seo';
+import Button from '../ui/Button';
 
 const CommunityPage = () => {
     const navigate = useNavigate();
@@ -230,12 +231,7 @@ const CommunityPage = () => {
                 />
                 <br />
                 <div className="mb-5 text-center">
-                    <button
-                        onClick={openModal}
-                        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
-                    >
-                        Add Post
-                    </button>
+                    <Button onClick={openModal}>Add Post</Button>
                 </div>
 
                 {/* Add Post Modal */}
@@ -280,7 +276,7 @@ const CommunityPage = () => {
                                 </button>
                                 <button
                                     onClick={addPost}
-                                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                    className="px-4 py-2 bg-sky-500 text-white rounded-md"
                                     disabled={loading}
                                 >
                                     {loading ? (
@@ -364,7 +360,7 @@ const CommunityPage = () => {
                                 </button>
                                 <button
                                     onClick={handleEditPost}
-                                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                    className="px-4 py-2 bg-sky-500 text-white rounded-md"
                                     disabled={editLoading}
                                 >
                                     {editLoading ? (
@@ -607,7 +603,7 @@ const PostCard = ({
                     {commentContent[post._id]?.trim() && (
                         <button
                             onClick={onAddComment}
-                            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+                            className="mt-2 px-4 py-2 bg-sky-500 text-white rounded-md"
                             disabled={hookLoadingStates.addComment[post._id]}
                         >
                             {hookLoadingStates.addComment[post._id] ? (

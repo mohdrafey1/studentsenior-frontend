@@ -205,7 +205,7 @@ const PYQPage = () => {
                     </div>
                 )}
 
-                <div className="flex justify-center mt-6">
+                <div className="flex justify-center my-6">
                     <Pagination
                         showControls
                         color="primary"

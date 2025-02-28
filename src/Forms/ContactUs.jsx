@@ -117,8 +117,8 @@ const ContactUs = () => {
                         disabled={loading}
                         className={`w-full py-3 text-lg font-semibold text-white rounded-lg shadow-lg transition-all transform ${
                             loading
-                                ? 'bg-blue-300 cursor-not-allowed'
-                                : 'bg-blue-600 hover:bg-blue-700 hover:scale-105'
+                                ? 'bg-sky-300 cursor-not-allowed'
+                                : 'bg-sky-600 hover:bg-sky-700 hover:scale-105'
                         }`}
                     >
                         {loading ? (
@@ -157,7 +157,7 @@ const ContactUs = () => {
                 footer={
                     <button
                         onClick={handleCloseDialog}
-                        className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
+                        className="px-6 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition duration-300"
                     >
                         Close
                     </button>

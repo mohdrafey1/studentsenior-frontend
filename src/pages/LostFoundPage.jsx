@@ -12,6 +12,7 @@ import { fetchLostFoundItems } from '../redux/slices/lostFoundSlice';
 import { useCollegeId } from '../hooks/useCollegeId';
 import { API_KEY } from '../config/apiConfiguration';
 import { capitalizeWords } from '../utils/Capitalize';
+import Button from '../ui/Button';
 
 const LostFoundItem = ({ item, imageUrl }) => {
     const handleWhatsAppClick = (e) => {
@@ -44,7 +45,7 @@ const LostFoundItem = ({ item, imageUrl }) => {
                             item.currentStatus === 'pending'
                                 ? 'bg-yellow-500 text-white'
                                 : item.currentStatus === 'claimed'
-                                ? 'bg-blue-500 text-white'
+                                ? 'bg-sky-500 text-white'
                                 : 'bg-green-500 text-white'
                         }`}
                 >
@@ -161,7 +162,7 @@ const LostFoundPage = () => {
                     <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
                         Lost & Found - {capitalizeWords(collegeName)}
                     </h1>
-                    <p className="italic text-center text-xs sm:text-base">
+                    <p className="italic text-center text-xs sm:text-base mb-2">
                         Add Found or Lost Item within you college to help each
                         other recover
                     </p>
@@ -169,15 +170,11 @@ const LostFoundPage = () => {
                         title={`Lost Found - ${capitalizeWords(collegeName)}`}
                         desc="Find or return lost items at your college."
                     />
-                    <button
-                        className="mt-4 px-6 py-3 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors duration-300 shadow-md"
-                        onClick={() => setModalOpen(true)}
-                    >
+                    <Button onClick={() => setModalOpen(true)}>
                         Add Lost/Found Item
-                    </button>
+                    </Button>
                 </div>
 
-                <Collegelink2 />
                 <LostFoundModal
                     isOpen={modalOpen}
                     onClose={() => setModalOpen(false)}
@@ -212,6 +209,7 @@ const LostFoundPage = () => {
                     </div>
                 </div>
             </div>
+            <Collegelink2 />
         </div>
     );
 };

@@ -137,7 +137,7 @@ function AddNotes({
                 <input
                     id="file-upload"
                     type="file"
-                    className="w-full border-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-500 file:text-white hover:file:bg-blue-600"
+                    className="w-full border-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-sky-500 file:text-white hover:file:bg-sky-600"
                     accept=".pdf"
                     onChange={handleFileChange}
                     required

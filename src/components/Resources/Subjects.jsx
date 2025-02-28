@@ -101,12 +101,14 @@ function Subjects() {
                 {capitalizeWords(collegeName)}: {branchCode.toUpperCase()}
             </h1>
             <Seo
-                title={`${capitalizeWords(collegeName)}: ${branchCode.toUpperCase()}`}
+                title={`${capitalizeWords(
+                    collegeName
+                )}: ${branchCode.toUpperCase()}`}
                 desc={Object.keys(groupedSubjects)
                     .slice(0, 5)
                     .sort((a, b) => a - b)
                     .map((semester) => semester)
-                    .join(", ")}
+                    .join(', ')}
             />
 
             <h2 className="text-xs sm:text-lg text-center mb-4">
@@ -121,10 +123,11 @@ function Subjects() {
                     .map((semester) => (
                         <button
                             key={semester}
-                            className={`min-w-16 px-2 sm:px-4 py-2 rounded ${activeSemester === semester
-                                ? 'bg-sky-500 text-white'
-                                : 'bg-gray-200 text-gray-800'
-                                } hover:bg-blue-400 transition duration-200`}
+                            className={`min-w-16 px-2 sm:px-4 py-2 rounded ${
+                                activeSemester === semester
+                                    ? 'bg-sky-500 text-white'
+                                    : 'bg-gray-200 text-gray-800'
+                            } hover:bg-sky-400 transition duration-200`}
                             onClick={() => handleSemesterChange(semester)}
                         >
                             Sem {semester}
@@ -182,7 +185,7 @@ function Subjects() {
                                     <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-center">
                                         <Link
                                             to={`notes/${subject.subjectCode.toLowerCase()}`}
-                                            className="px-1 sm:px-3 py-1 bg-sky-500 text-white rounded hover:bg-blue-600 transition-colors duration-200 mx-1"
+                                            className="px-1 sm:px-3 py-1 bg-sky-500 text-white rounded hover:bg-sky-600 transition-colors duration-200 mx-1"
                                             aria-label={`View Notes for ${subject.subjectName}`}
                                         >
                                             Notes
@@ -190,7 +193,7 @@ function Subjects() {
                                         <Link
                                             to={`pyqs/${subject.subjectCode.toLowerCase()}`}
                                             state={{ subjectId: subject._id }}
-                                            className="px-1 sm:px-3 py-1 bg-sky-500 text-white rounded hover:bg-blue-600 transition-colors duration-200 mx-1"
+                                            className="px-1 sm:px-3 py-1 bg-sky-500 text-white rounded hover:bg-sky-600 transition-colors duration-200 mx-1"
                                             aria-label={`View PYQs for ${subject.subjectName}`}
                                         >
                                             Pyqs

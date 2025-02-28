@@ -11,6 +11,7 @@ import useApiRequest from '../hooks/useApiRequest';
 import { useCollegeId } from '../hooks/useCollegeId';
 import useRequireLogin from '../hooks/useRequireLogin';
 import Seo from '../components/SEO/Seo';
+import Button from '../ui/Button';
 
 const OpportunitiesPage = () => {
     const { collegeName } = useParams();
@@ -163,7 +164,7 @@ const OpportunitiesPage = () => {
     return (
         <div className="container bg-gradient-to-t from-sky-200 to-white min-h-screen min-w-full">
             <CollegeLinks />
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-7xl mx-auto px-2 sm:px-4">
                 <h1 className="text-lg sm:text-3xl font-bold mb-4 text-center">
                     Opportunities - {capitalizeWords(collegeName)}
                 </h1>
@@ -175,12 +176,9 @@ const OpportunitiesPage = () => {
                     Get job and internship opportunities in your college.
                 </p>
                 <div className="flex justify-center items-center my-3">
-                    <button
-                        onClick={() => setShowModal(true)}
-                        className="px-4 py-2 bg-sky-500 hover:bg-blue-600 transition text-white rounded-lg shadow-md"
-                    >
+                    <Button onClick={() => setShowModal(true)}>
                         Add Opportunity
-                    </button>
+                    </Button>
                 </div>
 
                 {/* Add Opportunity Modal */}
@@ -247,7 +245,7 @@ const OpportunitiesPage = () => {
                 )}
 
                 {/* Opportunities List */}
-                <div className="grid grid-cols-1 gap-6 mt-8">
+                <div className="">
                     {giveOpportunitiesError && (
                         <div className="text-red-500 text-center">
                             Failed to load opportunities:{' '}

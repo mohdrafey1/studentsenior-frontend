@@ -51,12 +51,15 @@ function InstallPage() {
                     Get a better experience by installing the Student Senior
                     app.
                 </p>
-                <Seo title="Install Our App" desc='Get a better experience by installing the Student Senior
-                    app.' />
+                <Seo
+                    title="Install Our App"
+                    desc="Get a better experience by installing the Student Senior
+                    app."
+                />
                 {isInstallable ? (
                     <button
                         onClick={handleInstallClick}
-                        className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg"
+                        className="bg-sky-500 text-white px-6 py-3 rounded-lg shadow-lg"
                     >
                         Install App
                     </button>

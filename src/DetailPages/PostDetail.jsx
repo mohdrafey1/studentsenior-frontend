@@ -177,7 +177,7 @@ function PostDetail() {
                 </h1>
                 <Link
                     to={`/college/${collegeName}/community`}
-                    className="mt-6 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                    className="mt-6 px-4 py-2 text-white bg-sky-500 rounded hover:bg-sky-600"
                 >
                     See Other Posts
                 </Link>
@@ -188,7 +188,10 @@ function PostDetail() {
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full relative">
             <DetailPageNavbar path={`college/${collegeName}/community`} />
-            <Seo title={`Post Details - ${capitalizeWords(collegeName)}`} desc={post.content.slice(0, 100)} />
+            <Seo
+                title={`Post Details - ${capitalizeWords(collegeName)}`}
+                desc={post.content.slice(0, 100)}
+            />
             <div className="main">
                 <div className="content  sm:w-4/5 sm:mx-auto">
                     <div className="profile-section m-4 flex items-center gap-4">
@@ -296,7 +299,7 @@ function PostDetail() {
                                             </button>
                                             <button
                                                 onClick={handleEditPost}
-                                                className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                                className="px-4 py-2 bg-sky-500 text-white rounded-md"
                                                 disabled={loading}
                                             >
                                                 {loading ? (
@@ -489,7 +492,7 @@ function PostDetail() {
                         />
                     </div>
                     <button
-                        className="flex items-center gap-1 bg-blue-400 text-white rounded-2xl px-2 py-3"
+                        className="flex items-center gap-1 bg-sky-400 text-white rounded-2xl px-2 py-3"
                         onClick={() => handleAddComment(post._id)}
                         disabled={hookLoadingStates.addComment[post._id]}
                     >

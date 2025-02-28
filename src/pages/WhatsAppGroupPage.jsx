@@ -11,6 +11,7 @@ import { fetchGroups } from '../redux/slices/groupSlice.js';
 import useRequireLogin from '../hooks/useRequireLogin.js';
 import { api } from '../config/apiConfiguration.js';
 import Seo from '../components/SEO/Seo.jsx';
+import Button from '../ui/Button.jsx';
 
 const WhatsAppGroupPage = () => {
     const { collegeName } = useParams();
@@ -99,29 +100,28 @@ const WhatsAppGroupPage = () => {
             <div className="max-w-7xl mx-auto p-5">
                 <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
                     WhatsApp Groups - {capitalizeWords(collegeName)}
-                    <Seo title={`WhatsApp Groups - ${capitalizeWords(collegeName)}`} desc='Join WhatsApp groups to connect with like-minded people and
-                    stay updated.' />
-
+                    <Seo
+                        title={`WhatsApp Groups - ${capitalizeWords(
+                            collegeName
+                        )}`}
+                        desc="Join WhatsApp groups to connect with like-minded people and
+                    stay updated."
+                    />
                 </h1>
                 <p className="italic text-center text-xs sm:text-base">
                     "Join WhatsApp groups to connect with like-minded people and
                     stay updated."
                 </p>
                 <br />
-                <div className="mb-5 flex w-full sm:w-1/2 mx-auto">
+                <div className="mb-5 flex w-full sm:w-1/2 mx-auto items-center gap-3">
                     <input
                         type="text"
                         placeholder="Search by title or domain..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="p-2 border rounded-md w-3/4 block"
+                        className="p-2 border rounded-md flex-1"
                     />
-                    <button
-                        className="px-2 py-1 m-1.5 text-xs bg-blue-500 text-white rounded-md mb-2 sm:mb-0"
-                        onClick={openModal}
-                    >
-                        Add Group
-                    </button>
+                    <Button onClick={openModal}>Add Group</Button>
                 </div>
 
                 {groups.length > 0 ? (
@@ -236,7 +236,7 @@ const WhatsAppGroupPage = () => {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                    className="px-4 py-2 bg-sky-500 text-white rounded-md"
                                     disabled={loading}
                                 >
                                     {loading ? (

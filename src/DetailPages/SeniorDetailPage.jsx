@@ -54,7 +54,7 @@ function SeniorDetail() {
                 <h1 className="text-2xl font-semibold text-gray-800">Senior Not Found!</h1>
                 <Link
                     to={`/college/${collegeName}/seniors`}
-                    className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 shadow-md"
+                    className="mt-6 px-6 py-3 bg-sky-600 text-white rounded-full hover:bg-sky-700 transition duration-300 shadow-md"
                 >
                     See Other Seniors
                 </Link>
@@ -131,7 +131,7 @@ function SeniorDetail() {
                         <Link
                             to={`/college/${collegeName}/seniors`}
                         >
-                            <div className="inline-block px-6 py-3 my-5 mx-auto text-white bg-blue-600 rounded-full hover:bg-blue-700 transition duration-300"
+                            <div className="inline-block px-6 py-3 my-5 mx-auto text-white bg-sky-600 rounded-full hover:bg-sky-700 transition duration-300"
                             >
                                 <p>See All Seniors</p>
                             </div>

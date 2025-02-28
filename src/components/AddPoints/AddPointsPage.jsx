@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { api } from '../../config/apiConfiguration';
 import useApiRequest from '../../hooks/useApiRequest';
+import Button from '../../ui/Button';
 
 const AddPointsPage = () => {
     const [points, setPoints] = useState('');
@@ -94,17 +95,14 @@ const AddPointsPage = () => {
                         readOnly
                         className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100"
                     />
-
-                    <button
-                        type="submit"
-                        className="w-full py-3 rounded-lg font-semibold text-white bg-green-500 hover:bg-green-600 transition-all flex items-center justify-center"
-                        disabled={loading}
-                    >
-                        {loading ? (
-                            <i className="fas fa-spinner fa-pulse mr-2"></i>
-                        ) : null}
-                        {loading ? 'Processing...' : 'Submit'}
-                    </button>
+                    <div className="flex justify-center">
+                        <Button type="submit" disabled={loading}>
+                            {loading ? (
+                                <i className="fas fa-spinner fa-pulse mr-2"></i>
+                            ) : null}
+                            {loading ? 'Processing...' : 'Submit'}
+                        </Button>
+                    </div>
                 </form>
 
                 {qrCodeUrl && (
@@ -125,6 +123,7 @@ const AddPointsPage = () => {
 
                 <div className="text-center mt-4">
                     <p className="text-gray-500 text-sm mb-2">
+                        <p>Click on submit button only after payment</p>
                         Scan QR or copy this UPI ID:
                     </p>
                     <div className="flex items-center justify-between bg-gray-200 p-2 rounded text-sm w-full">

@@ -16,6 +16,7 @@ import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 import useRequireLogin from '../../hooks/useRequireLogin.js';
 import Seo from '../SEO/Seo.jsx';
 import { fetchUserData } from '../../redux/slices/userDataSlice.js';
+import Button from '../../ui/Button.jsx';
 
 function SubjectNotes() {
     const { collegeName, courseCode, subjectCode, branchCode } = useParams();
@@ -262,15 +263,13 @@ function SubjectNotes() {
             />
 
             <div className="flex justify-center gap-4 items-center sm:mb-8">
-                <button
-                    onClick={handleOpenAddNoteModal}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow-md transition-transform transform hover:scale-105"
-                >
+                <Button onClick={handleOpenAddNoteModal}>
                     <i className="fa-solid fa-plus"></i> Add Note
-                </button>
+                </Button>
+
                 <Link
                     to={`/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}`}
-                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md shadow-md transition-transform transform hover:scale-105"
+                    className="px-4 py-2 bg-sky-400 hover:bg-sky-700 text-white rounded-md shadow-md transition-transform transform hover:scale-105"
                 >
                     View PYQs
                 </Link>
@@ -561,7 +560,7 @@ function SubjectNotes() {
                             )}
                             <Link
                                 to="/add-points"
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+                                className="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-md"
                             >
                                 Add Points
                             </Link>

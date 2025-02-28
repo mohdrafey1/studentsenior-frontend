@@ -51,7 +51,7 @@ const DonationPage = () => {
                     onClick={() => amount > 0 && setQrCodeUrl(qrCodeUrl)}
                     className={`w-full py-3 rounded-lg font-semibold text-white transition-all ${
                         amount > 0
-                            ? 'bg-blue-500 hover:bg-blue-600'
+                            ? 'bg-sky-500 hover:bg-sky-600'
                             : 'bg-gray-400 cursor-not-allowed'
                     }`}
                 >
