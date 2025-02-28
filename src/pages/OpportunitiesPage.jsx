@@ -171,6 +171,9 @@ const OpportunitiesPage = () => {
                     title={`Opportunities - ${capitalizeWords(collegeName)}`}
                     desc="Get job and internship opportunities in your college."
                 />
+                <p className="italic text-center text-xs sm:text-base">
+                    Get job and internship opportunities in your college.
+                </p>
                 <div className="flex justify-center items-center my-3">
                     <button
                         onClick={() => setShowModal(true)}

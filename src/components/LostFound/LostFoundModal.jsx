@@ -100,69 +100,87 @@ const LostFoundModal = ({ isOpen, onClose, onSubmit }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-5 rounded-lg shadow-lg w-96">
-                <h2 className="text-xl font-bold mb-4">Add Lost/Found Item</h2>
-                <form onSubmit={handleSubmit} className="space-y-3">
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Item Name"
-                        className="w-full p-2 border rounded"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                    />
-                    <textarea
-                        name="description"
-                        placeholder="Description"
-                        className="w-full p-2 border rounded"
-                        value={formData.description}
-                        onChange={handleChange}
-                        required
-                    />
-                    <select
-                        name="type"
-                        className="w-full p-2 border rounded"
-                        value={formData.type}
-                        onChange={handleChange}
-                    >
-                        <option value="lost">Lost</option>
-                        <option value="found">Found</option>
-                    </select>
-                    <input
-                        type="text"
-                        name="location"
-                        placeholder="Location"
-                        className="w-full p-2 border rounded"
-                        value={formData.location}
-                        onChange={handleChange}
-                        required
-                    />
-                    <input
-                        type="text"
-                        name="whatsapp"
-                        placeholder="WhatsApp Number"
-                        className="w-full p-2 border rounded"
-                        value={formData.whatsapp}
-                        onChange={handleChange}
-                    />
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
+            <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+                <h2 className="text-2xl font-bold text-sky-800 mb-6">
+                    Add Lost/Found Item
+                </h2>
+                <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label htmlFor="image">
-                            Upload Image (Max 5MB) (Optional)
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Enter item name"
+                            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <textarea
+                            name="description"
+                            placeholder="Enter description"
+                            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            value={formData.description}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <select
+                            name="type"
+                            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            value={formData.type}
+                            onChange={handleChange}
+                        >
+                            <option value="lost">Lost</option>
+                            <option value="found">Found</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <input
+                            type="text"
+                            name="location"
+                            placeholder="Enter location"
+                            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            value={formData.location}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <input
+                            type="text"
+                            name="whatsapp"
+                            placeholder="Enter WhatsApp number to contact"
+                            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            value={formData.whatsapp}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-gray-700 mb-1">
+                            Upload Image (Max 5MB, Optional)
                         </label>
                         <input
                             type="file"
                             id="image"
-                            className="w-full p-2 border rounded"
+                            className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
                             accept="image/*"
                             onChange={handleFileChange}
                         />
                     </div>
-                    <div className="flex justify-between mt-4">
+
+                    <div className="flex justify-end space-x-4 mt-6">
                         <button
                             type="button"
-                            className="px-4 py-2 bg-gray-500 text-white rounded"
+                            className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition duration-300"
                             onClick={onClose}
                             disabled={loading}
                         >
@@ -170,10 +188,16 @@ const LostFoundModal = ({ isOpen, onClose, onSubmit }) => {
                         </button>
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-blue-600 text-white rounded"
-                            aria-disabled={loading}
+                            className="px-6 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg transition duration-300 flex items-center justify-center"
+                            disabled={loading}
                         >
-                            {loading ? 'Uploading...' : 'Submit'}
+                            {loading ? (
+                                <>
+                                    <i className="fas fa-spinner fa-spin"></i>
+                                </>
+                            ) : (
+                                'Submit'
+                            )}
                         </button>
                     </div>
                 </form>

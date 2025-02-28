@@ -1,17 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { useCollegeId } from '../hooks/useCollegeId.js';
 import { api, API_KEY } from '../config/apiConfiguration.js';
 import DetailPageNavbar from '../DetailPages/DetailPageNavbar.jsx';
 import Seo from '../components/SEO/Seo.jsx';
+import { toast } from 'react-toastify';
 
 const LostFoundItemDetail = () => {
     const { collegeName, slug } = useParams();
     const collegeId = useCollegeId(collegeName);
+    const currentUser = useSelector((state) => state.user.currentUser);
+    const ownerId = currentUser?._id;
+
     const [lostFoundItem, setLostFoundItem] = useState(null);
     const [signedImageUrl, setSignedImageUrl] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    // Modal State
+    const [isEditing, setIsEditing] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        description: '',
+        location: '',
+        currentStatus: 'pending',
+    });
 
     useEffect(() => {
         const fetchLostFoundItemDetail = async () => {
@@ -36,6 +50,12 @@ const LostFoundItemDetail = () => {
                 }
 
                 setLostFoundItem(data);
+                setFormData({
+                    name: data.name,
+                    description: data.description,
+                    location: data.location,
+                    currentStatus: data.currentStatus,
+                });
             } catch (error) {
                 console.error('Error fetching data:', error);
                 setError(error.message);
@@ -81,9 +101,48 @@ const LostFoundItemDetail = () => {
         fetchSignedUrlForImage();
     }, [lostFoundItem]);
 
+    // Handle Input Change in Modal
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    // Submit Updated Data
+    const handleUpdateItem = async () => {
+        try {
+            const response = await fetch(`${api.lostfound}/${slug}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': API_KEY,
+                },
+                credentials: 'include',
+                body: JSON.stringify(formData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update item');
+            }
+
+            const updatedData = await response.json();
+
+            // Ensure the correct item object is set
+            setLostFoundItem((prev) => ({
+                ...prev,
+                ...updatedData.item, // Extracting 'item' from API response
+            }));
+
+            setIsEditing(false);
+            toast.success('Item updated successfully!');
+        } catch (error) {
+            console.error('Error updating item:', error);
+            toast.error('Failed to update item.');
+        }
+    };
+
     if (loading) {
         return (
-            <div className="bg-gray-100 py-16 px-8 md:px-32 min-h-screen">
+            <div className="bg-gradient-to-t from-sky-50 to-white min-h-screen py-16 px-8 md:px-32">
                 <DetailPageNavbar />
                 <p className="text-center text-gray-600">Loading...</p>
             </div>
@@ -92,7 +151,7 @@ const LostFoundItemDetail = () => {
 
     if (error) {
         return (
-            <div className="bg-gray-100 py-16 px-8 md:px-32 min-h-screen">
+            <div className="bg-gradient-to-t from-sky-50 to-white min-h-screen py-16 px-8 md:px-32">
                 <DetailPageNavbar />
                 <div className="text-center text-red-500">
                     <p>Error: {error}</p>
@@ -103,7 +162,7 @@ const LostFoundItemDetail = () => {
 
     if (!lostFoundItem) {
         return (
-            <div className="bg-gray-100 py-16 px-8 md:px-32 min-h-screen">
+            <div className="bg-gradient-to-t from-sky-50 to-white min-h-screen py-16 px-8 md:px-32">
                 <DetailPageNavbar />
                 <div className="text-center text-gray-600">
                     <p>No item found.</p>
@@ -115,93 +174,142 @@ const LostFoundItemDetail = () => {
     return (
         <div>
             <DetailPageNavbar />
-            <Seo
-                title={lostFoundItem.name}
-                description={lostFoundItem.description.slice(0, 100)}
-            />
-            <div className="bg-gray-100 py-16 px-8 md:px-32 min-h-screen">
-                <div className="flex flex-col md:flex-row gap-16">
-                    {/* Lost & Found Item Details */}
-                    <div className="space-y-8 w-full md:w-3/4">
-                        <div className="bg-white p-8 rounded-2xl shadow-lg space-y-6">
-                            <h1 className="font-semibold text-3xl text-blue-600">
-                                {lostFoundItem.name}
-                            </h1>
-                            <p className="text-gray-600 text-sm">
-                                Posted by: {lostFoundItem.owner.username}
-                            </p>
+            <Seo title={lostFoundItem.name} description={lostFoundItem?.name} />
+            <div className="bg-gradient-to-t from-sky-50 to-white min-h-screen py-16 px-8 md:px-32">
+                <div className="bg-white p-8 rounded-2xl shadow-lg space-y-6 max-w-4xl mx-auto">
+                    <h1 className="font-bold text-4xl text-sky-800">
+                        {lostFoundItem.name}
+                    </h1>
+                    <p className="text-gray-600 text-sm">
+                        Posted by: {lostFoundItem.owner?.username}
+                    </p>
 
-                            {/* Display Item Image if Available */}
-                            {signedImageUrl ? (
-                                <div className="mt-4">
-                                    <img
-                                        src={signedImageUrl}
-                                        alt="Lost Found Item"
-                                        className="w-full max-h-96 object-contain rounded-lg shadow-md"
-                                    />
-                                </div>
-                            ) : (
-                                <p className="text-gray-500">
-                                    No image available
-                                </p>
-                            )}
-
-                            <hr className="my-4 border-t border-gray-300" />
-                            <div className="space-y-4">
-                                <p className="font-semibold text-xl text-gray-700">
-                                    Item Description
-                                </p>
-                                <p className="text-gray-600">
-                                    {lostFoundItem.description}
-                                </p>
-                            </div>
-                            <p className="text-sm">
-                                <strong>Location:</strong>{' '}
-                                {lostFoundItem.location}
-                            </p>
-                            <p className="text-sm">
-                                <strong>Status:</strong>{' '}
-                                <span
-                                    className={`font-bold ${
-                                        lostFoundItem.type === 'lost'
-                                            ? 'text-red-500'
-                                            : 'text-green-500'
-                                    }`}
-                                >
-                                    {lostFoundItem.type.toUpperCase()}
-                                </span>
-                            </p>
-
-                            <div className="flex gap-3 mt-4">
-                                <a
-                                    href={`https://api.whatsapp.com/send?phone=${lostFoundItem.whatsapp}`}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg"
-                                >
-                                    Contact on WhatsApp
-                                </a>
-                                {lostFoundItem.email && (
-                                    <a
-                                        href={`mailto:${lostFoundItem.email}`}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg"
-                                    >
-                                        Email
-                                    </a>
-                                )}
-                            </div>
+                    {signedImageUrl ? (
+                        <img
+                            src={signedImageUrl}
+                            alt="Lost Found Item"
+                            className="w-full h-96 object-cover rounded-lg shadow-md"
+                        />
+                    ) : (
+                        <div className="w-full h-96 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500">
+                            No Image Available
                         </div>
+                    )}
+
+                    <div className="space-y-4">
+                        <p>
+                            <strong className="text-sky-700">Status:</strong>{' '}
+                            <span
+                                className={`px-2 py-1 rounded-full text-sm font-semibold ${
+                                    lostFoundItem.currentStatus === 'pending'
+                                        ? 'bg-yellow-100 text-yellow-800'
+                                        : lostFoundItem.currentStatus ===
+                                          'claimed'
+                                        ? 'bg-blue-100 text-blue-800'
+                                        : 'bg-green-100 text-green-800'
+                                }`}
+                            >
+                                {lostFoundItem.currentStatus}
+                            </span>
+                        </p>
+                        <p>
+                            <strong className="text-sky-700">Location:</strong>{' '}
+                            {lostFoundItem.location}
+                        </p>
+                        <p>
+                            <strong className="text-sky-700">
+                                Description:
+                            </strong>{' '}
+                            {lostFoundItem.description}
+                        </p>
+                        <p>
+                            <strong className="text-sky-700">Type:</strong>{' '}
+                            {lostFoundItem.isLost ? 'Lost' : 'Found'}
+                        </p>
                     </div>
-                    {/* Placeholder for Future Features */}
-                    <div className="w-full md:w-1/3 space-y-6">
-                        <div className="bg-gray-200 p-6 rounded-lg shadow-md text-center">
-                            Additional features coming soon...
+
+                    {ownerId === lostFoundItem.owner?._id && (
+                        <button
+                            className="mt-4 px-6 py-3 bg-sky-600 hover:bg-sky-700 transition text-white rounded-lg shadow-md"
+                            onClick={() => setIsEditing(true)}
+                        >
+                            Edit Details
+                        </button>
+                    )}
+                </div>
+            </div>
+
+            {/* Edit Modal */}
+            {isEditing && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-white p-8 rounded-2xl shadow-lg w-11/12 max-w-md">
+                        <h2 className="text-2xl font-bold text-sky-800 mb-6">
+                            Edit Item
+                        </h2>
+
+                        <div className="space-y-4">
+                            <label className="block text-gray-700">Name</label>
+                            <input
+                                type="text"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleInputChange}
+                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            />
+
+                            <label className="block text-gray-700">
+                                Description
+                            </label>
+                            <textarea
+                                name="description"
+                                value={formData.description}
+                                onChange={handleInputChange}
+                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            ></textarea>
+
+                            <label className="block text-gray-700">
+                                Location
+                            </label>
+                            <input
+                                type="text"
+                                name="location"
+                                value={formData.location}
+                                onChange={handleInputChange}
+                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            />
+
+                            <label className="block text-gray-700">
+                                Current Status
+                            </label>
+                            <select
+                                name="currentStatus"
+                                value={formData.currentStatus}
+                                onChange={handleInputChange}
+                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            >
+                                <option value="pending">Pending</option>
+                                <option value="claimed">Claimed</option>
+                                <option value="resolved">Resolved</option>
+                            </select>
+                        </div>
+
+                        <div className="mt-6 flex justify-end space-x-4">
+                            <button
+                                onClick={() => setIsEditing(false)}
+                                className="px-6 py-2 bg-gray-500 hover:bg-gray-600 transition text-white rounded-lg shadow-md"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleUpdateItem}
+                                className="px-6 py-2 bg-sky-600 hover:bg-sky-700 transition text-white rounded-lg shadow-md"
+                            >
+                                Save
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };
