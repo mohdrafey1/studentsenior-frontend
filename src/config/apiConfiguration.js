@@ -51,4 +51,6 @@ export const api = {
     presignedUrl: `${API_BASE_URL}/api/generate/presigned-url`,
 
     getSignedUrl: `${API_BASE_URL}/api/get-signed-url`,
+
+    leaderboard: `${API_BASE_URL}/api/user/leaderboard`,
 };

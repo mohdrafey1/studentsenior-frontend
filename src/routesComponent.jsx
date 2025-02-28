@@ -38,6 +38,9 @@ import DonationPage from './others/DonationPage';
 import AddPointsPage from './components/AddPoints/AddPointsPage';
 import RefundPolicy from './others/RefundPolicy';
 import TermsAndConditions from './others/TermsAndConditions';
+import LeaderBoardPage from './pages/LeaderBoardPage';
+import LostFoundPage from './pages/LostFoundPage';
+import NotesPage from './pages/NotesPage';
 
 const validColleges = ['integral-university', 'mpec-kanpur'];
 
@@ -88,6 +91,15 @@ const RoutesComponent = () => {
                 element={
                     <ValidateCollegeRoute>
                         <PYQPage />
+                    </ValidateCollegeRoute>
+                }
+            />
+
+            <Route
+                path="/college/:collegeName/notes"
+                element={
+                    <ValidateCollegeRoute>
+                        <NotesPage />
                     </ValidateCollegeRoute>
                 }
             />
@@ -190,6 +202,15 @@ const RoutesComponent = () => {
                 }
             />
 
+            <Route
+                path="/college/:collegeName/lost-found"
+                element={
+                    <ValidateCollegeRoute>
+                        <LostFoundPage />
+                    </ValidateCollegeRoute>
+                }
+            />
+
             {/* Static Routes */}
             <Route path="/becomesenior" element={<AddSenior />} />
             <Route path="/add-college" element={<AddCollege />} />
@@ -226,6 +247,7 @@ const RoutesComponent = () => {
             </Route>
 
             {/* Other Pages */}
+            <Route path="/leaderboard" element={<LeaderBoardPage />} />
             <Route path="/request-pyq" element={<RequestPYQ />} />
             <Route path="/install" element={<InstallPage />} />
             <Route path="/not-found" element={<NotFoundPage />} />

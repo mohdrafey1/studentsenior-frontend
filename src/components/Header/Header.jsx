@@ -96,9 +96,14 @@ const Header = () => {
                                     </li>
                                 </Link>
 
-                                <Link to="/about-us" onClick={toggleMenu}>
+                                {/* <Link to="/about-us" onClick={toggleMenu}>
                                     <li className="ihover rounded-3xl">
                                         About Us
+                                    </li>
+                                </Link> */}
+                                <Link to={`/leaderboard`}>
+                                    <li className="ihover rounded-3xl">
+                                        Leaderboard
                                     </li>
                                 </Link>
                                 {currentUser ? (

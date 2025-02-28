@@ -161,7 +161,7 @@ const OpportunitiesPage = () => {
     };
 
     return (
-        <div className="container bg-gradient-to-t from-sky-200 to-white min-h-screen px-6 py-8 min-w-full">
+        <div className="container bg-gradient-to-t from-sky-200 to-white min-h-screen min-w-full">
             <CollegeLinks />
             <div className="max-w-7xl mx-auto">
                 <h1 className="text-lg sm:text-3xl font-bold mb-4 text-center">
