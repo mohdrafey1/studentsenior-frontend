@@ -225,7 +225,7 @@ const PYQPage = () => {
                         us.
                     </p>
                     <Link
-                        to={`/${collegeName}/resources`}
+                        to={`/college/${collegeName}/resources`}
                         className="inline-block px-6 py-3 w-full bg-sky-500 text-white font-bold rounded-lg hover transition-colors duration-200"
                     >
                         Click Here To Share PYQs
