@@ -77,7 +77,7 @@ function SeniorCard({
                         </div>
                         <div className="px-3 py-2 m-auto flex gap-2 justify-between items-center">
                             <button
-                                className="bg-blue-600 text-white px-2 lg:px-3 py-1 lg:py-1 rounded-lg text-xs lg:text-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
+                                className="bg-sky-500 text-white px-2 lg:px-3 py-1 lg:py-1 rounded-lg text-xs lg:text-sm hover:bg-sky-700 focus:ring-2 focus:ring-blue-500"
                                 onClick={(e) => {
                                     e.preventDefault();
                                     handleDetail(senior);

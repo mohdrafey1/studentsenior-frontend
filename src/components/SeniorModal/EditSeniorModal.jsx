@@ -137,7 +137,7 @@ const EditSeniorModal = ({
                         </button>
                         <button
                             type="submit"
-                            className="bg-blue-500 text-white px-4 py-1.5 rounded"
+                            className="bg-sky-500 text-white px-4 py-1.5 rounded"
                             disabled={loading}
                         >
                             {loading ? (

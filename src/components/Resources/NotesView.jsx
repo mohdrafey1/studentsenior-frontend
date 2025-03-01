@@ -372,7 +372,7 @@ function NotesView() {
                                                     onClick={() =>
                                                         handleBuyNowClick(note)
                                                     }
-                                                    className="bg-sky-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105"
+                                                    className="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105"
                                                 >
                                                     Purchase to View All Pages (
                                                     {note.price}P)
@@ -459,7 +459,7 @@ function NotesView() {
                             )}
                             <Link
                                 to="/add-points"
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+                                className="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-md"
                             >
                                 Add Points
                             </Link>

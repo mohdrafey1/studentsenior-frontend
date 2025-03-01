@@ -69,7 +69,10 @@ const RequestPYQ = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-t from-sky-200 to bg-white flex items-center justify-center p-4">
-            <Seo title='Request PYQ' desc="Didn't found PYQ you are looking for? Request here" />
+            <Seo
+                title="Request PYQ"
+                desc="Didn't found PYQ you are looking for? Request here"
+            />
             {loading && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-75">
                     <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>
@@ -265,7 +268,7 @@ const RequestPYQ = () => {
                     {/* Submit Button */}
                     <button
                         type="submit"
-                        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition duration-300"
+                        className="w-full bg-sky-500 hover:bg-sky-600 text-white font-medium py-2 rounded-lg transition duration-300"
                     >
                         Submit Request
                     </button>

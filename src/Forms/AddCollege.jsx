@@ -168,7 +168,7 @@ function AddCollege() {
                             </div>
                             <button
                                 type="submit"
-                                className="w-full px-4 py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 transition-colors duration-200"
+                                className="w-full px-4 py-2 bg-sky-500 text-white font-bold rounded-md hover:bg-sky-600 transition-colors duration-200"
                             >
                                 Submit College
                             </button>

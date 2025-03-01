@@ -227,10 +227,10 @@ export default function ProfileDetails({ data }) {
                         className={`mt-4 px-4 py-2 rounded-lg text-sm font-medium 
                             ${
                             isExpanded
-                                ? 'bg-blue-500 text-white'
+                                ? 'bg-sky-500 text-white'
                                 : 'bg-white text-blue-500 border border-blue-500'
                         } 
-                            hover:bg-blue-600 hover:text-white transition duration-300`}
+                            hover:bg-sky-600 hover:text-white transition duration-300`}
                     >
                         {isExpanded ? 'View Less' : 'View More'}
                     </button>
@@ -340,7 +340,7 @@ export default function ProfileDetails({ data }) {
                                 onClick={() => setShowRedeemModal(true)}
                                 className={`${
                                     data.rewardBalance > 100
-                                        ? 'bg-blue-500 hover:bg-blue-600'
+                                        ? 'bg-sky-500 hover:bg-sky-600'
                                         : 'bg-gray-400'
                                 } text-white font-semibold py-2 px-4 rounded-md transition-all duration-300`}
                                 disabled={data.rewardBalance < 100}
@@ -478,8 +478,8 @@ export default function ProfileDetails({ data }) {
                             onClick={handleRedeem}
                             className={`w-full p-4 rounded-lg text-white font-semibold ${
                                 loadingRedeem
-                                    ? 'bg-blue-400 cursor-not-allowed'
-                                    : 'bg-blue-500 hover:bg-blue-600'
+                                    ? 'bg-sky-400 cursor-not-allowed'
+                                    : 'bg-sky-500 hover:bg-sky-600'
                             }`}
                             disabled={loadingRedeem}
                         >

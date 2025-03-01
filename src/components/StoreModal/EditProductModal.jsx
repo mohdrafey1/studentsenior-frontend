@@ -120,7 +120,7 @@ const EditProductModal = ({
                                     onFileChange(e);
                                 }
                             }}
-                            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-blue-700 hover:file:bg-sky-100"
                         />
                         <img
                             src={imagePreview || previousImageUrl}
@@ -145,7 +145,7 @@ const EditProductModal = ({
                     <div className="flex justify-between mt-2">
                         <button
                             type="submit"
-                            className="bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 transition-all duration-200 ease-in-out"
+                            className="bg-sky-500 text-white px-4 py-2 rounded-md shadow hover:bg-sky-600 transition-all duration-200 ease-in-out"
                             disabled={loading}
                         >
                             {loading ? (

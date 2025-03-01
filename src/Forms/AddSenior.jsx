@@ -256,13 +256,13 @@ const AddSeniorPage = () => {
 
                                 <div className="flex justify-end w-full">
                                     <div className="flex justify-start w-full">
-                                        <button className="bg-blue-500 text-white px-4 py-2 rounded-md md:w-1/3 ">
+                                        <button className="bg-sky-500 text-white px-4 py-2 rounded-md md:w-1/3 ">
                                             <a href="/">Back</a>
                                         </button>
                                     </div>
                                     <button
                                         type="submit"
-                                        className="bg-blue-500 text-white px-4 py-2 rounded-md min-w-max"
+                                        className="bg-sky-500 text-white px-4 py-2 rounded-md min-w-max"
                                     >
                                         Apply For Senior
                                     </button>

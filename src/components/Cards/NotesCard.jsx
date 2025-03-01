@@ -2,48 +2,48 @@ import React from 'react';
 import { Link, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-function PyqCard({ Pyqs = [] }) {
+function NotesCard({ notes = [] }) {
     const { collegeName } = useParams();
     const location = useLocation();
     const navigate = useNavigate();
     const { isAuthenticated } = useSelector((state) => state.user);
 
-    const handleCardClick = (pyqUrl, e) => {
+    const handleCardClick = (noteUrl, e) => {
         if (!isAuthenticated) {
             e.preventDefault();
             navigate('/sign-in', { state: { from: location }, replace: true });
         } else {
-            navigate(pyqUrl);
+            navigate(noteUrl);
         }
     };
 
     return (
         <>
-            {Pyqs.map((pyq) => {
+            {notes.map((note) => {
                 const courseCode =
-                    pyq.subject?.branch?.course?.courseCode.toLowerCase();
+                    note.subject?.branch?.course?.courseCode.toLowerCase();
                 const branchCode =
-                    pyq.subject?.branch?.branchCode.toLowerCase();
-                const subjectCode = pyq.subject?.subjectCode.toLowerCase();
-                const pyqUrl = `/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}/${pyq.slug}`;
+                    note.subject?.branch?.branchCode.toLowerCase();
+                const subjectCode = note.subject?.subjectCode.toLowerCase();
+                const noteUrl = `/${collegeName}/resources/${courseCode}/${branchCode}/notes/${subjectCode}/${note.slug}`;
 
                 return (
                     <div
-                        key={pyq._id}
+                        key={note._id}
                         className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col mb-6 cursor-pointer"
-                        onClick={(e) => handleCardClick(pyqUrl, e)}
+                        onClick={(e) => handleCardClick(noteUrl, e)}
                     >
                         <div className="flex justify-between items-start mb-4">
                             <h2 className="text-xl font-semibold text-gray-800">
-                                {pyq.subject?.subjectName}
+                                {note.subject?.subjectName}
                             </h2>
                             <div className="flex space-x-2">
-                                {pyq.solved && (
+                                {note.solved && (
                                     <span className="bg-green-200 text-green-800 rounded-full px-3 py-1 text-xs font-semibold">
                                         Solved
                                     </span>
                                 )}
-                                {pyq.isPaid && (
+                                {note.isPaid && (
                                     <span className="bg-red-200 text-red-800 rounded-full px-3 py-1 text-xs font-semibold">
                                         Paid
                                     </span>
@@ -54,34 +54,29 @@ function PyqCard({ Pyqs = [] }) {
                         <div className="text-sm text-gray-600 mb-4 space-y-1">
                             <p>
                                 <strong>Subject Code:</strong>{' '}
-                                {pyq.subject?.subjectCode}
+                                {note.subject?.subjectCode}
                             </p>
-                            <p>
-                                <strong>Exam Type:</strong> {pyq.examType}
-                            </p>
-                            <p>
-                                <strong>Year:</strong> {pyq.year}
-                            </p>
+
                             <p>
                                 <strong>Semester:</strong>{' '}
-                                {pyq.subject?.semester}
+                                {note.subject?.semester}
                             </p>
                             <p>
                                 <strong>Branch:</strong>{' '}
-                                {pyq.subject?.branch?.branchCode}
+                                {note.subject?.branch?.branchCode}
                             </p>
                         </div>
 
                         <div className="flex justify-center">
                             {isAuthenticated ? (
                                 <Link
-                                    to={pyqUrl}
+                                    to={noteUrl}
                                     className="bg-sky-500 text-white px-6 py-2 rounded-3xl text-center hover:bg-sky-600 transition-colors text-sm lg:text-base flex items-center justify-center space-x-2"
                                 >
-                                    {pyq.isPaid ? (
+                                    {note.isPaid ? (
                                         <>
                                             <i className="fa-solid fa-cart-shopping text-sm" />
-                                            <span>Buy Now {pyq.price}P</span>
+                                            <span>Buy Now {note.price}P</span>
                                         </>
                                     ) : (
                                         <>
@@ -104,4 +99,4 @@ function PyqCard({ Pyqs = [] }) {
     );
 }
 
-export default PyqCard;
+export default NotesCard;

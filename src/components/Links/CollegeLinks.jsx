@@ -13,14 +13,24 @@ const Collegelinks = () => {
             text: 'College',
         },
         {
-            to: `/college/${collegeName}/seniors`,
-            icon: 'fa-solid fa-user-tie',
-            text: 'Seniors',
+            to: `/college/${collegeName}/resources`,
+            icon: 'fa-solid fa-note-sticky',
+            text: 'Resources',
         },
         {
             to: `/college/${collegeName}/pyq`,
             icon: 'fa-solid fa-bolt',
             text: 'PYQs',
+        },
+        {
+            to: `/college/${collegeName}/notes`,
+            icon: 'fa-solid fa-note-sticky',
+            text: 'Notes',
+        },
+        {
+            to: `/college/${collegeName}/seniors`,
+            icon: 'fa-solid fa-user-tie',
+            text: 'Seniors',
         },
         {
             to: `/college/${collegeName}/store`,
@@ -33,11 +43,6 @@ const Collegelinks = () => {
             text: 'Community',
         },
         {
-            to: `/college/${collegeName}/resources`,
-            icon: 'fa-solid fa-note-sticky',
-            text: 'Resources',
-        },
-        {
             to: `/college/${collegeName}/whatsapp-group`,
             icon: 'fa-brands fa-square-whatsapp',
             text: 'Groups',
@@ -47,11 +52,16 @@ const Collegelinks = () => {
             icon: 'fa-solid fa-magnifying-glass',
             text: 'Opportunity',
         },
+        {
+            to: `/college/${collegeName}/lost-found`,
+            icon: 'fa-solid fa-compass',
+            text: 'Lost_Found',
+        },
     ];
 
     return (
         <section className="hidden lg:flex justify-center items-center text-center my-10 px-4">
-            <div className="bg-white border-radius-38 border-2 border-sky-500 grid grid-cols-8 text-center px-2 sm:px-10 py-6 gap-10 text-base sm:gap-4 sm:text-lg md:gap-6 md:text-xl lg:gap-7 xl:gap-9">
+            <div className="bg-white border-radius-38 border-2 border-sky-500 grid grid-cols-5 xl:grid-cols-10 text-center px-2 sm:px-10 py-6 gap-10 text-base sm:gap-4 sm:text-lg md:gap-6 md:text-xl lg:gap-7 xl:gap-9">
                 {links.map((link, index) => (
                     <Link
                         key={index}

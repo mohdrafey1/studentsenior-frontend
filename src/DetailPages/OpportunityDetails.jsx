@@ -127,7 +127,7 @@ const OpportunityDetails = () => {
                                     href={`https://api.whatsapp.com/send?phone=${opportunity.whatsapp}`}
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg"
+                                    className="px-4 py-2 bg-sky-500 hover:bg-sky-500 transition text-white rounded-lg"
                                 >
                                     Contact Us
                                 </a>
@@ -135,7 +135,7 @@ const OpportunityDetails = () => {
                                     href={`mailto:${opportunity.email}`}
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="px-4 py-2 bg-sky-500 hover:bg-blue-500 transition text-white rounded-lg"
+                                    className="px-4 py-2 bg-sky-500 hover:bg-sky-500 transition text-white rounded-lg"
                                 >
                                     Email Us
                                 </a>

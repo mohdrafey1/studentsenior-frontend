@@ -54,7 +54,7 @@ const WelcomePopup = () => {
                         <div className="flex items-center justify-center gap-6">
                             <button
                                 onClick={handleDonate}
-                                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg"
+                                className="bg-sky-500 hover:bg-sky-600 text-white py-2 px-4 rounded-lg"
                             >
                                 Donate
                             </button>

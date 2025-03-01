@@ -4,69 +4,63 @@ import CollegeLinks from '../components/Links/CollegeLinks';
 import { Link, useParams } from 'react-router-dom';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
-import PyqCard from '../components/Cards/PyqCard.jsx';
-import pyq from '/assets/pyq.png';
+import NotesCard from '../components/Cards/NotesCard.jsx';
 import notesandpyq from '/assets/notes&pyq.png';
-import request from '/assets/request.png';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPyqs } from '../redux/slices/pyqSlice.js';
+import { fetchNotes } from '../redux/slices/NotesSlice.js';
 import { useCollegeId } from '../hooks/useCollegeId.js';
 import Seo from '../components/SEO/Seo.jsx';
 
-const PYQPage = () => {
+const NotesPage = () => {
     const { collegeName } = useParams();
     const collegeId = useCollegeId(collegeName);
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedYear, setSelectedYear] = useState('');
     const [selectedSemester, setSelectedSemester] = useState('');
     const [selectedBranch, setSelectedBranch] = useState('');
     const [selectedCourse, setSelectedCourse] = useState('');
-    const [selectedExamType, setSelectedExamType] = useState('');
 
     const dispatch = useDispatch();
-    const { pyqs, loading } = useSelector((state) => state.pyqs || {});
+    const { notes, loading } = useSelector((state) => state.notes || {});
 
     useEffect(() => {
-        dispatch(fetchPyqs(collegeId));
+        dispatch(fetchNotes(collegeId));
     }, [collegeId]);
 
     // Extract unique values for filters
     const courses = [
         ...new Set(
-            pyqs.map((paper) => paper.subject?.branch?.course?.courseName)
+            notes.map((note) => note.subject?.branch?.course?.courseName)
         ),
     ];
     const branches = selectedCourse
         ? [
               ...new Set(
-                  pyqs
+                  notes
                       .filter(
-                          (paper) =>
-                              paper.subject.branch?.course?.courseName ===
+                          (note) =>
+                              note.subject.branch?.course?.courseName ===
                               selectedCourse
                       )
-                      .map((paper) => paper.subject?.branch?.branchName)
+                      .map((note) => note.subject?.branch?.branchName)
               ),
           ]
         : [];
-    const examTypes = [...new Set(pyqs.map((paper) => paper.examType))];
+    const examTypes = [...new Set(notes.map((note) => note.examType))];
 
-    // Filtered papers
-    const filteredPapers = pyqs.filter((paper) => {
+    // Filtered notes
+    const filterednotes = notes.filter((note) => {
         return (
-            (selectedYear ? paper.year === selectedYear : true) &&
             (selectedSemester
-                ? paper.subject?.semester === Number(selectedSemester)
+                ? note.subject?.semester === Number(selectedSemester)
                 : true) &&
             (selectedBranch
-                ? paper.subject?.branch?.branchName === selectedBranch
+                ? note.subject?.branch?.branchName === selectedBranch
                 : true) &&
             (selectedCourse
-                ? paper.subject?.branch?.course?.courseName === selectedCourse
+                ? note.subject?.branch?.course?.courseName === selectedCourse
                 : true) &&
-            (selectedExamType ? paper.examType === selectedExamType : true) &&
             (searchTerm
-                ? paper.subject.subjectName
+                ? note.subject.subjectName
                       .toLowerCase()
                       .includes(searchTerm.toLowerCase())
                 : true)
@@ -75,14 +69,11 @@ const PYQPage = () => {
 
     // Pagination logic
     const [currentPage, setCurrentPage] = useState(1);
-    const papersPerPage = 6;
-    const indexOfLastPaper = currentPage * papersPerPage;
-    const indexOfFirstPaper = indexOfLastPaper - papersPerPage;
-    const currentPapers = filteredPapers.slice(
-        indexOfFirstPaper,
-        indexOfLastPaper
-    );
-    const totalPages = Math.ceil(filteredPapers.length / papersPerPage);
+    const notesPerPage = 9;
+    const indexOfLastnote = currentPage * notesPerPage;
+    const indexOfFirstnote = indexOfLastnote - notesPerPage;
+    const currentnotes = filterednotes.slice(indexOfFirstnote, indexOfLastnote);
+    const totalPages = Math.ceil(filterednotes.length / notesPerPage);
 
     return (
         <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full">
@@ -90,20 +81,18 @@ const PYQPage = () => {
             <div className="max-w-7xl mx-auto px-4">
                 <div className="mb-8">
                     <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
-                        PYQs -{capitalizeWords(collegeName)}
+                        Notes - {capitalizeWords(collegeName)}
                     </h1>
-                    <Seo
-                        title={`${capitalizeWords(collegeName)} - PYQ`}
-                        desc="Access past year question papers, understand trends, improve strategies, and ace exams confidently with a well-organized, easy-to-use database for students."
-                    />
                     <p className="italic text-center text-xs sm:text-base">
-                        Access past year question papers, understand trends,
-                        improve strategies, and ace exams confidently with a
-                        well-organized, easy-to-use database for students.
+                        Get concise and clear notes to boost your exam
+                        preparation."
                     </p>
+                    <Seo
+                        title={`${capitalizeWords(collegeName)} - Notes`}
+                        desc="Access past year question notes, understand trends, improve strategies, and ace exams confidently with a well-organized, easy-to-use database for students."
+                    />
                 </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 sm:justify-center gap-2 sm:gap-4 mb-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-4 sm:justify-center gap-2 sm:gap-4 mb-4">
                     <input
                         type="text"
                         placeholder="Search by Subject Name"
@@ -111,17 +100,7 @@ const PYQPage = () => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                    <select
-                        className="p-2 px-3 border rounded-3xl w-full sm:w-auto"
-                        onChange={(e) => setSelectedYear(e.target.value)}
-                        value={selectedYear}
-                    >
-                        <option value="">All Years</option>
-                        <option value="2021-22">2021-2022</option>
-                        <option value="2022-23">2022-2023</option>
-                        <option value="2023-24">2023-2024</option>
-                        <option value="2024-25">2024-2025</option>
-                    </select>
+
                     <select
                         className="p-2 px-3 border rounded-3xl w-full sm:w-auto"
                         onChange={(e) => setSelectedSemester(e.target.value)}
@@ -164,23 +143,11 @@ const PYQPage = () => {
                             </option>
                         ))}
                     </select>
-                    <select
-                        className="p-2 px-3 border rounded-3xl w-full sm:w-auto"
-                        onChange={(e) => setSelectedExamType(e.target.value)}
-                        value={selectedExamType}
-                    >
-                        <option value="">All Exam Types</option>
-                        {examTypes.map((examType) => (
-                            <option key={examType} value={examType}>
-                                {examType}
-                            </option>
-                        ))}
-                    </select>
                 </div>
 
-                {currentPapers.length > 0 ? (
+                {currentnotes.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-2 lg:gap-6">
-                        <PyqCard Pyqs={currentPapers} />
+                        <NotesCard notes={currentnotes} />
                     </div>
                 ) : (
                     <div className="col-span-4 flex justify-center items-center py-10 w-full">
@@ -189,10 +156,10 @@ const PYQPage = () => {
                         ) : (
                             <div className="text-center p-4 bg-white rounded-lg shadow-3xl">
                                 <p className="text-xl font-semibold text-gray-700">
-                                    No papers found matching the criteria. Try
+                                    No notes found matching the criteria. Try
                                     adjusting your filters.
-                                    <br /> If You have any PYQ paper, Please
-                                    Provide us{' '}
+                                    <br /> If You have any Notes, Please Provide
+                                    us{' '}
                                     <Link
                                         to={`/college/${collegeName}/resources`}
                                         className="text-blue-500"
@@ -226,34 +193,14 @@ const PYQPage = () => {
                         className="w-36 mx-auto"
                     />
                     <p className="mb-4">
-                        If you have any PYQs or notes, please share them with
+                        If you have any notes or notes, please share them with
                         us.
                     </p>
                     <Link
                         to={`/college/${collegeName}/resources`}
                         className="inline-block px-6 py-3 w-full bg-sky-500 text-white font-bold rounded-lg hover transition-colors duration-200"
                     >
-                        Click Here To Share PYQs
-                    </Link>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-3xl text-center mb-8 lg:w-80 lg:m-0 lg:mb-4 m-4">
-                    <img
-                        src={request}
-                        alt="request pyq "
-                        className="w-36 mx-auto p-4"
-                    />
-                    <p className="mb-4">
-                        {/* Request a Previous Year's Question Paper<br /> */}
-                        <a className="text-sm text-gray-500">
-                            Can't find the PYQ you need? Request it here, and
-                            we'll send it to you shortly!
-                        </a>
-                    </p>
-                    <Link
-                        to="/request-pyq"
-                        className="inline-block px-6 py-3 w-full bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors duration-200"
-                    >
-                        Request PYQ
+                        Click Here To Share notes
                     </Link>
                 </div>
             </div>
@@ -262,4 +209,4 @@ const PYQPage = () => {
     );
 };
 
-export default PYQPage;
+export default NotesPage;

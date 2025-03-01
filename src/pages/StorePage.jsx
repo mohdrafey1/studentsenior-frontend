@@ -15,6 +15,7 @@ import Dialog from '../utils/Dialog.jsx';
 import { fetchProducts } from '../redux/slices/productSlice.js';
 import useRequireLogin from '../hooks/useRequireLogin.js';
 import Seo from '../components/SEO/Seo.jsx';
+import Button from '../ui/Button.jsx';
 
 const StorePage = () => {
     const { collegeName } = useParams();
@@ -212,7 +213,9 @@ const StorePage = () => {
                     <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
                         Product Store - {capitalizeWords(collegeName)}
                         <Seo
-                            title={`Product Store - ${capitalizeWords(collegeName)}`}
+                            title={`Product Store - ${capitalizeWords(
+                                collegeName
+                            )}`}
                             desc="Buy and sell your stationery and gadgets easily to your
                         juniors."
                         />
@@ -224,12 +227,7 @@ const StorePage = () => {
                     <br />
                 </div>
                 <div className="flex justify-center mb-4">
-                    <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded"
-                        onClick={handleAddProduct}
-                    >
-                        Add Product
-                    </button>
+                    <Button onClick={handleAddProduct}>Add Product</Button>
                 </div>
 
                 <div className="flex justify-center items-center py-1">

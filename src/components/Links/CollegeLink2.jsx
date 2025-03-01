@@ -41,11 +41,6 @@ const Collegelink2 = () => {
             text: 'Seniors',
         },
         {
-            to: `/college/${collegeName}/pyq`,
-            icon: 'fa-solid fa-note-sticky',
-            text: 'PYQs',
-        },
-        {
             to: `/college/${collegeName}/whatsapp-group`,
             icon: 'fa-brands fa-square-whatsapp',
             text: 'Groups',
@@ -54,6 +49,21 @@ const Collegelink2 = () => {
             to: `/college/${collegeName}/opportunities`,
             icon: 'fa-solid fa-magnifying-glass',
             text: 'Opportunity',
+        },
+        {
+            to: `/college/${collegeName}/lost-found`,
+            icon: 'fa-solid fa-compass',
+            text: 'Lost_Found',
+        },
+        {
+            to: `/college/${collegeName}/pyq`,
+            icon: 'fa-solid fa-note-sticky',
+            text: 'PYQs',
+        },
+        {
+            to: `/college/${collegeName}/notes`,
+            icon: 'fa-solid fa-note-sticky',
+            text: 'Notes',
         },
     ];
 
