@@ -74,7 +74,13 @@ const LostFoundItem = ({ item, imageUrl }) => {
                     {item.type.toUpperCase()}
                 </p>
                 <a
-                    href={`https://wa.me/${item.whatsapp}`}
+                    href={`https://api.whatsapp.com/send?phone=${encodeURIComponent(
+                        item.whatsapp.startsWith('+')
+                            ? item.whatsapp
+                            : `+91${item.whatsapp}`
+                    )}&text=${encodeURIComponent(
+                        `Hey, I came from Student Senior about ${item.type} ${item.name}. Can you provide more details?`
+                    )}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-4 inline-flex items-center justify-center px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors duration-300"

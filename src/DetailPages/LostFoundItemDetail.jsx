@@ -263,7 +263,13 @@ const LostFoundItemDetail = () => {
                                 </button>
                             ) : (
                                 <a
-                                    href={`https://wa.me/${lostFoundItem.whatsapp}`}
+                                    href={`https://api.whatsapp.com/send?phone=${encodeURIComponent(
+                                        lostFoundItem.whatsapp.startsWith('+')
+                                            ? lostFoundItem.whatsapp
+                                            : `+91${lostFoundItem.whatsapp}`
+                                    )}&text=${encodeURIComponent(
+                                        `Hey, I came from Student Senior about ${lostFoundItem.type} ${lostFoundItem.name}. Can you provide more details?`
+                                    )}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center justify-center px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"

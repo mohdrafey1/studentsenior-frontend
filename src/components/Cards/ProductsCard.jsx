@@ -56,10 +56,15 @@ function ProductsCard({
                     className="text-green-600 hover:text-green-500 transition"
                 >
                     <a
+                        href={`https://api.whatsapp.com/send?phone=${encodeURIComponent(
+                            product.whatsapp.startsWith('+')
+                                ? product.whatsapp
+                                : `+91${product.whatsapp}`
+                        )}&text=${encodeURIComponent(
+                            `Hey, I came from Student Senior about listed ${product.name}. Can you provide more details?`
+                        )}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={`https://wa.me/${product.whatsapp}`}
-                        aria-label="WhatsApp"
                     >
                         <i className="fa-brands fa-whatsapp text-2xl"></i>
                     </a>

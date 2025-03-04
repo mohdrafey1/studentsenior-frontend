@@ -74,7 +74,13 @@ const SeniorDetailModal = ({ senior, setIsDetailModalOpen }) => {
                 <div className="flex justify-center space-x-4 mb-6">
                     <a
                         target="_blank"
-                        href={`https://api.whatsapp.com/send?phone=${senior.whatsapp}`}
+                        href={`https://api.whatsapp.com/send?phone=${encodeURIComponent(
+                            senior.whatsapp.startsWith('+')
+                                ? senior.whatsapp
+                                : `+91${senior.whatsapp}`
+                        )}&text=${encodeURIComponent(
+                            `Hey ${senior.name}, I came from Student Senior. Can I talk with you ?`
+                        )}`}
                         aria-label="WhatsApp"
                         className="text-green-600 hover:text-green-500 transition"
                     >

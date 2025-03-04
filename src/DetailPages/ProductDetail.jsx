@@ -54,7 +54,13 @@ function ProductDetail() {
                     key="whatsapp"
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={`https://wa.me/${product.whatsapp}`}
+                    href={`https://api.whatsapp.com/send?phone=${encodeURIComponent(
+                        product.whatsapp.startsWith('+')
+                            ? product.whatsapp
+                            : `+91${product.whatsapp}`
+                    )}&text=${encodeURIComponent(
+                        `Hey , I came from Student senior about this product ${product.name}. Can you provide more details ?`
+                    )}`}
                     aria-label="WhatsApp"
                     className="text-green-600 hover:text-green-500 transition text-3xl"
                 >
