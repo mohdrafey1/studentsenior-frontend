@@ -124,7 +124,13 @@ const OpportunityDetails = () => {
                             </div>
                             <div className="flex gap-3">
                                 <a
-                                    href={`https://api.whatsapp.com/send?phone=${opportunity.whatsapp}`}
+                                    href={`https://api.whatsapp.com/send?phone=${encodeURIComponent(
+                                        opportunity.whatsapp.startsWith('+')
+                                            ? opportunity.whatsapp
+                                            : `+91${opportunity.whatsapp}`
+                                    )}&text=${encodeURIComponent(
+                                        `Hey , I came from Student senior about this opportunity ${opportunity.name}. Can I talk with you ?`
+                                    )}`}
                                     target="_blank"
                                     rel="noreferrer"
                                     className="px-4 py-2 bg-sky-500 hover:bg-sky-500 transition text-white rounded-lg"
