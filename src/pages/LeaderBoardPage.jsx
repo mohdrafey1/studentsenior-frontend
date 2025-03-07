@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CollegeLinks from '../components/Links/CollegeLinks';
-import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import Seo from '../components/SEO/Seo.jsx';
 import { api } from '../config/apiConfiguration.js';
@@ -147,7 +146,7 @@ function LeaderboardPage() {
                     </div>
                 </div>
             </div>
-            <Collegelink2 />
+    
         </div>
     );
 }
