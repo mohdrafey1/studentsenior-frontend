@@ -40,8 +40,6 @@ const RequestPYQ = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!requireLogin()) return;
-
         try {
             console.log(formData);
 
