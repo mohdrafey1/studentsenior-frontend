@@ -35,6 +35,7 @@ const Footer = () => {
         { to: '/contact-us', text: 'Contact Us' },
         { to: '/privacy-policy', text: 'Privacy Policy' },
         { to: '/terms-and-conditions', text: 'T&C' },
+        { to: '/refund-policy', text: 'Refund Policy' },
     ];
 
     return (
@@ -51,7 +52,7 @@ const Footer = () => {
 
                 {/* Footer Links */}
                 <div className="text-center mb-6 md:mb-0">
-                    <div className="flex justify-center space-x-4 p-2">
+                    <div className="flex justify-center flex-wrap space-x-4 p-2">
                         {footerLinks.map((link, index) => (
                             <Link
                                 key={index}
