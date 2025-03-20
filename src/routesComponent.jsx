@@ -42,6 +42,7 @@ import LeaderBoardPage from './pages/LeaderBoardPage';
 import LostFoundPage from './pages/LostFoundPage';
 import NotesPage from './pages/NotesPage';
 import LostFoundItemDetail from './DetailPages/LostFoundItemDetail';
+import ShippingPolicy from './others/ShippingPolicy';
 
 const validColleges = ['integral-university', 'mpec-kanpur'];
 
@@ -268,6 +269,7 @@ const RoutesComponent = () => {
                 element={<TermsAndConditions />}
             />
             <Route path="/refund-policy" element={<RefundPolicy />} />
+            <Route path="/shipping-policy" element={<ShippingPolicy />} />
 
             <Route path="/donation" element={<DonationPage />} />
 
