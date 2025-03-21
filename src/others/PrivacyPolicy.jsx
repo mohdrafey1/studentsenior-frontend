@@ -77,7 +77,7 @@ const PrivacyPolicy = () => {
                     If you have any questions about our Privacy Policy, please
                     contact us at
                     <a
-                        href="mailto:your-email@example.com"
+                        href="mailto:studentsenior.help@gmail.com"
                         className="text-blue-500 hover:underline"
                     >
                         {' '}
