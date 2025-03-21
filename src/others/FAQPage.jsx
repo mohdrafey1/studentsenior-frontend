@@ -21,7 +21,7 @@ const FAQPage = () => {
         },
         {
             question: 'How do I contact support?',
-            answer: "You can reach us through the 'Contact Us' page or email us at studentsenior12@gmail.com.",
+            answer: "You can reach us through the 'Contact Us' page or email us at  studentsenior.help@gmail.com.",
         },
     ];
 

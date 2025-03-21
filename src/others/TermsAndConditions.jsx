@@ -117,11 +117,11 @@ const TermsAndConditions = () => {
                     If you have any questions about these Terms and Conditions,
                     please contact us at
                     <a
-                        href="mailto:studentsenior12@gmail.com"
+                        href="mailto:studentsenior.help@gmail.com"
                         className="text-blue-500 hover:underline"
                     >
                         {' '}
-                        studentsenior12@gmail.com
+                        studentsenior.help@gmail.com
                     </a>
                     .
                 </p>
