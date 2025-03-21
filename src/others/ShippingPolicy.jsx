@@ -57,7 +57,7 @@ const ShippingPolicy = () => {
       
       <section>
         <h2 className="text-xl font-semibold">10. Contact Us</h2>
-        <p>For shipping-related queries, reach us at <strong>studentsenior12@gmail.com</strong> or call <strong>+91 9455346151</strong></p>
+        <p>For shipping-related queries, reach us at <strong>studentsenior.help@gmail.com</strong> or call <strong>+91 9455346151</strong></p>
       </section>
       </div>
     </div>

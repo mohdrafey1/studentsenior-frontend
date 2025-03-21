@@ -76,11 +76,11 @@ const RefundPolicy = () => {
                 <p className="mb-4">
                     If you have any questions or concerns regarding our Refund Policy or need assistance with your refund request, please contact us at
                     <a
-                        href="mailto:studentsenior12@gmail.com"
+                        href="mailto:studentsenior.help@gmail.com"
                         className="text-blue-500 hover:underline"
                     >
                         {' '}
-                        studentsenior12@gmail.com
+                        studentsenior.help@gmail.com
                     </a>
                     .
                 </p>
