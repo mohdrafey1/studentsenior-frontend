@@ -81,7 +81,7 @@ const PrivacyPolicy = () => {
                         className="text-blue-500 hover:underline"
                     >
                         {' '}
-                        studentsenior12@gmail.com
+                        studentsenior.help@gmail.com
                     </a>
                     .
                 </p>
