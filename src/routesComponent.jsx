@@ -271,7 +271,7 @@ const RoutesComponent = () => {
             <Route path="/refund-policy" element={<RefundPolicy />} />
             <Route path="/shipping-policy" element={<ShippingPolicy />} />
 
-            <Route path="/donation" element={<DonationPage />} />
+            {/* <Route path="/donation" element={<DonationPage />} /> */}
 
             {/* Catch-all for undefined routes */}
             <Route path="*" element={<NotFoundPage />} />
