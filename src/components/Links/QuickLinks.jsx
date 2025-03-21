@@ -6,21 +6,38 @@ import { toast } from 'react-toastify';
 // Reusable Quick Access Button Component
 const QuickAccessButton = ({ icon, label, onClick }) => {
     return (
-        <div
-            className="px-4 py-2 rounded-full shadow-lg border-8 border-sky-100 w-28 h-28 sm:h-36 sm:w-36 flex justify-center items-center cursor-pointer 
-                      bg-gradient-to-t from-sky-300 to-white hover:bg-gradient-to-r hover:from-blue-300 hover:to-white
-                      transition-all duration-700 ease-in-out"
-            onClick={onClick}
-            role="button"
-            aria-label={`Open ${label}`}
-        >
-            <div className="flex flex-col items-center sm:text-xl font-medium">
-                <i className={icon}></i>
-                <p>{label}</p>
+    <div className="container mx-auto my-4 p-4">
+        <h2 className="text-center text-2xl font-bold text-gray-700 mb-2">
+            Courses starting from 999 to 4999
+        </h2>
+        <h1 className="text-center text-3xl p-4">
+            <span className="text-3xl sm:text-4xl font-extrabold text-gray-800">
+                Quick Access
+            </span>
+        </h1>
+        <div className="flex justify-center items-center">
+            <div className="p-5 flex flex-wrap gap-8 w-full justify-center">
+                {quickAccessItems.map((item, index) => (
+                    <QuickAccessButton
+                        key={index}
+                        icon={item.icon}
+                        label={item.label}
+                        onClick={() => handleOpenModal(item.path)}
+                    />
+                ))}
             </div>
         </div>
-    );
-};
+
+        {/* College Selection Modal */}
+        <CollegeSelectionModal
+            visible={visible}
+            onClose={handleCloseModal}
+            onConfirm={handleNavigate}
+            selectedCollege={selectedCollege}
+            setSelectedCollege={setSelectedCollege}
+        />
+    </div>
+);
 
 // Reusable College Selection Modal Component
 const CollegeSelectionModal = ({
