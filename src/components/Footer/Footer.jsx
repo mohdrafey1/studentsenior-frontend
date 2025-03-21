@@ -63,6 +63,7 @@ const Footer = () => {
                             </Link>
                         ))}
                     </div>
+                    <p className="text-gray-400 mt-2">Courses starting from 999 to 4999</p>
                     <p className="text-gray-400 mt-2">
                         &copy; 2024 Student Senior. All rights reserved.
                     </p>
