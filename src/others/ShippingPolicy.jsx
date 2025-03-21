@@ -14,8 +14,8 @@ const ShippingPolicy = () => {
       <section className="mb-6">
         <h2 className="text-xl font-semibold">2. Shipping Methods & Delivery Time</h2>
         <ul className="list-disc pl-5">
-          <li><strong>Standard Shipping:</strong> 5-7 business days</li>
-          <li><strong>Express Shipping:</strong> 2-4 business days</li>
+          <li><strong>Standard Delivery:</strong> 5-7 business days</li>
+          <li><strong>Express Delivery:</strong> 2-4 business days</li>
           <li><strong>Local Pickup:</strong> Available for select locations</li>
         </ul>
       </section>
