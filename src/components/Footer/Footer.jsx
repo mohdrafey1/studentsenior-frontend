@@ -35,7 +35,7 @@ const Footer = () => {
         { to: '/contact-us', text: 'Contact Us' },
         { to: '/privacy-policy', text: 'Privacy Policy' },
         { to: '/terms-and-conditions', text: 'T&C' },
-        { to: '/refund-policy', text: 'Refund Policy' }, 
+        { to: '/refund-policy', text: 'Refund Policy' },
         { to: '/shipping-policy', text: 'Shipping Policy' },
     ];
 
@@ -64,7 +64,6 @@ const Footer = () => {
                             </Link>
                         ))}
                     </div>
-                    <p className="text-gray-400 mt-2">Courses starting from 999 to 4999</p>
                     <p className="text-gray-400 mt-2">
                         &copy; 2024 Student Senior. All rights reserved.
                     </p>
