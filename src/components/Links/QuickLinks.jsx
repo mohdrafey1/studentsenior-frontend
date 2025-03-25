@@ -122,6 +122,9 @@ function QuickLinks() {
 
     return (
         <div className="container mx-auto my-4 p-4">
+<h2 className="text-center text-2xl font-bold text-gray-700 mb-2">
+            Courses starting from 999 to 4999
+        </h2>
             <h1 className="text-center text-3xl p-4">
                 <span className="text-3xl sm:text-4xl font-extrabold text-gray-800">
                     Quick Access
