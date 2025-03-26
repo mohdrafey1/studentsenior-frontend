@@ -44,7 +44,7 @@ function LeaderboardPage() {
             />
 
             {/* Information About Rewards */}
-            <div className="bg-sky-50 p-6 rounded-lg shadow-md mt-8 text-center">
+            <div className="bg-sky-50 p-6 rounded-lg lg:mx-20 mx-0 shadow-md mt-8 text-center">
                 <h2 className="text-xl font-bold text-sky-800 mb-2">
                     How to Win?
                 </h2>
@@ -89,16 +89,15 @@ function LeaderboardPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {leaderboard.map((user, index) => (
+                                {leaderboard.slice(0, 9).map((user, index) => (
                                     <tr
                                         key={user.userId}
-                                        className={`${
-                                            index === 0
+                                        className={`${index === 0
                                                 ? 'bg-green-100'
                                                 : index % 2 === 0
-                                                ? 'bg-gray-50'
-                                                : 'bg-white'
-                                        } hover:bg-gray-100 transition-colors`}
+                                                    ? 'bg-gray-50'
+                                                    : 'bg-white'
+                                            } hover:bg-gray-100 transition-colors`}
                                     >
                                         <td className="px-6 py-4 font-medium text-gray-700 flex items-center">
                                             {index + 1}
@@ -146,7 +145,7 @@ function LeaderboardPage() {
                     </div>
                 </div>
             </div>
-    
+
         </div>
     );
 }
