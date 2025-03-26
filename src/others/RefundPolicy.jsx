@@ -40,7 +40,7 @@ const RefundPolicy = () => {
                 </p>
 
                 <h2 className="text-2xl font-semibold mb-3">
-                    3. Refund Request Process
+                    3. Refund Request Credited
                 </h2>
                 <p className="mb-4">
                     If you believe you are eligible for a refund, please follow these steps:
@@ -52,10 +52,10 @@ const RefundPolicy = () => {
                 </p>
 
                 <h2 className="text-2xl font-semibold mb-3">
-                    4. Refund Processing
+                    4. Refund Credited
                 </h2>
                 <p className="mb-4">
-                    If your refund request is approved, we will process the refund within 2 business days. The refund will be issued to the original payment method, and the transaction may take additional time depending on your payment provider's policies.
+                    If your refund request is approved, we will credit the refund within 2 business days. The refund will be issued to the original payment method, and the transaction may take additional time depending on your payment provider's policies.
                 </p>
 
                 <h2 className="text-2xl font-semibold mb-3">
