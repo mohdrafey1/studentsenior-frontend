@@ -61,10 +61,10 @@ const MainPage = () => {
                     'A platform offering mentorship, past year papers, and a student marketplace to support learning, career growth, and community engagement in college life.'
                 }
             />
-            <div className='flex'>
-                <div className='w-1/2 pt-32 px-8'>
+            <div className='lg:flex sm:block container mx-auto'>
+                <div className='lg:w-4/5 w-full lg:pt-32 pt-10 px-8'>
                     <Hero>
-                        <div className="flex flex-col items-start my-10">
+                        <div className="flex flex-col lg:items-start items-center lg:my-10 my-0">
                             <div className="text-black bg-white px-4 py-2 border-radius-38 border-4 border-sky-300 shadow-2xl shadow-sky-200 flex flex-col sm:flex-row items-center my-10">
                                 <div className="text-xl sm:text-2xl flex items-center mb-4 sm:mb-0">
                                     <i className="fas fa-building text-sky-500 text-xl mr-3"></i>
@@ -101,7 +101,7 @@ const MainPage = () => {
                         </div>
                     </Hero>
                 </div>
-                <div className="flex items-center justify-center w-1/2"
+                <div className="hidden md:w-full sm:w-full sm:flex  items-center justify-center"
                     initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}

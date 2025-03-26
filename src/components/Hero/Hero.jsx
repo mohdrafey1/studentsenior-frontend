@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const Hero = ({ children }) => {
     return (
-        <section className="p-8 rounded-b-3xl w-full flex flex-col">
+        <section className="lg:p-8 p-4 rounded-b-3xl w-full flex flex-col">
             <motion.div 
                 className="max-w-2xl"
                 initial={{ opacity: 0, y: 40 }}
@@ -11,7 +11,7 @@ const Hero = ({ children }) => {
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
                 <motion.h1 
-                    className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight"
+                    className="text-2xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight"
                 >
                     Discover Your 
                     <motion.span 

@@ -51,7 +51,7 @@ const Header = () => {
         <nav className={`fixed inset-0 transition-transform duration-300 
             ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}
             lg:static lg:transform-none lg:flex lg:items-center lg:space-x-6
-            pt-20 lg:pt-0 bg-transparent lg:bg-transparent
+            pt-20 lg:pt-0 bg-blue-300 z-40 lg:bg-transparent
         `}>
             <div className="flex flex-col lg:flex-row items-center space-y-6 lg:space-y-0">
                 {menuItems.map((item) => (
