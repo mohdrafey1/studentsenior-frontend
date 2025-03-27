@@ -1,43 +1,43 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
     const socialLinks = [
         {
-            href: 'https://t.me/studentsenior12',
-            ariaLabel: 'Telegram',
-            icon: 'fa-brands fa-telegram',
+            href: "https://t.me/studentsenior12",
+            ariaLabel: "Telegram",
+            icon: "fa-brands fa-telegram",
         },
         {
-            href: 'https://www.linkedin.com/in/mohd-rafey/',
-            ariaLabel: 'LinkedIn',
-            icon: 'fa-brands fa-linkedin',
+            href: "https://www.linkedin.com/in/mohd-rafey/",
+            ariaLabel: "LinkedIn",
+            icon: "fa-brands fa-linkedin",
         },
         {
-            href: 'https://www.instagram.com/studentsenior12?igsh=c2NkZWRpNm9pdTVy',
-            ariaLabel: 'Instagram',
-            icon: 'fa-brands fa-instagram',
+            href: "https://www.instagram.com/studentsenior12?igsh=c2NkZWRpNm9pdTVy",
+            ariaLabel: "Instagram",
+            icon: "fa-brands fa-instagram",
         },
         {
-            href: 'https://youtube.com/extraelements',
-            ariaLabel: 'YouTube',
-            icon: 'fa-brands fa-youtube',
+            href: "https://youtube.com/extraelements",
+            ariaLabel: "YouTube",
+            icon: "fa-brands fa-youtube",
         },
         {
-            href: 'https://api.whatsapp.com/send?phone=919455346151',
-            ariaLabel: 'WhatsApp',
-            icon: 'fa-brands fa-whatsapp',
+            href: "https://api.whatsapp.com/send?phone=919455346151",
+            ariaLabel: "WhatsApp",
+            icon: "fa-brands fa-whatsapp",
         },
     ];
 
     const footerLinks = [
         // { to: '/donation', text: 'Donate' },
-        { to: '/contact-us', text: 'Contact Us' },
-        { to: '/about-us', text: 'About Us' },
-        { to: '/privacy-policy', text: 'Privacy Policy' },
-        { to: '/terms-and-conditions', text: 'T&C' },
-        { to: '/refund-policy', text: 'Refund Policy' },
-        { to: '/shipping-policy', text: 'Shipping Policy' },
+        { to: "/contact-us", text: "Contact Us" },
+        { to: "/about-us", text: "About Us" },
+        { to: "/privacy-policy", text: "Privacy Policy" },
+        { to: "/terms-and-conditions", text: "T&C" },
+        { to: "/refund-policy", text: "Refund Policy" },
+        { to: "/shipping-policy", text: "Shipping Policy" },
     ];
 
     return (
@@ -50,6 +50,10 @@ const Footer = () => {
                         Email: studentsenior.help@gmail.com
                     </p>
                     <p className="text-gray-400">Phone: +91 9455346151</p>
+                    <p className="text-gray-400">
+                        Address: Teunga , Phoolpur , Azamgarh , Uttar Pradesh ,
+                        276304
+                    </p>
                 </div>
 
                 {/* Footer Links */}
