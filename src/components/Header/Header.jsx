@@ -12,7 +12,7 @@ const Header = () => {
     };
     const menuItems = [
         { name: 'Home', path: '/' },
-        {name: 'Course', path:'/courses'},
+        { name: 'Course', path: '/courses' },
         { name: 'Join as a Senior', path: '/becomesenior' },
         { name: 'Add Your College', path: '/add-college' },
         { name: 'Leaderboard', path: '/leaderboard' }
@@ -32,7 +32,7 @@ const Header = () => {
                     className="lg:hidden focus:outline-none z-50"
                 >
                     <svg
-                        className={`w-6 h-6 transition-transform duration-300 ${isMenuOpen ? 'rotate-90 fixed' : ''}`}
+                        className={`w-6 h-6 transition-transform duration-300 ${isMenuOpen ? 'rotate-90 fixed right-6 top-6' : ''}`}
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
