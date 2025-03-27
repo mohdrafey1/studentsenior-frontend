@@ -12,12 +12,13 @@ const Header = () => {
     };
     const menuItems = [
         { name: 'Home', path: '/' },
+        {name: 'Course', path:'/courses'},
         { name: 'Join as a Senior', path: '/becomesenior' },
         { name: 'Add Your College', path: '/add-college' },
         { name: 'Leaderboard', path: '/leaderboard' }
     ];
     return (
-        <header className="top-0 py-1 left-0 w-full bg-transparent rounded-full z-50">
+        <header className="top-0 py-1 left-0 w-full bg-transparent rounded-full z-40">
             <div className="container mx-auto px-6 py-3 flex justify-between items-center">
                 {/* Logo */}
                 <Link to="/" className="flex items-center">
@@ -31,7 +32,7 @@ const Header = () => {
                     className="lg:hidden focus:outline-none z-50"
                 >
                     <svg
-                        className={`w-6 h-6 transition-transform duration-300 ${isMenuOpen ? 'rotate-90' : ''}`}
+                        className={`w-6 h-6 transition-transform duration-300 ${isMenuOpen ? 'rotate-90 fixed' : ''}`}
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
