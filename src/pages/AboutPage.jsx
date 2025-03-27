@@ -61,7 +61,7 @@ function AboutPage() {
                 </section>
 
                 {/* Mission Section */}
-                <section className="py-20 bg-white">
+                <section className="py-20 ">
                     <div className="container mx-auto px-6">
                         <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">
                             Our Mission

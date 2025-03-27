@@ -39,6 +39,11 @@ const MainPage = () => {
 
     const handleCollegeChange = (event) => {
         setSelectedCollege(event.target.value);
+        if (event.target.value) {
+            navigate(`/college/${event.target.value}`);
+        } else {
+            toast.error('Please Select a College!');
+        }
     };
 
     const handleCollegeSelect = () => {
@@ -65,8 +70,8 @@ const MainPage = () => {
                 <div className='lg:w-4/5 w-full lg:pt-32 pt-10 px-8'>
                     <Hero>
                         <div className="flex flex-col lg:items-start items-center lg:my-10 my-0">
-                            <div className="text-black bg-white px-4 py-2 border-radius-38 border-4 border-sky-300 shadow-2xl shadow-sky-200 flex flex-col sm:flex-row items-center my-10">
-                                <div className="text-xl sm:text-2xl flex items-center mb-4 sm:mb-0">
+                            <div className="text-black bg-white px-4 py-2 rounded-[38px] lg:rounded-r-full border-4 border-sky-300 shadow-2xl shadow-sky-200 flex flex-col sm:flex-row items-center my-10">
+                                <div className="text-xl sm:text-2xl flex items-center mb-0 sm:mb-0">
                                     <i className="fas fa-building text-sky-500 text-xl mr-3"></i>
                                     <select
                                         className="p-2 rounded-md outline-none text-lg"
@@ -91,12 +96,12 @@ const MainPage = () => {
                                         })}
                                     </select>
                                 </div>
-                                <button
+                                {/* <button
                                     onClick={handleCollegeSelect}
                                     className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-full hover:bg-gradient-to-bl focus:outline-none focus:ring-2 focus:ring-indigo-200"
                                 >
                                     Submit
-                                </button>
+                                </button> */}
                             </div>
                         </div>
                     </Hero>

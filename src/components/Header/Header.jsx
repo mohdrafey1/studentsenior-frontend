@@ -32,7 +32,7 @@ const Header = () => {
                     className="lg:hidden focus:outline-none z-50"
                 >
                     <svg
-                        className={`w-6 h-6 transition-transform duration-300 ${isMenuOpen ? 'rotate-90' : ''}`}
+                        className={`w-6 h-6 transition-transform duration-300 ${isMenuOpen ? 'rotate-90 fixed' : ''}`}
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"

@@ -33,6 +33,7 @@ const Footer = () => {
     const footerLinks = [
         // { to: '/donation', text: 'Donate' },
         { to: '/contact-us', text: 'Contact Us' },
+        { to: '/about-us', text: 'About Us' },
         { to: '/privacy-policy', text: 'Privacy Policy' },
         { to: '/terms-and-conditions', text: 'T&C' },
         { to: '/refund-policy', text: 'Refund Policy' },
