@@ -52,7 +52,7 @@ const DetailPageNavbar = ({ path, handleShare = originalHandleShare }) => {
 
     return (
         <>
-            <div className="fixed top-0 left-0 z-30 w-full bg-white shadow-md h-20 flex items-center justify-between px-5">
+            <div className="fixed top-0 left-0 z-50 w-full bg-white shadow-md h-20 flex items-center justify-between px-5">
                 <div className="text-gray-600 cursor-pointer" onClick={handleBackNavigation}>
                     <i className="fa-solid fa-arrow-left-long fa-2xl"></i>
                 </div>

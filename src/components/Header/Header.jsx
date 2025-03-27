@@ -1,148 +1,94 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import '../../App.css';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [pathData, setPathData] = useState('M4 6h16M4 12h16M4 18h16');
-
     const location = useLocation();
     const { currentUser } = useSelector((state) => state.user);
-    const toggleMenu = () => {
-        if (!isMenuOpen) {
-            setPathData('M4 4 L20 20 M4 20 L20 4');
-            document.getElementById('rr').style.visibility = 'visible';
-            document.getElementById('menu').classList.add('active');
-        } else {
-            document.getElementById('menu').classList.remove('active');
-            document.getElementById('rr').style.visibility = 'hidden';
-            setPathData('M4 6h16M4 12h16M4 18h16');
-        }
 
+    const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
+    const menuItems = [
+        { name: 'Home', path: '/' },
+        { name: 'Course', path: '/courses' },
+        { name: 'Join as a Senior', path: '/becomesenior' },
+        { name: 'Add Your College', path: '/add-college' },
+        { name: 'Leaderboard', path: '/leaderboard' }
+    ];
     return (
-        <header className="p-4">
-            <div className="container mx-auto flex justify-between items-center">
-                <Link to="/">
-                    <h1 className="text-3xl mx-5 font-bold">
-                        <span className="heading-m pt-1">
-                            <span style={{ fontSize: '40px' }}>S</span>
-                            tudent{' '}
-                        </span>{' '}
-                        <span className="heading-m">Senior</span>
-                    </h1>
+        <header className="top-0 py-1 left-0 w-full bg-transparent rounded-full z-40">
+            <div className="container mx-auto px-6 py-3 flex justify-between items-center">
+                {/* Logo */}
+                <Link to="/" className="flex items-center">
+                    <span className="text-3xl font-bold text-blue-600">
+                        <span className="text-4xl">S</span>tudent
+                        <span className="text-blue-400"> Senior</span>
+                    </span>
                 </Link>
-                <div className="lg:hidden">
-                    <button
-                        onClick={toggleMenu}
-                        className={`focus:outline-none relative z-20 rounded-lg p-2 ${
-                            isMenuOpen ? 'bg-sky-400' : 'transparent'
-                        }`}
+                <button
+                    onClick={toggleMenu}
+                    className="lg:hidden focus:outline-none z-50"
+                >
+                    <svg
+                        className={`w-6 h-6 transition-transform duration-300 ${isMenuOpen ? 'rotate-90 fixed right-6 top-6' : ''}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
                     >
-                        <svg
-                            className="w-6 h-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d={pathData}
-                            ></path>
-                        </svg>
-                    </button>
-                </div>
-                <div className="root" onClick={toggleMenu} id="rr">
-                    <div className="menu" id="menu" onTouchStart={null}>
-                        <nav
-                            className={`${
-                                isMenuOpen ? 'menu-m.active mt-4' : 'menu-m'
-                            } absolute rounded-tr-3xl  top-0 left-0 w-4/5 h-screen bg-white lg:bg-transparent lg:relative lg:top-auto lg:left-auto lg:w-auto lg:h-auto lg:flex lg:items-center `}
-                            id="toggle"
-                        >
-                            <div className="myclass">
-                                <h1 className="text-3xl mx-5 font-bold p-4">
-                                    <span
-                                        style={{
-                                            color: 'red',
-                                            fontSize: '40px',
-                                        }}
-                                    >
-                                        S
-                                    </span>
-                                    tudent{' '}
-                                    <span style={{ color: 'red' }}>S</span>enior
-                                </h1>
-                            </div>
-                            <ul className="laptop-scr text-xl flex flex-col items-center lg:flex-row lg:space-x-4">
-                                <Link to="/" onClick={toggleMenu}>
-                                    <li className="ihover rounded-3xl">Home</li>
-                                </Link>
-
-                                <Link to="/becomesenior" onClick={toggleMenu}>
-                                    <li className="ihover rounded-3xl">
-                                        Join as a Senior
-                                    </li>
-                                </Link>
-
-                                <Link to="/add-college" onClick={toggleMenu}>
-                                    <li className="ihover rounded-3xl">
-                                        Add Your College
-                                    </li>
-                                </Link>
-
-                                {/* <Link to="/about-us" onClick={toggleMenu}>
-                                    <li className="ihover rounded-3xl">
-                                        About Us
-                                    </li>
-                                </Link> */}
-                                <Link to={`/leaderboard`}>
-                                    <li className="ihover rounded-3xl">
-                                        Leaderboard
-                                    </li>
-                                </Link>
-                                {currentUser ? (
-                                    <>
-                                        <Link
-                                            to="/profile"
-                                            onClick={toggleMenu}
-                                        >
-                                            <li className="ihover rounded-3xl">
-                                                <center>
-                                                    <img
-                                                        src={
-                                                            currentUser.profilePicture
-                                                        }
-                                                        alt="profile"
-                                                        className="h-7 w-7 rounded-full object-cover"
-                                                    />
-                                                </center>
-                                            </li>
-                                        </Link>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Link
-                                            to="/sign-in"
-                                            onClick={toggleMenu}
-                                            state={{ from: location }}
-                                            replace
-                                        >
-                                            <li className="ihover rounded-3xl">
-                                                Login
-                                            </li>
-                                        </Link>
-                                    </>
-                                )}
-                            </ul>
-                        </nav>
+                        {isMenuOpen ? (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                        ) : (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                        )}
+                    </svg>
+                </button>
+                <nav className={`fixed inset-0 transition-transform duration-300 
+            ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}
+            lg:static lg:transform-none lg:flex lg:items-center lg:space-x-6
+            pt-20 lg:pt-0 bg-blue-300 z-40 lg:bg-transparent
+        `}>
+                    <div className="flex flex-col lg:flex-row items-center space-y-6 lg:space-y-0">
+                        {menuItems.map((item) => (
+                            <Link
+                                key={item.path}
+                                to={item.path}
+                                onClick={toggleMenu}
+                                className="text-lg text-gray-700 hover:text-blue-600 transition-colors duration-300 px-4 py-2 rounded-lg hover:bg-blue-50"
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
+                        {currentUser ? (
+                            <Link
+                                to="/profile"
+                                onClick={toggleMenu}
+                                className="flex items-center space-x-2 hover:bg-blue-50 p-2 rounded-lg transition-colors"
+                            >
+                                <div className="flex flex-col items-center justify-center gap-2">
+                                    <img
+                                        src={currentUser.profilePicture || "/default-avatar.png"}
+                                        alt="Profile"
+                                        className="w-10 h-10 rounded-full object-cover border-2 border-blue-500 transition-transform duration-200 hover:scale-105"
+                                    />
+                                    <p className="text-lg text-gray-700 md:block lg:hidden">{currentUser.username}</p>
+                                </div>
+                            </Link>
+                        ) : (
+                            <Link
+                                to="/sign-in"
+                                state={{ from: location }}
+                                replace
+                                onClick={toggleMenu}
+                                className="text-lg text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-full transition-colors"
+                            >
+                                Login
+                            </Link>
+                        )}
                     </div>
-                </div>
+                </nav>
             </div>
         </header>
     );

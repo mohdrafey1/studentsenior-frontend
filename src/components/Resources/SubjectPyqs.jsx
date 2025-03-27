@@ -228,7 +228,7 @@ function SubjectPyqs() {
             <DetailPageNavbar
                 path={`${collegeName}/resources/${courseCode}/${branchCode}`}
             />
-            <h1 className="sm:text-2xl font-extrabold text-center sm:mb-6 text-gray-800 dark:text-white">
+            <h1 className="sm:text-2xl font-extrabold text-center sm:mb-6 text-gray-800">
                 {capitalizeWords(collegeName)}: {subjectName || subjectCode}{' '}
                 PYQs
             </h1>
