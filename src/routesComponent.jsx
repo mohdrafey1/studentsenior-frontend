@@ -44,6 +44,7 @@ import NotesPage from './pages/NotesPage';
 import LostFoundItemDetail from './DetailPages/LostFoundItemDetail';
 import ShippingPolicy from './others/ShippingPolicy';
 import Courses from './pages/Courses';
+import Cart from './pages/Cart';
 
 const validColleges = ['integral-university', 'mpec-kanpur'];
 
@@ -273,6 +274,7 @@ const RoutesComponent = () => {
             <Route path="/refund-policy" element={<RefundPolicy />} />
             <Route path="/shipping-policy" element={<ShippingPolicy />} />
             <Route path='/courses' element={<Courses />} />
+            <Route path='/cart' element={<Cart />} />
 
             {/* <Route path="/donation" element={<DonationPage />} /> */}
 
