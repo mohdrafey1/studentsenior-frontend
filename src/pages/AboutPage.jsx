@@ -1,5 +1,5 @@
-import React from 'react';
-import Seo from '../components/SEO/Seo';
+import React from "react";
+import Seo from "../components/SEO/Seo";
 
 function AboutPage() {
     return (
@@ -14,25 +14,31 @@ function AboutPage() {
                         <h1 className="text-5xl font-bold mb-8 text-gray-800">
                             About Us
                         </h1>
+                        <h1 className="text-3xl mb-2 text-gray-600">
+                            Student Senior : Your Academic Companion
+                        </h1>
+                        <h1 className="text-xl  mb-4 text-gray-600">
+                            Founded By Mohd Rafey
+                        </h1>
                         <div className="max-w-4xl mx-auto text-left space-y-6 text-lg text-gray-700">
                             <p>
                                 A one-stop platform for students to select
-                                courses, access previous year's question papers{' '}
-                                <strong>(PYQs)</strong>, and download{' '}
+                                courses, access previous year's question papers{" "}
+                                <strong>(PYQs)</strong>, and download{" "}
                                 <strong>Comprehensive notes</strong>,
                                 simplifying <strong>exam</strong> preparation.
                             </p>
                             <p>
-                                Connecting students with experienced{' '}
+                                Connecting students with experienced{" "}
                                 <strong>Senior Students</strong> for guidance,
-                                support, and mentorship through{' '}
-                                <strong>live chats</strong> and{' '}
+                                support, and mentorship through{" "}
+                                <strong>live chats</strong> and{" "}
                                 <strong>community forums</strong>, ensuring
                                 informed decisions and academic success.
                             </p>
                             <p>
-                                A college-focused <strong>Marketplace</strong>{' '}
-                                where students can select their institution,{' '}
+                                A college-focused <strong>Marketplace</strong>{" "}
+                                where students can select their institution,{" "}
                                 <strong>
                                     buy, and sell used stationery, books, and
                                     resources
@@ -42,7 +48,7 @@ function AboutPage() {
                             </p>
                             <p>
                                 A course-centric platform connecting students
-                                with relevant{' '}
+                                with relevant{" "}
                                 <strong>internship opportunities</strong>,
                                 allowing them to select their course and apply
                                 for internships, kickstarting their professional
@@ -52,8 +58,8 @@ function AboutPage() {
                                 A college discovery platform where students can
                                 select their institution and access direct links
                                 to <strong>official websites</strong>,
-                                admissions, and{' '}
-                                <strong>essential college resources</strong>{' '}
+                                admissions, and{" "}
+                                <strong>essential college resources</strong>{" "}
                                 effortlessly.
                             </p>
                         </div>
@@ -75,22 +81,22 @@ function AboutPage() {
                         <div className="grid md:grid-cols-3 gap-8 lg:w-3/4 mx-auto">
                             {[
                                 {
-                                    title: 'Guidance',
+                                    title: "Guidance",
                                     description:
-                                        'Connect with experienced seniors who can guide you through your academic challenges and career choices.',
-                                    icon: '👥',
+                                        "Connect with experienced seniors who can guide you through your academic challenges and career choices.",
+                                    icon: "👥",
                                 },
                                 {
-                                    title: 'Resources',
+                                    title: "Resources",
                                     description:
-                                        'Access a wide range of resources including notes, previous year questions, and much more, all curated for your success.',
-                                    icon: '📚',
+                                        "Access a wide range of resources including notes, previous year questions, and much more, all curated for your success.",
+                                    icon: "📚",
                                 },
                                 {
-                                    title: 'Opportunities',
+                                    title: "Opportunities",
                                     description:
-                                        'Discover and seize opportunities that align with your skills and interests, from internships to projects and more.',
-                                    icon: '🚀',
+                                        "Discover and seize opportunities that align with your skills and interests, from internships to projects and more.",
+                                    icon: "🚀",
                                 },
                             ].map((item, index) => (
                                 <div
