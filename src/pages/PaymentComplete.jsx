@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
-const BASE_URL = import.meta.env.VITE_API_URL;
+import { API_BASE_URL } from '../config/apiConfiguration';
 
 const PaymentComplete = () => {
     const [searchParams] = useSearchParams();
@@ -18,7 +17,7 @@ const PaymentComplete = () => {
         const verifyPayment = async () => {
             try {
                 const res = await fetch(
-                    `${BASE_URL}/api/phonepe/${transactionId}`,
+                    `${API_BASE_URL}/api/phonepe/${transactionId}`,
                     {
                         credentials: 'include',
                     }
