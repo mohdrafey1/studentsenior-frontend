@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { API_BASE_URL } from '../config/apiConfiguration';
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
@@ -18,7 +19,7 @@ const Courses = () => {
             setLoading(true);
             try {
                 const response = await fetch(
-                    'http://localhost:8080/courseapi/course'
+                    `${API_BASE_URL}/courseapi/course`
                 );
                 if (!response.ok) throw new Error('Failed to fetch courses');
                 const data = await response.json();
@@ -38,7 +39,7 @@ const Courses = () => {
         setLoading(true);
         try {
             const response = await fetch(
-                `http://localhost:8080/courseapi/course/${slug}`,
+                `${API_BASE_URL}/courseapi/course/${slug}`,
                 {
                     credentials: 'include',
                 }

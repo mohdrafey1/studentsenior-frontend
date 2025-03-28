@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useApiRequest from '../hooks/useApiRequest';
 import { toast } from 'react-toastify';
+import { API_BASE_URL } from '../config/apiConfiguration';
 
 const Cart = () => {
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -20,7 +21,7 @@ const Cart = () => {
             setLoading(true);
             try {
                 const response = await fetch(
-                    `http://localhost:8080/courseapi/course/${slug}`,
+                    `${API_BASE_URL}/courseapi/course/${slug}`,
                     { credentials: 'include' }
                 );
                 if (!response.ok)
@@ -42,7 +43,7 @@ const Cart = () => {
     // Handle payment initiation with PhonePe
     const handlePaymentClick = async () => {
         if (!selectedProduct) {
-            alert('No product selected.');
+            toast.error('No product selected.');
             return;
         }
 
@@ -54,7 +55,7 @@ const Cart = () => {
 
         try {
             const response = await apiRequest(
-                'http://localhost:8080/api/phonepe/pay',
+                `${API_BASE_URL}/api/phonepe/pay`,
                 'POST',
                 body
             );
