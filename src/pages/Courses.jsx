@@ -3,32 +3,27 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { API_BASE_URL } from '../config/apiConfiguration';
+import useApiFetch from '../hooks/useApiFetch';
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState(null);
-    const [loading, setLoading] = useState(false);
+
     const navigate = useNavigate();
 
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
 
+    const { useFetch, loadingFetch: loading } = useApiFetch();
+
     // Fetch all courses
     useEffect(() => {
         const fetchCourses = async () => {
-            setLoading(true);
             try {
-                const response = await fetch(
-                    `${API_BASE_URL}/courseapi/course`
-                );
-                if (!response.ok) throw new Error('Failed to fetch courses');
-                const data = await response.json();
+                const data = await useFetch(`${API_BASE_URL}/courseapi/course`);
                 setCourses(data);
-                console.log(data);
             } catch (err) {
-                toast.error(err.message);
-            } finally {
-                setLoading(false);
+                toast.error('Failed to fetch courses: ' + err.message);
             }
         };
         fetchCourses();
@@ -36,22 +31,13 @@ const Courses = () => {
 
     // Fetch course details
     const fetchCourseDetails = async (slug) => {
-        setLoading(true);
         try {
-            const response = await fetch(
-                `${API_BASE_URL}/courseapi/course/${slug}`,
-                {
-                    credentials: 'include',
-                }
+            const data = await useFetch(
+                `${API_BASE_URL}/courseapi/course/${slug}`
             );
-            if (!response.ok) throw new Error('Failed to fetch course details');
-            const data = await response.json();
             setSelectedCourse(data);
-            console.log(data);
         } catch (err) {
-            toast.error(err.message);
-        } finally {
-            setLoading(false);
+            toast.error(err.message || 'Failed to fetch course details: ');
         }
     };
 
