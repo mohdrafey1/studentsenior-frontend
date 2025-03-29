@@ -50,12 +50,12 @@ const Cart = () => {
         const body = {
             amount: selectedProduct.price, // Convert to paisa for PhonePe
             purchaseItemId: selectedProduct._id,
-            typeOfPurchase: 'course purchase',
+            typeOfPurchase: 'course_purchase',
         };
 
         try {
             const response = await apiRequest(
-                `${API_BASE_URL}/api/phonepe/pay`,
+                `${API_BASE_URL}/api/phonepe/initiate`,
                 'POST',
                 body
             );
