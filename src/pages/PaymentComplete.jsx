@@ -170,9 +170,12 @@ const PaymentComplete = () => {
                                 Payment Successful!
                             </h1>
                             <p className='text-gray-600 dark:text-gray-300'>
-                                {['note_purchase', 'pyq_purchase'].includes(
-                                    paymentDetails?.typeOfPurchase
-                                ) && paymentDetails?.redirectBackUrl ? (
+                                {[
+                                    'note_purchase',
+                                    'pyq_purchase',
+                                    'add_points',
+                                ].includes(paymentDetails?.typeOfPurchase) &&
+                                paymentDetails?.redirectBackUrl ? (
                                     <>
                                         Thank you for your purchase. You'll be
                                         redirected back shortly.
@@ -293,9 +296,11 @@ const PaymentComplete = () => {
                 {/* Action Buttons */}
                 <div className='mt-8 flex flex-col sm:flex-row justify-between gap-4'>
                     {paymentStatus === 'paid' &&
-                        !['note_purchase', 'pyq_purchase'].includes(
-                            paymentDetails?.typeOfPurchase
-                        ) && (
+                        ![
+                            'note_purchase',
+                            'pyq_purchase',
+                            'add_points',
+                        ].includes(paymentDetails?.typeOfPurchase) && (
                             <button
                                 onClick={() => navigate(`/courses`)}
                                 className='flex-1 flex items-center justify-center gap-2 px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-teal-600 hover:bg-teal-700'
@@ -306,9 +311,11 @@ const PaymentComplete = () => {
                         )}
 
                     {paymentStatus === 'failed' &&
-                        !['note_purchase', 'pyq_purchase'].includes(
-                            paymentDetails?.typeOfPurchase
-                        ) && (
+                        ![
+                            'note_purchase',
+                            'pyq_purchase',
+                            'add_points',
+                        ].includes(paymentDetails?.typeOfPurchase) && (
                             <button
                                 onClick={() => navigate(`/cart`)}
                                 className='flex-1 flex items-center justify-center gap-2 px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-600 hover:bg-red-700'
@@ -319,9 +326,11 @@ const PaymentComplete = () => {
                         )}
 
                     {paymentStatus === 'pending' &&
-                        !['note_purchase', 'pyq_purchase'].includes(
-                            paymentDetails?.typeOfPurchase
-                        ) && (
+                        ![
+                            'note_purchase',
+                            'pyq_purchase',
+                            'add_points',
+                        ].includes(paymentDetails?.typeOfPurchase) && (
                             <button
                                 onClick={() => navigate(`/cart`)}
                                 className='flex-1 flex items-center justify-center gap-2 px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-black bg-yellow-500 hover:bg-yellow-600'
@@ -332,9 +341,11 @@ const PaymentComplete = () => {
                         )}
 
                     {paymentStatus === 'pending' &&
-                        ['note_purchase', 'pyq_purchase'].includes(
-                            paymentDetails?.typeOfPurchase
-                        ) &&
+                        [
+                            'note_purchase',
+                            'pyq_purchase',
+                            'add_points',
+                        ].includes(paymentDetails?.typeOfPurchase) &&
                         paymentDetails?.redirectBackUrl && (
                             <button
                                 onClick={() => {
@@ -348,9 +359,11 @@ const PaymentComplete = () => {
                             </button>
                         )}
                     {paymentStatus === 'failed' &&
-                        ['note_purchase', 'pyq_purchase'].includes(
-                            paymentDetails?.typeOfPurchase
-                        ) &&
+                        [
+                            'note_purchase',
+                            'pyq_purchase',
+                            'add_points',
+                        ].includes(paymentDetails?.typeOfPurchase) &&
                         paymentDetails?.redirectBackUrl && (
                             <button
                                 onClick={() => {
