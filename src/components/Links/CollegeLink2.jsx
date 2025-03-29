@@ -53,7 +53,7 @@ const Collegelink2 = () => {
         {
             to: `/college/${collegeName}/lost-found`,
             icon: 'fa-solid fa-compass',
-            text: 'Lost_Found',
+            text: 'Lost Found',
         },
         {
             to: `/college/${collegeName}/pyq`,
@@ -68,9 +68,9 @@ const Collegelink2 = () => {
     ];
 
     return (
-        <section className="lg:hidden min-w-full flex justify-center items-center text-center my-7">
+        <section className='lg:hidden min-w-full flex justify-center items-center text-center my-7'>
             {/* Fixed Bottom Navigation Bar */}
-            <div className="fixed z-30 bottom-0 rounded-t-2xl bg-sky-300 inline-flex justify-around items-center text-center w-full py-2">
+            <div className='fixed z-30 bottom-0 rounded-t-2xl bg-sky-300 inline-flex justify-around items-center text-center w-full py-2'>
                 {mainLinks.map((link, index) => (
                     <Link
                         key={index}
@@ -79,7 +79,7 @@ const Collegelink2 = () => {
                             location.pathname === link.to ? 'bg-sky-100' : ''
                         }`}
                     >
-                        <div className="flex flex-col items-center min-w-full text-sm">
+                        <div className='flex flex-col items-center min-w-full text-sm'>
                             <i className={link.icon}></i>
                             <p>{link.text}</p>
                         </div>
@@ -88,9 +88,9 @@ const Collegelink2 = () => {
                 {/* More Button */}
                 <div
                     onClick={handleMore}
-                    className="rounded-xl hover:bg-sky-100 px-3 py-2 cursor-pointer"
+                    className='rounded-xl hover:bg-sky-100 px-3 py-2 cursor-pointer'
                 >
-                    <div className="flex flex-col items-center text-sm">
+                    <div className='flex flex-col items-center text-sm'>
                         <i
                             className={`fa-solid ${
                                 isOpen ? 'fa-window-close' : 'fa-bars'
@@ -103,7 +103,7 @@ const Collegelink2 = () => {
 
             {/* More Menu (Overlay) */}
             {isOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-white z-20 bg-opacity-75">
+                <div className='fixed inset-0 flex items-center justify-center bg-white z-20 bg-opacity-75'>
                     <ul
                         className={`bg-sky-300 rounded-b-2xl absolute right-0.5 top-0 z-20 py-3 w-full transition-all duration-700 ease-in-out transform ${
                             isOpen
@@ -114,7 +114,7 @@ const Collegelink2 = () => {
                         {moreLinks.map((link, index) => (
                             <li
                                 key={index}
-                                className="flex justify-center mb-2"
+                                className='flex justify-center mb-2'
                             >
                                 <Link
                                     to={link.to}
@@ -124,7 +124,7 @@ const Collegelink2 = () => {
                                             : ''
                                     }`}
                                 >
-                                    <div className="flex items-center justify-center space-x-2 text-lg font-bold">
+                                    <div className='flex items-center justify-center space-x-2 text-base font-medium'>
                                         <i className={link.icon}></i>
                                         <p>{link.text}</p>
                                     </div>

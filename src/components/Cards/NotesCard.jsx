@@ -30,28 +30,23 @@ function NotesCard({ notes = [] }) {
                 return (
                     <div
                         key={note._id}
-                        className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col mb-6 cursor-pointer"
+                        className='bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col mb-6 cursor-pointer'
                         onClick={(e) => handleCardClick(noteUrl, e)}
                     >
-                        <div className="flex justify-between items-start mb-4">
-                            <h2 className="text-xl font-semibold text-gray-800">
+                        <div className='flex justify-between items-start mb-4'>
+                            <h2 className='text-xl font-semibold text-gray-800'>
                                 {note.subject?.subjectName}
                             </h2>
-                            <div className="flex space-x-2">
-                                {note.solved && (
-                                    <span className="bg-green-200 text-green-800 rounded-full px-3 py-1 text-xs font-semibold">
-                                        Solved
-                                    </span>
-                                )}
+                            <div className='flex space-x-2'>
                                 {note.isPaid && (
-                                    <span className="bg-red-200 text-red-800 rounded-full px-3 py-1 text-xs font-semibold">
+                                    <span className='bg-red-200 text-red-800 rounded-full px-3 py-1 text-xs font-semibold'>
                                         Paid
                                     </span>
                                 )}
                             </div>
                         </div>
 
-                        <div className="text-sm text-gray-600 mb-4 space-y-1">
+                        <div className='text-sm text-gray-600 mb-4 space-y-1'>
                             <p>
                                 <strong>Subject Code:</strong>{' '}
                                 {note.subject?.subjectCode}
@@ -67,27 +62,27 @@ function NotesCard({ notes = [] }) {
                             </p>
                         </div>
 
-                        <div className="flex justify-center">
+                        <div className='flex justify-center'>
                             {isAuthenticated ? (
                                 <Link
                                     to={noteUrl}
-                                    className="bg-sky-500 text-white px-6 py-2 rounded-3xl text-center hover:bg-sky-600 transition-colors text-sm lg:text-base flex items-center justify-center space-x-2"
+                                    className='bg-sky-500 text-white px-6 py-2 rounded-3xl text-center hover:bg-sky-600 transition-colors text-sm lg:text-base flex items-center justify-center space-x-2'
                                 >
                                     {note.isPaid ? (
                                         <>
-                                            <i className="fa-solid fa-cart-shopping text-sm" />
-                                            <span>Buy Now {note.price}P</span>
+                                            <i className='fa-solid fa-cart-shopping text-sm' />
+                                            <span>View</span>
                                         </>
                                     ) : (
                                         <>
                                             {' '}
-                                            <i className="fa-solid fa-eye text-sm"></i>
+                                            <i className='fa-solid fa-eye text-sm'></i>
                                             <span>View</span>
                                         </>
                                     )}
                                 </Link>
                             ) : (
-                                <p className="text-red-500 text-center">
+                                <p className='text-red-500 text-center'>
                                     Please log in to view the PDF.
                                 </p>
                             )}

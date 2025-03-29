@@ -81,7 +81,11 @@ const Cart = () => {
     };
 
     if (loading)
-        return <div className='text-center text-lg font-bold'>Loading...</div>;
+        return (
+            <div className='flex justify-center items-center h-screen'>
+                <div className='animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500'></div>
+            </div>
+        );
     if (error) return <div className='text-center text-red-500'>{error}</div>;
 
     return (
