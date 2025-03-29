@@ -137,7 +137,7 @@ const PaymentComplete = () => {
                                     Transaction ID:
                                 </span>
                                 <span className='text-gray-900 dark:text-white font-mono'>
-                                    {paymentDetails?.paymentId}
+                                    {paymentDetails?.merchantOrderId}
                                 </span>
                             </div>
 
