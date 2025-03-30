@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import ScrollToTop from './utils/ScrollToTop';
 import RoutesComponent from './routesComponent';
-import HistoryTracker from './utils/historyTracker';
+import HistoryTracker from './utils/HistoryTracker';
 
 const App = () => {
     return (
