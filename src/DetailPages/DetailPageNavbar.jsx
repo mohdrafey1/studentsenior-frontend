@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { api } from '../config/apiConfiguration';
 import useApiRequest from '../hooks/useApiRequest';
 import { originalHandleShare } from '../utils/handleShare';
@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux';
 
 const DetailPageNavbar = ({ path, handleShare = originalHandleShare }) => {
     const navigate = useNavigate();
+    const [history, setHistory] = useState([]);
+    const [showHistoryModal, setShowHistoryModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [showReportModal, setShowReportModal] = useState(false);
     const { apiRequest, apiloading, error } = useApiRequest();
@@ -21,6 +23,19 @@ const DetailPageNavbar = ({ path, handleShare = originalHandleShare }) => {
         subject: 'Reported URL: ' + window.location.href,
         description: '',
     });
+
+    useEffect(() => {
+        const storedHistory =
+            JSON.parse(sessionStorage.getItem('navHistory')) || [];
+        const currentPath = window.location.pathname;
+
+        // Filter out the current page and reverse to show latest first
+        const filteredHistory = storedHistory
+            .filter((path) => path !== currentPath)
+            .reverse();
+
+        setHistory(filteredHistory);
+    }, []);
 
     const handleBackNavigation = () => {
         if (path) {
@@ -58,7 +73,14 @@ const DetailPageNavbar = ({ path, handleShare = originalHandleShare }) => {
                     <i className='fa-solid fa-arrow-left-long fa-2xl'></i>
                 </div>
                 <div className='flex gap-8'>
-                    {/* Report Button */}
+                    {/* History Button */}
+                    <div
+                        className='text-center hover:text-blue-300 cursor-pointer'
+                        onClick={() => setShowHistoryModal(true)}
+                    >
+                        <i className='fa-solid fa-clock-rotate-left'></i>
+                        <p>History</p>
+                    </div>
                     <div
                         className='text-center hover:text-blue-300 cursor-pointer'
                         onClick={() => setShowReportModal(true)}
@@ -105,15 +127,75 @@ const DetailPageNavbar = ({ path, handleShare = originalHandleShare }) => {
                         <div className='flex justify-end gap-3 mt-4'>
                             <button
                                 className='bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400'
-                                onClick={() => setShowReportModal(false)} // Fixed to close modal
+                                onClick={() => setShowReportModal(false)}
                             >
                                 Cancel
                             </button>
                             <button
                                 className='bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600'
-                                onClick={handleSubmit} // Fixed to submit the report
+                                onClick={handleSubmit}
                             >
                                 Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* History Modal */}
+            {showHistoryModal && (
+                <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 '>
+                    <div className=' bg-white p-2 sm:p-6 rounded-lg shadow-lg w-full md:w-3/5'>
+                        <div className='flex justify-between items-center mb-4'>
+                            <h2 className='text-xl font-semibold text-gray-700'>
+                                Navigation History
+                            </h2>
+                            <button
+                                onClick={() => navigate('/')}
+                                className='flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors'
+                            >
+                                <i className='fa-solid fa-house'></i>
+                                <span>Home</span>
+                            </button>
+                        </div>
+
+                        <div className='border border-gray-200 rounded-lg overflow-hidden'>
+                            {history.length > 0 ? (
+                                <ul className='divide-y divide-gray-200 max-h-60 overflow-y-auto'>
+                                    {history.map((path, index) => (
+                                        <li
+                                            key={index}
+                                            className='p-3 hover:bg-gray-50 cursor-pointer flex items-center gap-3 transition-colors'
+                                            onClick={() => {
+                                                navigate(path);
+                                                setShowHistoryModal(false);
+                                            }}
+                                        >
+                                            <i className='fa-solid fa-link text-gray-400'></i>
+                                            <span
+                                                className='truncate flex-1 text-xs sm:text-base'
+                                                title={path}
+                                            >
+                                                {path}
+                                            </span>
+                                            <i className='fa-solid fa-chevron-right text-gray-400'></i>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <div className='p-4 text-center text-gray-500'>
+                                    <i className='fa-solid fa-clock-rotate-left text-2xl mb-2'></i>
+                                    <p>No navigation history available</p>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className='flex justify-end mt-4'>
+                            <button
+                                className='bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg transition-colors'
+                                onClick={() => setShowHistoryModal(false)}
+                            >
+                                Close
                             </button>
                         </div>
                     </div>
