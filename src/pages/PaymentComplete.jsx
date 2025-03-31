@@ -51,18 +51,18 @@ const PaymentComplete = () => {
                 }
             );
 
-            if (!res.ok) {
-                throw new Error(
-                    res.status === 404
-                        ? 'Payment verification failed - transaction not found'
-                        : 'Payment verification failed'
-                );
-            }
+            // if (!res.ok) {
+            //     throw new Error(
+            //         res.status === 404
+            //             ? 'Payment verification failed - transaction not found'
+            //             : 'Payment verification failed'
+            //     );
+            // }
 
             const data = await res.json();
 
             if (!data.success) {
-                throw new Error(data.message || 'Payment verification failed');
+                throw new Error(data.error || 'Payment verification failed');
             }
 
             setPaymentDetails(data.data);
