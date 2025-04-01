@@ -16,45 +16,45 @@ import useApiFetch from '../hooks/useApiFetch.js';
 import { capitalizeWords } from '../utils/Capitalize.js';
 
 const CollegePage = () => {
-    const { collegeName } = useParams();
-    const collegeId = useCollegeId(collegeName);
-    const dispatch = useDispatch();
-    const [collegeData, setCollegeData] = useState({});
-    const { useFetch, loadingFetch } = useApiFetch();
-    const url = api.college;
+  const { collegeName } = useParams();
+  const collegeId = useCollegeId(collegeName);
+  const dispatch = useDispatch();
+  const [collegeData, setCollegeData] = useState({});
+  const { useFetch, loadingFetch } = useApiFetch();
+  const url = api.college;
 
-    useEffect(() => {
-        fetchCollege();
-        dispatch(fetchSeniors(collegeId));
-        dispatch(fetchProducts(collegeId));
-    }, [collegeName]);
+  useEffect(() => {
+    fetchCollege();
+    dispatch(fetchSeniors(collegeId));
+    dispatch(fetchProducts(collegeId));
+  }, [collegeName]);
 
-    const fetchCollege = async () => {
-        try {
-            const Collegedata = await useFetch(`${url}/${collegeId}`);
-            setCollegeData(Collegedata);
-        } catch (error) {
-            console.error('Error fetching college data:', error);
-        }
-    };
+  const fetchCollege = async () => {
+    try {
+      const Collegedata = await useFetch(`${url}/${collegeId}`);
+      setCollegeData(Collegedata);
+    } catch (error) {
+      console.error('Error fetching college data:', error);
+    }
+  };
 
-    return (
-        <div style={{ scrollBehavior: 'smooth' }}>
-            <CollegeHero tagline={`${collegeName}`}>
-                <Seo
-                    title={capitalizeWords(collegeName)}
-                    desc={collegeData?.description || ' '}
-                />
-                <Collegelinks />
-            </CollegeHero>
-            <FeaturedSeniors />
-            <hr />
-            <FeaturedProduct />
-            <hr />
-            <CollegeAbout />
-            <Collegelink2 />
-        </div>
-    );
+  return (
+    <div style={{ scrollBehavior: 'smooth' }}>
+      <CollegeHero tagline={`${collegeName}`}>
+        <Seo
+          title={capitalizeWords(collegeName)}
+          desc={collegeData?.description || ' '}
+        />
+        <Collegelinks />
+      </CollegeHero>
+      <FeaturedSeniors />
+      <hr />
+      <FeaturedProduct />
+      <hr />
+      <CollegeAbout />
+      <Collegelink2 />
+    </div>
+  );
 };
 
 export default CollegePage;

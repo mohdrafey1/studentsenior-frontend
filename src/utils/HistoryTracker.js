@@ -2,17 +2,17 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const HistoryTracker = () => {
-    const location = useLocation();
+  const location = useLocation();
 
-    useEffect(() => {
-        const history = JSON.parse(sessionStorage.getItem('navHistory')) || [];
-        if (!history.includes(location.pathname)) {
-            history.push(location.pathname);
-            sessionStorage.setItem('navHistory', JSON.stringify(history));
-        }
-    }, [location]);
+  useEffect(() => {
+    const history = JSON.parse(sessionStorage.getItem('navHistory')) || [];
+    if (!history.includes(location.pathname)) {
+      history.push(location.pathname);
+      sessionStorage.setItem('navHistory', JSON.stringify(history));
+    }
+  }, [location]);
 
-    return null;
+  return null;
 };
 
 export default HistoryTracker;

@@ -14,245 +14,229 @@ import Seo from '../components/SEO/Seo.jsx';
 import Button from '../ui/Button.jsx';
 
 const WhatsAppGroupPage = () => {
-    const { collegeName } = useParams();
-    const requireLogin = useRequireLogin();
-    const collegeId = useCollegeId(collegeName);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [text, setText] = useState('Submit');
-    const [groupData, setGroupData] = useState({
-        college: '',
-        title: '',
-        info: '',
-        domain: '',
-        link: '',
-    });
+  const { collegeName } = useParams();
+  const requireLogin = useRequireLogin();
+  const collegeId = useCollegeId(collegeName);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [text, setText] = useState('Submit');
+  const [groupData, setGroupData] = useState({
+    college: '',
+    title: '',
+    info: '',
+    domain: '',
+    link: '',
+  });
 
-    const {
-        groups = [],
-        loading: loadingGroups,
-        error,
-    } = useSelector((state) => state.groups || {});
+  const {
+    groups = [],
+    loading: loadingGroups,
+    error,
+  } = useSelector((state) => state.groups || {});
 
-    const { apiRequest, loading } = useApiRequest();
-    const dispatch = useDispatch();
+  const { apiRequest, loading } = useApiRequest();
+  const dispatch = useDispatch();
 
-    const openModal = () => {
-        setIsModalOpen(true);
-        setGroupData({
-            college: '',
-            title: '',
-            info: '',
-            domain: '',
-            link: '',
-        });
-    };
+  useEffect(() => {
+    dispatch(fetchGroups(collegeId));
+  }, [collegeId]);
 
-    const closeModal = () => setIsModalOpen(false);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setGroupData((prevData) => ({ ...prevData, [name]: value }));
+  };
 
-    useEffect(() => {
-        dispatch(fetchGroups(collegeId));
-    }, [collegeId]);
+  const handleAddGroup = (e) => {
+    e.preventDefault();
+    requireLogin(() => handleSubmit(e));
+  };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setGroupData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setText('Wait ...');
+    try {
+      await apiRequest(`${api.group}`, 'POST', {
+        ...groupData,
+        college: collegeId,
+      });
+      toast.success('Group Submitted Successfully, Available Once Approved');
+      setIsModalOpen(false);
+      setText('Submit');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    const handleAddGroup = (e) => {
-        e.preventDefault();
-        requireLogin(() => {
-            handleSubmit(e);
-        });
-    };
+  const filteredGroups = groups.filter(
+    (group) =>
+      group.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      group.domain.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        setText('Wait ...');
-        try {
-            await apiRequest(`${api.group}`, 'POST', {
-                ...groupData,
-                college: collegeId,
-            });
-            toast.success(
-                'Group Submitted Successfully , Available Once Approved'
-            );
-            setIsModalOpen(false);
-            setText('Submit');
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const filteredGroups = groups.filter(
-        (group) =>
-            group.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            group.domain.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    return (
-        <div className="container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full">
-            <CollegeLinks />
-            <div className="max-w-7xl mx-auto p-5">
-                <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
-                    WhatsApp Groups - {capitalizeWords(collegeName)}
-                    <Seo
-                        title={`WhatsApp Groups - ${capitalizeWords(
-                            collegeName
-                        )}`}
-                        desc="Join WhatsApp groups to connect with like-minded people and
-                    stay updated."
-                    />
-                </h1>
-                <p className="italic text-center text-xs sm:text-base">
-                    "Join WhatsApp groups to connect with like-minded people and
-                    stay updated."
-                </p>
-                <br />
-                <div className="mb-5 flex w-full sm:w-1/2 mx-auto items-center gap-3">
-                    <input
-                        type="text"
-                        placeholder="Search by title or domain..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="p-2 border rounded-md flex-1"
-                    />
-                    <Button onClick={openModal}>Add Group</Button>
-                </div>
-
-                {groups.length > 0 ? (
-                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2 lg:gap-6">
-                        {filteredGroups.map((group) => (
-                            <div
-                                key={group._id}
-                                className="bg-white p-5 shadow-md rounded-md flex flex-col"
-                            >
-                                <div className="sm:h-auto overflow-scroll flex-grow">
-                                    <h2 className="text-base sm:text-lg lg:text-xl font-bold mb-2 text-center">
-                                        {group.title}
-                                    </h2>
-                                    <p className="mb-3 text-center text-sm lg:text-base">
-                                        {group.info}
-                                    </p>
-                                </div>
-                                <div className="flex justify-center mt-auto">
-                                    <a
-                                        href={group.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="mt-2 px-2 py-2 bg-sky-500 hover:bg-sky-300 text-white rounded-md sm:px-4 sm:py-2"
-                                    >
-                                        Join Group &nbsp;
-                                        <i className="fa-brands fa-whatsapp"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="col-span-4 flex justify-center items-center w-full">
-                        {loadingGroups ? (
-                            <i className="fas fa-spinner fa-pulse fa-5x"></i>
-                        ) : (
-                            <p>No Notes Found</p>
-                        )}
-                    </div>
-                )}
-            </div>
-
-            {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-white rounded-lg p-5 w-full max-w-lg">
-                        <h2 className="text-xl font-bold mb-4">
-                            Add WhatsApp Group
-                        </h2>
-                        <form onSubmit={handleAddGroup}>
-                            <div className="mb-4">
-                                <label className="block mb-2" htmlFor="title">
-                                    Title
-                                </label>
-                                <input
-                                    type="text"
-                                    name="title"
-                                    id="title"
-                                    value={groupData.title}
-                                    onChange={handleChange}
-                                    className="p-2 border rounded-md w-full"
-                                    required
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block mb-2" htmlFor="info">
-                                    Info
-                                </label>
-                                <textarea
-                                    name="info"
-                                    id="info"
-                                    value={groupData.info}
-                                    onChange={handleChange}
-                                    className="p-2 border rounded-md w-full"
-                                    required
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block mb-2" htmlFor="domain">
-                                    Domain
-                                </label>
-                                <input
-                                    type="text"
-                                    name="domain"
-                                    id="domain"
-                                    value={groupData.domain}
-                                    onChange={handleChange}
-                                    className="p-2 border rounded-md w-full"
-                                    required
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block mb-2" htmlFor="link">
-                                    Link
-                                </label>
-                                <input
-                                    type="url"
-                                    name="link"
-                                    id="link"
-                                    value={groupData.link}
-                                    onChange={handleChange}
-                                    className="p-2 border rounded-md w-full"
-                                    required
-                                />
-                            </div>
-                            <div className="flex justify-between">
-                                <button
-                                    type="button"
-                                    onClick={closeModal}
-                                    className="px-4 py-2 bg-gray-300 rounded-md"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="px-4 py-2 bg-sky-500 text-white rounded-md"
-                                    disabled={loading}
-                                >
-                                    {loading ? (
-                                        <i className="fas fa-spinner fa-pulse"></i>
-                                    ) : (
-                                        <p>{text}</p>
-                                    )}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
-            <Collegelink2 />
+  return (
+    <div className="container bg-gradient-to-t from-blue-300 to min-h-screen min-w-full">
+      <CollegeLinks />
+      <div className="max-w-6xl mx-auto p-5">
+        <h1 className="text-2xl sm:text-4xl font-bold mb-4 text-center text-blue-700">
+          WhatsApp Groups - {capitalizeWords(collegeName)}
+        </h1>
+        <p className="italic text-center text-sm sm:text-lg text-blue-600">
+          "Join WhatsApp groups to connect and stay updated."
+        </p>
+        <br />
+        <div className="mb-5 flex flex-col sm:flex-row w-full sm:w-2/3 mx-auto items-center gap-3">
+          <input
+            type="text"
+            placeholder="Search by title or domain..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="p-2 border rounded-md flex-1 focus:ring-2 focus:ring-blue-500"
+          />
+          <Button onClick={() => setIsModalOpen(true)}>Add Group</Button>
         </div>
-    );
+        {groups.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {filteredGroups.map((group) => (
+              <div
+                key={group._id}
+                className="bg-white p-5 shadow-lg rounded-lg flex flex-col"
+              >
+                <h2 className="text-lg sm:text-xl font-bold mb-2 text-center text-blue-800">
+                  {group.title}
+                </h2>
+                <p className="text-center text-sm sm:text-base text-gray-700">
+                  {group.info}
+                </p>
+                <div className="flex justify-center mt-4">
+                  <a
+                    href={group.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 px-4 py-2 bg-blue-500 hover:bg-blue-400 text-white rounded-md text-center"
+                  >
+                    Join Group &nbsp;
+                    <i className="fa-brands fa-whatsapp"></i>
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex justify-center items-center w-full">
+            {loadingGroups ? (
+              <i className="fas fa-spinner fa-pulse fa-5x text-blue-500"></i>
+            ) : (
+              <p className="text-blue-600">No Groups Found</p>
+            )}
+          </div>
+        )}
+      </div>
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 p-4 backdrop-blur-sm transition-all duration-300">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-11/12 sm:w-2/5 max-w-md transition-all duration-300 transform scale-100">
+            <h2 className="text-xl font-bold mb-6 text-gray-800 dark:text-white text-center border-b pb-2">
+              Add WhatsApp Group
+            </h2>
+
+            <form onSubmit={handleAddGroup} className="space-y-4">
+              <div className="space-y-2">
+                <label
+                  htmlFor="title"
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Group Title
+                </label>
+                <input
+                  id="title"
+                  type="text"
+                  name="title"
+                  placeholder="Enter group title"
+                  value={groupData.title}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label
+                  htmlFor="domain"
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Domain
+                </label>
+                <input
+                  id="domain"
+                  type="text"
+                  name="domain"
+                  placeholder="CS, Mechanical, etc."
+                  value={groupData.domain}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label
+                  htmlFor="info"
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Group Description
+                </label>
+                <textarea
+                  id="info"
+                  name="info"
+                  placeholder="Describe the purpose of this group"
+                  value={groupData.info}
+                  onChange={handleChange}
+                  rows="3"
+                  className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label
+                  htmlFor="link"
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  WhatsApp Group Link
+                </label>
+                <input
+                  id="link"
+                  type="url"
+                  name="link"
+                  placeholder="https://chat.whatsapp.com/..."
+                  value={groupData.link}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                  required
+                />
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4 mt-2">
+                <button
+                  type="button"
+                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-700 dark:hover:bg-blue-600"
+                >
+                  {text}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      <Collegelink2 />
+    </div>
+  );
 };
 
 export default WhatsAppGroupPage;

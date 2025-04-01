@@ -10,9 +10,9 @@ import { registerSW } from 'virtual:pwa-register';
 registerSW({ immediate: true });
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <Provider store={store}>
-        <PersistGate persistor={persistor} loading={null}>
-            <App />
-        </PersistGate>
-    </Provider>
+  <Provider store={store}>
+    <PersistGate persistor={persistor} loading={null}>
+      <App />
+    </PersistGate>
+  </Provider>,
 );

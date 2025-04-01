@@ -6,15 +6,15 @@ import RoutesComponent from './routesComponent';
 import HistoryTracker from './utils/HistoryTracker';
 
 const App = () => {
-    return (
-        <Router>
-            <ScrollToTop />
-            <HistoryTracker />
-            <Layout>
-                <RoutesComponent />
-            </Layout>
-        </Router>
-    );
+  return (
+    <Router>
+      <ScrollToTop />
+      <HistoryTracker />
+      <Layout>
+        <RoutesComponent />
+      </Layout>
+    </Router>
+  );
 };
 
 export default App;

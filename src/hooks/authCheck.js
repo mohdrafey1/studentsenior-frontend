@@ -3,22 +3,22 @@ import { useDispatch } from 'react-redux';
 import { signOut } from '../redux/user/userSlice';
 
 const AuthCheck = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        const checkAuth = () => {
-            const token = document.cookie
-                .split('; ')
-                .find((row) => row.startsWith('access_token='));
-            if (!token) {
-                dispatch(signOut());
-            }
-        };
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = document.cookie
+        .split('; ')
+        .find((row) => row.startsWith('access_token='));
+      if (!token) {
+        dispatch(signOut());
+      }
+    };
 
-        checkAuth();
-    }, [dispatch]);
+    checkAuth();
+  }, [dispatch]);
 
-    return null;
+  return null;
 };
 
 export default AuthCheck;
