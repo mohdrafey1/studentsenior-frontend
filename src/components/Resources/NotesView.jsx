@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { api, API_KEY } from '../../config/apiConfiguration.js';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +9,12 @@ import Seo from '../SEO/Seo.jsx';
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
 import 'pdfjs-dist/legacy/web/pdf_viewer.css';
 import { fetchUserData } from '../../redux/slices/userDataSlice.js';
-import Modal from '../../utils/Dialog.jsx';
+import ConfirmPurchaseModal from './ConfirmPurchaseModal.jsx';
+import {
+    handleConfirmPurchaseUtil,
+    handleOnlinePaymentUtil,
+} from '../../utils/purchaseUtils.js';
+import useApiRequest from '../../hooks/useApiRequest.js';
 
 // Set up PDF.js worker (adjust the path if you host it yourself)
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
@@ -236,24 +241,27 @@ function NotesView() {
         }, 1000);
     };
 
-    const handleConfirmPurchase = async () => {
-        try {
-            const response = await fetch(
-                `${api.subjectNotes}/purchase/${selectedNote._id}`,
-                {
-                    method: 'POST',
-                    credentials: 'include',
-                }
-            );
-            const data = await response.json();
+    const navigate = useNavigate(); //need to search jugaad
 
-            toast.success(data.message || 'Purchase successful');
-            setBuyNowModalOpen(false);
-            fetchNote();
-        } catch (error) {
-            console.error('Error purchasing Notes:', error);
-            toast.error('Failed to purchase Notes');
-        }
+    const handleConfirmPurchase = async () => {
+        handleConfirmPurchaseUtil(
+            selectedNote,
+            api.subjectNotes,
+            navigate,
+            () => setBuyNowModalOpen(false)
+        );
+        await fetchNote();
+    };
+
+    const { apiRequest } = useApiRequest();
+
+    const handleOnlinePayment = () => {
+        handleOnlinePaymentUtil(
+            selectedNote,
+            apiRequest,
+            window.location.href,
+            'note_purchase'
+        );
     };
 
     useEffect(() => {
@@ -297,10 +305,10 @@ function NotesView() {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
-                <div className="text-center">
-                    <i className="fas fa-spinner fa-pulse fa-5x text-sky-500"></i>
-                    <p className="mt-4 text-lg text-gray-600">
+            <div className='flex justify-center items-center min-h-screen'>
+                <div className='text-center'>
+                    <i className='fas fa-spinner fa-pulse fa-5x text-sky-500'></i>
+                    <p className='mt-4 text-lg text-gray-600'>
                         Loading note...
                     </p>
                 </div>
@@ -310,12 +318,12 @@ function NotesView() {
 
     if (error) {
         return (
-            <div className="h-screen flex justify-center items-center">
+            <div className='h-screen flex justify-center items-center'>
                 <div>
-                    <p className="text-center text-red-500 mb-4">{error}</p>
+                    <p className='text-center text-red-500 mb-4'>{error}</p>
                     <Link
                         to={`/${collegeName}/resources/${courseCode}/${branchCode}/notes/${subjectCode}`}
-                        className="bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600"
+                        className='bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600'
                     >
                         See Other Notes
                     </Link>
@@ -325,17 +333,17 @@ function NotesView() {
     }
 
     return (
-        <div className="container mx-auto sm:px-2 min-h-screen">
+        <div className='container mx-auto sm:px-2 min-h-screen'>
             <DetailPageNavbar
                 path={`${collegeName}/resources/${courseCode}/${branchCode}/notes/${subjectCode}`}
             />
             {note ? (
                 <div>
-                    <div className="flex flex-col items-center px-2">
-                        <h1 className="text-2xl font-bold text-gray-800 mt-4 ">
+                    <div className='flex flex-col items-center px-2'>
+                        <h1 className='text-2xl font-bold text-gray-800 mt-4 '>
                             {note.title}
                         </h1>
-                        <p className="text-lg text-gray-600 mt-2 ">
+                        <p className='text-lg text-gray-600 mt-2 '>
                             Subject: {note.subject.subjectName} (
                             {note.subject.subjectCode})
                             <Seo
@@ -345,8 +353,8 @@ function NotesView() {
                     </div>
 
                     {/* PDF Viewer */}
-                    <div className="flex justify-center w-full my-5">
-                        <div className="pdf-viewer md:w-4/5 lg:w-3/5 p-1">
+                    <div className='flex justify-center w-full my-5'>
+                        <div className='pdf-viewer md:w-4/5 lg:w-3/5 p-1'>
                             {pdfDoc ? (
                                 <>
                                     {note.isPaid &&
@@ -367,15 +375,15 @@ function NotesView() {
                                                     scale={1.5}
                                                 />
                                             ))}
-                                            <div className="text-center mt-5">
+                                            <div className='text-center mt-5'>
                                                 <button
                                                     onClick={() =>
                                                         handleBuyNowClick(note)
                                                     }
-                                                    className="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105"
+                                                    className='bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105'
                                                 >
                                                     Purchase to View All Pages (
-                                                    {note.price}P)
+                                                    {note.price / 5}₹)
                                                 </button>
                                             </div>
                                         </>
@@ -401,20 +409,20 @@ function NotesView() {
 
                     {/* Download Button */}
                     {!note.isPaid && (
-                        <div className="flex justify-center mb-4">
+                        <div className='flex justify-center mb-4'>
                             <button
                                 onClick={handleDownloadClick}
                                 disabled={canDownload}
                                 className={`bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 ${
                                     canDownload ? '' : 'cursor-not-allowed'
                                 }`}
-                                title="Download Note PDF"
+                                title='Download Note PDF'
                             >
                                 {canDownload ? (
                                     <a
                                         href={signedUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                                        target='_blank'
+                                        rel='noopener noreferrer'
                                     >
                                         Download now
                                     </a>
@@ -428,45 +436,17 @@ function NotesView() {
                     )}
                 </div>
             ) : (
-                <p className="text-center text-gray-600">Note not found.</p>
+                <p className='text-center text-gray-600'>Note not found.</p>
             )}
-            <Modal
+            <ConfirmPurchaseModal
                 isOpen={isBuyNowModalOpen}
                 onClose={handleCloseBuyNowModal}
-                title="Buy this PYQ"
-            >
-                {selectedNote && (
-                    <div className="space-y-4">
-                        <h2 className="text-xl font-semibold">
-                            Available Points: {rewardBalance}
-                        </h2>
-                        <p>Price for this PYQ: {selectedNote.price} Points</p>
-
-                        <div className="flex justify-center items-end gap-4 mt-4">
-                            {rewardBalance >= selectedNote.price ? (
-                                <button
-                                    onClick={handleConfirmPurchase}
-                                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
-                                >
-                                    Confirm Purchase
-                                </button>
-                            ) : (
-                                <p className="text-red-500">
-                                    Insufficient points. You need{' '}
-                                    {selectedNote.price - rewardBalance} more
-                                    points.
-                                </p>
-                            )}
-                            <Link
-                                to="/add-points"
-                                className="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-md"
-                            >
-                                Add Points
-                            </Link>
-                        </div>
-                    </div>
-                )}
-            </Modal>
+                selectedResource={selectedNote}
+                rewardBalance={rewardBalance}
+                handleOnlinePayment={handleOnlinePayment}
+                handleConfirmPurchase={handleConfirmPurchase}
+                title={'Buy This Note'}
+            />
         </div>
     );
 }

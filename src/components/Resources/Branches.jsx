@@ -30,20 +30,20 @@ const Branches = () => {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
-                <i className="fas fa-spinner fa-pulse fa-5x"></i>
+            <div className='flex justify-center items-center min-h-screen'>
+                <i className='fas fa-spinner fa-pulse fa-5x'></i>
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="h-screen flex justify-center items-center">
+            <div className='h-screen flex justify-center items-center'>
                 <div>
-                    <p className="text-center text-red-500 mb-4">{error}</p>
+                    <p className='text-center text-red-500 mb-4'>{error}</p>
                     <Link
                         to={`/${collegeName}/resources/${courseCode}`}
-                        className="bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600"
+                        className='bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600'
                     >
                         See Other Course
                     </Link>
@@ -53,9 +53,9 @@ const Branches = () => {
     }
 
     return (
-        <div className="container mx-auto p-4 min-h-screen">
-            <DetailPageNavbar path={`college/${collegeName}/resource`} />
-            <h1 className="sm:text-2xl font-bold text-center mb-2">
+        <div className='container mx-auto p-4 min-h-screen'>
+            <DetailPageNavbar path={`college/${collegeName}/resources`} />
+            <h1 className='sm:text-2xl font-bold text-center mb-2'>
                 {capitalizeWords(collegeName)}: {courseCode.toUpperCase()}
                 <Seo
                     title={`${capitalizeWords(
@@ -64,58 +64,58 @@ const Branches = () => {
                 />
             </h1>
             {/* Search Input */}
-            <div className="mb-2 flex justify-center">
+            <div className='mb-2 flex justify-center'>
                 <input
-                    type="text"
-                    placeholder="Search by Branch Name or Code"
-                    className="border border-gray-300 px-4 py-2 rounded-lg shadow-md w-full max-w-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    type='text'
+                    placeholder='Search by Branch Name or Code'
+                    className='border border-gray-300 px-4 py-2 rounded-lg shadow-md w-full max-w-lg focus:outline-none focus:ring-2 focus:ring-sky-500'
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
             </div>
-            <div className="overflow-x-auto lg:mx-20 xl:mx-40">
-                <table className="table-auto w-full bg-white rounded-lg shadow-md overflow-hidden">
-                    <thead className="bg-sky-500 text-white">
+            <div className='overflow-x-auto lg:mx-20 xl:mx-40'>
+                <table className='table-auto w-full bg-white rounded-lg shadow-md overflow-hidden'>
+                    <thead className='bg-sky-500 text-white'>
                         <tr>
-                            <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
+                            <th className='border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left'>
                                 Branch Name
                             </th>
-                            <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
+                            <th className='border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left'>
                                 Code
                             </th>
-                            <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
+                            <th className='border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left'>
                                 Total Notes / Pyqs
                             </th>
-                            <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
+                            <th className='border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left'>
                                 Actions
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredBranches.map((branch) => (
-                            <tr key={branch._id} className="hover:bg-gray-100">
-                                <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                            <tr key={branch._id} className='hover:bg-gray-100'>
+                                <td className='border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2'>
                                     <Link
                                         to={`${branch.branchCode.toLowerCase()}?semester=1`}
                                     >
                                         {branch.branchName}
                                     </Link>
                                 </td>
-                                <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                <td className='border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2'>
                                     <Link
                                         to={`${branch.branchCode.toLowerCase()}?semester=1`}
                                     >
                                         {branch.branchCode || 'N/A'}
                                     </Link>
                                 </td>
-                                <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                <td className='border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2'>
                                     {branch.totalNotes || 0} /{' '}
                                     {branch.totalPyqs || 0}
                                 </td>
-                                <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                <td className='border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2'>
                                     <Link
                                         to={`${branch.branchCode.toLowerCase()}?semester=1`}
-                                        className="px-3 py-1 bg-sky-500 text-white rounded hover:bg-sky-600 transition-colors duration-200"
+                                        className='px-3 py-1 bg-sky-500 text-white rounded hover:bg-sky-600 transition-colors duration-200'
                                         aria-label={`View details for ${branch.branchName}`}
                                     >
                                         Explore

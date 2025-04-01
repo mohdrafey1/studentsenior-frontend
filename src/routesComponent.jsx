@@ -45,6 +45,7 @@ import LostFoundItemDetail from './DetailPages/LostFoundItemDetail';
 import ShippingPolicy from './others/ShippingPolicy';
 import Courses from './pages/Courses';
 import Cart from './pages/Cart';
+import PaymentComplete from './pages/PaymentComplete';
 
 const validColleges = ['integral-university', 'mpec-kanpur'];
 
@@ -52,7 +53,7 @@ const ValidateCollegeRoute = ({ children }) => {
     const { collegeName } = useParams();
 
     if (!validColleges.includes(collegeName)) {
-        return <Navigate to="/not-found" replace />;
+        return <Navigate to='/not-found' replace />;
     }
 
     return children;
@@ -63,11 +64,11 @@ const RoutesComponent = () => {
 
     return (
         <Routes>
-            <Route path="/" element={<MainPage />} />
+            <Route path='/' element={<MainPage />} />
 
             {/* College Routes */}
             <Route
-                path="/college/:collegeName"
+                path='/college/:collegeName'
                 element={
                     <ValidateCollegeRoute>
                         <CollegePage />
@@ -75,7 +76,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/college/:collegeName/seniors"
+                path='/college/:collegeName/seniors'
                 element={
                     <ValidateCollegeRoute>
                         <SeniorsPage />
@@ -83,7 +84,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/college/:collegeName/seniors/:slug"
+                path='/college/:collegeName/seniors/:slug'
                 element={
                     <ValidateCollegeRoute>
                         <SeniorDetailPage />
@@ -91,7 +92,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/college/:collegeName/pyq"
+                path='/college/:collegeName/pyq'
                 element={
                     <ValidateCollegeRoute>
                         <PYQPage />
@@ -100,7 +101,7 @@ const RoutesComponent = () => {
             />
 
             <Route
-                path="/college/:collegeName/notes"
+                path='/college/:collegeName/notes'
                 element={
                     <ValidateCollegeRoute>
                         <NotesPage />
@@ -109,7 +110,7 @@ const RoutesComponent = () => {
             />
 
             <Route
-                path="/college/:collegeName/store"
+                path='/college/:collegeName/store'
                 element={
                     <ValidateCollegeRoute>
                         <StorePage />
@@ -117,7 +118,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/college/:collegeName/store/:slug"
+                path='/college/:collegeName/store/:slug'
                 element={
                     <ValidateCollegeRoute>
                         <ProductDetail />
@@ -125,7 +126,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/college/:collegeName/community"
+                path='/college/:collegeName/community'
                 element={
                     <ValidateCollegeRoute>
                         <CommunityPage />
@@ -133,7 +134,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/college/:collegeName/community/post/:id"
+                path='/college/:collegeName/community/post/:id'
                 element={
                     <ValidateCollegeRoute>
                         <PostDetail />
@@ -141,7 +142,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/college/:collegeName/whatsapp-group"
+                path='/college/:collegeName/whatsapp-group'
                 element={
                     <ValidateCollegeRoute>
                         <WhatsAppGroupPage />
@@ -149,7 +150,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/college/:collegeName/opportunities"
+                path='/college/:collegeName/opportunities'
                 element={
                     <ValidateCollegeRoute>
                         <OpportunitiesPage />
@@ -157,7 +158,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/college/:collegeName/resources"
+                path='/college/:collegeName/resources'
                 element={
                     <ValidateCollegeRoute>
                         <ResourcesPage />
@@ -165,7 +166,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/:collegeName/resources/:courseCode"
+                path='/:collegeName/resources/:courseCode'
                 element={
                     <ValidateCollegeRoute>
                         <Branches />
@@ -173,7 +174,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/:collegeName/resources/:courseCode/:branchCode"
+                path='/:collegeName/resources/:courseCode/:branchCode'
                 element={
                     <ValidateCollegeRoute>
                         <Subjects />
@@ -181,7 +182,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/:collegeName/resources/:courseCode/:branchCode/notes/:subjectCode"
+                path='/:collegeName/resources/:courseCode/:branchCode/notes/:subjectCode'
                 element={
                     <ValidateCollegeRoute>
                         <SubjectNotes />
@@ -189,7 +190,7 @@ const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/:collegeName/resources/:courseCode/:branchCode/pyqs/:subjectCode"
+                path='/:collegeName/resources/:courseCode/:branchCode/pyqs/:subjectCode'
                 element={
                     <ValidateCollegeRoute>
                         <SubjectPyqs />
@@ -198,7 +199,7 @@ const RoutesComponent = () => {
             />
 
             <Route
-                path="/college/:collegeName/opportunities/:slug"
+                path='/college/:collegeName/opportunities/:slug'
                 element={
                     <ValidateCollegeRoute>
                         <OpportunityDetails />
@@ -207,7 +208,7 @@ const RoutesComponent = () => {
             />
 
             <Route
-                path="/college/:collegeName/lost-found"
+                path='/college/:collegeName/lost-found'
                 element={
                     <ValidateCollegeRoute>
                         <LostFoundPage />
@@ -216,34 +217,33 @@ const RoutesComponent = () => {
             />
 
             <Route
-                path="/college/:collegeName/lost-found/:slug"
+                path='/college/:collegeName/lost-found/:slug'
                 element={
                     <ValidateCollegeRoute>
                         <LostFoundItemDetail />
                     </ValidateCollegeRoute>
                 }
             />
-           
 
             {/* Static Routes */}
-            <Route path="/becomesenior" element={<AddSenior />} />
-            <Route path="/add-college" element={<AddCollege />} />
-            <Route path="/about-us" element={<AboutPage />} />
-            <Route path="/contact-us" element={<ContactUs />} />
+            <Route path='/becomesenior' element={<AddSenior />} />
+            <Route path='/add-college' element={<AddCollege />} />
+            <Route path='/about-us' element={<AboutPage />} />
+            <Route path='/contact-us' element={<ContactUs />} />
 
             {/* Authentication Routes */}
             <Route
-                path="/sign-in"
-                element={isAuthenticated ? <Navigate to="/" /> : <SignIn />}
+                path='/sign-in'
+                element={isAuthenticated ? <Navigate to='/' /> : <SignIn />}
             />
-            <Route path="/sign-up" element={<Signup />} />
+            <Route path='/sign-up' element={<Signup />} />
 
             {/* Private Routes */}
             <Route element={<PrivateRoute />}>
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/add-points" element={<AddPointsPage />} />
+                <Route path='/profile' element={<Profile />} />
+                <Route path='/add-points' element={<AddPointsPage />} />
                 <Route
-                    path="/:collegeName/resources/:courseCode/:branchCode/notes/:subjectCode/:slug"
+                    path='/:collegeName/resources/:courseCode/:branchCode/notes/:subjectCode/:slug'
                     element={
                         <ValidateCollegeRoute>
                             <NotesView />
@@ -251,7 +251,7 @@ const RoutesComponent = () => {
                     }
                 />
                 <Route
-                    path="/:collegeName/resources/:courseCode/:branchCode/pyqs/:subjectCode/:slug"
+                    path='/:collegeName/resources/:courseCode/:branchCode/pyqs/:subjectCode/:slug'
                     element={
                         <ValidateCollegeRoute>
                             <PyqView />
@@ -261,25 +261,27 @@ const RoutesComponent = () => {
             </Route>
 
             {/* Other Pages */}
-            <Route path="/leaderboard" element={<LeaderBoardPage />} />
-            <Route path="/request-pyq" element={<RequestPYQ />} />
-            <Route path="/install" element={<InstallPage />} />
-            <Route path="/not-found" element={<NotFoundPage />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/faq" element={<FAQPage />} />
+            <Route path='/leaderboard' element={<LeaderBoardPage />} />
+            <Route path='/request-pyq' element={<RequestPYQ />} />
+            <Route path='/install' element={<InstallPage />} />
+            <Route path='/not-found' element={<NotFoundPage />} />
+            <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+            <Route path='/faq' element={<FAQPage />} />
             <Route
-                path="/terms-and-conditions"
+                path='/terms-and-conditions'
                 element={<TermsAndConditions />}
             />
-            <Route path="/refund-policy" element={<RefundPolicy />} />
-            <Route path="/shipping-policy" element={<ShippingPolicy />} />
+            <Route path='/refund-policy' element={<RefundPolicy />} />
+            <Route path='/shipping-policy' element={<ShippingPolicy />} />
             <Route path='/courses' element={<Courses />} />
             <Route path='/cart' element={<Cart />} />
+
+            <Route path='/payment-complete' element={<PaymentComplete />} />
 
             {/* <Route path="/donation" element={<DonationPage />} /> */}
 
             {/* Catch-all for undefined routes */}
-            <Route path="*" element={<NotFoundPage />} />
+            <Route path='*' element={<NotFoundPage />} />
         </Routes>
     );
 };
