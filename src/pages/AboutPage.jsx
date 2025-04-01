@@ -4,17 +4,17 @@ import Seo from '../components/SEO/Seo';
 function AboutPage() {
     return (
         <>
-            <div className="bg-gradient-to-t from-sky-500 to-white min-h-screen">
-                <section className="relative py-20">
-                    <div className="container mx-auto px-6 text-center">
+            <div className='bg-gradient-to-t from-sky-500 to-white min-h-screen'>
+                <section className='relative py-20'>
+                    <div className='container mx-auto px-6 text-center'>
                         <Seo
-                            title="About Us"
+                            title='About Us'
                             desc={`A one-stop platform for students to select courses, access previous year's question papers (PYQs), and download Comprehensive notes, simplifying exam preparation.`}
                         />
-                        <h1 className="text-5xl font-bold mb-8 text-gray-800">
+                        <h1 className='text-5xl font-bold mb-8 text-gray-800'>
                             About Us
                         </h1>
-                        <div className="max-w-4xl mx-auto text-left space-y-6 text-lg text-gray-700">
+                        <div className='max-w-4xl mx-auto text-left space-y-6 text-lg text-gray-700'>
                             <p>
                                 A one-stop platform for students to select
                                 courses, access previous year's question papers{' '}
@@ -61,18 +61,18 @@ function AboutPage() {
                 </section>
 
                 {/* Mission Section */}
-                <section className="py-20 ">
-                    <div className="container mx-auto px-6">
-                        <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">
+                <section className='py-20 '>
+                    <div className='container mx-auto px-6'>
+                        <h2 className='text-4xl font-bold text-center mb-12 text-gray-800'>
                             Our Mission
                         </h2>
-                        <p className="text-center max-w-2xl mx-auto mb-12 text-gray-600 text-lg">
+                        <p className='text-center max-w-2xl mx-auto mb-12 text-gray-600 text-lg'>
                             Our mission is to empower students by providing easy
                             access to guidance, resources, and opportunities
                             that help them excel in their academic and
                             professional journeys.
                         </p>
-                        <div className="grid md:grid-cols-3 gap-8 lg:w-3/4 mx-auto">
+                        <div className='grid md:grid-cols-3 gap-8 lg:w-3/4 mx-auto'>
                             {[
                                 {
                                     title: 'Guidance',
@@ -95,15 +95,15 @@ function AboutPage() {
                             ].map((item, index) => (
                                 <div
                                     key={index}
-                                    className="bg-white p-8 shadow-lg rounded-lg hover:shadow-xl transition-shadow duration-300 transform hover:scale-105"
+                                    className='bg-white p-8 shadow-lg rounded-lg hover:shadow-xl transition-shadow duration-300 transform hover:scale-105'
                                 >
-                                    <div className="text-4xl mb-4">
+                                    <div className='text-4xl mb-4'>
                                         {item.icon}
                                     </div>
-                                    <h3 className="text-2xl font-semibold mb-4 text-gray-800">
+                                    <h3 className='text-2xl font-semibold mb-4 text-gray-800'>
                                         {item.title}
                                     </h3>
-                                    <p className="text-gray-600">
+                                    <p className='text-gray-600'>
                                         {item.description}
                                     </p>
                                 </div>

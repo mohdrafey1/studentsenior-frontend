@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Modal from '../../utils/Dialog.jsx';
+import ConfirmPurchaseModal from './ConfirmPurchaseModal.jsx';
 import { api, API_KEY } from '../../config/apiConfiguration.js';
 import { toast } from 'react-toastify';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
@@ -10,6 +11,11 @@ import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
 import 'pdfjs-dist/legacy/web/pdf_viewer.css';
 import { signOut } from '../../redux/user/userSlice.js';
 import { fetchUserData } from '../../redux/slices/userDataSlice.js';
+import {
+    handleConfirmPurchaseUtil,
+    handleOnlinePaymentUtil,
+} from '../../utils/purchaseUtils.js';
+import useApiRequest from '../../hooks/useApiRequest.js';
 
 // Set up PDF.js worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
@@ -232,23 +238,21 @@ function PyqView() {
     };
 
     const handleConfirmPurchase = async () => {
-        try {
-            const response = await fetch(
-                `${api.newPyqs}/purchase/${selectedPyq._id}`,
-                {
-                    method: 'POST',
-                    credentials: 'include',
-                }
-            );
-            const data = await response.json();
+        handleConfirmPurchaseUtil(selectedPyq, api.newPyqs, navigate, () =>
+            setBuyNowModalOpen(false)
+        );
+        await fetchpyq();
+    };
 
-            toast.success(data.message || 'Purchase successful');
-            setBuyNowModalOpen(false);
-            fetchpyq();
-        } catch (error) {
-            console.error('Error purchasing PYQ:', error);
-            toast.error('Failed to purchase PYQ');
-        }
+    const { apiRequest } = useApiRequest();
+
+    const handleOnlinePayment = () => {
+        handleOnlinePaymentUtil(
+            selectedPyq,
+            apiRequest,
+            window.location.href,
+            'pyq_purchase'
+        );
     };
 
     useEffect(() => {
@@ -292,10 +296,10 @@ function PyqView() {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
-                <div className="text-center">
-                    <i className="fas fa-spinner fa-pulse fa-5x text-sky-500"></i>
-                    <p className="mt-4 text-lg text-gray-600">Loading pyq...</p>
+            <div className='flex justify-center items-center min-h-screen'>
+                <div className='text-center'>
+                    <i className='fas fa-spinner fa-pulse fa-5x text-sky-500'></i>
+                    <p className='mt-4 text-lg text-gray-600'>Loading pyq...</p>
                 </div>
             </div>
         );
@@ -303,12 +307,12 @@ function PyqView() {
 
     if (error) {
         return (
-            <div className="h-screen flex justify-center items-center">
+            <div className='h-screen flex justify-center items-center'>
                 <div>
-                    <p className="text-center text-red-500 mb-4">{error}</p>
+                    <p className='text-center text-red-500 mb-4'>{error}</p>
                     <Link
                         to={`/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}`}
-                        className="bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600"
+                        className='bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600'
                     >
                         See Other Pyq
                     </Link>
@@ -318,17 +322,17 @@ function PyqView() {
     }
 
     return (
-        <div className="container mx-auto sm:px-4 min-h-screen">
+        <div className='container mx-auto sm:px-4 min-h-screen'>
             <DetailPageNavbar
                 path={`${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}`}
             />
             {pyq ? (
                 <div>
-                    <div className="flex flex-col items-center px-2">
-                        <h1 className="text-2xl font-bold text-gray-800">
+                    <div className='flex flex-col items-center px-2'>
+                        <h1 className='text-2xl font-bold text-gray-800'>
                             {pyq.title}
                         </h1>
-                        <p className="text-lg text-gray-600 mt-2">
+                        <p className='text-lg text-gray-600 mt-2'>
                             Subject: {pyq.subject.subjectName} ({pyq.examType} -{' '}
                             {pyq.year})
                             <Seo
@@ -336,15 +340,15 @@ function PyqView() {
                             />
                         </p>
                         {pyq.solved && (
-                            <span className="bg-green-200 rounded-md px-2 py-1 font-bold">
+                            <span className='bg-green-200 rounded-md px-2 py-1 font-bold'>
                                 Solved
                             </span>
                         )}
                     </div>
 
                     {/* PDF Viewer */}
-                    <div className="flex justify-center w-full my-5">
-                        <div className="pdf-viewer md:w-4/5 lg:w-3/5 px-1">
+                    <div className='flex justify-center w-full my-5'>
+                        <div className='pdf-viewer md:w-4/5 lg:w-3/5 px-1'>
                             {pdfDoc ? (
                                 <>
                                     {pyq.isPaid &&
@@ -365,15 +369,15 @@ function PyqView() {
                                                     scale={1.5}
                                                 />
                                             ))}
-                                            <div className="text-center mt-5">
+                                            <div className='text-center mt-5'>
                                                 <button
                                                     onClick={() =>
                                                         handleBuyNowClick(pyq)
                                                     }
-                                                    className="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105"
+                                                    className='bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105'
                                                 >
                                                     Purchase to View All Pages (
-                                                    {pyq.price}P)
+                                                    {pyq.price / 5}₹)
                                                 </button>
                                             </div>
                                         </>
@@ -398,20 +402,20 @@ function PyqView() {
                     </div>
 
                     {!pyq.solved && (
-                        <div className="flex justify-center mb-5">
+                        <div className='flex justify-center mb-5'>
                             <button
                                 onClick={handleDownloadClick}
                                 disabled={canDownload}
                                 className={`bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 ${
                                     canDownload ? '' : 'cursor-not-allowed'
                                 }`}
-                                title="Download pyq PDF"
+                                title='Download pyq PDF'
                             >
                                 {canDownload ? (
                                     <a
                                         href={signedUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                                        target='_blank'
+                                        rel='noopener noreferrer'
                                     >
                                         Download now
                                     </a>
@@ -425,46 +429,18 @@ function PyqView() {
                     )}
                 </div>
             ) : (
-                <p className="text-center text-gray-600">pyq not found.</p>
+                <p className='text-center text-gray-600'>pyq not found.</p>
             )}
 
-            <Modal
+            <ConfirmPurchaseModal
                 isOpen={isBuyNowModalOpen}
                 onClose={handleCloseBuyNowModal}
-                title="Buy this PYQ"
-            >
-                {selectedPyq && (
-                    <div className="space-y-4">
-                        <h2 className="text-xl font-semibold">
-                            Available Points: {rewardBalance}
-                        </h2>
-                        <p>Price for this PYQ: {selectedPyq.price} Points</p>
-
-                        <div className="flex justify-center items-end gap-4 mt-4">
-                            {rewardBalance >= selectedPyq.price ? (
-                                <button
-                                    onClick={handleConfirmPurchase}
-                                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
-                                >
-                                    Confirm Purchase
-                                </button>
-                            ) : (
-                                <p className="text-red-500">
-                                    Insufficient points. You need{' '}
-                                    {selectedPyq.price - rewardBalance} more
-                                    points.
-                                </p>
-                            )}
-                            <Link
-                                to="/add-points"
-                                className="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-md"
-                            >
-                                Add Points
-                            </Link>
-                        </div>
-                    </div>
-                )}
-            </Modal>
+                selectedResource={selectedPyq}
+                rewardBalance={rewardBalance}
+                handleOnlinePayment={handleOnlinePayment}
+                handleConfirmPurchase={handleConfirmPurchase}
+                title={'Buy This Pyq'}
+            />
         </div>
     );
 }
