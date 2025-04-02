@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { colleges } from '../../hooks/useCollegeId';
 import { toast } from 'react-toastify';
 
-// Reusable Quick Access Button Component
 const QuickAccessButton = ({ icon, label, onClick }) => {
     return (
         <div
-            className="px-4 py-2 rounded-full shadow-lg border-8 border-sky-100 w-28 h-28 sm:h-36 sm:w-36 flex justify-center items-center cursor-pointer 
-                      bg-gradient-to-t from-sky-300 to-white hover:bg-gradient-to-r hover:from-blue-300 hover:to-white
+            className="px-4 py-2 rounded-full shadow-lg border-8 border-blue-200 w-28 h-28 sm:h-36 sm:w-36 flex justify-center items-center cursor-pointer 
+                      bg-gradient-to-t from-blue-500 to-white hover:bg-gradient-to-r hover:from-blue-400 hover:to-blue-200
                       transition-all duration-700 ease-in-out"
             onClick={onClick}
             role="button"
             aria-label={`Open ${label}`}
         >
-            <div className="flex flex-col items-center sm:text-xl font-medium">
+            <div className="flex flex-col items-center sm:text-xl font-medium text-blue-900">
                 <i className={icon}></i>
                 <p>{label}</p>
             </div>
@@ -22,22 +21,24 @@ const QuickAccessButton = ({ icon, label, onClick }) => {
     );
 };
 
-// Reusable College Selection Modal Component
-const CollegeSelectionModal = ({
-    visible,
-    onClose,
-    onConfirm,
-    selectedCollege,
-    setSelectedCollege,
-}) => {
+const CollegeSelectionModal = ({ visible, onClose, onConfirm, selectedCollege, setSelectedCollege }) => {
+    useEffect(() => {
+        if (selectedCollege) {
+            onConfirm();
+        }
+    }, [selectedCollege]); // Runs on state update
+
     if (!visible) return null;
 
     return (
-        <div className="fixed inset-0 bg-sky-100 bg-opacity-100 flex justify-center items-center z-50">
-            <div className="bg-white rounded-2xl border-2 border-sky-500 sm:border-4 sm:border-sky-300 p-5 shadow-2xl w-64 sm:w-96">
-                <h3 className="text-lg font-bold mb-4">Select Your College</h3>
+        <div className="fixed inset-0 bg-blue-100 bg-opacity-90 flex justify-center items-center z-50">
+            <div className="bg-white rounded-2xl border-4 border-blue-400 p-6 shadow-2xl w-64 sm:w-96">
+                <div className='flex justify-between text-xl'>
+                    <h3 className="text-lg font-bold mb-4 text-blue-900">Select Your College</h3>
+                    <p onClick={onClose}><i className='fa-solid fa-remove cursor-pointer'></i></p>
+                </div>
                 <select
-                    className="w-full p-2 border rounded mb-4"
+                    className="w-full p-2 border rounded mb-4 focus:ring-2 focus:ring-blue-500"
                     onChange={(e) => setSelectedCollege(e.target.value)}
                     value={selectedCollege}
                     required
@@ -45,37 +46,16 @@ const CollegeSelectionModal = ({
                 >
                     <option value="">Select Your College</option>
                     {colleges.map((college) => (
-                        <option
-                            key={college.id}
-                            value={college.name.replace(/\s+/g, '-')}
-                            data={college.id}
-                        >
+                        <option key={college.id} value={college.name.replace(/\s+/g, '-')}>
                             {college.name}
                         </option>
                     ))}
                 </select>
-                <div className="flex justify-center gap-4">
-                    <button
-                        className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-                        onClick={onClose}
-                        aria-label="Cancel"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        className="px-4 py-2 bg-sky-500 text-white rounded hover:bg-sky-600"
-                        onClick={onConfirm}
-                        aria-label="Confirm"
-                    >
-                        Confirm
-                    </button>
-                </div>
             </div>
         </div>
     );
 };
 
-// Main QuickLinks Component
 function QuickLinks() {
     const [visible, setVisible] = useState(false);
     const [selectedCollege, setSelectedCollege] = useState('');
@@ -93,9 +73,7 @@ function QuickLinks() {
 
     const handleNavigate = () => {
         if (selectedCollege) {
-            const formattedCollegeName = selectedCollege
-                .replace(/\s+/g, '')
-                .toLowerCase();
+            const formattedCollegeName = selectedCollege.replace(/\s+/g, '').toLowerCase();
             navigate(`/college/${formattedCollegeName}/${navigatePath}`);
             setVisible(false);
         } else {
@@ -105,43 +83,25 @@ function QuickLinks() {
 
     const quickAccessItems = [
         { icon: 'fa-solid fa-user-tie', label: 'Seniors', path: 'seniors' },
-        {
-            icon: 'fa-solid fa-magnifying-glass',
-            label: 'Resources',
-            path: 'resources',
-        },
+        { icon: 'fa-solid fa-magnifying-glass', label: 'Resources', path: 'resources' },
         { icon: 'fa-solid fa-bolt', label: 'PYQs', path: 'pyq' },
         { icon: 'fa-solid fa-store', label: 'Store', path: 'store' },
         { icon: 'fa-solid fa-users', label: 'Community', path: 'community' },
-        {
-            icon: 'fa-brands fa-whatsapp',
-            label: 'Groups',
-            path: 'whatsapp-group',
-        },
+        { icon: 'fa-brands fa-whatsapp', label: 'Groups', path: 'whatsapp-group' },
     ];
 
     return (
         <div className="container mx-auto my-4 p-4">
-
             <h1 className="text-center text-3xl p-4">
-                <span className="text-3xl sm:text-4xl font-extrabold text-gray-800">
-                    Quick Access
-                </span>
+                <span className="text-3xl sm:text-4xl font-extrabold text-blue-900">Quick Access</span>
             </h1>
             <div className="flex justify-center items-center">
                 <div className="p-5 flex flex-wrap gap-8 w-full justify-center">
                     {quickAccessItems.map((item, index) => (
-                        <QuickAccessButton
-                            key={index}
-                            icon={item.icon}
-                            label={item.label}
-                            onClick={() => handleOpenModal(item.path)}
-                        />
+                        <QuickAccessButton key={index} icon={item.icon} label={item.label} onClick={() => handleOpenModal(item.path)} />
                     ))}
                 </div>
             </div>
-
-            {/* College Selection Modal */}
             <CollegeSelectionModal
                 visible={visible}
                 onClose={handleCloseModal}
