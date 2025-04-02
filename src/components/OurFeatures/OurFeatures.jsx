@@ -1,4 +1,5 @@
-import { React, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import pyq from '../../icons/pyq.png';
 import senior from '../../icons/senior.png';
 import store from '../../icons/store.png';
@@ -8,24 +9,24 @@ const OurFeatures = () => {
     const features = [
         {
             id: 1,
-            title: 'PYQ',
+            title: 'PYQ Access',
             icon: pyq,
             description:
-                'Access past year question papers, understand trends, improve strategies, and ace exams confidently with a well-organized, easy-to-use database for students.',
+                'Access past year question papers, understand trends, and improve strategies.',
         },
         {
             id: 2,
-            title: 'Senior',
+            title: 'Senior Mentorship',
             icon: senior,
             description:
-                'Gain expert mentorship and support from seniors. Overcome challenges, plan careers, and excel academically with trusted guidance, experience, and wisdom from experts.',
+                'Gain expert mentorship and support from seniors for academic and career guidance.',
         },
         {
             id: 3,
-            title: 'Store',
+            title: 'Student Store',
             icon: store,
             description:
-                'Discover and sell calculators, books, lab coats, aprons, and affordable stationery essentials in our store to boost your preparation and achieve your academic goals .',
+                'Discover and sell essential academic supplies to help you support your preparation.',
         },
     ];
     const achievements = [
@@ -61,7 +62,7 @@ const OurFeatures = () => {
 
     useEffect(() => {
         achievements.forEach((achievement, index) => {
-            const increment = Math.ceil(achievement.count / 200); // Increment speed
+            const increment = Math.ceil(achievement.count / 100);
             let currentValue = 0;
             const timer = setInterval(() => {
                 currentValue += increment;
@@ -74,90 +75,104 @@ const OurFeatures = () => {
                     updatedCounts[index] = currentValue;
                     return updatedCounts;
                 });
-            }, 20); // Interval speed
+            }, 15);
         });
     }, []);
+
+    const featureVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: (i) => ({
+            opacity: 1,
+            y: 0,
+            transition: {
+                delay: i * 0.2,
+                duration: 0.5,
+                ease: 'easeInOut',
+            },
+        }),
+    };
 
     return (
         <div>
             {/* Achievements */}
-
             <div className="py-12 px-4">
-                {/* Heading Section */}
-                <div className="text-center mb-8">
-                    <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-800">
+                <div className="text-center mb-10">
+                    <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">
                         A Platform Trusted by Students
                     </h2>
-                    <p className="text-gray-600 text-base sm:text-lg mt-2">
-                        Explore the impact we've made with our resources,
+                    <p className="text-gray-600 text-base sm:text-lg mt-3 max-w-2xl mx-auto">
+                        Explore the impact we&apos;ve made with our resources,
                         community, and products!
                     </p>
                 </div>
 
-                {/* Cards Section */}
-                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
                     {achievements.map((item, index) => (
-                        <div
+                        <motion.div
                             key={item.id}
-                            className={`${
-                                index % 2 === 0 ? 'bg-sky-200' : 'bg-red-200'
-                            }  lg:h-56 h-40 rounded-3xl shadow-xl p-4 sm:p-6 text-center relative overflow-hidden group  transition-transform transform hover:scale-105`}
+                            className={`bg-white rounded-2xl shadow-md p-6 text-center
+                                        transition-all duration-300 transform hover:scale-103
+                                        border border-gray-100`}
+                            whileHover={{ scale: 1.05, boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)' }}
                         >
-                            {/* Icon */}
-                            <div className="absolute bottom-[-100px] left-1/2 transform -translate-x-1/2 lg:group-hover:translate-y-[-100%] transition-all duration-200 ease-out">
+                            <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-blue-100">
                                 <img
                                     src={item.icon}
                                     alt={item.title}
-                                    className="h-20 w-20 sm:h-24 sm:w-24 object-contain"
+                                    className="w-8 h-8 object-contain"
                                 />
                             </div>
 
-                            {/* Text Content */}
-                            <div className="relative z-10 lg:group-hover:-translate-y-8 transition-transform duration-200 ease-out flex flex-col justify-center h-full">
-                                <h3 className="lg:text-4xl text-3xl font-extrabold text-gray-800">
+                            <div className="space-y-2">
+                                <h3 className="text-3xl sm:text-4xl font-extrabold text-blue-700">
                                     {currentCounts[index]}+
                                 </h3>
-                                <p className="text-base sm:text-lg font-semibold text-gray-600 mt-2">
+                                <p className="text-base sm:text-lg font-semibold text-gray-700">
                                     {item.title}
                                 </p>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>
 
-            <h1 className="text-center text-3xl">
-                <span className="text-3xl sm:text-4xl font-extrabold text-gray-800">
-                    Our Features
-                </span>
-            </h1>
-            <div>
-                <div className="lg:flex md:block justify-center items-center p-8">
-                    {features.map((feature, index) => (
-                        <div key={index}>
-                            <div className="py-10 px-5 ">
-                                <div className="max-w-md mx-auto bg-white shadow-lg rounded-[35px] p-6 text-center h-full">
-                                    <div className="w-16 h-16 mx-auto mb-4">
+            <section className="py-16 ">
+                <div className="container mx-auto px-4">
+                    <h1 className="text-center text-3xl sm:text-4xl font-extrabold text-gray-800 mb-12 relative">
+                        <span className="text-blue-600">Our Features</span>
+                        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-[-8px] h-[3px] w-20 bg-blue-500 rounded-full"></div>
+                    </h1>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {features.map((feature, index) => (
+                            <motion.div
+                                key={index}
+                                variants={featureVariants}
+                                initial="hidden"
+                                animate="visible"
+                                custom={index}
+                            >
+                                <div className="bg-white rounded-xl shadow-lg p-6 text-center transition-transform duration-300 hover:scale-105 hover:shadow-xl border border-gray-100">
+                                    <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full bg-blue-100">
                                         <img
                                             src={feature.icon}
-                                            alt="Icon"
-                                            className="w-full bg-white rounded-full scale-150 shadow-xl -translate-y-10 h-full"
+                                            alt={feature.title}
+                                            className="w-8 h-8 object-contain"
                                         />
                                     </div>
-                                    <div className="transform -translate-y-5">
-                                        <h2 className="text-red-600 text-2xl font-bold mb-2">
+                                    <div className="space-y-3">
+                                        <h2 className="text-xl font-semibold text-gray-900">
                                             {feature.title}
                                         </h2>
-                                        <p className="text-gray-600 text-base sm:text-lg mt-2">
+                                        <p className="text-gray-600 text-base leading-relaxed">
                                             {feature.description}
                                         </p>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    ))}
+                            </motion.div>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            </section>
         </div>
     );
 };

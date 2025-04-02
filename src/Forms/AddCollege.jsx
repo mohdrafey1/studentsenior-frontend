@@ -57,9 +57,8 @@ function AddCollege() {
             )}
 
             <div
-                className={`${
-                    isSuccess ? 'block' : 'hidden'
-                } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full w-full z-50 items-center`}
+                className={`${isSuccess ? 'block' : 'hidden'
+                    } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full w-full z-50 items-center`}
             >
                 <div
                     role="alert"
