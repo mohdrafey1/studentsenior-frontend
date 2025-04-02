@@ -23,7 +23,7 @@ const Header = () => {
                 {/* Logo */}
                 <Link to="/" className="flex items-center">
                     <span className="text-3xl font-bold text-blue-600 inline-flex items-center">
-                        <img src="./assets/logo.png" alt="logo" className='lg:h-16 sm:h-14' />
+                        <img src="./assets/logo.png" alt="logo" className='h-12 lg:h-16' />
                         <span className="text-4xl">S</span>tudent
                         <span className="text-blue-400"> Senior</span>
                     </span>
