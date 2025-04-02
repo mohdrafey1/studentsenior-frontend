@@ -22,10 +22,10 @@ const Header = () => {
             <div className="container mx-auto px-6 py-3 flex justify-between items-center">
                 {/* Logo */}
                 <Link to="/" className="flex items-center">
-                    <span className="text-3xl font-bold text-blue-600">
-                        {/* <span className="text-4xl">S</span>tudent
-                        <span className="text-blue-400"> Senior</span> */}
-                        <img src="./assets/logo.png" alt="logo" />
+                    <span className="text-3xl font-bold text-blue-600 inline-flex items-center">
+                        <img src="./assets/logo.png" alt="logo" className='lg:h-16 sm:h-14' />
+                        <span className="text-4xl">S</span>tudent
+                        <span className="text-blue-400"> Senior</span>
                     </span>
                 </Link>
                 <button
