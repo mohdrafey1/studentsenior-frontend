@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { colleges } from '../../hooks/useCollegeId';
 import { toast } from 'react-toastify';
 
@@ -102,6 +102,22 @@ function QuickLinks() {
                     ))}
                 </div>
             </div>
+            <div className="mt-10 px-4">
+                <div className="bg-gradient-to-r from-blue-100 to-blue-200 border border-blue-300 text-blue-900 rounded-xl shadow-md p-6 flex flex-col sm:flex-row items-center justify-between max-w-4xl mx-auto">
+                    <div className="flex items-center gap-4 text-center sm:text-left">
+                        <span className="text-3xl">📲</span>
+                        <p className="text-lg font-semibold">
+                            Install the app now for quicker access and a better experience!
+                        </p>
+                    </div>
+                    <Link to='/install'><button
+                        className="mt-4 sm:mt-0 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-5 rounded-md transition-all duration-300"
+                    >
+                        Install Now
+                    </button></Link>
+                </div>
+            </div>
+
             <CollegeSelectionModal
                 visible={visible}
                 onClose={handleCloseModal}
