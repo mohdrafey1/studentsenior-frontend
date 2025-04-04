@@ -12,8 +12,8 @@ const Header = () => {
     };
     const menuItems = [
         { name: 'Home', path: '/' },
-        { name: 'Course', path: '/courses' },
-        { name: 'Join as a Senior', path: '/becomesenior' },
+        // { name: 'Course', path: '/courses' },
+        // { name: 'Join as a Senior', path: '/becomesenior' },
         { name: 'Add Your College', path: '/add-college' },
         { name: 'Leaderboard', path: '/leaderboard' }
     ];
@@ -23,7 +23,7 @@ const Header = () => {
                 {/* Logo */}
                 <Link to="/" className="flex items-center">
                     <span className="text-3xl font-bold text-blue-600 inline-flex items-center">
-                        <img src="./assets/logo.png" alt="logo" className='h-12 lg:h-16' />
+                        <img src="./assets/logo.png" alt="logo" className='h-12 lg:h-16 text-xs text-transparent' />
                         <span className="text-4xl">S</span>tudent
                         <span className="text-blue-400"> Senior</span>
                     </span>

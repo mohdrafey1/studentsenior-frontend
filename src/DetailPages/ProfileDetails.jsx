@@ -49,18 +49,14 @@ export default function ProfileDetails({ data }) {
                             {type === 'notes' && (
                                 <div className="flex justify-between items-center">
                                     <a
-                                        href={`${
-                                            item.college?.slug
-                                        }/resources/${
-                                            item.subject?.branch?.course?.courseCode?.toLowerCase() ||
+                                        href={`${item.college?.slug
+                                            }/resources/${item.subject?.branch?.course?.courseCode?.toLowerCase() ||
                                             ''
-                                        }/${
-                                            item.subject?.branch?.branchCode?.toLowerCase() ||
+                                            }/${item.subject?.branch?.branchCode?.toLowerCase() ||
                                             ''
-                                        }/notes/${
-                                            item.subject?.subjectCode?.toLowerCase() ||
+                                            }/notes/${item.subject?.subjectCode?.toLowerCase() ||
                                             ''
-                                        }/${item.slug}`}
+                                            }/${item.slug}`}
                                         rel="noopener noreferrer"
                                         className="text-blue-600 font-semibold hover:underline text-sm"
                                     >
@@ -118,13 +114,13 @@ export default function ProfileDetails({ data }) {
                                                 item.resourceType === 'notes'
                                                     ? notes
                                                     : item.resourceType ===
-                                                      'pyq'
-                                                    ? pyq
-                                                    : item.type === 'redeem'
-                                                    ? redeem
-                                                    : item.type === 'bonus'
-                                                    ? redeem
-                                                    : null
+                                                        'pyq'
+                                                        ? pyq
+                                                        : item.type === 'redeem'
+                                                            ? redeem
+                                                            : item.type === 'bonus'
+                                                                ? redeem
+                                                                : redeem
                                             }
                                             alt={
                                                 item.type
@@ -152,29 +148,28 @@ export default function ProfileDetails({ data }) {
                                         </div>
                                         <div className="text-xl font-semibold">
                                             <p
-                                                className={`p-2 ${
-                                                    item.type === 'earn'
-                                                        ? 'text-green-600'
-                                                        : item.type === 'redeem'
+                                                className={`p-2 ${item.type === 'earn'
+                                                    ? 'text-green-600'
+                                                    : item.type === 'redeem'
                                                         ? 'text-red-600'
                                                         : item.type === 'bonus'
-                                                        ? 'text-green-600'
-                                                        : null
-                                                }`}
+                                                            ? 'text-green-600'
+                                                            : null
+                                                    }`}
                                             >
                                                 {item.type === 'earn'
                                                     ? '+'
                                                     : item.type === 'redeem'
-                                                    ? '-'
-                                                    : item.type === 'bonus'
-                                                    ? '-'
-                                                    : item.type === 'add-point'
-                                                    ? '+'
-                                                    : item.type === 'pyq-sale'
-                                                    ? '+'
-                                                    : item.type === 'note-sale'
-                                                    ? '+'
-                                                    : '-'}
+                                                        ? '-'
+                                                        : item.type === 'bonus'
+                                                            ? '-'
+                                                            : item.type === 'add-point'
+                                                                ? '+'
+                                                                : item.type === 'pyq-sale'
+                                                                    ? '+'
+                                                                    : item.type === 'note-sale'
+                                                                        ? '+'
+                                                                        : '-'}
                                                 {item.points}
                                             </p>
                                         </div>
@@ -185,18 +180,14 @@ export default function ProfileDetails({ data }) {
                             {type === 'pyqs' && (
                                 <div className="flex justify-between items-center">
                                     <a
-                                        href={`${
-                                            item.college?.slug
-                                        }/resources/${
-                                            item.subject?.branch?.course?.courseCode?.toLowerCase() ||
+                                        href={`${item.college?.slug
+                                            }/resources/${item.subject?.branch?.course?.courseCode?.toLowerCase() ||
                                             ''
-                                        }/${
-                                            item.subject?.branch?.branchCode?.toLowerCase() ||
+                                            }/${item.subject?.branch?.branchCode?.toLowerCase() ||
                                             ''
-                                        }/pyqs/${
-                                            item.subject?.subjectCode?.toLowerCase() ||
+                                            }/pyqs/${item.subject?.subjectCode?.toLowerCase() ||
                                             ''
-                                        }/${item.slug}`}
+                                            }/${item.slug}`}
                                         rel="noopener noreferrer"
                                         className="text-blue-600 font-semibold hover:underline text-sm"
                                     >
@@ -225,11 +216,10 @@ export default function ProfileDetails({ data }) {
                     <button
                         onClick={() => toggleViewMore(type)}
                         className={`mt-4 px-4 py-2 rounded-lg text-sm font-medium 
-                            ${
-                            isExpanded
+                            ${isExpanded
                                 ? 'bg-sky-500 text-white'
                                 : 'bg-white text-blue-500 border border-blue-500'
-                        } 
+                            } 
                             hover:bg-sky-600 hover:text-white transition duration-300`}
                     >
                         {isExpanded ? 'View Less' : 'View More'}
@@ -248,6 +238,8 @@ export default function ProfileDetails({ data }) {
 
     const dispatch = useDispatch();
     const { apiRequest, loading } = useApiRequest();
+    const [showInfo, setShowInfo] = useState(false);
+
 
     const handleRedeem = async () => {
         try {
@@ -311,83 +303,78 @@ export default function ProfileDetails({ data }) {
                 Contributions Details
             </h1>
 
-            {/* Reward Section */}
             <div className="rounded-lg space-y-6">
                 <h2 className="text-2xl font-bold text-gray-800">Rewards</h2>
+
                 <div className="lg:flex justify-between gap-3">
-                    <div className="bg-white text-gray-600 rounded-2xl w-full pl-4 pt-4 shadow-sm hover:shadow-lg duration-300 my-2">
-                        <strong className="text-gray-800 ">
-                            Current Balance:
-                        </strong>
-                        <p className="text-3xl font-bold text-gray-800">
-                            {data.rewardBalance}
-                        </p>
-                        <br />
-                        <div className="relative h-2 bg-gray-200 rounded-full mb-4 w-[95%]">
+                    {/* Current Balance Card */}
+                    <div className="bg-white text-gray-700 rounded-2xl w-full px-6 py-5 shadow-sm hover:shadow-lg transition-shadow duration-300 my-3">
+                        <div className="flex items-center justify-between">
+                            <strong className="text-xl text-gray-800">Current Balance:</strong>
+
+                            {/* Click-to-Toggle Info */}
+                            <button
+                                onClick={() => setShowInfo(!showInfo)}
+                                className="text-orange-500 hover:text-orange-600 focus:outline-none"
+                            >
+                                <i className="fa-solid fa-circle-info text-xl"></i>
+                            </button>
+                        </div>
+
+                        {/* Conditional Info Box */}
+                        {showInfo && (
+                            <div className="bg-gray-100 text-sm text-gray-700 p-3 mt-3 rounded-lg border border-gray-200">
+                                <p>You can redeem your points only after accumulating 100 points.</p>
+                                <p className="mt-1 font-semibold">5 points = ₹1</p>
+                            </div>
+                        )}
+
+                        <p className="text-4xl font-bold mt-4 text-gray-900">{data.rewardBalance}</p>
+
+                        {/* Progress Bar */}
+                        <div className="relative h-2 bg-gray-200 rounded-full mt-4 mb-6 w-full">
                             <div
-                                className="top-0 left-0 h-full bg-orange-400 rounded-full"
+                                className="absolute top-0 left-0 h-full bg-orange-500 rounded-full"
                                 style={{
-                                    width: `${
-                                        data.rewardBalance > 100
-                                            ? (100 / 100) * 100
-                                            : (data.rewardBalance / 100) * 100
-                                    }%`,
+                                    width: `${Math.min((data.rewardBalance / 100) * 100, 100)}%`,
                                 }}
                             ></div>
                         </div>
-                        <div className="flex items-center gap-2">
+
+                        {/* Action Buttons */}
+                        <div className="flex flex-wrap gap-3">
                             <button
                                 onClick={() => setShowRedeemModal(true)}
-                                className={`${
-                                    data.rewardBalance > 100
-                                        ? 'bg-sky-500 hover:bg-sky-600'
-                                        : 'bg-gray-400'
-                                } text-white font-semibold py-2 px-4 rounded-md transition-all duration-300`}
+                                className={`${data.rewardBalance >= 100
+                                    ? 'bg-sky-500 hover:bg-sky-600'
+                                    : 'bg-gray-400 cursor-not-allowed'
+                                    } text-white font-semibold py-2 px-5 rounded-md transition-all duration-300`}
                                 disabled={data.rewardBalance < 100}
                             >
                                 Redeem Now
                             </button>
+
                             <Link
-                                to={'/add-points'}
-                                className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition-all duration-300"
+                                to="/add-points"
+                                className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-5 rounded-md transition-all duration-300"
                             >
                                 Add Points
                             </Link>
-                            <div className="relative group">
-                                <button className="content-center rounded-full px-2">
-                                    <i className="text-3xl fa-solid fa-circle-info"></i>
-                                </button>
-                                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 px-4 py-3 text-sm text-white bg-gray-700 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out shadow-lg z-10">
-                                    <p>
-                                        You can redeem your points only after
-                                        accumulating 100 points.
-                                    </p>
-                                    <p>5 points = ₹1</p>
-                                </div>
-                            </div>
                         </div>
-                        <br />
                     </div>
+
+                    {/* Total Points Earned */}
                     <div className="bg-white text-gray-600 h-40 rounded-2xl w-full pl-4 pt-4 shadow-sm hover:shadow-lg duration-300 my-2">
-                        <strong className="text-gray-800">
-                            Total Points Earned:
-                        </strong>
-                        <br />
-                        <br />
-                        <p className="text-3xl font-bold text-gray-800">
-                            {data.rewardPoints}
-                        </p>
+                        <strong className="text-gray-800">Total Points Earned:</strong>
+                        <br /><br />
+                        <p className="text-3xl font-bold text-gray-800">{data.rewardPoints}</p>
                     </div>
+
+                    {/* Total Redeemed */}
                     <div className="bg-white text-gray-600 h-40 rounded-2xl w-full pl-4 pt-4 shadow-sm hover:shadow-lg duration-300 my-2">
-                        <strong className="text-gray-800">
-                            Total Redeemed:
-                        </strong>
-                        <br />
-                        <br />
-                        <p className="text-3xl font-bold text-gray-800">
-                            {' '}
-                            {data.rewardRedeemed}
-                        </p>
+                        <strong className="text-gray-800">Total Redeemed:</strong>
+                        <br /><br />
+                        <p className="text-3xl font-bold text-gray-800">{data.rewardRedeemed}</p>
                     </div>
                 </div>
             </div>
@@ -476,11 +463,10 @@ export default function ProfileDetails({ data }) {
                         )}
                         <button
                             onClick={handleRedeem}
-                            className={`w-full p-4 rounded-lg text-white font-semibold ${
-                                loadingRedeem
-                                    ? 'bg-sky-400 cursor-not-allowed'
-                                    : 'bg-sky-500 hover:bg-sky-600'
-                            }`}
+                            className={`w-full p-4 rounded-lg text-white font-semibold ${loadingRedeem
+                                ? 'bg-sky-400 cursor-not-allowed'
+                                : 'bg-sky-500 hover:bg-sky-600'
+                                }`}
                             disabled={loadingRedeem}
                         >
                             {loadingRedeem ? 'Processing...' : 'Redeem Points'}
