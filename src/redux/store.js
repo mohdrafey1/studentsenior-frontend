@@ -16,10 +16,12 @@ import userDataReducer from '../redux/slices/userDataSlice.js';
 import collegeReducer from '../redux/slices/collegeSlice.js';
 import notesReducer from '../redux/slices/NotesSlice.js';
 import lostfoundReducer from '../redux/slices/lostFoundSlice.js';
+import savedCollectionReducer from '../redux/slices/savedCollectionSlice.js';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 const rootReducer = combineReducers({
+<<<<<<< HEAD
   user: userReducer,
   seniors: seniorReducer,
   courses: courseReducer,
@@ -37,6 +39,26 @@ const rootReducer = combineReducers({
   colleges: collegeReducer,
   notes: notesReducer,
   lostfound: lostfoundReducer,
+=======
+    user: userReducer,
+    seniors: seniorReducer,
+    courses: courseReducer,
+    branches: branchReducer,
+    subjects: subjectReducer,
+    products: productReducer,
+    groups: groupReducer,
+    pyqs: pyqReducer,
+    getOpportunities: getOpportunitiesReducer,
+    giveOpportunities: giveOpportunitiesReducer,
+    posts: postReducer,
+    subjectNotes: subjectNotesReducer,
+    subjectPyqs: subjectPyqsReducer,
+    userData: userDataReducer,
+    colleges: collegeReducer,
+    notes: notesReducer,
+    lostfound: lostfoundReducer,
+    savedCollection: savedCollectionReducer,
+>>>>>>> 81caa9540474d85015bef0d185d0a79b7f7e7782
 });
 
 const persistConfig = {

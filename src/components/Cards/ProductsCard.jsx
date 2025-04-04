@@ -172,7 +172,103 @@ function ProductsCard({
     return products.map((product) => renderProductCard(product));
   };
 
+<<<<<<< HEAD
   return <>{renderContent()}</>;
+=======
+        return socialLinks.length > 0 ? (
+            <div className="flex gap-3">{socialLinks}</div>
+        ) : null;
+    };
+
+    const renderProductCard = (product) => {
+        const isAvailable = product.available;
+        const productLink = `/college/${collegeName}/store/${product.slug}`;
+
+        return (
+            <div className="w-full my-4 relative">
+                <div className={`relative rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm transition-all duration-300 ${isAvailable ? 'hover:shadow-lg' : 'opacity-70'}`}>
+                    {/* Image container */}
+                    <div className="relative h-48 overflow-hidden">
+                        <img
+                            src={product.image.url}
+                            alt={product.name}
+                            className="w-full h-full object-cover"
+                        />
+
+                        {/* Availability badge */}
+                        {!isAvailable && (
+                            <div className="absolute top-0 right-0 left-0 bg-black bg-opacity-60 text-white text-sm font-medium py-1.5 text-center">
+                                Sold Out
+                            </div>
+                        )}
+
+                        {/* Quick action buttons */}
+                        <div className="absolute bottom-3 right-3 flex space-x-2">
+                            {renderProductActions(product)}
+                        </div>
+                    </div>
+
+                    {/* Content area */}
+                    <div className="p-4">
+                        {/* Product name */}
+                        <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-1 line-clamp-1">
+                            {product.name}
+                        </h3>
+
+                        {/* Price */}
+                        <div className="font-bold text-lg text-gray-900 dark:text-white mb-2">
+                            ₹{product.price}
+                        </div>
+
+                        {/* Description */}
+                        <p className="text-gray-600 dark:text-gray-300 text-sm mb-3 line-clamp-2">
+                            {product.description}
+                        </p>
+
+                        {/* Social links */}
+                        <div className="flex items-center justify-between">
+                            <div className="flex space-x-2">
+                                {renderSocialLinks(product)}
+                            </div>
+
+                            {/* View details button */}
+                            {isAvailable && (
+                                <Link
+                                    to={productLink}
+                                    className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
+                                >
+                                    View Details
+                                </Link>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    const renderContent = () => {
+        if (loadingFetch) {
+            return (
+                <div className="col-span-4 flex justify-center items-center w-full">
+                    <i className="fas fa-spinner fa-pulse fa-5x"></i>
+                </div>
+            );
+        }
+
+        if (products.length === 0) {
+            return (
+                <div className="col-span-4 flex justify-center items-center w-full">
+                    <p>No Products Found</p>
+                </div>
+            );
+        }
+
+        return products.map((product) => renderProductCard(product));
+    };
+
+    return <>{renderContent()}</>;
+>>>>>>> 81caa9540474d85015bef0d185d0a79b7f7e7782
 }
 
 export default ProductsCard;

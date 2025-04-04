@@ -28,10 +28,64 @@ const PaymentComplete = () => {
   const transactionId = searchParams.get('transactionId');
   const status = searchParams.get('status');
 
+<<<<<<< HEAD
   // Clear any existing timers on unmount
   useEffect(() => {
     return () => {
       if (redirectTimer) clearTimeout(redirectTimer);
+=======
+    // Clear any existing timers on unmount
+    useEffect(() => {
+        return () => {
+            if (redirectTimer) clearTimeout(redirectTimer);
+        };
+    }, [redirectTimer]);
+
+    const verifyPayment = async () => {
+        try {
+            if (
+                !transactionId ||
+                !Object.values(PAYMENT_STATUS).includes(status)
+            ) {
+                throw new Error('Invalid payment parameters');
+            }
+
+            const res = await fetch(
+                `${API_BASE_URL}/api/phonepe/${transactionId}`,
+                {
+                    credentials: 'include',
+                }
+            );
+
+            // if (!res.ok) {
+            //     throw new Error(
+            //         res.status === 404
+            //             ? 'Payment verification failed - transaction not found'
+            //             : 'Payment verification failed'
+            //     );
+            // }
+
+            const data = await res.json();
+
+            if (!data.success) {
+                throw new Error(data.error || 'Payment verification failed');
+            }
+
+            setPaymentDetails(data.data);
+            setPaymentStatus(data.data.status);
+
+            // Handle successful payment
+            if (data.data.status === PAYMENT_STATUS.PAID) {
+                await handleSuccessfulPayment(data.data);
+            }
+        } catch (error) {
+            console.error('Payment verification error:', error);
+            setError(error.message);
+            toast.error(error.message);
+        } finally {
+            setLoading(false);
+        }
+>>>>>>> 81caa9540474d85015bef0d185d0a79b7f7e7782
     };
   }, [redirectTimer]);
 

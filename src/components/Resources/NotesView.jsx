@@ -232,9 +232,205 @@ function NotesView() {
 
   const navigate = useNavigate(); //need to search jugaad
 
+<<<<<<< HEAD
   const handleConfirmPurchase = async () => {
     handleConfirmPurchaseUtil(selectedNote, api.subjectNotes, navigate, () =>
       setBuyNowModalOpen(false),
+=======
+    const handleOnlinePayment = () => {
+        handleOnlinePaymentUtil(
+            selectedNote,
+            apiRequest,
+            window.location.href,
+            'note_purchase'
+        );
+    };
+
+    useEffect(() => {
+        const handleContextMenu = (e) => e.preventDefault();
+        const handleKeyDown = (e) => {
+            if (
+                e.ctrlKey &&
+                (e.key === 'p' || e.key === 's' || e.key === 'u')
+            ) {
+                e.preventDefault();
+            }
+        };
+
+        document.addEventListener('contextmenu', handleContextMenu);
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('contextmenu', handleContextMenu);
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+
+    useEffect(() => {
+        const blockDevTools = (e) => {
+            if (
+                e.keyCode === 123 || // F12
+                (e.ctrlKey &&
+                    e.shiftKey &&
+                    (e.key === 'I' || e.key === 'J' || e.key === 'C')) || // Ctrl+Shift+I/J/C
+                (e.metaKey && e.altKey && (e.key === 'I' || e.key === 'J')) // Cmd+Option+I/J (Mac)
+            ) {
+                e.preventDefault();
+            }
+        };
+
+        document.addEventListener('keydown', blockDevTools);
+        return () => {
+            document.removeEventListener('keydown', blockDevTools);
+        };
+    }, []);
+
+    if (loading) {
+        return (
+            <div className='flex justify-center items-center min-h-screen'>
+                <div className='text-center'>
+                    <i className='fas fa-spinner fa-pulse fa-5x text-sky-500'></i>
+                    <p className='mt-4 text-lg text-gray-600'>
+                        Loading note...
+                    </p>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className='h-screen flex justify-center items-center'>
+                <div>
+                    <p className='text-center text-red-500 mb-4'>{error}</p>
+                    <Link
+                        to={`/${collegeName}/resources/${courseCode}/${branchCode}/notes/${subjectCode}`}
+                        className='bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600'
+                    >
+                        See Other Notes
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className='container mx-auto sm:px-2 min-h-screen'>
+            <DetailPageNavbar
+            // path={`${collegeName}/resources/${courseCode}/${branchCode}/notes/${subjectCode}`}
+            />
+            {note ? (
+                <div>
+                    <div className='flex flex-col items-center px-2'>
+                        <h1 className='text-2xl font-bold text-gray-800 mt-4 '>
+                            {note.title}
+                        </h1>
+                        <p className='text-lg text-gray-600 mt-2 '>
+                            Subject: {note.subject.subjectName} (
+                            {note.subject.subjectCode})
+                            <Seo
+                                title={`${note.subject.subjectName} (${note.subject.subjectCode})`}
+                            />
+                        </p>
+                    </div>
+
+                    {/* PDF Viewer */}
+                    <div className='flex justify-center w-full my-5'>
+                        <div className='pdf-viewer md:w-4/5 lg:w-3/5 p-1'>
+                            {pdfDoc ? (
+                                <>
+                                    {note.isPaid &&
+                                    note.owner._id !== ownerId &&
+                                    !note.purchasedBy.includes(ownerId) ? (
+                                        // If the Note is paid and user is not owner or buyer, show only the first 2 pages
+                                        <>
+                                            {Array.from({
+                                                length: Math.min(
+                                                    2,
+                                                    pdfDoc.numPages
+                                                ),
+                                            }).map((_, index) => (
+                                                <LazyPDFPage
+                                                    key={index}
+                                                    pdf={pdfDoc}
+                                                    pageNum={index + 1}
+                                                    scale={1.5}
+                                                />
+                                            ))}
+                                            <div className='text-center mt-5'>
+                                                <button
+                                                    onClick={() =>
+                                                        handleBuyNowClick(note)
+                                                    }
+                                                    className='bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105'
+                                                >
+                                                    Purchase to View All Pages (
+                                                    {note.price / 5}₹)
+                                                </button>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        // If user is the owner or has bought it, show all pages
+                                        Array.from({
+                                            length: pdfDoc.numPages,
+                                        }).map((_, index) => (
+                                            <LazyPDFPage
+                                                key={index}
+                                                pdf={pdfDoc}
+                                                pageNum={index + 1}
+                                                scale={1.5}
+                                            />
+                                        ))
+                                    )}
+                                </>
+                            ) : (
+                                <p>Loading PDF...</p>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Download Button */}
+                    {!note.isPaid && (
+                        <div className='flex justify-center mb-4'>
+                            <button
+                                onClick={handleDownloadClick}
+                                disabled={canDownload}
+                                className={`bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 ${
+                                    canDownload ? '' : 'cursor-not-allowed'
+                                }`}
+                                title='Download Note PDF'
+                            >
+                                {canDownload ? (
+                                    <a
+                                        href={signedUrl}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                    >
+                                        Download now
+                                    </a>
+                                ) : showCountdown ? (
+                                    `Download ${countdown}s`
+                                ) : (
+                                    'Download'
+                                )}
+                            </button>
+                        </div>
+                    )}
+                </div>
+            ) : (
+                <p className='text-center text-gray-600'>Note not found.</p>
+            )}
+            <ConfirmPurchaseModal
+                isOpen={isBuyNowModalOpen}
+                onClose={handleCloseBuyNowModal}
+                selectedResource={selectedNote}
+                rewardBalance={rewardBalance}
+                handleOnlinePayment={handleOnlinePayment}
+                handleConfirmPurchase={handleConfirmPurchase}
+                title={'Buy This Note'}
+            />
+        </div>
+>>>>>>> 81caa9540474d85015bef0d185d0a79b7f7e7782
     );
     await fetchNote();
   };

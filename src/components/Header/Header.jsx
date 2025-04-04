@@ -7,6 +7,7 @@ const Header = () => {
   const location = useLocation();
   const { currentUser } = useSelector((state) => state.user);
 
+<<<<<<< HEAD
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -57,6 +58,52 @@ const Header = () => {
         </button>
         <nav
           className={`fixed inset-0 transition-transform duration-300 
+=======
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
+    const menuItems = [
+        { name: 'Home', path: '/' },
+        // { name: 'Course', path: '/courses' },
+        // { name: 'Join as a Senior', path: '/becomesenior' },
+        { name: 'Add Your College', path: '/add-college' },
+        { name: 'Leaderboard', path: '/leaderboard' }
+    ];
+    return (
+        <header className="top-0 py-1 left-0 w-full bg-transparent rounded-full z-40">
+            <div className="container mx-auto px-6 py-3 flex justify-between items-center">
+                {/* Logo */}
+                <Link to="/" className="flex items-center">
+                    <span className="text-3xl font-bold text-blue-600 inline-flex items-center">
+                        <img src="./assets/logo.png"
+                            alt="logo"
+                            className='h-12 lg:h-16 text-xs text-transparent'
+                            loading="eager"
+                            key={Date.now()} />
+                        <span className="text-4xl">S</span>tudent
+                        <span className="text-blue-400"> Senior</span>
+                    </span>
+                </Link>
+                <button
+                    onClick={toggleMenu}
+                    className="lg:hidden focus:outline-none z-50"
+                >
+                    <svg
+                        className={`w-6 h-6 transition-transform duration-300 ${isMenuOpen ? 'rotate-90 fixed right-6 top-6' : ''}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        {isMenuOpen ? (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                        ) : (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                        )}
+                    </svg>
+                </button>
+                <nav className={`fixed inset-0 transition-transform duration-300 
+>>>>>>> 81caa9540474d85015bef0d185d0a79b7f7e7782
             ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}
             lg:static lg:transform-none lg:flex lg:items-center lg:space-x-6
             pt-20 lg:pt-0 bg-blue-300 z-40 lg:bg-transparent

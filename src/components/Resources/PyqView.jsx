@@ -226,9 +226,208 @@ function PyqView() {
     }, 1000);
   };
 
+<<<<<<< HEAD
   const handleConfirmPurchase = async () => {
     handleConfirmPurchaseUtil(selectedPyq, api.newPyqs, navigate, () =>
       setBuyNowModalOpen(false),
+=======
+    const handleOnlinePayment = () => {
+        handleOnlinePaymentUtil(
+            selectedPyq,
+            apiRequest,
+            window.location.href,
+            'pyq_purchase'
+        );
+    };
+
+    useEffect(() => {
+        const handleContextMenu = (e) => e.preventDefault();
+        const handleKeyDown = (e) => {
+            if (
+                e.ctrlKey &&
+                (e.key === 'p' || e.key === 's' || e.key === 'u')
+            ) {
+                e.preventDefault();
+            }
+        };
+
+        document.addEventListener('contextmenu', handleContextMenu);
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('contextmenu', handleContextMenu);
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+
+    useEffect(() => {
+        const blockDevTools = (e) => {
+            if (
+                e.keyCode === 123 || // F12
+                (e.ctrlKey &&
+                    e.shiftKey &&
+                    (e.key === 'I' || e.key === 'J' || e.key === 'C')) || // Ctrl+Shift+I/J/C
+                (e.metaKey && e.altKey && (e.key === 'I' || e.key === 'J')) // Cmd+Option+I/J (Mac)
+            ) {
+                e.preventDefault();
+            }
+        };
+
+        document.addEventListener('keydown', blockDevTools);
+        return () => {
+            document.removeEventListener('keydown', blockDevTools);
+        };
+    }, []);
+
+    if (loading) {
+        return (
+            <div className='flex justify-center items-center min-h-screen'>
+                <div className='text-center'>
+                    <i className='fas fa-spinner fa-pulse fa-5x text-sky-500'></i>
+                    <p className='mt-4 text-lg text-gray-600'>Loading pyq...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className='h-screen flex justify-center items-center'>
+                <div>
+                    <p className='text-center text-red-500 mb-4'>{error}</p>
+                    <Link
+                        to={`/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}`}
+                        className='bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600'
+                    >
+                        See Other Pyq
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className='container mx-auto sm:px-4 min-h-screen'>
+            <DetailPageNavbar
+            // path={`${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}`}
+            />
+            {pyq ? (
+                <div>
+                    <div className='flex flex-col items-center px-2'>
+                        <h1 className='text-2xl font-bold text-gray-800'>
+                            {pyq.title}
+                        </h1>
+                        <p className='text-lg text-gray-600 mt-2'>
+                            Subject: {pyq.subject.subjectName} ({pyq.examType} -{' '}
+                            {pyq.year})
+                            <Seo
+                                title={`${pyq.subject.subjectName} (${pyq.examType} - ${pyq.year})`}
+                            />
+                        </p>
+                        {pyq.solved && (
+                            <span className='bg-green-200 rounded-md px-2 py-1 font-bold'>
+                                Solved
+                            </span>
+                        )}
+                    </div>
+
+                    {/* PDF Viewer */}
+                    <div className='flex justify-center w-full my-5'>
+                        <div className='pdf-viewer md:w-4/5 lg:w-3/5 px-1'>
+                            {pdfDoc ? (
+                                <>
+                                    {pyq.isPaid &&
+                                    pyq.owner._id !== ownerId &&
+                                    !pyq.purchasedBy.includes(ownerId) ? (
+                                        // If the PYQ is paid and user is not owner or buyer, show only the first 2 pages
+                                        <>
+                                            {Array.from({
+                                                length: Math.min(
+                                                    2,
+                                                    pdfDoc.numPages
+                                                ),
+                                            }).map((_, index) => (
+                                                <LazyPDFPage
+                                                    key={index}
+                                                    pdf={pdfDoc}
+                                                    pageNum={index + 1}
+                                                    scale={1.5}
+                                                />
+                                            ))}
+                                            <div className='text-center mt-5'>
+                                                <button
+                                                    onClick={() =>
+                                                        handleBuyNowClick(pyq)
+                                                    }
+                                                    className='bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105'
+                                                >
+                                                    Purchase to View All Pages (
+                                                    {pyq.price / 5}₹)
+                                                </button>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        // If user is the owner or has bought it, show all pages
+                                        Array.from({
+                                            length: pdfDoc.numPages,
+                                        }).map((_, index) => (
+                                            <LazyPDFPage
+                                                key={index}
+                                                pdf={pdfDoc}
+                                                pageNum={index + 1}
+                                                scale={1.5}
+                                            />
+                                        ))
+                                    )}
+                                </>
+                            ) : (
+                                <p>Loading PDF...</p>
+                            )}
+                        </div>
+                    </div>
+
+                    {!pyq.solved && (
+                        <div className='flex justify-center mb-5'>
+                            <button
+                                onClick={handleDownloadClick}
+                                disabled={canDownload}
+                                className={`bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 ${
+                                    canDownload ? '' : 'cursor-not-allowed'
+                                }`}
+                                title='Download pyq PDF'
+                            >
+                                {canDownload ? (
+                                    <a
+                                        href={signedUrl}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                    >
+                                        Download now
+                                    </a>
+                                ) : showCountdown ? (
+                                    `Download ${countdown}s`
+                                ) : (
+                                    'Download'
+                                )}
+                            </button>
+                        </div>
+                    )}
+                </div>
+            ) : (
+                <p className='text-center text-gray-600'>pyq not found.</p>
+            )}
+
+            <ConfirmPurchaseModal
+                isOpen={isBuyNowModalOpen}
+                onClose={handleCloseBuyNowModal}
+                selectedResource={selectedPyq}
+                rewardBalance={rewardBalance}
+                handleOnlinePayment={handleOnlinePayment}
+                handleConfirmPurchase={handleConfirmPurchase}
+                title={'Buy This Pyq'}
+            />
+        </div>
+>>>>>>> 81caa9540474d85015bef0d185d0a79b7f7e7782
     );
     await fetchpyq();
   };

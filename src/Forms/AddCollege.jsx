@@ -68,6 +68,7 @@ function AddCollege() {
           <p className="flex justify-center text-2xl">Attention</p>
           <p className="ml-4 p-3">{responseMessage}</p>
 
+<<<<<<< HEAD
           <button
             className="flex items-center justify-center transition-all w-8 h-8 rounded-md text-white hover:bg-white/10 active:bg-white/10 absolute top-1.5 right-1.5"
             type="button"
@@ -80,6 +81,24 @@ function AddCollege() {
               stroke="currentColor"
               className="h-5 w-5"
               strokeWidth="2"
+=======
+    const closeDialog = () => {
+        setIsSuccess(false);
+        window.location.href = '../';
+    };
+
+    return (
+        <>
+            {loading && (
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50 bg-opacity-75">
+                    <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>
+                </div>
+            )}
+
+            <div
+                className={`${isSuccess ? 'block' : 'hidden'
+                    } text-center absolute bg-opacity-80 bg-gray-300 flex justify-center h-full w-full z-50 items-center`}
+>>>>>>> 81caa9540474d85015bef0d185d0a79b7f7e7782
             >
               <path
                 strokeLinecap="round"

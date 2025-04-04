@@ -421,6 +421,7 @@ const PostCard = ({
 }) => {
   const latestComment = post.comments[post.comments.length - 1];
 
+<<<<<<< HEAD
   return (
     <div className="block max-w-sm p-6 w-full bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100">
       <div className="flex justify-between">
@@ -428,6 +429,180 @@ const PostCard = ({
           {post.isAnonymous ? (
             <div className="flex items-center justify-center rounded-full w-8 h-8 bg-gray-300 text-white font-bold">
               A
+=======
+    return (
+        <div className="block max-w-sm p-6 w-full bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100">
+            <div className="flex justify-between">
+                <div className="flex items-center gap-2">
+                    {post.isAnonymous ? (
+                        <div className="flex items-center justify-center rounded-full w-8 h-8 bg-gray-300 text-white font-bold">
+                            A
+                        </div>
+                    ) : (
+                        <img
+                            src={post.author.profilePicture}
+                            alt="Author Profile"
+                            className="rounded-full w-8 h-8"
+                        />
+                    )}
+                    <h2 className="text-lg font-semibold">
+                        {post.isAnonymous
+                            ? 'Anonymous'
+                            : post.author.username.length >
+                                (post.author._id === ownerId ? 8 : 20)
+                                ? post.author.username.slice(
+                                    0,
+                                    post.author._id === ownerId ? 8 : 20
+                                ) + '...'
+                                : post.author.username}
+                    </h2>
+                </div>
+
+                <div className="space-x-2">
+                    {post.author._id === ownerId && (
+                        <>
+                            <button
+                                onClick={onEdit}
+                                className="text-yellow-500 px-2 rounded-lg"
+                                title="Edit Post"
+                            >
+                                <i className="fa-regular fa-pen-to-square fa-xl"></i>
+                            </button>
+                            <button
+                                onClick={onDelete}
+                                className="text-red-500 px-2 rounded-lg"
+                                title="Delete Post"
+                            >
+                                <i className="fa-solid fa-trash fa-xl"></i>
+                            </button>
+                        </>
+                    )}
+                    <button
+                        className="text-center text-blue-400 hover:text-blue-300"
+                        onClick={onShare}
+                        title="Share Post"
+                    >
+                        <i className="fa-regular fa-share-from-square fa-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div className="mt-3">
+                <Link to={`/college/${collegeName}/community/post/${post._id}`}>
+                    <PostPreview post={post} />
+                </Link>
+                <button
+                    className={`mt-1 px-3 border-2 border-sky-500 rounded-lg ${post.likes.includes(ownerId)
+                            ? 'text-white bg-sky-500'
+                            : 'text-black'
+                        }`}
+                    onClick={onLike}
+                    disabled={hookLoadingStates.likePost[post._id]}
+                >
+                    {hookLoadingStates.likePost[post._id] ? (
+                        <i className="fa fa-spinner fa-spin"></i>
+                    ) : (
+                        <>
+                            <i className="fa-regular fa-heart"></i> (
+                            {post.likes.length})
+                        </>
+                    )}
+                </button>
+            </div>
+
+            <div className="mt-1">
+                <h3 className="text-lg font-semibold">
+                    Comments{' '}
+                    {post.comments.length > 0
+                        ? `(${post.comments.length})`
+                        : null}{' '}
+                    {post.comments.length > 0 && (
+                        <button
+                            className="text-sm p-1 rounded-md text-sky-500"
+                            onClick={onShowComments}
+                        >
+                            Show All
+                        </button>
+                    )}
+                </h3>
+
+                {latestComment && (
+                    <ul>
+                        <li key={latestComment._id}>
+                            <p className="line-clamp-1">
+                                {latestComment.content}
+                            </p>
+                            <div className="flex items-center justify-between mt-2">
+                                <button
+                                    className={`text-blue-500 ${likedComments.includes(
+                                        latestComment._id
+                                    )
+                                            ? 'opacity-50 cursor-not-allowed'
+                                            : ''
+                                        }`}
+                                    onClick={() =>
+                                        onLikeComment(latestComment._id)
+                                    }
+                                    disabled={likedComments.includes(
+                                        latestComment._id
+                                    )}
+                                >
+                                    <i className="fa-regular fa-heart"></i> (
+                                    {latestComment.likes})
+                                </button>
+                                {latestComment.author._id === ownerId && (
+                                    <button
+                                        className="text-red-500"
+                                        onClick={() =>
+                                            onDeleteComment(latestComment._id)
+                                        }
+                                        disabled={
+                                            hookLoadingStates.deleteComment[
+                                            post._id
+                                            ]
+                                        }
+                                    >
+                                        {hookLoadingStates.deleteComment[
+                                            post._id
+                                        ] ? (
+                                            <i className="fa fa-spinner fa-spin"></i>
+                                        ) : (
+                                            <i className="fa-solid fa-trash"></i>
+                                        )}
+                                    </button>
+                                )}
+                            </div>
+                        </li>
+                    </ul>
+                )}
+
+                <div className="mt-3">
+                    <textarea
+                        value={commentContent[post._id] || ''}
+                        onChange={(e) =>
+                            setCommentContent({
+                                ...commentContent,
+                                [post._id]: e.target.value,
+                            })
+                        }
+                        className="w-full p-2 border rounded-md"
+                        placeholder="Add a comment..."
+                    />
+                    {commentContent[post._id]?.trim() && (
+                        <button
+                            onClick={onAddComment}
+                            className="mt-2 px-4 py-2 bg-sky-500 text-white rounded-md"
+                            disabled={hookLoadingStates.addComment[post._id]}
+                        >
+                            {hookLoadingStates.addComment[post._id] ? (
+                                <i className="fa fa-spinner fa-spin"></i>
+                            ) : (
+                                'Comment'
+                            )}
+                        </button>
+                    )}
+                </div>
+>>>>>>> 81caa9540474d85015bef0d185d0a79b7f7e7782
             </div>
           ) : (
             <img
