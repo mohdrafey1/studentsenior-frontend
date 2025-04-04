@@ -34,16 +34,16 @@ const NotesPage = () => {
     ];
     const branches = selectedCourse
         ? [
-              ...new Set(
-                  notes
-                      .filter(
-                          (note) =>
-                              note.subject.branch?.course?.courseName ===
-                              selectedCourse
-                      )
-                      .map((note) => note.subject?.branch?.branchName)
-              ),
-          ]
+            ...new Set(
+                notes
+                    .filter(
+                        (note) =>
+                            note.subject.branch?.course?.courseName ===
+                            selectedCourse
+                    )
+                    .map((note) => note.subject?.branch?.branchName)
+            ),
+        ]
         : [];
     const examTypes = [...new Set(notes.map((note) => note.examType))];
 
@@ -61,8 +61,8 @@ const NotesPage = () => {
                 : true) &&
             (searchTerm
                 ? note.subject.subjectName
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase())
                 : true)
         );
     });
@@ -146,9 +146,7 @@ const NotesPage = () => {
                 </div>
 
                 {currentnotes.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-2 lg:gap-6">
-                        <NotesCard notes={currentnotes} />
-                    </div>
+                    <NotesCard notes={currentnotes} />
                 ) : (
                     <div className="col-span-4 flex justify-center items-center py-10 w-full">
                         {loading ? (

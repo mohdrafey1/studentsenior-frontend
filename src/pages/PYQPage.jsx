@@ -38,16 +38,16 @@ const PYQPage = () => {
     ];
     const branches = selectedCourse
         ? [
-              ...new Set(
-                  pyqs
-                      .filter(
-                          (paper) =>
-                              paper.subject.branch?.course?.courseName ===
-                              selectedCourse
-                      )
-                      .map((paper) => paper.subject?.branch?.branchName)
-              ),
-          ]
+            ...new Set(
+                pyqs
+                    .filter(
+                        (paper) =>
+                            paper.subject.branch?.course?.courseName ===
+                            selectedCourse
+                    )
+                    .map((paper) => paper.subject?.branch?.branchName)
+            ),
+        ]
         : [];
     const examTypes = [...new Set(pyqs.map((paper) => paper.examType))];
 
@@ -67,8 +67,8 @@ const PYQPage = () => {
             (selectedExamType ? paper.examType === selectedExamType : true) &&
             (searchTerm
                 ? paper.subject.subjectName
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase())
                 : true)
         );
     });
@@ -179,9 +179,7 @@ const PYQPage = () => {
                 </div>
 
                 {currentPapers.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-2 lg:gap-6">
-                        <PyqCard Pyqs={currentPapers} />
-                    </div>
+                    <PyqCard Pyqs={currentPapers} />
                 ) : (
                     <div className="col-span-4 flex justify-center items-center py-10 w-full">
                         {loading ? (

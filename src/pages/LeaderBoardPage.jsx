@@ -81,7 +81,7 @@ function LeaderboardPage() {
                                         Rank
                                     </th>
                                     <th className="px-6 py-3 text-left">
-                                        Username
+                                        User
                                     </th>
                                     <th className="px-6 py-3 text-left">
                                         Points
@@ -93,10 +93,10 @@ function LeaderboardPage() {
                                     <tr
                                         key={user.userId}
                                         className={`${index === 0
-                                                ? 'bg-green-100'
-                                                : index % 2 === 0
-                                                    ? 'bg-gray-50'
-                                                    : 'bg-white'
+                                            ? 'bg-green-100'
+                                            : index % 2 === 0
+                                                ? 'bg-gray-50'
+                                                : 'bg-white'
                                             } hover:bg-gray-100 transition-colors`}
                                     >
                                         <td className="px-6 py-4 font-medium text-gray-700 flex items-center">
@@ -107,8 +107,11 @@ function LeaderboardPage() {
                                                 </span>
                                             )}
                                         </td>
-                                        <td className="px-6 py-4 font-semibold text-gray-800">
-                                            {user.username}
+                                        <td className="px-6 py-4 font-semibold text-gray-800 ">
+                                            <div className='flex items-center gap-4'>
+                                                <img src={user.profilePicture} alt={user.username} className='w-10 rounded-full' />
+                                                <p>{user.username}</p>
+                                            </div>
                                         </td>
                                         <td className="px-6 py-4 text-gray-700">
                                             {user.totalPoints}
@@ -134,9 +137,10 @@ function LeaderboardPage() {
                                 <p className="text-sm font-semibold text-gray-600">
                                     {getMonthName(winner.month)}
                                 </p>
-                                <p className="text-xl font-bold text-sky-700 mt-2">
-                                    {winner.username}
-                                </p>
+                                <div className='flex flex-col justify-center items-center gap-4'>
+                                    <img src={winner.profilePicture} alt={winner.username} className='w-20 rounded-full' />
+                                    <p>{winner.username}</p>
+                                </div>
                                 <p className="text-sm text-gray-600 mt-1">
                                     🏆 {winner.points} Points
                                 </p>
