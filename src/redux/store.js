@@ -21,25 +21,6 @@ import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 const rootReducer = combineReducers({
-<<<<<<< HEAD
-  user: userReducer,
-  seniors: seniorReducer,
-  courses: courseReducer,
-  branches: branchReducer,
-  subjects: subjectReducer,
-  products: productReducer,
-  groups: groupReducer,
-  pyqs: pyqReducer,
-  getOpportunities: getOpportunitiesReducer,
-  giveOpportunities: giveOpportunitiesReducer,
-  posts: postReducer,
-  subjectNotes: subjectNotesReducer,
-  subjectPyqs: subjectPyqsReducer,
-  userData: userDataReducer,
-  colleges: collegeReducer,
-  notes: notesReducer,
-  lostfound: lostfoundReducer,
-=======
     user: userReducer,
     seniors: seniorReducer,
     courses: courseReducer,
@@ -58,23 +39,22 @@ const rootReducer = combineReducers({
     notes: notesReducer,
     lostfound: lostfoundReducer,
     savedCollection: savedCollectionReducer,
->>>>>>> 81caa9540474d85015bef0d185d0a79b7f7e7782
 });
 
 const persistConfig = {
-  key: 'root',
-  version: 1,
-  storage,
+    key: 'root',
+    version: 1,
+    storage,
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false,
+        }),
 });
 
 export const persistor = persistStore(store);

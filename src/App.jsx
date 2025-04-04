@@ -8,17 +8,6 @@ import { useDispatch } from 'react-redux';
 import { fetchSavedCollection } from './redux/slices/savedCollectionSlice';
 
 const App = () => {
-<<<<<<< HEAD
-  return (
-    <Router>
-      <ScrollToTop />
-      <HistoryTracker />
-      <Layout>
-        <RoutesComponent />
-      </Layout>
-    </Router>
-  );
-=======
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -34,7 +23,6 @@ const App = () => {
             </Layout>
         </Router>
     );
->>>>>>> 81caa9540474d85015bef0d185d0a79b7f7e7782
 };
 
 export default App;

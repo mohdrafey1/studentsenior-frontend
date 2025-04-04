@@ -6,15 +6,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import WelcomePopup from '../../others/WelcomePopup';
 
 const Layout = ({ children }) => {
-  return (
-    <>
-      <Header />
-      <ToastContainer autoClose={3000} position="top-center" />
-      <WelcomePopup />
-      <main>{children}</main>
-      <Footer />
-    </>
-  );
+    return (
+        <>
+            <Header />
+            <ToastContainer autoClose={3000} position="top-center" />
+            <WelcomePopup />
+            <main>{children}</main>
+            <Footer />
+        </>
+    );
 };
 
 export default Layout;

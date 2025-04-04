@@ -14,13 +14,13 @@ You can view the live demo at [studentsenior.com](https://studentsenior.com).
 
 All resources are based on college:
 
-- **Senior Profiles**: Browse profiles of senior students, filter by course and branch, view detailed information, and contact them.
-- **Community Pages**: Engage with the community, add or view opportunities, and interact with other students.
-- **Store**: Buy and sell old items related to college life.
-- **Mentorship**: Connect with seniors for guidance and advice.
-- **PYQs**: Access past year questions.
-- **Notes**: Share and access academic notes.
-- **Opportunities**: View and offer opportunities for students.
+-   **Senior Profiles**: Browse profiles of senior students, filter by course and branch, view detailed information, and contact them.
+-   **Community Pages**: Engage with the community, add or view opportunities, and interact with other students.
+-   **Store**: Buy and sell old items related to college life.
+-   **Mentorship**: Connect with seniors for guidance and advice.
+-   **PYQs**: Access past year questions.
+-   **Notes**: Share and access academic notes.
+-   **Opportunities**: View and offer opportunities for students.
 
 ## Installation
 

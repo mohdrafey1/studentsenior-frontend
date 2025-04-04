@@ -1,10 +1,6 @@
 {
   "singleQuote": true,
-<<<<<<< HEAD
-  "semi": true
-=======
   "jsxSingleQuote": true,
   "semi": true,
   "tabWidth": 4
->>>>>>> 81caa9540474d85015bef0d185d0a79b7f7e7782
 }

@@ -4,20 +4,6 @@ import { useSelector } from 'react-redux';
 import Dialog from '../../utils/Dialog';
 
 function SeniorCard({
-<<<<<<< HEAD
-  seniors,
-  loadingStates,
-  handleDelete,
-  handleEdit,
-  handleDetail,
-}) {
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [seniorIdtoDelete, setSeniorIdtoDelete] = useState(null);
-  const [deleteLoading, setDeleteLoading] = useState(false);
-  const { collegeName } = useParams();
-  const currentUser = useSelector((state) => state.user.currentUser);
-  const ownerId = currentUser?._id;
-=======
     seniors = [],
     loadingStates,
     handleDelete,
@@ -31,148 +17,39 @@ function SeniorCard({
     const { collegeName } = useParams();
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
->>>>>>> 81caa9540474d85015bef0d185d0a79b7f7e7782
 
-  const handleDeleteClick = (id) => {
-    setSeniorIdtoDelete(id);
-    setShowDeleteDialog(true);
-  };
+    const handleDeleteClick = (id) => {
+        setSeniorIdtoDelete(id);
+        setShowDeleteDialog(true);
+    };
 
-  const handleConfirmDelete = async () => {
-    try {
-      if (seniorIdtoDelete) {
-        setDeleteLoading(true);
-        await handleDelete(seniorIdtoDelete);
-        setShowDeleteDialog(false);
-        setSeniorIdtoDelete(null);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setDeleteLoading(false);
-    }
-  };
-
-  const handleCloseDialog = () => setShowDeleteDialog(false);
-
-<<<<<<< HEAD
-  return (
-    <>
-      {seniors.map((senior) => (
-        <Link
-          to={`/college/${collegeName}/seniors/${senior.slug}`}
-          key={senior._id}
-          className="min-w-40 my-4 w-full"
-        >
-          <div
-            key={senior._id}
-            className="bg-white shadow-md rounded-3xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl dark:bg-gray-800 w-full h-full flex flex-col"
-          >
-            <img
-              src={
-                senior.owner.profilePicture.replace('=s96-c', '') ||
-                senior.profilePicture
-              }
-              alt={senior.name}
-              className="w-full h-40 lg:h-60 transition-transform duration-300 hover:scale-110"
-            />
-            <div className="px-3 lg:px-6 py-2 flex-grow">
-              <h3 className="text-sm lg:text-xl font-bold text-gray-900 dark:text-white mb-2">
-                {senior.name}
-              </h3>
-              <p className="text-red-500 font-medium mb-1 text-xs lg:text-sm">
-                Course: {senior.branch}
-              </p>
-              <p className="text-gray-600 dark:text-gray-400 text-xs lg:text-sm mb-1">
-                Year: {senior.year}
-              </p>
-              <p className="text-gray-500 dark:text-gray-300 text-xs lg:text-sm w-full overflow-y-scroll ">
-                Domain: {senior.domain}
-              </p>
-            </div>
-            <div className="px-3 py-2 m-auto flex gap-2 justify-between items-center">
-              <button
-                className="bg-sky-500 text-white px-2 lg:px-3 py-1 lg:py-1 rounded-lg text-xs lg:text-sm hover:bg-sky-700 focus:ring-2 focus:ring-blue-500"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleDetail(senior);
-                }}
-              >
-                View
-              </button>
-              {handleDelete && handleEdit && senior.owner._id === ownerId && (
-                <div className="flex space-x-2">
-                  <button
-                    className="bg-yellow-500 text-white px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm hover:bg-yellow-600"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleEdit(senior);
-                    }}
-                  >
-                    <i className="fa-regular fa-pen-to-square"></i>
-                  </button>
-                  <button
-                    className="bg-red-500 text-white px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm hover:bg-red-600"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleDeleteClick(senior._id);
-                    }}
-                    title="Delete Post"
-                  >
-                    <i className="fa-solid fa-trash"></i>
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </Link>
-      ))}
-      <Dialog
-        isOpen={showDeleteDialog}
-        onClose={handleCloseDialog}
-        title="Senior Delete Confirmation"
-        footer={
-          <div className="flex py-4 gap-3 lg:justify-end justify-center">
-            <button
-              className="p-1 py-2 bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer"
-              onClick={handleCloseDialog}
-            >
-              Cancel
-            </button>
-            <button
-              className="p-1 py-2 bg-red-600 rounded-lg px-4 text-sm font-semibold text-white cursor-pointer"
-              onClick={handleConfirmDelete}
-              disabled={deleteLoading}
-            >
-              {deleteLoading ? (
-                <i className="fa fa-spinner fa-spin"></i>
-              ) : (
-                <>
-                  <span>Confirm</span>
-                  &nbsp;
-                  <i className="fa-solid fa-trash fa-xl"></i>
-                </>
-              )}
-            </button>
-          </div>
+    const handleConfirmDelete = async () => {
+        try {
+            if (seniorIdtoDelete) {
+                setDeleteLoading(true);
+                await handleDelete(seniorIdtoDelete);
+                setShowDeleteDialog(false);
+                setSeniorIdtoDelete(null);
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setDeleteLoading(false);
         }
-      >
-        <p>Are you sure you want to delete this item?</p>
-        <p className="text-sm text-gray-500">This action cannot be undone.</p>
-      </Dialog>
-    </>
-  );
-=======
+    };
+
+    const handleCloseDialog = () => setShowDeleteDialog(false);
+
     if (seniors.length === 0) {
         return (
-            <div className="text-center py-16 bg-gray-50 rounded-xl border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
-                <div className="bg-gray-100 dark:bg-gray-700 rounded-full p-4 w-20 h-20 mx-auto flex items-center justify-center">
-                    <svg className="w-10 h-10 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <div className="text-center py-16 bg-gray-50 rounded-xl border border-gray-100    ">
+                <div className="bg-gray-100     rounded-full p-4 w-20 h-20 mx-auto flex items-center justify-center">
+                    <svg className="w-10 h-10 text-gray-500   " fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                     </svg>
                 </div>
-                <h3 className="mt-6 text-xl font-medium text-gray-900 dark:text-white">No seniors available</h3>
-                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto">
+                <h3 className="mt-6 text-xl font-medium text-gray-900  ">No seniors available</h3>
+                <p className="mt-2 text-sm text-gray-500    max-w-md mx-auto">
                     Check back later for updates or try adjusting your search criteria.
                 </p>
             </div>
@@ -188,7 +65,7 @@ function SeniorCard({
                 return (
                     <div
                         key={senior._id}
-                        className={`bg-white rounded-lg md:rounded-xl border-2 ${isHovered ? 'border-blue-100 shadow-md md:shadow-xl' : 'border-blue-50 shadow-sm md:shadow-md'} overflow-hidden transition-all duration-300 flex flex-col h-full dark:bg-gray-800 dark:border-gray-700 group`}
+                        className={`bg-white rounded-lg md:rounded-xl border-2 ${isHovered ? 'border-blue-100 shadow-md md:shadow-xl' : 'border-blue-50 shadow-sm md:shadow-md'} overflow-hidden transition-all duration-300 flex flex-col h-full    group`}
                         onMouseEnter={() => setHoveredCard(senior._id)}
                         onMouseLeave={() => setHoveredCard(null)}
                     >
@@ -205,27 +82,27 @@ function SeniorCard({
 
                         {/* Card Content - Adjusted padding and text sizes for mobile */}
                         <div className="p-3 sm:p-4 md:p-5 flex-grow">
-                            <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white mb-2 sm:mb-3 line-clamp-1">
+                            <h3 className="text-lg sm:text-xl font-bold text-gray-800   mb-2 sm:mb-3 line-clamp-1">
                                 {senior.name}
                             </h3>
                             <div className="grid grid-cols-2 gap-2 sm:gap-3 text-xs sm:text-sm">
                                 <div className="flex flex-col">
-                                    <span className="text-blue-600 dark:text-blue-400 mb-0.5 sm:mb-1 font-medium">Course</span>
-                                    <span className="font-medium text-gray-800 dark:text-gray-200 truncate">{senior.branch || 'N/A'}</span>
+                                    <span className="text-blue-600      mb-0.5 sm:mb-1 font-medium">Course</span>
+                                    <span className="font-medium text-gray-800    truncate">{senior.branch || 'N/A'}</span>
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-blue-600 dark:text-blue-400 mb-0.5 sm:mb-1 font-medium">Year</span>
-                                    <span className="font-medium text-gray-800 dark:text-gray-200">{senior.year || 'N/A'}</span>
+                                    <span className="text-blue-600      mb-0.5 sm:mb-1 font-medium">Year</span>
+                                    <span className="font-medium text-gray-800   ">{senior.year || 'N/A'}</span>
                                 </div>
                                 <div className="flex flex-col col-span-2">
-                                    <span className="text-blue-600 dark:text-blue-400 mb-0.5 sm:mb-1 font-medium">Domain</span>
-                                    <span className="font-medium text-gray-800 dark:text-gray-200 line-clamp-2">{senior.domain || 'N/A'}</span>
+                                    <span className="text-blue-600      mb-0.5 sm:mb-1 font-medium">Domain</span>
+                                    <span className="font-medium text-gray-800    line-clamp-2">{senior.domain || 'N/A'}</span>
                                 </div>
                             </div>
                         </div>
 
                         {/* Card Footer - Larger touch targets for mobile */}
-                        <div className="px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 bg-blue-50 dark:bg-blue-900/20 border-t-2 border-blue-100 dark:border-blue-900/30">
+                        <div className="px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 bg-blue-50   border-t-2 border-blue-100 ">
                             <div className="flex justify-between items-center">
                                 <Link
                                     to={`/college/${collegeName}/seniors/${senior.slug}`}
@@ -245,7 +122,7 @@ function SeniorCard({
                                 {isOwner && handleDelete && handleEdit && (
                                     <div className="flex space-x-1 sm:space-x-2">
                                         <button
-                                            className="p-2 sm:p-2.5 rounded-md md:rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors hover:text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 dark:hover:bg-blue-900/70 active:scale-95"
+                                            className="p-2 sm:p-2.5 rounded-md md:rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors hover:text-blue-800  active:scale-95"
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 handleEdit(senior);
@@ -257,7 +134,7 @@ function SeniorCard({
                                             </svg>
                                         </button>
                                         <button
-                                            className="p-2 sm:p-2.5 rounded-md md:rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition-colors hover:text-red-700 dark:bg-red-900/50 dark:text-red-300 dark:hover:bg-red-900/70 active:scale-95"
+                                            className="p-2 sm:p-2.5 rounded-md md:rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition-colors hover:text-red-700  active:scale-95"
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 handleDeleteClick(senior._id);
@@ -310,13 +187,12 @@ function SeniorCard({
                 }
             >
                 <div className="space-y-2">
-                    <p className="text-gray-800 dark:text-gray-200">Are you sure you want to delete this senior profile?</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">This action cannot be undone. All associated data will be permanently removed.</p>
+                    <p className="text-gray-800   ">Are you sure you want to delete this senior profile?</p>
+                    <p className="text-sm text-gray-500   ">This action cannot be undone. All associated data will be permanently removed.</p>
                 </div>
             </Dialog>
         </div>
     );
->>>>>>> 81caa9540474d85015bef0d185d0a79b7f7e7782
 }
 
 export default SeniorCard;
