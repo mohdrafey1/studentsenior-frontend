@@ -49,7 +49,6 @@ function NotesCard({ notes = [] }) {
               <p>
                 <strong>Subject Code:</strong> {note.subject?.subjectCode}
               </p>
-
               <p>
                 <strong>Semester:</strong> {note.subject?.semester}
               </p>
