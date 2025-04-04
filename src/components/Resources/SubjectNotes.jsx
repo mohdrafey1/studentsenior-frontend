@@ -22,6 +22,7 @@ import useRequireLogin from '../../hooks/useRequireLogin.js';
 import Seo from '../SEO/Seo.jsx';
 import { fetchUserData } from '../../redux/slices/userDataSlice.js';
 import Button from '../../ui/Button.jsx';
+import { fetchSavedCollection } from '../../redux/slices/savedCollectionSlice.js';
 
 function SubjectNotes() {
     const { collegeName, courseCode, subjectCode, branchCode } = useParams();
@@ -55,7 +56,9 @@ function SubjectNotes() {
 
     useEffect(() => {
         dispatch(fetchUserData());
+        dispatch(fetchSavedCollection());
     }, []);
+
     useEffect(() => {
         dispatch(fetchSubjectNotes({ subjectCode, branchCode, collegeId }));
     }, [collegeId, subjectCode, branchCode]);
@@ -68,6 +71,8 @@ function SubjectNotes() {
         loading: loadingSubjectNotes,
         error: notesError,
     } = useSelector((state) => state.subjectNotes || {});
+
+    const { savedNotes } = useSelector((state) => state.savedCollection || {});
 
     const handleOpenAddNoteModal = () => {
         requireLogin(() => setModalOpen(true));
@@ -168,6 +173,36 @@ function SubjectNotes() {
         } catch (err) {
             console.error('Error liking/unliking note:', err);
             toast.error('Failed to like/unlike the note. Please try again.');
+        }
+    };
+
+    const handleSaveNote = async (noteId) => {
+        try {
+            const response = await apiRequest(
+                `${api.savedData.saveNote}/${noteId}`,
+                'POST'
+            );
+            toast.success(response.message);
+            dispatch(fetchSavedCollection());
+            dispatch(fetchSubjectNotes({ subjectCode, branchCode, collegeId }));
+        } catch (err) {
+            console.error('Error saving note:', err);
+            toast.error('Failed to save note');
+        }
+    };
+
+    const handleUnsaveNote = async (noteId) => {
+        try {
+            const response = await apiRequest(
+                `${api.savedData.unsaveNote}/${noteId}`,
+                'POST'
+            );
+            toast.success(response.message);
+            dispatch(fetchSavedCollection());
+            dispatch(fetchSubjectNotes({ subjectCode, branchCode, collegeId }));
+        } catch (err) {
+            console.error('Error unsaving note:', err);
+            toast.error('Failed to unsave note');
         }
     };
 
@@ -333,94 +368,163 @@ function SubjectNotes() {
 
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 xl:mx-20'>
                 {subjectNotes.length > 0 ? (
-                    subjectNotes.map((note) => (
-                        <div
-                            key={note._id}
-                            className='bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between h-full'
-                        >
-                            {/* Note Header Section */}
-                            <div className='p-4'>
-                                <div className='flex justify-between'>
-                                    {/* Owner Profile Section */}
-                                    <div className='flex items-center gap-3 mb-3'>
-                                        {note.owner?.profilePicture ? (
-                                            <img
-                                                src={note.owner.profilePicture}
-                                                alt='Author Profile'
-                                                className='rounded-full w-10 h-10 border-2 border-gray-200 object-cover'
-                                            />
-                                        ) : (
-                                            <div className='flex items-center justify-center rounded-full w-10 h-10 bg-gray-300 text-white font-bold'>
-                                                {note.owner?.username?.charAt(
-                                                    0
-                                                ) || 'A'}
-                                            </div>
-                                        )}
-                                        <span className='text-sm font-semibold text-gray-700'>
-                                            {note.owner?.username ||
-                                                'Anonymous'}
-                                        </span>
-                                    </div>
-                                    {/* Paid Badge */}
-                                    <div className=''>
-                                        {note.isPaid && (
-                                            <span className='bg-red-200 text-red-800 rounded-xl px-3 py-1 text-xs font-semibold'>
-                                                Paid
+                    subjectNotes.map((note) => {
+                        const isSaved = savedNotes.some(
+                            (savedNote) => savedNote.noteId._id === note._id
+                        );
+                        return (
+                            <div
+                                key={note._id}
+                                className='bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between h-full'
+                            >
+                                {/* Note Header Section */}
+                                <div className='p-4'>
+                                    <div className='flex justify-between'>
+                                        {/* Owner Profile Section */}
+                                        <div className='flex items-center gap-3 mb-3'>
+                                            {note.owner?.profilePicture ? (
+                                                <img
+                                                    src={
+                                                        note.owner
+                                                            .profilePicture
+                                                    }
+                                                    alt='Author Profile'
+                                                    className='rounded-full w-10 h-10 border-2 border-gray-200 object-cover'
+                                                />
+                                            ) : (
+                                                <div className='flex items-center justify-center rounded-full w-10 h-10 bg-gray-300 text-white font-bold'>
+                                                    {note.owner?.username?.charAt(
+                                                        0
+                                                    ) || 'A'}
+                                                </div>
+                                            )}
+                                            <span className='text-sm font-semibold text-gray-700'>
+                                                {note.owner?.username ||
+                                                    'Anonymous'}
                                             </span>
-                                        )}
+                                        </div>
+                                        {/* Paid Badge and Save Button */}
+                                        <div className='flex gap-2'>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    requireLogin(() => {
+                                                        if (isSaved) {
+                                                            handleUnsaveNote(
+                                                                note._id
+                                                            );
+                                                        } else {
+                                                            handleSaveNote(
+                                                                note._id
+                                                            );
+                                                        }
+                                                    });
+                                                }}
+                                                className={`p-1 rounded-full ${
+                                                    isSaved
+                                                        ? 'text-blue-500'
+                                                        : 'text-gray-400 hover:text-blue-500'
+                                                }`}
+                                                title={
+                                                    isSaved
+                                                        ? 'Unsave this note'
+                                                        : 'Save this note'
+                                                }
+                                            >
+                                                <i
+                                                    className={`fa-solid fa-bookmark text-xl`}
+                                                ></i>
+                                            </button>
+                                            {note.isPaid && (
+                                                <span className='bg-red-200 text-red-800 rounded-xl px-3 py-1 text-xs font-semibold'>
+                                                    Paid
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
+
+                                    {/* Note Title and Description */}
+                                    <h2 className='text-lg font-bold text-gray-800 dark:text-white mb-1 line-clamp-1'>
+                                        {note.title}
+                                    </h2>
+                                    <p className='text-sm text-gray-600 line-clamp-2'>
+                                        {note.description || 'No description'}
+                                    </p>
+
+                                    {/* Note Creation Date */}
+                                    <p className='text-xs text-gray-400 mt-2'>
+                                        {new Date(
+                                            note.createdAt
+                                        ).toLocaleDateString('en-US', {
+                                            weekday: 'long',
+                                            day: 'numeric',
+                                            year: 'numeric',
+                                            month: 'long',
+                                        })}
+                                    </p>
                                 </div>
 
-                                {/* Note Title and Description */}
-                                <h2 className='text-lg font-bold text-gray-800 dark:text-white mb-1 line-clamp-1'>
-                                    {note.title}
-                                </h2>
-                                <p className='text-sm text-gray-600 line-clamp-2'>
-                                    {note.description || 'No description'}
-                                </p>
+                                {/* Note Footer Section */}
+                                <div className='border-t border-gray-100 p-4 flex justify-between items-center'>
+                                    {/* Views Count */}
+                                    <span className='text-xs text-gray-500'>
+                                        {note.clickCounts} views
+                                    </span>
 
-                                {/* Note Creation Date */}
-                                <p className='text-xs text-gray-400 mt-2'>
-                                    {new Date(
-                                        note.createdAt
-                                    ).toLocaleDateString('en-US', {
-                                        weekday: 'long',
-                                        day: 'numeric',
-                                        year: 'numeric',
-                                        month: 'long',
-                                    })}
-                                </p>
-                            </div>
+                                    {/* Action Buttons */}
+                                    <div className='flex items-center space-x-3'>
+                                        {/* Like Button */}
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                likeNotes(note._id);
+                                            }}
+                                            className={`text-lg transition-colors duration-200 ${
+                                                Array.isArray(note.likes) &&
+                                                note.likes.includes(ownerId)
+                                                    ? 'text-red-500'
+                                                    : 'text-gray-400 hover:text-red-500'
+                                            }`}
+                                            title='Like this note'
+                                        >
+                                            <i className='fa-regular fa-heart'></i>
+                                        </button>
 
-                            {/* Note Footer Section */}
-                            <div className='border-t border-gray-100 p-4 flex justify-between items-center'>
-                                {/* Views Count */}
-                                <span className='text-xs text-gray-500'>
-                                    {note.clickCounts} views
-                                </span>
-
-                                {/* Action Buttons */}
-                                <div className='flex items-center space-x-3'>
-                                    {/* Like Button */}
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            likeNotes(note._id);
-                                        }}
-                                        className={`text-lg transition-colors duration-200 ${
-                                            Array.isArray(note.likes) &&
-                                            note.likes.includes(ownerId)
-                                                ? 'text-red-500'
-                                                : 'text-gray-400 hover:text-red-500'
-                                        }`}
-                                        title='Like this note'
-                                    >
-                                        <i className='fa-regular fa-heart'></i>
-                                    </button>
-
-                                    {/* Owner Actions or Purchase/View Buttons */}
-                                    {note.owner._id === ownerId ? (
-                                        <div className='flex space-x-2'>
+                                        {/* Owner Actions or Purchase/View Buttons */}
+                                        {note.owner._id === ownerId ? (
+                                            <div className='flex space-x-2'>
+                                                <Link
+                                                    to={note.slug}
+                                                    className='bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded-full shadow-md transition-transform transform hover:scale-105 flex items-center gap-1'
+                                                >
+                                                    <i className='fa-solid fa-eye text-sm'></i>
+                                                    View
+                                                </Link>
+                                                <button
+                                                    onClick={() =>
+                                                        handleEditClick(note)
+                                                    }
+                                                    className='text-gray-500 hover:text-gray-700 transition-colors duration-200'
+                                                    title='Edit note'
+                                                >
+                                                    <i className='fa-regular fa-pen-to-square text-lg'></i>
+                                                </button>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        handleDeleteClick(
+                                                            note._id
+                                                        );
+                                                    }}
+                                                    className='text-red-500 hover:text-red-600 transition-colors duration-200'
+                                                    title='Delete Note'
+                                                >
+                                                    <i className='fa-solid fa-trash text-lg'></i>
+                                                </button>
+                                            </div>
+                                        ) : note.purchasedBy?.includes(
+                                              ownerId
+                                          ) ? (
                                             <Link
                                                 to={note.slug}
                                                 className='bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded-full shadow-md transition-transform transform hover:scale-105 flex items-center gap-1'
@@ -428,57 +532,30 @@ function SubjectNotes() {
                                                 <i className='fa-solid fa-eye text-sm'></i>
                                                 View
                                             </Link>
+                                        ) : note.isPaid ? (
                                             <button
                                                 onClick={() =>
-                                                    handleEditClick(note)
+                                                    handleBuyNowClick(note)
                                                 }
-                                                className='text-gray-500 hover:text-gray-700 transition-colors duration-200'
-                                                title='Edit note'
+                                                className='bg-green-500 hover:bg-green-600 text-white px-4 py-1.5 rounded-full shadow-md transition-transform transform hover:scale-105 flex items-center gap-1'
                                             >
-                                                <i className='fa-regular fa-pen-to-square text-lg'></i>
+                                                <i className='fa-solid fa-cart-shopping text-sm'></i>
+                                                Buy Now {note.price / 5}₹
                                             </button>
-                                            <button
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleDeleteClick(note._id);
-                                                }}
-                                                className='text-red-500 hover:text-red-600 transition-colors duration-200'
-                                                title='Delete Note'
+                                        ) : (
+                                            <Link
+                                                to={note.slug}
+                                                className='bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded-full shadow-md transition-transform transform hover:scale-105 flex items-center gap-1'
                                             >
-                                                <i className='fa-solid fa-trash text-lg'></i>
-                                            </button>
-                                        </div>
-                                    ) : note.purchasedBy?.includes(ownerId) ? (
-                                        <Link
-                                            to={note.slug}
-                                            className='bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded-full shadow-md transition-transform transform hover:scale-105 flex items-center gap-1'
-                                        >
-                                            <i className='fa-solid fa-eye text-sm'></i>
-                                            View
-                                        </Link>
-                                    ) : note.isPaid ? (
-                                        <button
-                                            onClick={() =>
-                                                handleBuyNowClick(note)
-                                            }
-                                            className='bg-green-500 hover:bg-green-600 text-white px-4 py-1.5 rounded-full shadow-md transition-transform transform hover:scale-105 flex items-center gap-1'
-                                        >
-                                            <i className='fa-solid fa-cart-shopping text-sm'></i>
-                                            Buy Now {note.price / 5}₹
-                                        </button>
-                                    ) : (
-                                        <Link
-                                            to={note.slug}
-                                            className='bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded-full shadow-md transition-transform transform hover:scale-105 flex items-center gap-1'
-                                        >
-                                            <i className='fa-solid fa-eye text-sm'></i>
-                                            View
-                                        </Link>
-                                    )}
+                                                <i className='fa-solid fa-eye text-sm'></i>
+                                                View
+                                            </Link>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))
+                        );
+                    })
                 ) : (
                     <div className='h-screen text-center text-gray-600 col-span-full flex items-center justify-center'>
                         <p className='text-xl font-semibold'>

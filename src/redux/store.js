@@ -16,6 +16,7 @@ import userDataReducer from '../redux/slices/userDataSlice.js';
 import collegeReducer from '../redux/slices/collegeSlice.js';
 import notesReducer from '../redux/slices/NotesSlice.js';
 import lostfoundReducer from '../redux/slices/lostFoundSlice.js';
+import savedCollectionReducer from '../redux/slices/savedCollectionSlice.js';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
     colleges: collegeReducer,
     notes: notesReducer,
     lostfound: lostfoundReducer,
+    savedCollection: savedCollectionReducer,
 });
 
 const persistConfig = {
