@@ -286,9 +286,8 @@ function SubjectNotes() {
     return (
         <div className='container mx-auto p-4 min-h-screen'>
             <DetailPageNavbar
-                path={`${collegeName}/resources/${courseCode}/${branchCode}?semester=${
-                    subjectNotes[0]?.subject?.semester || 1
-                }`}
+                path={`${collegeName}/resources/${courseCode}/${branchCode}?semester=${subjectNotes[0]?.subject?.semester || 1
+                    }`}
             />
             <h1 className='sm:text-2xl font-extrabold text-center sm:mb-6 text-gray-800'>
                 {capitalizeWords(collegeName)}: {subjectName} Notes
@@ -313,28 +312,28 @@ function SubjectNotes() {
                     View PYQs
                 </Link>
                 <button
-                    className='rounded-full p-3 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all'
+                    className='rounded-full p-3 hover:bg-gray-200  transition-all'
                     onClick={handleEarnDialog}
                 >
                     <i className='text-3xl fa-solid fa-circle-info'></i>
                 </button>
             </div>
-            <p className='text-center dark:text-gray-500 -translate-y-2'>
+            <p className='text-center  -translate-y-2'>
                 Like good notes to keep them on top
             </p>
             {showEarnDialog && (
                 <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50'>
-                    <div className='bg-white p-6 rounded-lg shadow-lg w-full max-w-lg lg:m-4 m-6 dark:bg-gray-800'>
+                    <div className='bg-white p-6 rounded-lg shadow-lg w-full max-w-lg lg:m-4 m-6 '>
                         <div className='items-center mb-4 text-white'>
                             <div className='flex justify-between items-center'>
-                                <h2 className='text-xl sm:text-2xl pb-1 font-bold text-gray-900 dark:text-white '>
+                                <h2 className='text-xl sm:text-2xl pb-1 font-bold text-gray-900   '>
                                     Earn Money
                                 </h2>
                                 <button onClick={handleEarnDialog}>
-                                    <i className='fa-solid fa-xmark text-2xl text-gray-900 dark:text-white'></i>
+                                    <i className='fa-solid fa-xmark text-2xl text-gray-900  '></i>
                                 </button>
                             </div>
-                            <div className='text-gray-900 dark:text-white'>
+                            <div className='text-gray-900  '>
                                 <p>You can add notes and earn reward points:</p>
                                 <p className='mt-2'>
                                     Here are the rules for earning reward
@@ -375,7 +374,7 @@ function SubjectNotes() {
                         return (
                             <div
                                 key={note._id}
-                                className='bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between h-full'
+                                className='bg-white  border border-gray-200  rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between h-full'
                             >
                                 {/* Note Header Section */}
                                 <div className='p-4'>
@@ -420,11 +419,10 @@ function SubjectNotes() {
                                                         }
                                                     });
                                                 }}
-                                                className={`p-1 rounded-full ${
-                                                    isSaved
-                                                        ? 'text-blue-500'
-                                                        : 'text-gray-400 hover:text-blue-500'
-                                                }`}
+                                                className={`p-1 rounded-full ${isSaved
+                                                    ? 'text-blue-500'
+                                                    : 'text-gray-400 hover:text-blue-500'
+                                                    }`}
                                                 title={
                                                     isSaved
                                                         ? 'Unsave this note'
@@ -444,7 +442,7 @@ function SubjectNotes() {
                                     </div>
 
                                     {/* Note Title and Description */}
-                                    <h2 className='text-lg font-bold text-gray-800 dark:text-white mb-1 line-clamp-1'>
+                                    <h2 className='text-lg font-bold text-gray-800   mb-1 line-clamp-1'>
                                         {note.title}
                                     </h2>
                                     <p className='text-sm text-gray-600 line-clamp-2'>
@@ -479,12 +477,11 @@ function SubjectNotes() {
                                                 e.stopPropagation();
                                                 likeNotes(note._id);
                                             }}
-                                            className={`text-lg transition-colors duration-200 ${
-                                                Array.isArray(note.likes) &&
+                                            className={`text-lg transition-colors duration-200 ${Array.isArray(note.likes) &&
                                                 note.likes.includes(ownerId)
-                                                    ? 'text-red-500'
-                                                    : 'text-gray-400 hover:text-red-500'
-                                            }`}
+                                                ? 'text-red-500'
+                                                : 'text-gray-400 hover:text-red-500'
+                                                }`}
                                             title='Like this note'
                                         >
                                             <i className='fa-regular fa-heart'></i>
@@ -523,8 +520,8 @@ function SubjectNotes() {
                                                 </button>
                                             </div>
                                         ) : note.purchasedBy?.includes(
-                                              ownerId
-                                          ) ? (
+                                            ownerId
+                                        ) ? (
                                             <Link
                                                 to={note.slug}
                                                 className='bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded-full shadow-md transition-transform transform hover:scale-105 flex items-center gap-1'
@@ -634,7 +631,7 @@ function SubjectNotes() {
                     <div className='flex items-center gap-2'>
                         <label
                             htmlFor='isPaid'
-                            className='font-semibold text-gray-800 dark:text-gray-100'
+                            className='font-semibold text-gray-800 '
                         >
                             Is Paid:
                         </label>
@@ -651,7 +648,7 @@ function SubjectNotes() {
                         <div>
                             <label
                                 htmlFor='price'
-                                className='block font-semibold text-gray-800 dark:text-gray-100'
+                                className='block font-semibold text-gray-800 '
                             >
                                 Price:
                             </label>

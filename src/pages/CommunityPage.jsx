@@ -325,7 +325,7 @@ const CommunityPage = () => {
                         {postLoading ? (
                             <i className="fas fa-spinner fa-pulse fa-5x"></i>
                         ) : (
-                            <p className="text-gray-200 dark:text-gray-600 text-center">
+                            <p className="text-gray-200  text-center">
                                 No Post to show.
                             </p>
                         )}
@@ -503,8 +503,8 @@ const PostCard = ({
                 </Link>
                 <button
                     className={`mt-1 px-3 border-2 border-sky-500 rounded-lg ${post.likes.includes(ownerId)
-                            ? 'text-white bg-sky-500'
-                            : 'text-black'
+                        ? 'text-white bg-sky-500'
+                        : 'text-black'
                         }`}
                     onClick={onLike}
                     disabled={hookLoadingStates.likePost[post._id]}
@@ -547,8 +547,8 @@ const PostCard = ({
                                     className={`text-blue-500 ${likedComments.includes(
                                         latestComment._id
                                     )
-                                            ? 'opacity-50 cursor-not-allowed'
-                                            : ''
+                                        ? 'opacity-50 cursor-not-allowed'
+                                        : ''
                                         }`}
                                     onClick={() =>
                                         onLikeComment(latestComment._id)

@@ -102,7 +102,7 @@ function ProductsCard({
 
         return (
             <div className="w-full my-4 relative">
-                <div className={`relative rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm transition-all duration-300 ${isAvailable ? 'hover:shadow-lg' : 'opacity-70'}`}>
+                <div className={`relative rounded-xl overflow-hidden bg-white  shadow-sm transition-all duration-300 ${isAvailable ? 'hover:shadow-lg' : 'opacity-70'}`}>
                     {/* Image container */}
                     <div className="relative h-48 overflow-hidden">
                         <img
@@ -127,17 +127,17 @@ function ProductsCard({
                     {/* Content area */}
                     <div className="p-4">
                         {/* Product name */}
-                        <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-1 line-clamp-1">
+                        <h3 className="font-medium text-gray-800 mb-1 line-clamp-1">
                             {product.name}
                         </h3>
 
                         {/* Price */}
-                        <div className="font-bold text-lg text-gray-900 dark:text-white mb-2">
+                        <div className="font-bold text-lg text-gray-900  mb-2">
                             ₹{product.price}
                         </div>
 
                         {/* Description */}
-                        <p className="text-gray-600 dark:text-gray-300 text-sm mb-3 line-clamp-2">
+                        <p className="text-gray-600  text-sm mb-3 line-clamp-2">
                             {product.description}
                         </p>
 
@@ -151,7 +151,7 @@ function ProductsCard({
                             {isAvailable && (
                                 <Link
                                     to={productLink}
-                                    className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
+                                    className="text-sm font-medium text-blue-600  hover:underline"
                                 >
                                     View Details
                                 </Link>

@@ -270,18 +270,16 @@ function SubjectPyqs() {
     return (
         <div className='container mx-auto p-4 min-h-screen'>
             <DetailPageNavbar
-                path={`${collegeName}/resources/${courseCode}/${branchCode}?semester=${
-                    subjectPyqs[0]?.subject?.semester || 1
-                }`}
+                path={`${collegeName}/resources/${courseCode}/${branchCode}?semester=${subjectPyqs[0]?.subject?.semester || 1
+                    }`}
             />
             <h1 className='sm:text-2xl font-extrabold text-center sm:mb-6 text-gray-800'>
                 {capitalizeWords(collegeName)}: {subjectName || subjectCode}{' '}
                 PYQs
             </h1>
             <Seo
-                title={`${capitalizeWords(collegeName)}: ${
-                    subjectName || subjectCode
-                } PYQs`}
+                title={`${capitalizeWords(collegeName)}: ${subjectName || subjectCode
+                    } PYQs`}
                 desc={subjectPyqs
                     .map((pyq) => `${pyq.year} ${pyq.examType}`)
                     .join(' ')}
@@ -299,26 +297,26 @@ function SubjectPyqs() {
                     View Notes
                 </Link>
                 <button
-                    className='rounded-full p-3 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all'
+                    className='rounded-full p-3 hover:bg-gray-200  transition-all'
                     onClick={handleEarnDialog}
                 >
-                    <i className='text-3xl fa-solid fa-circle-info text-gray-600 dark:text-gray-300'></i>
+                    <i className='text-3xl fa-solid fa-circle-info text-gray-600 '></i>
                 </button>
             </div>
 
             {showEarnDialog && (
                 <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50'>
-                    <div className='bg-white p-6 rounded-lg shadow-xl w-full lg:m-4 m-6 max-w-lg dark:bg-gray-800'>
+                    <div className='bg-white p-6 rounded-lg shadow-xl w-full lg:m-4 m-6 max-w-lg '>
                         <div className='items-center mb-4 text-white'>
                             <div className='flex justify-between items-center'>
-                                <h2 className='text-2xl font-bold text-gray-900 dark:text-white'>
+                                <h2 className='text-2xl font-bold text-gray-900  '>
                                     Earn Money
                                 </h2>
                                 <button onClick={handleEarnDialog}>
-                                    <i className='fa-solid fa-xmark text-2xl text-gray-900 dark:text-white'></i>
+                                    <i className='fa-solid fa-xmark text-2xl text-gray-900  '></i>
                                 </button>
                             </div>
-                            <div className='text-gray-800 dark:text-gray-300 mt-2'>
+                            <div className='text-gray-800  mt-2'>
                                 <p>
                                     You can upload PYQs and earn reward points:
                                 </p>
@@ -345,7 +343,7 @@ function SubjectPyqs() {
                         return (
                             <div
                                 key={pyq._id}
-                                className='bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 relative overflow-hidden'
+                                className='bg-white  border border-gray-200  p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 relative overflow-hidden'
                             >
                                 <div className='absolute top-3 right-3 flex gap-2'>
                                     <button
@@ -359,11 +357,10 @@ function SubjectPyqs() {
                                                 }
                                             });
                                         }}
-                                        className={`p-1 rounded-full ${
-                                            isSaved
-                                                ? 'text-blue-500'
-                                                : 'text-gray-400 hover:text-blue-500'
-                                        }`}
+                                        className={`p-1 rounded-full ${isSaved
+                                            ? 'text-blue-500'
+                                            : 'text-gray-400 hover:text-blue-500'
+                                            }`}
                                         title={
                                             isSaved
                                                 ? 'Unsave this PYQ'
@@ -392,7 +389,7 @@ function SubjectPyqs() {
                                         <img
                                             src={pyq.owner.profilePicture}
                                             alt={`${pyq.owner?.username}'s Profile`}
-                                            className='rounded-full w-10 h-10 border-2 border-gray-200 dark:border-gray-600 object-cover'
+                                            className='rounded-full w-10 h-10 border-2 border-gray-200  object-cover'
                                         />
                                     ) : (
                                         <div className='flex items-center justify-center rounded-full w-10 h-10 bg-gray-300 text-white font-bold text-sm'>
@@ -400,19 +397,19 @@ function SubjectPyqs() {
                                                 'A'}
                                         </div>
                                     )}
-                                    <span className='text-sm font-semibold text-gray-700 dark:text-gray-200'>
+                                    <span className='text-sm font-semibold text-gray-700 '>
                                         {pyq.owner?.username || 'Anonymous'}
                                     </span>
                                 </div>
 
                                 <div className='mb-4'>
-                                    <h3 className='text-lg font-bold text-gray-800 dark:text-gray-100 mb-1'>
+                                    <h3 className='text-lg font-bold text-gray-800   mb-1'>
                                         {pyq.year}
                                     </h3>
-                                    <p className='text-sm text-gray-600 dark:text-gray-400 mb-2'>
+                                    <p className='text-sm text-gray-600  mb-2'>
                                         {pyq.examType}
                                     </p>
-                                    <span className='text-xs text-gray-500 dark:text-gray-400'>
+                                    <span className='text-xs text-gray-500 '>
                                         {pyq.clickCounts} views
                                     </span>
                                 </div>
@@ -431,7 +428,7 @@ function SubjectPyqs() {
                                                 onClick={() =>
                                                     handleEditClick(pyq)
                                                 }
-                                                className='text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200'
+                                                className='text-gray-500 hover:text-gray-700  transition-colors duration-200'
                                                 title='Edit Pyq'
                                             >
                                                 <i className='fa-regular fa-pen-to-square text-lg'></i>
@@ -479,7 +476,7 @@ function SubjectPyqs() {
                         );
                     })
                 ) : (
-                    <div className='col-span-full text-center text-gray-600 dark:text-gray-400 py-10'>
+                    <div className='col-span-full text-center text-gray-600  py-10'>
                         <p className='text-xl font-semibold'>
                             No PYQs available for this subject. Please add if
                             you have any.
@@ -559,7 +556,7 @@ function SubjectPyqs() {
                     <div className='flex items-center gap-2'>
                         <label
                             htmlFor='isPaid'
-                            className='font-semibold text-gray-800 dark:text-gray-100'
+                            className='font-semibold text-gray-800  '
                         >
                             Is Paid:
                         </label>
@@ -576,7 +573,7 @@ function SubjectPyqs() {
                         <div>
                             <label
                                 htmlFor='price'
-                                className='block font-semibold text-gray-800 dark:text-gray-100'
+                                className='block font-semibold text-gray-800  '
                             >
                                 Price:
                             </label>

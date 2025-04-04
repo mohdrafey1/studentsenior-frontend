@@ -10,13 +10,13 @@ const EditSeniorModal = ({
 }) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg m-4 dark:bg-gray-800">
-                <h2 className="text-xl font-bold mb-4 text-center  text-gray-900 dark:text-white">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg m-4 ">
+                <h2 className="text-xl font-bold mb-4 text-center  text-gray-900  ">
                     Edit Senior
                 </h2>
                 <form onSubmit={handleUpdate}>
                     <div className="mb-4 text-xs">
-                        <label className="block text-sm font-bold mb-1 text-gray-900 dark:text-white">
+                        <label className="block text-sm font-bold mb-1 text-gray-900  ">
                             Name
                         </label>
                         <input
@@ -28,7 +28,7 @@ const EditSeniorModal = ({
                         />
                     </div>
                     <div className="mb-4 text-xs">
-                        <label className="block text-sm font-bold mb-1 text-gray-900 dark:text-white">
+                        <label className="block text-sm font-bold mb-1 text-gray-900  ">
                             Course/Branch
                         </label>
                         <input
@@ -40,7 +40,7 @@ const EditSeniorModal = ({
                         />
                     </div>
                     <div className="mb-4 text-xs">
-                        <label className="block text-sm font-bold mb-1 text-gray-900 dark:text-white">
+                        <label className="block text-sm font-bold mb-1 text-gray-900  ">
                             Year
                         </label>
                         <select
@@ -59,7 +59,7 @@ const EditSeniorModal = ({
                         </select>
                     </div>
                     <div className="mb-4 text-xs">
-                        <label className="block text-sm font-bold mb-1 text-gray-900 dark:text-white">
+                        <label className="block text-sm font-bold mb-1 text-gray-900  ">
                             Domain
                         </label>
                         <input
@@ -71,7 +71,7 @@ const EditSeniorModal = ({
                         />
                     </div>
                     <div className="mb-4 text-xs">
-                        <label className="block text-sm font-bold mb-1 text-gray-900 dark:text-white">
+                        <label className="block text-sm font-bold mb-1 text-gray-900  ">
                             Whatsapp
                         </label>
                         <input
@@ -83,7 +83,7 @@ const EditSeniorModal = ({
                         />
                     </div>
                     <div className="mb-4 text-xs">
-                        <label className="block text-sm font-bold mb-1 text-gray-900 dark:text-white">
+                        <label className="block text-sm font-bold mb-1 text-gray-900  ">
                             Telegram
                         </label>
                         <input
@@ -100,7 +100,7 @@ const EditSeniorModal = ({
                         </span>
                     </div>
                     {/* <div className="mb-4 text-xs">
-                        <label className="block text-sm font-bold mb-1 text-gray-900 dark:text-white">
+                        <label className="block text-sm font-bold mb-1 text-gray-900  ">
                             College
                         </label>
                         <select
@@ -117,7 +117,7 @@ const EditSeniorModal = ({
                         </select>
                     </div> */}
                     {/* <div className="mb-4 text-xs">
-                        <label className="block text-sm font-bold mb-1 text-gray-900 dark:text-white">
+                        <label className="block text-sm font-bold mb-1 text-gray-900  ">
                             Image
                         </label>
                         <input

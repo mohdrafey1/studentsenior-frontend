@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import logo from '/assets/logo.png'
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,7 +24,7 @@ const Header = () => {
                 {/* Logo */}
                 <Link to="/" className="flex items-center">
                     <span className="text-3xl font-bold text-blue-600 inline-flex items-center">
-                        <img src="./assets/logo.png"
+                        <img src={logo}
                             alt="logo"
                             className='h-12 lg:h-16 text-xs text-transparent'
                             loading="eager"

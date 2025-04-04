@@ -5,14 +5,14 @@ const SeniorDetailModal = ({ senior, setIsDetailModalOpen }) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
             {/* Modal Container */}
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg m-4 dark:bg-gray-800">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg m-4 ">
                 {/* Header Section */}
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white ">
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900   ">
                         Senior Details
                     </h2>
                     <button
-                        className=" text-gray-900 dark:text-white  transition"
+                        className=" text-gray-900    transition"
                         onClick={() => setIsDetailModalOpen(false)}
                     >
                         <svg
@@ -46,20 +46,20 @@ const SeniorDetailModal = ({ senior, setIsDetailModalOpen }) => {
 
                 {/* Senior Info Section */}
                 <div className="mb-4">
-                    <h3 className="text-lg sm:text-xl font-bold  text-gray-900 dark:text-white  mb-2 text-center">
+                    <h3 className="text-lg sm:text-xl font-bold  text-gray-900    mb-2 text-center">
                         {senior.name}
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        <p className=" text-gray-900 dark:text-white  text-base ">
+                        <p className=" text-gray-900    text-base ">
                             <strong>Course:</strong> {senior.branch}
                         </p>
-                        <p className=" text-gray-900 dark:text-white  text-base ">
+                        <p className=" text-gray-900    text-base ">
                             <strong>Year:</strong> {senior.year}
                         </p>
-                        <p className=" text-gray-900 dark:text-white  text-base ">
+                        <p className=" text-gray-900    text-base ">
                             <strong>Domain:</strong> {senior.domain}
                         </p>
-                        <p className=" text-gray-900 dark:text-white  text-base ">
+                        <p className=" text-gray-900    text-base ">
                             <strong>College:</strong>{' '}
                             {
                                 colleges.find(
