@@ -75,7 +75,7 @@ const SeniorPage = () => {
     ];
 
     return (
-        <div className="bg-gradient-to-t from-sky-200 to bg-white">
+        <div className="bg-gradient-to-t from-blue-200 to bg-white">
             <CollegeLinks />
             <div className="container mx-auto p-5">
                 <div className="flex flex-col justify-center items-center">

@@ -103,18 +103,36 @@ function QuickLinks() {
                 </div>
             </div>
             <div className="mt-10 px-4">
-                <div className="bg-gradient-to-r from-blue-100 to-blue-200 border border-blue-300 text-blue-900 rounded-xl shadow-md p-6 flex flex-col sm:flex-row items-center justify-between max-w-4xl mx-auto">
-                    <div className="flex items-center gap-4 text-center sm:text-left">
-                        <span className="text-3xl">📲</span>
-                        <p className="text-lg font-semibold">
-                            Install the app now for quicker access and a better experience!
+                <div className="bg-gradient-to-r from-blue-100 to-blue-200 border border-blue-300 text-blue-900 rounded-xl shadow-md p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between max-w-4xl mx-auto relative overflow-hidden">
+                    {/* Floating bubbles background for mobile */}
+                    <div className="sm:hidden absolute inset-0 overflow-hidden">
+                        <div className="absolute -top-2 -left-2 w-16 h-16 rounded-full bg-blue-300/30"></div>
+                        <div className="absolute -bottom-4 -right-4 w-20 h-20 rounded-full bg-blue-400/30"></div>
+                        <div className="absolute top-1/4 right-1/3 w-12 h-12 rounded-full bg-blue-200/40"></div>
+                    </div>
+
+                    <div className="relative flex items-center gap-3 sm:gap-4 text-center sm:text-left">
+                        {/* Animated phone icon for mobile */}
+                        <span className="text-2xl sm:text-3xl animate-bounce sm:animate-none">📲</span>
+                        <p className="text-sm sm:text-lg font-semibold z-10">
+                            Install the app for quicker access!
+                            <span className="block sm:inline text-xs sm:text-base font-normal mt-1 sm:mt-0 sm:ml-2">Better experience on mobile!</span>
                         </p>
                     </div>
-                    <Link to='/install'><button
-                        className="mt-4 sm:mt-0 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-5 rounded-md transition-all duration-300"
-                    >
-                        Install Now
-                    </button></Link>
+
+                    <a
+                        target='_blank'
+                        href='https://studentsenior.com/install'
+                        aria-label='Install'
+                        className="relative z-10 w-full sm:w-auto mt-4 sm:mt-0">
+                        <button className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-2 px-4 sm:py-2 sm:px-5 rounded-md transition-all duration-300 active:scale-95 shadow-sm hover:shadow-md">
+                            Install Now
+                            <span className="sm:hidden ml-2">→</span>
+                        </button>
+                    </a>
+
+                    {/* Pulse animation for mobile */}
+                    <div className="sm:hidden absolute inset-0 rounded-xl border-2 border-blue-300/50 animate-ping opacity-0 pointer-events-none"></div>
                 </div>
             </div>
 
