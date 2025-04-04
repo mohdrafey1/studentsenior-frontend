@@ -35,7 +35,31 @@ function SubjectPyqs() {
     const [pyqIdtoDelete, setpyqIdtoDelete] = useState(null);
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { apiRequest } = useApiRequest();
 
+    const currentUser = useSelector((state) => state.user.currentUser);
+    const ownerId = currentUser?._id;
+    const { rewardBalance } = useSelector((state) => state.userData || {});
+    const {
+        subjectPyqs,
+        subjectName,
+        loading: loadingSubjectPyqs,
+        error: PyqsError,
+    } = useSelector((state) => state.subjectPyqs || {});
+    const { savedPYQs } = useSelector((state) => state.savedCollection);
+
+    // Fetch data on component mount
+    useEffect(() => {
+        dispatch(fetchUserData());
+        dispatch(fetchSavedCollection());
+    }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(fetchSubjectPyqs({ subjectCode, branchCode, collegeId }));
+    }, [collegeId, subjectCode, branchCode, dispatch]);
+
+    // Handler functions
     const handleBuyNowClick = (pyq) => {
         setSelectedPyq(pyq);
         setBuyNowModalOpen(true);
@@ -45,30 +69,6 @@ function SubjectPyqs() {
         setBuyNowModalOpen(false);
         setSelectedPyq(null);
     };
-
-    const currentUser = useSelector((state) => state.user.currentUser);
-    const ownerId = currentUser?._id;
-
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(fetchUserData());
-        dispatch(fetchSavedCollection());
-    }, [dispatch]);
-    useEffect(() => {
-        dispatch(fetchSubjectPyqs({ subjectCode, branchCode, collegeId }));
-    }, [collegeId, subjectCode, branchCode]);
-
-    const { rewardBalance } = useSelector((state) => state.userData || {});
-
-    const {
-        subjectPyqs,
-        subjectName,
-        loading: loadingSubjectPyqs,
-        error: PyqsError,
-    } = useSelector((state) => state.subjectPyqs || {});
-
-    const { savedPYQs } = useSelector((state) => state.savedCollection);
-    console.log(savedPYQs);
 
     const handleOpenAddPyqModal = () => {
         requireLogin(() => setModalOpen(true));
@@ -95,29 +95,24 @@ function SubjectPyqs() {
                 return;
             }
             toast.success(data.message);
-            setSubmitting(false);
             setModalOpen(false);
         } catch (err) {
-            setSubmitting(false);
             console.error(err);
             toast.error('Failed to add pyq.');
-            setModalOpen(false);
         } finally {
             setSubmitting(false);
         }
     };
 
-    const handleConfirmPurchase = async () => {
+    const handleConfirmPurchase = () => {
         handleConfirmPurchaseUtil(
             selectedPyq,
             api.newPyqs,
             navigate,
             () => setBuyNowModalOpen(false),
-            `/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}/${selectedPyq.slug}`
+            `/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}/${selectedPyq?.slug}`
         );
     };
-
-    const { apiRequest } = useApiRequest();
 
     const handleOnlinePayment = () => {
         handleOnlinePaymentUtil(
@@ -147,7 +142,7 @@ function SubjectPyqs() {
             toast.success(data.message || 'PYQ deleted successfully.');
             dispatch(fetchSubjectPyqs({ subjectCode, branchCode, collegeId }));
         } catch (err) {
-            console.log(err);
+            console.error(err);
             toast.error('Failed to delete PYQ.');
         } finally {
             setDeleteLoading(false);
@@ -164,7 +159,6 @@ function SubjectPyqs() {
             );
 
             toast.success(response.message);
-
             dispatch(fetchSavedCollection());
             dispatch(fetchSubjectPyqs({ subjectCode, branchCode, collegeId }));
         } catch (err) {
@@ -181,18 +175,12 @@ function SubjectPyqs() {
             );
 
             toast.success(response.message);
-
             dispatch(fetchSavedCollection());
             dispatch(fetchSubjectPyqs({ subjectCode, branchCode, collegeId }));
         } catch (err) {
             console.error('Error unsaving PYQ:', err);
             toast.error('Failed to unsave PYQ');
         }
-    };
-
-    const handleCloseDialog = () => {
-        setShowDeleteDialog(false);
-        setpyqIdtoDelete(null);
     };
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -243,22 +231,24 @@ function SubjectPyqs() {
         }
     };
 
+    // Loading state
     if (loadingSubjectPyqs) {
         return (
             <div className='flex justify-center items-center min-h-screen'>
-                <i className='fas fa-spinner fa-pulse fa-5x'></i>
+                <i className='fas fa-spinner fa-pulse text-4xl text-sky-500'></i>
             </div>
         );
     }
 
+    // Error state
     if (PyqsError) {
         return (
-            <div className='h-screen flex justify-center items-center'>
-                <div>
-                    <p className='text-center text-red-500 mb-4'>{PyqsError}</p>
+            <div className='h-screen flex justify-center items-center px-4'>
+                <div className='text-center'>
+                    <p className='text-red-500 mb-4 font-medium'>{PyqsError}</p>
                     <Link
                         to={`/${collegeName}/resources/${courseCode}/${branchCode}`}
-                        className='bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600'
+                        className='bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 inline-block'
                     >
                         See Other Branches
                     </Link>
@@ -268,207 +258,242 @@ function SubjectPyqs() {
     }
 
     return (
-        <div className='container mx-auto p-4 min-h-screen'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen'>
             <DetailPageNavbar
-                path={`${collegeName}/resources/${courseCode}/${branchCode}?semester=${subjectPyqs[0]?.subject?.semester || 1
-                    }`}
-            />
-            <h1 className='sm:text-2xl font-extrabold text-center sm:mb-6 text-gray-800'>
-                {capitalizeWords(collegeName)}: {subjectName || subjectCode}{' '}
-                PYQs
-            </h1>
-            <Seo
-                title={`${capitalizeWords(collegeName)}: ${subjectName || subjectCode
-                    } PYQs`}
-                desc={subjectPyqs
-                    .map((pyq) => `${pyq.year} ${pyq.examType}`)
-                    .join(' ')}
+                path={`${collegeName}/resources/${courseCode}/${branchCode}?semester=${
+                    subjectPyqs[0]?.subject?.semester || 1
+                }`}
             />
 
-            <div className='flex justify-center gap-4 items-center sm:mb-8'>
-                <Button onClick={handleOpenAddPyqModal}>
+            {/* Page Header */}
+            <header className='py-2'>
+                <h1 className='text-xl md:text-3xl font-bold text-center text-gray-800'>
+                    {capitalizeWords(collegeName)}: {subjectName || subjectCode}{' '}
+                    PYQs
+                </h1>
+                <Seo
+                    title={`${capitalizeWords(collegeName)}: ${
+                        subjectName || subjectCode
+                    } PYQs`}
+                    desc={subjectPyqs
+                        .map((pyq) => `${pyq.year} ${pyq.examType}`)
+                        .join(' ')}
+                />
+            </header>
+
+            {/* Action Buttons */}
+            <div className='flex flex-wrap justify-center gap-3 md:gap-4 mb-4'>
+                <Button
+                    onClick={handleOpenAddPyqModal}
+                    className='flex items-center gap-2'
+                >
                     <i className='fa-solid fa-plus'></i> Add PYQs
                 </Button>
 
                 <Link
                     to={`/${collegeName}/resources/${courseCode}/${branchCode}/notes/${subjectCode}`}
-                    className='px-4 py-2 bg-sky-400 hover:bg-sky-700 text-white rounded-md shadow-md transition-transform transform hover:scale-105'
+                    className='px-4 py-2 bg-sky-400 hover:bg-sky-700 text-white rounded-md shadow-md transition duration-200 flex items-center gap-2'
                 >
-                    View Notes
+                    <i className='fa-solid fa-book'></i> View Notes
                 </Link>
+
                 <button
-                    className='rounded-full p-3 hover:bg-gray-200  transition-all'
+                    className='rounded-full p-2 hover:bg-gray-200 transition-all'
                     onClick={handleEarnDialog}
+                    aria-label='Earn Info'
                 >
-                    <i className='text-3xl fa-solid fa-circle-info text-gray-600 '></i>
+                    <i className='text-2xl fa-solid fa-circle-info text-gray-600'></i>
                 </button>
             </div>
 
-            {showEarnDialog && (
-                <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50'>
-                    <div className='bg-white p-6 rounded-lg shadow-xl w-full lg:m-4 m-6 max-w-lg '>
-                        <div className='items-center mb-4 text-white'>
-                            <div className='flex justify-between items-center'>
-                                <h2 className='text-2xl font-bold text-gray-900  '>
-                                    Earn Money
-                                </h2>
-                                <button onClick={handleEarnDialog}>
-                                    <i className='fa-solid fa-xmark text-2xl text-gray-900  '></i>
-                                </button>
-                            </div>
-                            <div className='text-gray-800  mt-2'>
-                                <p>
-                                    You can upload PYQs and earn reward points:
-                                </p>
-                                <ul className='list-disc ml-6 mt-2'>
-                                    <li>1 PYQ upload = 10 reward points</li>
-                                    <li>Rewards are given after approval</li>
-                                    <li>Duplicate PYQs are not allowed</li>
-                                    <li>
-                                        PYQs should not be older than 2 years
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:mx-40 xl:grid-cols-4 gap-6 px-4 py-6'>
+            {/* PYQ Grid */}
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6'>
                 {subjectPyqs.length > 0 ? (
                     subjectPyqs.map((pyq) => {
                         const isSaved = savedPYQs.some(
                             (savedPyq) => savedPyq.pyqId._id === pyq._id
                         );
+
                         return (
                             <div
                                 key={pyq._id}
-                                className='bg-white  border border-gray-200  p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 relative overflow-hidden'
+                                className='bg-white border border-gray-200 p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden flex flex-col '
                             >
-                                <div className='absolute top-3 right-3 flex gap-2'>
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            requireLogin(() => {
-                                                if (isSaved) {
-                                                    handleUnsavePyq(pyq._id);
-                                                } else {
-                                                    handleSavePyq(pyq._id);
-                                                }
-                                            });
-                                        }}
-                                        className={`p-1 rounded-full ${isSaved
-                                            ? 'text-blue-500'
-                                            : 'text-gray-400 hover:text-blue-500'
-                                            }`}
-                                        title={
-                                            isSaved
-                                                ? 'Unsave this PYQ'
-                                                : 'Save this PYQ'
-                                        }
-                                    >
-                                        <i
-                                            className={`fa-solid fa-bookmark text-xl`}
-                                        ></i>
-                                    </button>
-
-                                    {pyq.isPaid && (
-                                        <span className='bg-red-200 text-red-800 text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm'>
-                                            Paid
+                                {/* Card Header with badges */}
+                                <div className='flex justify-between items-center mb-3'>
+                                    <div className='flex items-center gap-2'>
+                                        {pyq.owner?.profilePicture ? (
+                                            <img
+                                                src={pyq.owner.profilePicture}
+                                                alt={`${pyq.owner?.username}'s Profile`}
+                                                className='rounded-full w-8 h-8 object-cover'
+                                                loading='lazy'
+                                            />
+                                        ) : (
+                                            <div className='flex items-center justify-center rounded-full w-8 h-8 bg-gray-300 text-white font-bold'>
+                                                {pyq.owner?.username?.charAt(
+                                                    0
+                                                ) || 'A'}
+                                            </div>
+                                        )}
+                                        <span className='text-sm font-medium text-gray-700 truncate max-w-[120px]'>
+                                            {pyq.owner?.username || 'Anonymous'}
                                         </span>
-                                    )}
+                                    </div>
+
+                                    <div className='flex gap-1'>
+                                        <button
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                requireLogin(() => {
+                                                    if (isSaved) {
+                                                        handleUnsavePyq(
+                                                            pyq._id
+                                                        );
+                                                    } else {
+                                                        handleSavePyq(pyq._id);
+                                                    }
+                                                });
+                                            }}
+                                            className={`p-1 rounded-full ${
+                                                isSaved
+                                                    ? 'text-blue-500'
+                                                    : 'text-gray-400 hover:text-blue-500'
+                                            }`}
+                                            title={
+                                                isSaved
+                                                    ? 'Unsave this PYQ'
+                                                    : 'Save this PYQ'
+                                            }
+                                            aria-label={
+                                                isSaved
+                                                    ? 'Unsave this PYQ'
+                                                    : 'Save this PYQ'
+                                            }
+                                        >
+                                            <i className='fa-solid fa-bookmark text-lg'></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* PYQ Info */}
+                                <div className='mb-4'>
+                                    <h3 className='text-lg font-bold text-gray-800 mb-1'>
+                                        {pyq.year}
+                                    </h3>
+                                    <p className='text-sm text-gray-600 mb-1'>
+                                        {pyq.examType}
+                                    </p>
+                                    <div className='flex items-center text-xs text-gray-500'>
+                                        <i className='fa-solid fa-eye mr-1'></i>
+                                        <span>{pyq.clickCounts} views</span>
+                                    </div>
+                                </div>
+                                {/* Badges */}
+                                <div className='flex gap-2 mb-2'>
                                     {pyq.solved && (
-                                        <span className='bg-green-200 text-green-800 text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm'>
+                                        <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 flex-shrink-0'>
+                                            <svg
+                                                className='w-3 h-3 mr-1'
+                                                fill='currentColor'
+                                                viewBox='0 0 20 20'
+                                                xmlns='http://www.w3.org/2000/svg'
+                                            >
+                                                <path
+                                                    fillRule='evenodd'
+                                                    d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                                                    clipRule='evenodd'
+                                                />
+                                            </svg>
                                             Solved
                                         </span>
                                     )}
-                                </div>
-
-                                <div className='flex items-center gap-3 mb-4'>
-                                    {pyq.owner?.profilePicture ? (
-                                        <img
-                                            src={pyq.owner.profilePicture}
-                                            alt={`${pyq.owner?.username}'s Profile`}
-                                            className='rounded-full w-10 h-10 border-2 border-gray-200  object-cover'
-                                        />
-                                    ) : (
-                                        <div className='flex items-center justify-center rounded-full w-10 h-10 bg-gray-300 text-white font-bold text-sm'>
-                                            {pyq.owner?.username?.charAt(0) ||
-                                                'A'}
-                                        </div>
+                                    {pyq.isPaid && (
+                                        <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 flex-shrink-0'>
+                                            <svg
+                                                className='w-3 h-3 mr-1'
+                                                fill='currentColor'
+                                                viewBox='0 0 20 20'
+                                                xmlns='http://www.w3.org/2000/svg'
+                                            >
+                                                <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z' />
+                                            </svg>
+                                            Premium
+                                        </span>
                                     )}
-                                    <span className='text-sm font-semibold text-gray-700 '>
-                                        {pyq.owner?.username || 'Anonymous'}
-                                    </span>
                                 </div>
 
-                                <div className='mb-4'>
-                                    <h3 className='text-lg font-bold text-gray-800   mb-1'>
-                                        {pyq.year}
-                                    </h3>
-                                    <p className='text-sm text-gray-600  mb-2'>
-                                        {pyq.examType}
-                                    </p>
-                                    <span className='text-xs text-gray-500 '>
-                                        {pyq.clickCounts} views
-                                    </span>
-                                </div>
-
-                                <div className='flex items-center justify-center mt-4 space-x-3'>
+                                {/* Card Actions */}
+                                <div className='flex justify-center mt-auto pt-2 border-t border-gray-100'>
                                     {pyq.owner._id === ownerId ? (
-                                        <div className='flex space-x-2'>
+                                        <div className='flex gap-2 w-full'>
                                             <Link
                                                 to={pyq.slug}
-                                                className='bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded-full shadow-md transition-transform transform hover:scale-105 flex items-center gap-1'
+                                                className={`w-full flex items-center justify-center py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                                                    pyq.isPaid
+                                                        ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 shadow-md hover:shadow-lg'
+                                                        : 'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg'
+                                                }`}
                                             >
-                                                <i className='fa-solid fa-eye text-sm'></i>
-                                                View
+                                                <i className='fa-solid fa-eye'></i>
+                                                <span>View</span>
                                             </Link>
                                             <button
                                                 onClick={() =>
                                                     handleEditClick(pyq)
                                                 }
-                                                className='text-gray-500 hover:text-gray-700  transition-colors duration-200'
-                                                title='Edit Pyq'
+                                                className='text-gray-500 hover:text-gray-700 transition-colors p-1.5'
+                                                title='Edit PYQ'
+                                                aria-label='Edit PYQ'
                                             >
-                                                <i className='fa-regular fa-pen-to-square text-lg'></i>
+                                                <i className='fa-regular fa-pen-to-square'></i>
                                             </button>
                                             <button
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleDeleteClick(pyq._id);
-                                                }}
-                                                className='text-red-500 hover:text-red-600 transition-colors duration-200'
-                                                title='Delete Pyq'
+                                                onClick={() =>
+                                                    handleDeleteClick(pyq._id)
+                                                }
+                                                className='text-red-500 hover:text-red-600 transition-colors p-1.5'
+                                                title='Delete PYQ'
+                                                aria-label='Delete PYQ'
                                             >
-                                                <i className='fa-solid fa-trash text-lg'></i>
+                                                <i className='fa-solid fa-trash'></i>
                                             </button>
                                         </div>
                                     ) : pyq.purchasedBy?.includes(ownerId) ? (
                                         <Link
                                             to={pyq.slug}
-                                            className='bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded-full shadow-md transition-transform transform hover:scale-105 flex items-center gap-1'
+                                            className={`w-full flex items-center justify-center py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                                                pyq.isPaid
+                                                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 shadow-md hover:shadow-lg'
+                                                    : 'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg'
+                                            }`}
                                         >
-                                            <i className='fa-solid fa-eye text-sm'></i>
-                                            View
+                                            <i className='fa-solid fa-eye'></i>
+                                            <span>View</span>
                                         </Link>
                                     ) : pyq.isPaid ? (
                                         <button
                                             onClick={() =>
                                                 handleBuyNowClick(pyq)
                                             }
-                                            className='bg-green-500 hover:bg-green-600 text-white px-4 py-1.5 rounded-full shadow-md transition-transform transform hover:scale-105 flex items-center gap-1'
+                                            className='bg-green-500 hover:bg-green-600 text-white px-4 py-1.5 rounded-full text-sm flex items-center justify-center gap-1 w-full'
                                         >
-                                            <i className='fa-solid fa-cart-shopping text-sm'></i>
-                                            Buy Now {pyq.price / 5}₹
+                                            <i className='fa-solid fa-cart-shopping'></i>
+                                            <span>
+                                                Buy Now {pyq.price / 5}₹
+                                            </span>
                                         </button>
                                     ) : (
                                         <Link
                                             to={pyq.slug}
-                                            className='bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded-full shadow-md transition-transform transform hover:scale-105 flex items-center gap-1'
+                                            className={`w-full flex items-center justify-center py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                                                pyq.isPaid
+                                                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 shadow-md hover:shadow-lg'
+                                                    : 'bg-sky-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg'
+                                            }`}
                                         >
-                                            <i className='fa-solid fa-eye text-sm'></i>
-                                            View
+                                            <i className='fa-solid fa-eye'></i>
+                                            <span>View</span>
                                         </Link>
                                     )}
                                 </div>
@@ -476,19 +501,72 @@ function SubjectPyqs() {
                         );
                     })
                 ) : (
-                    <div className='col-span-full text-center text-gray-600  py-10'>
-                        <p className='text-xl font-semibold'>
-                            No PYQs available for this subject. Please add if
-                            you have any.
+                    <div className='col-span-full flex flex-col items-center justify-center py-16 px-4'>
+                        <i className='fa-solid fa-file-circle-xmark text-4xl text-gray-400 mb-4'></i>
+                        <p className='text-xl font-medium text-gray-600 text-center'>
+                            No PYQs available for this subject yet.
                         </p>
+                        <p className='text-gray-500 mt-2 text-center'>
+                            Be the first to contribute by adding a previous year
+                            question paper.
+                        </p>
+                        <button
+                            onClick={handleOpenAddPyqModal}
+                            className='mt-6 bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-md flex items-center gap-2'
+                        >
+                            <i className='fa-solid fa-plus'></i> Add PYQ
+                        </button>
                     </div>
                 )}
             </div>
 
+            {/* Earn Rewards Info Modal */}
+            {showEarnDialog && (
+                <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 p-4'>
+                    <div className='bg-white p-5 rounded-lg shadow-xl w-full max-w-md'>
+                        <div className='mb-4 text-gray-800'>
+                            <div className='flex justify-between items-center'>
+                                <h2 className='text-xl font-bold'>
+                                    Earn Rewards
+                                </h2>
+                                <button
+                                    onClick={handleEarnDialog}
+                                    className='p-1 hover:bg-gray-100 rounded-full'
+                                    aria-label='Close'
+                                >
+                                    <i className='fa-solid fa-xmark text-xl'></i>
+                                </button>
+                            </div>
+                            <div className='mt-4'>
+                                <p className='font-medium'>
+                                    Upload PYQs and earn reward points:
+                                </p>
+                                <ul className='list-disc ml-6 mt-2 space-y-1'>
+                                    <li>1 PYQ upload = 10 reward points</li>
+                                    <li>Rewards are given after approval</li>
+                                    <li>Duplicate PYQs are not allowed</li>
+                                    <li>
+                                        PYQs should not be older than 2 years
+                                    </li>
+                                </ul>
+                                <div className='mt-4 bg-blue-50 p-3 rounded-lg'>
+                                    <p className='text-sm text-blue-800'>
+                                        <i className='fa-solid fa-info-circle mr-2'></i>
+                                        Your current reward balance:{' '}
+                                        {rewardBalance || 0} points
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Add PYQ Modal */}
             <Modal
                 isOpen={isModalOpen}
                 onClose={() => setModalOpen(false)}
-                title={`PYQ - ${collegeName.toUpperCase()}`}
+                title={`Add PYQ - ${capitalizeWords(collegeName)}`}
             >
                 <AddPyq
                     subjectCode={subjectCode}
@@ -500,6 +578,7 @@ function SubjectPyqs() {
                 />
             </Modal>
 
+            {/* Buy Modal */}
             <ConfirmPurchaseModal
                 isOpen={isBuyNowModalOpen}
                 onClose={handleCloseBuyNowModal}
@@ -508,23 +587,30 @@ function SubjectPyqs() {
                 handleOnlinePayment={handleOnlinePayment}
                 handleConfirmPurchase={handleConfirmPurchase}
                 viewDemoPath={`${selectedPyq?.slug}`}
-                title={'Buy This Pyq'}
+                title={'Buy This PYQ'}
             />
 
+            {/* Delete Confirmation Modal */}
             <Modal
                 isOpen={showDeleteDialog}
-                onClose={handleCloseDialog}
-                title='Delete Confirmation'
+                onClose={() => {
+                    setShowDeleteDialog(false);
+                    setpyqIdtoDelete(null);
+                }}
+                title='Confirm Deletion'
                 footer={
-                    <div className='flex py-4 gap-3 lg:justify-end justify-center'>
+                    <div className='flex py-3 gap-3 justify-end'>
                         <button
-                            className='p-1 py-2 bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer'
-                            onClick={handleCloseDialog}
+                            className='px-4 py-2 bg-white rounded-lg text-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
+                            onClick={() => {
+                                setShowDeleteDialog(false);
+                                setpyqIdtoDelete(null);
+                            }}
                         >
                             Cancel
                         </button>
                         <button
-                            className='p-1 py-2 bg-red-600 rounded-lg px-4 text-sm font-semibold text-white cursor-pointer'
+                            className='px-4 py-2 bg-red-600 rounded-lg text-sm font-medium text-white hover:bg-red-700 disabled:opacity-70'
                             onClick={handleConfirmDelete}
                             disabled={deleteLoading}
                         >
@@ -532,50 +618,64 @@ function SubjectPyqs() {
                                 <i className='fa fa-spinner fa-spin'></i>
                             ) : (
                                 <>
-                                    <span>Confirm</span>
-                                    &nbsp;
-                                    <i className='fa-solid fa-trash fa-xl'></i>
+                                    <span>Delete</span>
                                 </>
                             )}
                         </button>
                     </div>
                 }
             >
-                <p>Are you sure you want to delete this note?</p>
-                <p className='text-sm text-gray-500'>
-                    This action cannot be undone.
-                </p>
+                <div className='p-1'>
+                    <p className='mb-2'>
+                        Are you sure you want to delete this PYQ?
+                    </p>
+                    <p className='text-sm text-gray-500'>
+                        This action cannot be undone.
+                    </p>
+                </div>
             </Modal>
 
+            {/* Edit PYQ Modal */}
             <Modal
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
                 title='Edit PYQ'
             >
-                <div className='space-y-4'>
+                <div className='space-y-4 p-1'>
                     <div className='flex items-center gap-2'>
                         <label
                             htmlFor='isPaid'
-                            className='font-semibold text-gray-800  '
+                            className='font-medium text-gray-800'
                         >
-                            Is Paid:
+                            Make this PYQ paid:
                         </label>
-                        <input
-                            type='checkbox'
-                            id='isPaid'
-                            name='isPaid'
-                            checked={editPyqData.isPaid}
-                            onChange={handleEditChange}
-                        />
+                        <div className='relative inline-block w-10 mr-2 align-middle select-none'>
+                            <input
+                                type='checkbox'
+                                id='isPaid'
+                                name='isPaid'
+                                checked={editPyqData.isPaid}
+                                onChange={handleEditChange}
+                                className='toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer'
+                            />
+                            <label
+                                htmlFor='isPaid'
+                                className={`toggle-label block overflow-hidden h-6 rounded-full cursor-pointer ${
+                                    editPyqData.isPaid
+                                        ? 'bg-green-400'
+                                        : 'bg-gray-300'
+                                }`}
+                            ></label>
+                        </div>
                     </div>
 
                     {editPyqData.isPaid && (
-                        <div>
+                        <div className='mt-3'>
                             <label
                                 htmlFor='price'
-                                className='block font-semibold text-gray-800  '
+                                className='block font-medium text-gray-800 mb-1'
                             >
-                                Price:
+                                Price (in points):
                             </label>
                             <input
                                 type='number'
@@ -583,21 +683,60 @@ function SubjectPyqs() {
                                 name='price'
                                 value={editPyqData.price}
                                 onChange={handleEditChange}
-                                className='w-full px-3 py-2 border rounded-md'
+                                className='w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-sky-500 focus:border-sky-500'
                                 min='1'
+                                placeholder='Enter price in points'
                             />
+                            <p className='text-xs text-gray-500 mt-1'>
+                                Users will pay {editPyqData.price / 5}₹ or{' '}
+                                {editPyqData.price} points
+                            </p>
                         </div>
                     )}
 
-                    <button
-                        onClick={handleUpdatePyq}
-                        className='bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md'
-                        disabled={submitting}
-                    >
-                        {submitting ? 'Updating...' : 'Update'}
-                    </button>
+                    <div className='flex justify-end gap-3 mt-4 pt-3 border-t border-gray-100'>
+                        <button
+                            onClick={() => setIsEditModalOpen(false)}
+                            className='px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md'
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleUpdatePyq}
+                            className='px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md disabled:opacity-70'
+                            disabled={submitting}
+                        >
+                            {submitting ? (
+                                <>
+                                    <i className='fa fa-spinner fa-spin mr-2'></i>
+                                    Updating
+                                </>
+                            ) : (
+                                'Save Changes'
+                            )}
+                        </button>
+                    </div>
                 </div>
             </Modal>
+
+            {/* Add this CSS for toggle button */}
+            <style jsx>{`
+                .toggle-checkbox:checked {
+                    right: 0;
+                    border-color: #68d391;
+                }
+                .toggle-label {
+                    transition: background-color 0.2s ease;
+                }
+                .toggle-checkbox {
+                    right: 0;
+                    transition: all 0.2s ease;
+                    border-color: #cbd5e0;
+                }
+                .toggle-checkbox:checked + .toggle-label {
+                    background-color: #68d391;
+                }
+            `}</style>
         </div>
     );
 }

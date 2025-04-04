@@ -64,12 +64,12 @@ const ConfirmPurchaseModal = ({
                     )}
 
                     {/* Add Points Button */}
-                    {/* <Link
+                    <Link
                         to='/add-points'
                         className='bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg transition'
                     >
                         Add Points
-                    </Link> */}
+                    </Link>
 
                     {/* View Demo Button */}
                     {viewDemoPath && (
