@@ -65,52 +65,54 @@ function SeniorCard({
                 return (
                     <div
                         key={senior._id}
-                        className={`bg-white rounded-xl border ${isHovered ? 'border-blue-200 shadow-lg' : 'border-gray-100 shadow-sm'} overflow-hidden transition-all duration-300 flex flex-col h-full dark:bg-gray-800 dark:border-gray-700`}
+                        className={`bg-white rounded-lg md:rounded-xl border-2 ${isHovered ? 'border-blue-100 shadow-md md:shadow-xl' : 'border-blue-50 shadow-sm md:shadow-md'} overflow-hidden transition-all duration-300 flex flex-col h-full dark:bg-gray-800 dark:border-gray-700 group`}
                         onMouseEnter={() => setHoveredCard(senior._id)}
                         onMouseLeave={() => setHoveredCard(null)}
                     >
-                        {/* Profile Image */}
-                        <div className="overflow-hidden h-48 lg:h-56">
+                        {/* Profile Image with Blue Overlay - Adjusted for mobile */}
+                        <div className="relative overflow-hidden h-40 sm:h-48 md:h-56">
                             <img
                                 src={senior.owner.profilePicture.replace('=s96-c', '') || senior.profilePicture}
                                 alt={senior.name}
-                                className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                loading="lazy"  // Added lazy loading for better performance
                             />
+                            <div className="absolute inset-0 bg-gradient-to-t from-blue-900/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
 
-                        {/* Card Content */}
-                        <div className="p-4 flex-grow">
-                            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2 line-clamp-1">
+                        {/* Card Content - Adjusted padding and text sizes for mobile */}
+                        <div className="p-3 sm:p-4 md:p-5 flex-grow">
+                            <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white mb-2 sm:mb-3 line-clamp-1">
                                 {senior.name}
                             </h3>
-                            <div className="grid grid-cols-2 gap-2 text-sm">
+                            <div className="grid grid-cols-2 gap-2 sm:gap-3 text-xs sm:text-sm">
                                 <div className="flex flex-col">
-                                    <span className="text-gray-500 dark:text-gray-400 mb-1">Course</span>
-                                    <span className="font-medium text-gray-800 dark:text-gray-200">{senior.branch || 'N/A'}</span>
+                                    <span className="text-blue-600 dark:text-blue-400 mb-0.5 sm:mb-1 font-medium">Course</span>
+                                    <span className="font-medium text-gray-800 dark:text-gray-200 truncate">{senior.branch || 'N/A'}</span>
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-gray-500 dark:text-gray-400 mb-1">Year</span>
+                                    <span className="text-blue-600 dark:text-blue-400 mb-0.5 sm:mb-1 font-medium">Year</span>
                                     <span className="font-medium text-gray-800 dark:text-gray-200">{senior.year || 'N/A'}</span>
                                 </div>
                                 <div className="flex flex-col col-span-2">
-                                    <span className="text-gray-500 dark:text-gray-400 mb-1">Domain</span>
+                                    <span className="text-blue-600 dark:text-blue-400 mb-0.5 sm:mb-1 font-medium">Domain</span>
                                     <span className="font-medium text-gray-800 dark:text-gray-200 line-clamp-2">{senior.domain || 'N/A'}</span>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Card Footer */}
-                        <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700 border-t border-gray-100 dark:border-gray-600">
+                        {/* Card Footer - Larger touch targets for mobile */}
+                        <div className="px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 bg-blue-50 dark:bg-blue-900/20 border-t-2 border-blue-100 dark:border-blue-900/30">
                             <div className="flex justify-between items-center">
                                 <Link
                                     to={`/college/${collegeName}/seniors/${senior.slug}`}
-                                    className="flex items-center justify-center py-2 px-4 rounded-lg text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg transition-all"
+                                    className="flex items-center justify-center py-2 px-3 sm:py-2.5 sm:px-5 rounded-md md:rounded-lg text-xs sm:text-sm font-medium bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-700 hover:to-blue-600 shadow-sm sm:shadow-md hover:shadow-lg transition-all active:scale-95"
                                     onClick={(e) => {
                                         e.preventDefault();
                                         handleDetail(senior);
                                     }}
                                 >
-                                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                     </svg>
@@ -118,28 +120,28 @@ function SeniorCard({
                                 </Link>
 
                                 {isOwner && handleDelete && handleEdit && (
-                                    <div className="flex space-x-2">
+                                    <div className="flex space-x-1 sm:space-x-2">
                                         <button
-                                            className="p-2 rounded-lg bg-yellow-500 text-white hover:bg-yellow-600 transition-colors"
+                                            className="p-2 sm:p-2.5 rounded-md md:rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors hover:text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 dark:hover:bg-blue-900/70 active:scale-95"
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 handleEdit(senior);
                                             }}
                                             aria-label="Edit senior"
                                         >
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                             </svg>
                                         </button>
                                         <button
-                                            className="p-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors"
+                                            className="p-2 sm:p-2.5 rounded-md md:rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition-colors hover:text-red-700 dark:bg-red-900/50 dark:text-red-300 dark:hover:bg-red-900/70 active:scale-95"
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 handleDeleteClick(senior._id);
                                             }}
                                             aria-label="Delete senior"
                                         >
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                             </svg>
                                         </button>
