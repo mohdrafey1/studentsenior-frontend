@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useSaveResourse } from '../../hooks/useSaveResource';
+import { useCollegeId } from '../../hooks/useCollegeId';
 
 function PyqCard({ Pyqs = [] }) {
     const { collegeName } = useParams();
+    const collegeId = useCollegeId(collegeName);
+
+    const [branchCode, setBranchCode] = useState('');
+
     const location = useLocation();
     const navigate = useNavigate();
     const { isAuthenticated } = useSelector((state) => state.user);
@@ -20,63 +26,111 @@ function PyqCard({ Pyqs = [] }) {
 
     if (Pyqs.length === 0) {
         return (
-            <div className="text-center py-16 bg-gray-50 rounded-xl border border-gray-100">
-                <div className="bg-gray-100 rounded-full p-4 w-20 h-20 mx-auto flex items-center justify-center">
-                    <svg className="w-10 h-10 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            <div className='text-center py-16 bg-gray-50 rounded-xl border border-gray-100'>
+                <div className='bg-gray-100 rounded-full p-4 w-20 h-20 mx-auto flex items-center justify-center'>
+                    <svg
+                        className='w-10 h-10 text-gray-500'
+                        fill='none'
+                        stroke='currentColor'
+                        viewBox='0 0 24 24'
+                        xmlns='http://www.w3.org/2000/svg'
+                    >
+                        <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='2'
+                            d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
+                        ></path>
                     </svg>
                 </div>
-                <h3 className="mt-6 text-xl font-medium text-gray-900">No PYQs available</h3>
-                <p className="mt-2 text-sm text-gray-500 max-w-md mx-auto">Check back later for updates or try adjusting your search criteria.</p>
+                <h3 className='mt-6 text-xl font-medium text-gray-900'>
+                    No PYQs available
+                </h3>
+                <p className='mt-2 text-sm text-gray-500 max-w-md mx-auto'>
+                    Check back later for updates or try adjusting your search
+                    criteria.
+                </p>
             </div>
         );
     }
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 lg:gap-6">
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 lg:gap-6'>
             {Pyqs.map((pyq) => {
-                const courseCode = pyq.subject?.branch?.course?.courseCode.toLowerCase();
-                const branchCode = pyq.subject?.branch?.branchCode.toLowerCase();
+                const courseCode =
+                    pyq.subject?.branch?.course?.courseCode.toLowerCase();
+                const branchCode =
+                    pyq.subject?.branch?.branchCode.toLowerCase();
                 const subjectCode = pyq.subject?.subjectCode.toLowerCase();
                 const pyqUrl = `/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}/${pyq.slug}`;
                 const isHovered = hoveredCard === pyq._id;
 
+                const { saveResource, unsaveResource } = useSaveResource(
+                    subjectCode,
+                    branchCode,
+                    null // collegeId can be null if not needed
+                );
+
                 return (
                     <div
                         key={pyq._id}
-                        className={`bg-white rounded-xl border ${isHovered ? 'border-blue-200 shadow-lg' : 'border-gray-100 shadow-sm'} overflow-hidden transition-all duration-300 flex flex-col h-full`}
+                        className={`bg-white rounded-xl border ${
+                            isHovered
+                                ? 'border-blue-200 shadow-lg'
+                                : 'border-gray-100 shadow-sm'
+                        } overflow-hidden transition-all duration-300 flex flex-col h-full`}
                         onClick={(e) => handleCardClick(pyqUrl, e)}
                         onMouseEnter={() => setHoveredCard(pyq._id)}
                         onMouseLeave={() => setHoveredCard(null)}
-                        tabIndex="0"
-                        role="button"
+                        tabIndex='0'
+                        role='button'
                         aria-label={`View PYQ for ${pyq.subject?.subjectName}`}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter') handleCardClick(pyqUrl, e);
                         }}
                     >
                         {/* Highlight Accent */}
-                        <div className={`h-1 w-full ${pyq.isPaid ? 'bg-gradient-to-r from-purple-500 to-indigo-500' : 'bg-blue-500'}`}></div>
+                        <div
+                            className={`h-1 w-full ${
+                                pyq.isPaid
+                                    ? 'bg-gradient-to-r from-purple-500 to-indigo-500'
+                                    : 'bg-blue-500'
+                            }`}
+                        ></div>
 
                         {/* Card Header */}
-                        <div className="p-4 border-b border-gray-100">
-                            <div className="flex justify-between items-start">
-                                <h2 className="text-lg font-semibold text-gray-800 line-clamp-2">
+                        <div className='p-4 border-b border-gray-100'>
+                            <div className='flex justify-between items-start'>
+                                <h2 className='text-lg font-semibold text-gray-800 line-clamp-2'>
                                     {pyq.subject?.subjectName}
                                 </h2>
-                                <div className="flex space-x-2">
+                                <div className='flex space-x-2'>
                                     {pyq.solved && (
-                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 flex-shrink-0">
-                                            <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                        <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 flex-shrink-0'>
+                                            <svg
+                                                className='w-3 h-3 mr-1'
+                                                fill='currentColor'
+                                                viewBox='0 0 20 20'
+                                                xmlns='http://www.w3.org/2000/svg'
+                                            >
+                                                <path
+                                                    fillRule='evenodd'
+                                                    d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                                                    clipRule='evenodd'
+                                                />
                                             </svg>
                                             Solved
                                         </span>
                                     )}
                                     {pyq.isPaid && (
-                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 flex-shrink-0">
-                                            <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                        <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 flex-shrink-0'>
+                                            <svg
+                                                className='w-3 h-3 mr-1'
+                                                fill='currentColor'
+                                                viewBox='0 0 20 20'
+                                                xmlns='http://www.w3.org/2000/svg'
+                                            >
+                                                <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z' />
                                             </svg>
                                             Premium
                                         </span>
@@ -86,71 +140,137 @@ function PyqCard({ Pyqs = [] }) {
                         </div>
 
                         {/* Card Body */}
-                        <div className="p-4 flex-grow">
-                            <div className="grid grid-cols-2 gap-3 text-sm">
-                                <div className="flex flex-col">
-                                    <span className="text-gray-500 mb-1">Subject Code</span>
-                                    <span className="font-medium text-gray-800">{pyq.subject?.subjectCode || 'N/A'}</span>
+                        <div className='p-4 flex-grow'>
+                            <div className='grid grid-cols-2 gap-3 text-sm'>
+                                <div className='flex flex-col'>
+                                    <span className='text-gray-500 mb-1'>
+                                        Subject Code
+                                    </span>
+                                    <span className='font-medium text-gray-800'>
+                                        {pyq.subject?.subjectCode || 'N/A'}
+                                    </span>
                                 </div>
-                                <div className="flex flex-col">
-                                    <span className="text-gray-500 mb-1">Exam Type</span>
-                                    <span className="font-medium text-gray-800">{pyq.examType || 'N/A'}</span>
+                                <div className='flex flex-col'>
+                                    <span className='text-gray-500 mb-1'>
+                                        Exam Type
+                                    </span>
+                                    <span className='font-medium text-gray-800'>
+                                        {pyq.examType || 'N/A'}
+                                    </span>
                                 </div>
-                                <div className="flex flex-col">
-                                    <span className="text-gray-500 mb-1">Year</span>
-                                    <span className="font-medium text-gray-800">{pyq.year || 'N/A'}</span>
+                                <div className='flex flex-col'>
+                                    <span className='text-gray-500 mb-1'>
+                                        Year
+                                    </span>
+                                    <span className='font-medium text-gray-800'>
+                                        {pyq.year || 'N/A'}
+                                    </span>
                                 </div>
-                                <div className="flex flex-col">
-                                    <span className="text-gray-500 mb-1">Semester</span>
-                                    <span className="font-medium text-gray-800">{pyq.subject?.semester || 'N/A'}</span>
+                                <div className='flex flex-col'>
+                                    <span className='text-gray-500 mb-1'>
+                                        Semester
+                                    </span>
+                                    <span className='font-medium text-gray-800'>
+                                        {pyq.subject?.semester || 'N/A'}
+                                    </span>
                                 </div>
-                                <div className="flex flex-col col-span-2">
-                                    <span className="text-gray-500 mb-1">Branch</span>
-                                    <span className="font-medium text-gray-800">{pyq.subject?.branch?.branchCode || 'N/A'}</span>
+                                <div className='flex flex-col col-span-2'>
+                                    <span className='text-gray-500 mb-1'>
+                                        Branch
+                                    </span>
+                                    <span className='font-medium text-gray-800'>
+                                        {pyq.subject?.branch?.branchCode ||
+                                            'N/A'}
+                                    </span>
                                 </div>
                             </div>
                         </div>
 
                         {/* Card Footer */}
-                        <div className="px-4 py-3 bg-gray-50 border-t border-gray-100">
+                        <div className='px-4 py-3 bg-gray-50 border-t border-gray-100'>
                             {isAuthenticated ? (
                                 <Link
                                     to={pyqUrl}
-                                    className={`w-full flex items-center justify-center py-2 px-3 rounded-lg text-sm font-medium transition-all ${pyq.isPaid
-                                        ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 shadow-md hover:shadow-lg'
-                                        : 'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg'
-                                        }`}
+                                    className={`w-full flex items-center justify-center py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                                        pyq.isPaid
+                                            ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 shadow-md hover:shadow-lg'
+                                            : 'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg'
+                                    }`}
                                     onClick={(e) => e.stopPropagation()}
                                 >
                                     {pyq.isPaid ? (
                                         <>
-                                            <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                            <svg
+                                                className='w-4 h-4 mr-2 flex-shrink-0'
+                                                fill='none'
+                                                stroke='currentColor'
+                                                viewBox='0 0 24 24'
+                                                xmlns='http://www.w3.org/2000/svg'
+                                            >
+                                                <path
+                                                    strokeLinecap='round'
+                                                    strokeLinejoin='round'
+                                                    strokeWidth='2'
+                                                    d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
+                                                ></path>
                                             </svg>
-                                            <span className="whitespace-nowrap">View Premium PYQ</span>
+                                            <span className='whitespace-nowrap'>
+                                                View Premium PYQ
+                                            </span>
                                         </>
                                     ) : (
                                         <>
-                                            <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                            <svg
+                                                className='w-4 h-4 mr-2 flex-shrink-0'
+                                                fill='none'
+                                                stroke='currentColor'
+                                                viewBox='0 0 24 24'
+                                                xmlns='http://www.w3.org/2000/svg'
+                                            >
+                                                <path
+                                                    strokeLinecap='round'
+                                                    strokeLinejoin='round'
+                                                    strokeWidth='2'
+                                                    d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'
+                                                ></path>
+                                                <path
+                                                    strokeLinecap='round'
+                                                    strokeLinejoin='round'
+                                                    strokeWidth='2'
+                                                    d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'
+                                                ></path>
                                             </svg>
-                                            <span className="whitespace-nowrap">View PYQ</span>
+                                            <span className='whitespace-nowrap'>
+                                                View PYQ
+                                            </span>
                                         </>
                                     )}
                                 </Link>
                             ) : (
                                 <button
-                                    className="w-full flex items-center justify-center py-2 px-3 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors shadow-sm hover:shadow"
+                                    className='w-full flex items-center justify-center py-2 px-3 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors shadow-sm hover:shadow'
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         handleCardClick(pyqUrl, e);
                                     }}
                                 >
-                                    <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                    <svg
+                                        className='w-4 h-4 mr-2 flex-shrink-0'
+                                        fill='none'
+                                        stroke='currentColor'
+                                        viewBox='0 0 24 24'
+                                        xmlns='http://www.w3.org/2000/svg'
+                                    >
+                                        <path
+                                            strokeLinecap='round'
+                                            strokeLinejoin='round'
+                                            strokeWidth='2'
+                                            d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
+                                        ></path>
                                     </svg>
-                                    <span className="whitespace-nowrap">Sign in to view</span>
+                                    <span className='whitespace-nowrap'>
+                                        Sign in to view
+                                    </span>
                                 </button>
                             )}
                         </div>

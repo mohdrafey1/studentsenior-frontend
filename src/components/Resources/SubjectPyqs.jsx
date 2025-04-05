@@ -20,10 +20,18 @@ import {
 } from '../../utils/purchaseUtils.js';
 import useApiRequest from '../../hooks/useApiRequest.js';
 import { fetchSavedCollection } from '../../redux/slices/savedCollectionSlice.js';
+import { useSaveResource } from '../../hooks/useSaveResource.js';
 
 function SubjectPyqs() {
     const { collegeName, courseCode, subjectCode, branchCode } = useParams();
     const collegeId = useCollegeId(collegeName);
+
+    const { saveResource, unsaveResource } = useSaveResource(
+        subjectCode,
+        branchCode,
+        collegeId
+    );
+
     const requireLogin = useRequireLogin();
     const [isModalOpen, setModalOpen] = useState(false);
     const [submitting, setSubmitting] = useState(false);
@@ -148,38 +156,6 @@ function SubjectPyqs() {
             setDeleteLoading(false);
             setShowDeleteDialog(false);
             setpyqIdtoDelete(null);
-        }
-    };
-
-    const handleSavePyq = async (pyqId) => {
-        try {
-            const response = await apiRequest(
-                `${api.savedData.savePyq}/${pyqId}`,
-                'POST'
-            );
-
-            toast.success(response.message);
-            dispatch(fetchSavedCollection());
-            dispatch(fetchSubjectPyqs({ subjectCode, branchCode, collegeId }));
-        } catch (err) {
-            console.error('Error saving PYQ:', err);
-            toast.error('Failed to save PYQ');
-        }
-    };
-
-    const handleUnsavePyq = async (pyqId) => {
-        try {
-            const response = await apiRequest(
-                `${api.savedData.unsavePyq}/${pyqId}`,
-                'POST'
-            );
-
-            toast.success(response.message);
-            dispatch(fetchSavedCollection());
-            dispatch(fetchSubjectPyqs({ subjectCode, branchCode, collegeId }));
-        } catch (err) {
-            console.error('Error unsaving PYQ:', err);
-            toast.error('Failed to unsave PYQ');
         }
     };
 
@@ -347,11 +323,15 @@ function SubjectPyqs() {
                                                 e.preventDefault();
                                                 requireLogin(() => {
                                                     if (isSaved) {
-                                                        handleUnsavePyq(
+                                                        unsaveResource(
+                                                            'pyq',
                                                             pyq._id
                                                         );
                                                     } else {
-                                                        handleSavePyq(pyq._id);
+                                                        saveResource(
+                                                            'pyq',
+                                                            pyq._id
+                                                        );
                                                     }
                                                 });
                                             }}

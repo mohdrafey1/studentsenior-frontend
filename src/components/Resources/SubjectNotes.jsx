@@ -23,10 +23,18 @@ import Seo from '../SEO/Seo.jsx';
 import { fetchUserData } from '../../redux/slices/userDataSlice.js';
 import Button from '../../ui/Button.jsx';
 import { fetchSavedCollection } from '../../redux/slices/savedCollectionSlice.js';
+import { useSaveResource } from '../../hooks/useSaveResource.js';
 
 function SubjectNotes() {
     const { collegeName, courseCode, subjectCode, branchCode } = useParams();
     const collegeId = useCollegeId(collegeName);
+
+    const { saveResource, unsaveResource } = useSaveResource(
+        subjectCode,
+        branchCode,
+        collegeId
+    );
+
     const [isModalOpen, setModalOpen] = useState(false);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [noteIdToDelete, setNoteIdToDelete] = useState(null);
@@ -174,36 +182,6 @@ function SubjectNotes() {
         } catch (err) {
             console.error('Error liking/unliking note:', err);
             toast.error('Failed to like/unlike the note. Please try again.');
-        }
-    };
-
-    const handleSaveNote = async (noteId) => {
-        try {
-            const response = await apiRequest(
-                `${api.savedData.saveNote}/${noteId}`,
-                'POST'
-            );
-            toast.success(response.message);
-            dispatch(fetchSavedCollection());
-            dispatch(fetchSubjectNotes({ subjectCode, branchCode, collegeId }));
-        } catch (err) {
-            console.error('Error saving note:', err);
-            toast.error('Failed to save note');
-        }
-    };
-
-    const handleUnsaveNote = async (noteId) => {
-        try {
-            const response = await apiRequest(
-                `${api.savedData.unsaveNote}/${noteId}`,
-                'POST'
-            );
-            toast.success(response.message);
-            dispatch(fetchSavedCollection());
-            dispatch(fetchSubjectNotes({ subjectCode, branchCode, collegeId }));
-        } catch (err) {
-            console.error('Error unsaving note:', err);
-            toast.error('Failed to unsave note');
         }
     };
 
@@ -401,11 +379,13 @@ function SubjectNotes() {
                                                         e.preventDefault();
                                                         requireLogin(() => {
                                                             if (isSaved) {
-                                                                handleUnsaveNote(
+                                                                unsaveResource(
+                                                                    'note',
                                                                     note._id
                                                                 );
                                                             } else {
-                                                                handleSaveNote(
+                                                                saveResource(
+                                                                    'note',
                                                                     note._id
                                                                 );
                                                             }
