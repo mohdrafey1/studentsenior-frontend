@@ -266,12 +266,13 @@ function SubjectNotes() {
         );
     }
 
+    const semester =
+        subjectNotes?.length > 0 ? subjectNotes[0]?.subject?.semester || 1 : 1;
+
     return (
         <div className='min-h-screen bg-gray-50'>
             <DetailPageNavbar
-                path={`${collegeName}/resources/${courseCode}/${branchCode}?semester=${
-                    subjectNotes[0]?.subject?.semester || 1
-                }`}
+                path={`${collegeName}/resources/${courseCode}/${branchCode}?semester=${semester}`}
             />
 
             {/* Header Section */}
@@ -290,7 +291,7 @@ function SubjectNotes() {
                         collegeName
                     )}: ${subjectName} Notes`}
                     desc={subjectNotes
-                        .slice(0, 5)
+                        ?.slice(0, 5)
                         .map((note) => note.title)
                         .join(' ')}
                 />
@@ -322,9 +323,9 @@ function SubjectNotes() {
                 </div>
 
                 {/* Notes Grid */}
-                {subjectNotes.length > 0 ? (
+                {subjectNotes?.length > 0 ? (
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
-                        {subjectNotes.map((note) => {
+                        {subjectNotes?.map((note) => {
                             const isSaved = savedNotes.some(
                                 (savedNote) => savedNote.noteId._id === note._id
                             );

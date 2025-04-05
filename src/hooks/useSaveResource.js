@@ -31,7 +31,9 @@ export const useSaveResource = (subjectCode, branchCode, collegeId) => {
 
             toast.success(data.message);
             dispatch(fetchSavedCollection());
-            dispatch(fetchSubjectData(resourceType));
+            if (subjectCode) {
+                dispatch(fetchSubjectData(resourceType));
+            }
         } catch (err) {
             console.error(`Error saving ${resourceType}:`, err);
             toast.error(`Failed to save ${resourceType}`);

@@ -233,12 +233,13 @@ function SubjectPyqs() {
         );
     }
 
+    const semester =
+        subjectPyqs?.length > 0 ? subjectPyqs[0]?.subject?.semester || 1 : 1;
+
     return (
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen'>
             <DetailPageNavbar
-                path={`${collegeName}/resources/${courseCode}/${branchCode}?semester=${
-                    subjectPyqs[0]?.subject?.semester || 1
-                }`}
+                path={`${collegeName}/resources/${courseCode}/${branchCode}?semester=${semester}`}
             />
 
             {/* Page Header */}
@@ -252,7 +253,7 @@ function SubjectPyqs() {
                         subjectName || subjectCode
                     } PYQs`}
                     desc={subjectPyqs
-                        .map((pyq) => `${pyq.year} ${pyq.examType}`)
+                        ?.map((pyq) => `${pyq.year} ${pyq.examType}`)
                         .join(' ')}
                 />
             </header>
@@ -284,8 +285,8 @@ function SubjectPyqs() {
 
             {/* PYQ Grid */}
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6'>
-                {subjectPyqs.length > 0 ? (
-                    subjectPyqs.map((pyq) => {
+                {subjectPyqs?.length > 0 ? (
+                    subjectPyqs?.map((pyq) => {
                         const isSaved = savedPYQs.some(
                             (savedPyq) => savedPyq.pyqId._id === pyq._id
                         );
