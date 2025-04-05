@@ -148,15 +148,27 @@ const DetailPageNavbar = ({ path, handleShare = originalHandleShare }) => {
                     <div className=' bg-white p-2 sm:p-6 rounded-lg shadow-lg w-full md:w-3/5'>
                         <div className='flex justify-between items-center mb-4'>
                             <h2 className='text-xl font-semibold text-gray-700'>
-                                Navigation History
+                                <span className='hidden sm:inline'>
+                                    Navigation
+                                </span>{' '}
+                                History
                             </h2>
-                            <button
-                                onClick={() => navigate('/')}
-                                className='flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors'
-                            >
-                                <i className='fa-solid fa-house'></i>
-                                <span>Home</span>
-                            </button>
+                            <div className='flex gap-2'>
+                                <button
+                                    onClick={() => navigate('/collections')}
+                                    className='flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors'
+                                >
+                                    <i className='fa-solid fa-bookmark '></i>
+                                    <span>Collection</span>
+                                </button>
+                                <button
+                                    onClick={() => navigate('/')}
+                                    className='flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors'
+                                >
+                                    <i className='fa-solid fa-house'></i>
+                                    <span>Home</span>
+                                </button>
+                            </div>
                         </div>
 
                         <div className='border border-gray-200 rounded-lg overflow-hidden'>
