@@ -63,7 +63,7 @@ const FeaturedSeniors = () => {
                                     <div className="w-full flex gap-5">
                                         {fake.map((item, index) => {
                                             return (
-                                                <div className="bg-white shadow-md rounded-3xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl dark:bg-slate-300 w-full lg:h-56 flex flex-col">
+                                                <div className="bg-white shadow-md rounded-3xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl  w-full lg:h-56 flex flex-col">
                                                     <div className="h-20 w-20 rounded-full bg-gray-400 m-auto animate-ping"></div>
                                                 </div>
                                             );

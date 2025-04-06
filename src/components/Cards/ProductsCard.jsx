@@ -101,56 +101,64 @@ function ProductsCard({
         const productLink = `/college/${collegeName}/store/${product.slug}`;
 
         return (
-            <div
-                key={product._id}
-                className={`min-w-40 my-4 w-full relative ${
-                    !isAvailable && 'opacity-50 cursor-not-allowed'
-                }`}
-            >
-                {!isAvailable && (
-                    <div className="z-50 absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                        Sold Out
-                    </div>
-                )}
-                <Link
-                    to={productLink}
-                    className={`h-full block border border-gray-200 rounded-2xl shadow-md p-0 bg-white dark:bg-gray-800 overflow-hidden transform transition duration-300 ${
-                        isAvailable ? 'hover:scale-105 hover:shadow-xl' : ''
-                    }`}
-                    onClick={(e) => {
-                        if (!isAvailable) e.preventDefault();
-                    }}
-                >
-                    <img
-                        src={product.image.url}
-                        alt={product.name}
-                        className="bg-white shadow-md h-40 max-h-60 w-full rounded-t-lg overflow-hidden transform transition duration-300 hover:scale-105"
-                    />
-                    <div className="p-4">
-                        <h5 className="lg:text-lg text-sm tracking-tight text-gray-700 dark:text-gray-300">
-                            {product.name}
-                        </h5>
-                        <p>
-                            <span className="text-base lg:text-2xl font-bold text-gray-700 dark:text-gray-300">
-                                ₹{product.price}
-                            </span>
-                        </p>
-                        <div className="my-2">
-                            <div className="flex justify-between">
-                                {renderSocialLinks(product)}
-                                {renderProductActions(product)}
+            <div className="w-full my-4 relative">
+                <div className={`relative rounded-xl overflow-hidden bg-white  shadow-sm transition-all duration-300 ${isAvailable ? 'hover:shadow-lg' : 'opacity-70'}`}>
+                    {/* Image container */}
+                    <div className="relative h-48 overflow-hidden">
+                        <img
+                            src={product.image.url}
+                            alt={product.name}
+                            className="w-full h-full object-cover"
+                        />
+
+                        {/* Availability badge */}
+                        {!isAvailable && (
+                            <div className="absolute top-0 right-0 left-0 bg-black bg-opacity-60 text-white text-sm font-medium py-1.5 text-center">
+                                Sold Out
                             </div>
-                            <p className="text-gray-600 italic overflow-hidden dark:text-gray-200 text-xs lg:text-base">
-                                {product.description.length > 50
-                                    ? `${product.description.substring(
-                                          0,
-                                          50
-                                      )}...`
-                                    : product.description}
-                            </p>
+                        )}
+
+                        {/* Quick action buttons */}
+                        <div className="absolute bottom-3 right-3 flex space-x-2">
+                            {renderProductActions(product)}
                         </div>
                     </div>
-                </Link>
+
+                    {/* Content area */}
+                    <div className="p-4">
+                        {/* Product name */}
+                        <h3 className="font-medium text-gray-800 mb-1 line-clamp-1">
+                            {product.name}
+                        </h3>
+
+                        {/* Price */}
+                        <div className="font-bold text-lg text-gray-900  mb-2">
+                            ₹{product.price}
+                        </div>
+
+                        {/* Description */}
+                        <p className="text-gray-600  text-sm mb-3 line-clamp-2">
+                            {product.description}
+                        </p>
+
+                        {/* Social links */}
+                        <div className="flex items-center justify-between">
+                            <div className="flex space-x-2">
+                                {renderSocialLinks(product)}
+                            </div>
+
+                            {/* View details button */}
+                            {isAvailable && (
+                                <Link
+                                    to={productLink}
+                                    className="text-sm font-medium text-blue-600  hover:underline"
+                                >
+                                    View Details
+                                </Link>
+                            )}
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     };

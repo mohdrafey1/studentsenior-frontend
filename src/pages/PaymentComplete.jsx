@@ -98,7 +98,7 @@ const PaymentComplete = () => {
                     paymentData.purchaseItemId,
                     apiEndpoint,
                     navigate,
-                    () => {}
+                    () => { }
                 );
             }
 
@@ -158,7 +158,7 @@ const PaymentComplete = () => {
 
     return (
         <div className='min-h-screen py-12 px-4 sm:px-6 lg:px-8'>
-            <div className='max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-8'>
+            <div className='max-w-3xl mx-auto bg-white  rounded-lg shadow-md p-8'>
                 <div className='text-center mb-8'>
                     {/* Payment Status Icons & Messages */}
                     {paymentStatus === 'paid' && (
@@ -166,16 +166,16 @@ const PaymentComplete = () => {
                             <div className='flex justify-center text-6xl text-green-500 mb-4'>
                                 <i className='fa-solid fa-circle-check'></i>
                             </div>
-                            <h1 className='text-3xl font-bold text-gray-900 dark:text-white mb-2'>
+                            <h1 className='text-3xl font-bold text-gray-900   mb-2'>
                                 Payment Successful!
                             </h1>
-                            <p className='text-gray-600 dark:text-gray-300'>
+                            <p className='text-gray-600 '>
                                 {[
                                     'note_purchase',
                                     'pyq_purchase',
                                     'add_points',
                                 ].includes(paymentDetails?.typeOfPurchase) &&
-                                paymentDetails?.redirectBackUrl ? (
+                                    paymentDetails?.redirectBackUrl ? (
                                     <>
                                         Thank you for your purchase. You'll be
                                         redirected back shortly.
@@ -204,14 +204,14 @@ const PaymentComplete = () => {
                             <div className='flex justify-center text-6xl text-red-500 mb-4'>
                                 <i className='fa-solid fa-circle-xmark'></i>
                             </div>
-                            <h1 className='text-3xl font-bold text-gray-900 dark:text-white mb-2'>
+                            <h1 className='text-3xl font-bold text-gray-900   mb-2'>
                                 Payment Failed!
                             </h1>
-                            <p className='text-gray-600 dark:text-gray-300'>
+                            <p className='text-gray-600 '>
                                 Unfortunately, your payment could not be
                                 processed. Please try again.
                             </p>
-                            <p className='text-gray-600 text-xs dark:text-gray-300'>
+                            <p className='text-gray-600 text-xs '>
                                 If your payment is deducted and does not return
                                 within 2 days please contact us
                             </p>
@@ -223,14 +223,14 @@ const PaymentComplete = () => {
                             <div className='flex justify-center text-6xl text-yellow-500 mb-4'>
                                 <i className='fa-solid fa-hourglass-half'></i>
                             </div>
-                            <h1 className='text-3xl font-bold text-gray-900 dark:text-white mb-2'>
+                            <h1 className='text-3xl font-bold text-gray-900   mb-2'>
                                 Payment Pending!
                             </h1>
-                            <p className='text-gray-600 dark:text-gray-300'>
+                            <p className='text-gray-600 '>
                                 Your payment is still being processed. Please
                                 wait or retry later.
                             </p>
-                            <p className='text-gray-600 text-xs dark:text-gray-300'>
+                            <p className='text-gray-600 text-xs '>
                                 If your payment is deducted and does not return
                                 within 2 days please contact us
                             </p>
@@ -240,52 +240,52 @@ const PaymentComplete = () => {
 
                 {/* Payment Details (Only if payment was made) */}
                 {paymentDetails && (
-                    <div className='border-t border-b border-gray-200 dark:border-gray-700 py-8'>
-                        <h2 className='text-xl font-semibold text-gray-900 dark:text-white mb-6'>
+                    <div className='border-t border-b border-gray-200  py-8'>
+                        <h2 className='text-xl font-semibold text-gray-900   mb-6'>
                             Payment Details
                         </h2>
 
                         <div className='space-y-4'>
                             <div className='flex items-center justify-between'>
-                                <span className='text-gray-600 dark:text-gray-400'>
+                                <span className='text-gray-600 '>
                                     Type:
                                 </span>
-                                <span className='text-gray-900 dark:text-white font-medium'>
+                                <span className='text-gray-900   font-medium'>
                                     {paymentDetails?.typeOfPurchase}
                                 </span>
                             </div>
 
                             <div className='flex items-center justify-between'>
-                                <span className='text-gray-600 dark:text-gray-400'>
+                                <span className='text-gray-600 '>
                                     Amount Paid:
                                 </span>
-                                <span className='text-gray-900 dark:text-white font-medium'>
+                                <span className='text-gray-900   font-medium'>
                                     ₹{paymentDetails?.amount}
                                 </span>
                             </div>
 
                             <div className='flex items-center justify-between'>
-                                <span className='text-gray-600 dark:text-gray-400'>
+                                <span className='text-gray-600 '>
                                     Transaction ID:
                                 </span>
-                                <span className='text-gray-900 dark:text-white font-mono'>
+                                <span className='text-gray-900   font-mono'>
                                     {paymentDetails?.merchantOrderId}
                                 </span>
                             </div>
 
                             <div className='flex items-center justify-between'>
-                                <span className='text-gray-600 dark:text-gray-400'>
+                                <span className='text-gray-600 '>
                                     Payment Date:
                                 </span>
-                                <span className='text-gray-900 dark:text-white'>
+                                <span className='text-gray-900  '>
                                     {paymentDetails?.createdAt
                                         ? new Date(
-                                              paymentDetails.createdAt
-                                          ).toLocaleDateString('en-IN', {
-                                              day: 'numeric',
-                                              month: 'long',
-                                              year: 'numeric',
-                                          })
+                                            paymentDetails.createdAt
+                                        ).toLocaleDateString('en-IN', {
+                                            day: 'numeric',
+                                            month: 'long',
+                                            year: 'numeric',
+                                        })
                                         : 'N/A'}
                                 </span>
                             </div>

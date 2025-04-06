@@ -46,6 +46,7 @@ import ShippingPolicy from './others/ShippingPolicy';
 import Courses from './pages/Courses';
 import Cart from './pages/Cart';
 import PaymentComplete from './pages/PaymentComplete';
+import SavedCollection from './pages/savedCollection';
 
 const validColleges = ['integral-university', 'mpec-kanpur'];
 
@@ -240,6 +241,7 @@ const RoutesComponent = () => {
 
             {/* Private Routes */}
             <Route element={<PrivateRoute />}>
+                <Route path='/collections' element={<SavedCollection />} />
                 <Route path='/profile' element={<Profile />} />
                 <Route path='/add-points' element={<AddPointsPage />} />
                 <Route

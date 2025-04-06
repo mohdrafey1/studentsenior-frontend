@@ -14,6 +14,14 @@ export const api = {
 
     userData: `${API_BASE_URL}/api/user/userdata`,
 
+    savedData: {
+        saveNote: `${API_BASE_URL}/api/user/save-note`,
+        unsaveNote: `${API_BASE_URL}/api/user/unsave-note`,
+        savePyq: `${API_BASE_URL}/api/user/save-pyq`,
+        unsavePyq: `${API_BASE_URL}/api/user/unsave-pyq`,
+        savedCollection: `${API_BASE_URL}/api/user/saved-purchased`,
+    },
+
     addPoints: `${API_BASE_URL}/api/user/add-points`,
 
     userRedumption: `${API_BASE_URL}/api/user/redeempoints`,

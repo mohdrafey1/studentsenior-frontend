@@ -325,7 +325,7 @@ const CommunityPage = () => {
                         {postLoading ? (
                             <i className="fas fa-spinner fa-pulse fa-5x"></i>
                         ) : (
-                            <p className="text-gray-200 dark:text-gray-600 text-center">
+                            <p className="text-gray-200  text-center">
                                 No Post to show.
                             </p>
                         )}
@@ -459,12 +459,12 @@ const PostCard = ({
                         {post.isAnonymous
                             ? 'Anonymous'
                             : post.author.username.length >
-                              (post.author._id === ownerId ? 8 : 20)
-                            ? post.author.username.slice(
-                                  0,
-                                  post.author._id === ownerId ? 8 : 20
-                              ) + '...'
-                            : post.author.username}
+                                (post.author._id === ownerId ? 8 : 20)
+                                ? post.author.username.slice(
+                                    0,
+                                    post.author._id === ownerId ? 8 : 20
+                                ) + '...'
+                                : post.author.username}
                     </h2>
                 </div>
 
@@ -502,11 +502,10 @@ const PostCard = ({
                     <PostPreview post={post} />
                 </Link>
                 <button
-                    className={`mt-1 px-3 border-2 border-sky-500 rounded-lg ${
-                        post.likes.includes(ownerId)
-                            ? 'text-white bg-sky-500'
-                            : 'text-black'
-                    }`}
+                    className={`mt-1 px-3 border-2 border-sky-500 rounded-lg ${post.likes.includes(ownerId)
+                        ? 'text-white bg-sky-500'
+                        : 'text-black'
+                        }`}
                     onClick={onLike}
                     disabled={hookLoadingStates.likePost[post._id]}
                 >
@@ -545,13 +544,12 @@ const PostCard = ({
                             </p>
                             <div className="flex items-center justify-between mt-2">
                                 <button
-                                    className={`text-blue-500 ${
-                                        likedComments.includes(
-                                            latestComment._id
-                                        )
-                                            ? 'opacity-50 cursor-not-allowed'
-                                            : ''
-                                    }`}
+                                    className={`text-blue-500 ${likedComments.includes(
+                                        latestComment._id
+                                    )
+                                        ? 'opacity-50 cursor-not-allowed'
+                                        : ''
+                                        }`}
                                     onClick={() =>
                                         onLikeComment(latestComment._id)
                                     }
@@ -570,7 +568,7 @@ const PostCard = ({
                                         }
                                         disabled={
                                             hookLoadingStates.deleteComment[
-                                                post._id
+                                            post._id
                                             ]
                                         }
                                     >

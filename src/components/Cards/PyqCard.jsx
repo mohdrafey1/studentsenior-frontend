@@ -1,12 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchSavedCollection } from '../../redux/slices/savedCollectionSlice';
+import { useSaveResource } from '../../hooks/useSaveResource';
+import useRequireLogin from '../../hooks/useRequireLogin.js';
 
 function PyqCard({ Pyqs = [] }) {
     const { collegeName } = useParams();
+    const requireLogin = useRequireLogin();
+
+    const { saveResource, unsaveResource } = useSaveResource(null, null, null);
+
     const location = useLocation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { isAuthenticated } = useSelector((state) => state.user);
+    const [hoveredCard, setHoveredCard] = useState(null);
+
+    const { savedPYQs } = useSelector((state) => state.savedCollection);
+
+    // Fetch data on component mount
+    useEffect(() => {
+        dispatch(fetchSavedCollection());
+    }, [dispatch]);
 
     const handleCardClick = (pyqUrl, e) => {
         if (!isAuthenticated) {
@@ -17,90 +33,306 @@ function PyqCard({ Pyqs = [] }) {
         }
     };
 
+    if (Pyqs.length === 0) {
+        return (
+            <div className='text-center py-16 bg-gray-50 rounded-xl border border-gray-100'>
+                <div className='bg-gray-100 rounded-full p-4 w-20 h-20 mx-auto flex items-center justify-center'>
+                    <svg
+                        className='w-10 h-10 text-gray-500'
+                        fill='none'
+                        stroke='currentColor'
+                        viewBox='0 0 24 24'
+                        xmlns='http://www.w3.org/2000/svg'
+                    >
+                        <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='2'
+                            d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
+                        ></path>
+                    </svg>
+                </div>
+                <h3 className='mt-6 text-xl font-medium text-gray-900'>
+                    No PYQs available
+                </h3>
+                <p className='mt-2 text-sm text-gray-500 max-w-md mx-auto'>
+                    Check back later for updates or try adjusting your search
+                    criteria.
+                </p>
+            </div>
+        );
+    }
+
     return (
-        <>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 lg:gap-6'>
             {Pyqs.map((pyq) => {
+                const isSaved = savedPYQs.some(
+                    (savedPyq) => savedPyq.pyqId._id === pyq._id
+                );
+
                 const courseCode =
                     pyq.subject?.branch?.course?.courseCode.toLowerCase();
                 const branchCode =
                     pyq.subject?.branch?.branchCode.toLowerCase();
                 const subjectCode = pyq.subject?.subjectCode.toLowerCase();
                 const pyqUrl = `/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}/${pyq.slug}`;
+                const isHovered = hoveredCard === pyq._id;
 
                 return (
                     <div
                         key={pyq._id}
-                        className='bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col mb-6 cursor-pointer'
+                        className={`bg-white rounded-xl border ${
+                            isHovered
+                                ? 'border-blue-200 shadow-lg'
+                                : 'border-gray-100 shadow-sm'
+                        } overflow-hidden transition-all duration-300 flex flex-col h-full`}
                         onClick={(e) => handleCardClick(pyqUrl, e)}
+                        onMouseEnter={() => setHoveredCard(pyq._id)}
+                        onMouseLeave={() => setHoveredCard(null)}
+                        tabIndex='0'
+                        role='button'
+                        aria-label={`View PYQ for ${pyq.subject?.subjectName}`}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleCardClick(pyqUrl, e);
+                        }}
                     >
-                        <div className='flex justify-between items-start mb-4'>
-                            <h2 className='text-xl font-semibold text-gray-800'>
-                                {pyq.subject?.subjectName}
-                            </h2>
-                            <div className='flex space-x-2'>
-                                {pyq.solved && (
-                                    <span className='bg-green-200 text-green-800 rounded-full px-3 py-1 text-xs font-semibold'>
-                                        Solved
-                                    </span>
-                                )}
-                                {pyq.isPaid && (
-                                    <span className='bg-red-200 text-red-800 rounded-full px-3 py-1 text-xs font-semibold'>
-                                        Paid
-                                    </span>
-                                )}
+                        {/* Highlight Accent */}
+                        <div
+                            className={`h-1 w-full ${
+                                pyq.isPaid
+                                    ? 'bg-gradient-to-r from-purple-500 to-indigo-500'
+                                    : 'bg-blue-500'
+                            }`}
+                        ></div>
+
+                        {/* Card Header */}
+                        <div className='p-4 border-b border-gray-100'>
+                            <div className='flex justify-between items-start'>
+                                <h2 className='text-lg font-semibold text-gray-800 line-clamp-2'>
+                                    {pyq.subject?.subjectName}
+                                </h2>
+                                <div className='flex space-x-2'>
+                                    {pyq.solved && (
+                                        <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 flex-shrink-0'>
+                                            <svg
+                                                className='w-3 h-3 mr-1'
+                                                fill='currentColor'
+                                                viewBox='0 0 20 20'
+                                                xmlns='http://www.w3.org/2000/svg'
+                                            >
+                                                <path
+                                                    fillRule='evenodd'
+                                                    d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                                                    clipRule='evenodd'
+                                                />
+                                            </svg>
+                                            Solved
+                                        </span>
+                                    )}
+                                    {pyq.isPaid && (
+                                        <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 flex-shrink-0'>
+                                            <svg
+                                                className='w-3 h-3 mr-1'
+                                                fill='currentColor'
+                                                viewBox='0 0 20 20'
+                                                xmlns='http://www.w3.org/2000/svg'
+                                            >
+                                                <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z' />
+                                            </svg>
+                                            Premium
+                                        </span>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
-                        <div className='text-sm text-gray-600 mb-4 space-y-1'>
-                            <p>
-                                <strong>Subject Code:</strong>{' '}
-                                {pyq.subject?.subjectCode}
-                            </p>
-                            <p>
-                                <strong>Exam Type:</strong> {pyq.examType}
-                            </p>
-                            <p>
-                                <strong>Year:</strong> {pyq.year}
-                            </p>
-                            <p>
-                                <strong>Semester:</strong>{' '}
-                                {pyq.subject?.semester}
-                            </p>
-                            <p>
-                                <strong>Branch:</strong>{' '}
-                                {pyq.subject?.branch?.branchCode}
-                            </p>
+                        {/* Card Body */}
+                        <div className='p-4 flex-grow'>
+                            <div className='grid grid-cols-2 gap-3 text-sm'>
+                                <div className='flex flex-col'>
+                                    <span className='text-gray-500 mb-1'>
+                                        Subject Code
+                                    </span>
+                                    <span className='font-medium text-gray-800'>
+                                        {pyq.subject?.subjectCode || 'N/A'}
+                                    </span>
+                                </div>
+                                <div className='flex flex-col'>
+                                    <span className='text-gray-500 mb-1'>
+                                        Exam Type
+                                    </span>
+                                    <span className='font-medium text-gray-800'>
+                                        {pyq.examType || 'N/A'}
+                                    </span>
+                                </div>
+                                <div className='flex flex-col'>
+                                    <span className='text-gray-500 mb-1'>
+                                        Year
+                                    </span>
+                                    <span className='font-medium text-gray-800'>
+                                        {pyq.year || 'N/A'}
+                                    </span>
+                                </div>
+                                <div className='flex flex-col'>
+                                    <span className='text-gray-500 mb-1'>
+                                        Semester
+                                    </span>
+                                    <span className='font-medium text-gray-800'>
+                                        {pyq.subject?.semester || 'N/A'}
+                                    </span>
+                                </div>
+                                <div className='flex flex-col col-span-2'>
+                                    <span className='text-gray-500 mb-1'>
+                                        Branch
+                                    </span>
+                                    <span className='font-medium text-gray-800'>
+                                        {pyq.subject?.branch?.branchCode ||
+                                            'N/A'}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className='flex justify-center'>
-                            {isAuthenticated ? (
-                                <Link
-                                    to={pyqUrl}
-                                    className='bg-sky-500 text-white px-6 py-2 rounded-3xl text-center hover:bg-sky-600 transition-colors text-sm lg:text-base flex items-center justify-center space-x-2'
+                        {/* Card Footer */}
+                        <div className='px-4 py-3 bg-gray-50 border-t border-gray-100'>
+                            <div className='flex items-center justify-between'>
+                                {isAuthenticated ? (
+                                    <Link
+                                        to={pyqUrl}
+                                        className={`w-4/5 flex items-center justify-center py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                                            pyq.isPaid
+                                                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 shadow-md hover:shadow-lg'
+                                                : 'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg'
+                                        }`}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                        }}
+                                    >
+                                        {pyq.isPaid ? (
+                                            <>
+                                                <svg
+                                                    className='w-4 h-4 mr-2 flex-shrink-0'
+                                                    fill='none'
+                                                    stroke='currentColor'
+                                                    viewBox='0 0 24 24'
+                                                    xmlns='http://www.w3.org/2000/svg'
+                                                >
+                                                    <path
+                                                        strokeLinecap='round'
+                                                        strokeLinejoin='round'
+                                                        strokeWidth='2'
+                                                        d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
+                                                    ></path>
+                                                </svg>
+                                                <span className='whitespace-nowrap'>
+                                                    View Premium PYQ
+                                                </span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <svg
+                                                    className='w-4 h-4 mr-2 flex-shrink-0'
+                                                    fill='none'
+                                                    stroke='currentColor'
+                                                    viewBox='0 0 24 24'
+                                                    xmlns='http://www.w3.org/2000/svg'
+                                                >
+                                                    <path
+                                                        strokeLinecap='round'
+                                                        strokeLinejoin='round'
+                                                        strokeWidth='2'
+                                                        d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'
+                                                    ></path>
+                                                    <path
+                                                        strokeLinecap='round'
+                                                        strokeLinejoin='round'
+                                                        strokeWidth='2'
+                                                        d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'
+                                                    ></path>
+                                                </svg>
+                                                <span className='whitespace-nowrap'>
+                                                    View PYQ
+                                                </span>
+                                            </>
+                                        )}
+                                    </Link>
+                                ) : (
+                                    <button
+                                        className='w-4/5 flex items-center justify-center py-2 px-3 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors shadow-sm hover:shadow'
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleCardClick(pyqUrl, e);
+                                        }}
+                                    >
+                                        <svg
+                                            className='w-4 h-4 mr-2 flex-shrink-0'
+                                            fill='none'
+                                            stroke='currentColor'
+                                            viewBox='0 0 24 24'
+                                            xmlns='http://www.w3.org/2000/svg'
+                                        >
+                                            <path
+                                                strokeLinecap='round'
+                                                strokeLinejoin='round'
+                                                strokeWidth='2'
+                                                d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
+                                            ></path>
+                                        </svg>
+                                        <span className='whitespace-nowrap'>
+                                            Sign in to view
+                                        </span>
+                                    </button>
+                                )}
+                                <button
+                                    className='w-1/6 h-10 flex items-center justify-center py-2 px-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors shadow-sm hover:shadow'
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        requireLogin(() => {
+                                            if (isSaved) {
+                                                unsaveResource('pyq', pyq._id);
+                                            } else {
+                                                saveResource('pyq', pyq._id);
+                                            }
+                                        });
+                                    }}
+                                    title={
+                                        isSaved
+                                            ? 'Unsave this PYQ'
+                                            : 'Save this PYQ'
+                                    }
+                                    aria-label={
+                                        isSaved
+                                            ? 'Unsave this PYQ'
+                                            : 'Save this PYQ'
+                                    }
                                 >
-                                    {pyq.isPaid ? (
-                                        <>
-                                            <i className='fa-solid fa-cart-shopping text-sm' />
-                                            <span>View</span>
-                                        </>
-                                    ) : (
-                                        <>
-                                            {' '}
-                                            <i className='fa-solid fa-eye text-sm'></i>
-                                            <span>View</span>
-                                        </>
-                                    )}
-                                </Link>
-                            ) : (
-                                <p className='text-red-500 text-center'>
-                                    Please log in to view the PDF.
-                                </p>
-                            )}
+                                    <svg
+                                        className='w-5 h-5'
+                                        fill={isSaved ? 'currentColor' : 'none'}
+                                        stroke='currentColor'
+                                        viewBox='0 0 24 24'
+                                        xmlns='http://www.w3.org/2000/svg'
+                                        style={{
+                                            color: isSaved
+                                                ? '#3B82F6'
+                                                : '#9CA3AF',
+                                        }}
+                                    >
+                                        <path
+                                            strokeLinecap='round'
+                                            strokeLinejoin='round'
+                                            strokeWidth='2'
+                                            d='M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z'
+                                        ></path>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 );
             })}
-        </>
+        </div>
     );
 }
 

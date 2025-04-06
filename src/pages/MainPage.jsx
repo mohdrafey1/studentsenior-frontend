@@ -94,9 +94,9 @@ const MainPage = () => {
                                             const truncatedName =
                                                 college.name.length > 20
                                                     ? college.name.substring(
-                                                          0,
-                                                          17
-                                                      ) + '...'
+                                                        0,
+                                                        17
+                                                    ) + '...'
                                                     : college.name;
                                             return (
                                                 <option
@@ -138,7 +138,6 @@ const MainPage = () => {
                     />
                 </div>
             </div>
-
             <QuickLinks />
             <OurFeatures />
             <FAQPage />

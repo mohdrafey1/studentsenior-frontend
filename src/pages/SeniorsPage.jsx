@@ -75,7 +75,7 @@ const SeniorPage = () => {
     ];
 
     return (
-        <div className="bg-gradient-to-t from-sky-200 to bg-white">
+        <div className="bg-gradient-to-t from-blue-200 to bg-white">
             <CollegeLinks />
             <div className="container mx-auto p-5">
                 <div className="flex flex-col justify-center items-center">
@@ -122,28 +122,28 @@ const SeniorPage = () => {
                     </div>
                 </div>
                 <div className="flex justify-center items-center">
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-6 w-full max-w-7xl">
-                        {filteredSeniors.length > 0 ? (
-                            <SeniorCard
-                                seniors={filteredSeniors}
-                                handleEdit={handleEdit}
-                                handleDelete={handleDelete}
-                                loadingStates={loadingStates}
-                                handleDetail={handleDetail}
-                            />
-                        ) : (
-                            <div className="col-span-4 flex justify-center items-center py-10 w-full">
-                                {loadingSeniors ? (
-                                    <i className="fas fa-spinner fa-pulse fa-5x"></i>
-                                ) : (
-                                    <p className="text-center text-gray-500 mt-5">
-                                        No Senior found for the selected
-                                        filters.
-                                    </p>
-                                )}
-                            </div>
-                        )}
-                    </div>
+                    {/* <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-6 w-full max-w-7xl"> */}
+                    {filteredSeniors.length > 0 ? (
+                        <SeniorCard
+                            seniors={filteredSeniors}
+                            handleEdit={handleEdit}
+                            handleDelete={handleDelete}
+                            loadingStates={loadingStates}
+                            handleDetail={handleDetail}
+                        />
+                    ) : (
+                        <div className="col-span-4 flex justify-center items-center py-10 w-full">
+                            {loadingSeniors ? (
+                                <i className="fas fa-spinner fa-pulse fa-5x"></i>
+                            ) : (
+                                <p className="text-center text-gray-500 mt-5">
+                                    No Senior found for the selected
+                                    filters.
+                                </p>
+                            )}
+                        </div>
+                    )}
+                    {/* </div> */}
                 </div>
 
                 {isEditModalOpen && (
@@ -196,7 +196,7 @@ const SeniorPage = () => {
             </div>
             {/* <Footer /> */}
             <Collegelink2 />
-        </div>
+        </div >
     );
 };
 

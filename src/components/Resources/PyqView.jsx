@@ -324,7 +324,7 @@ function PyqView() {
     return (
         <div className='container mx-auto sm:px-4 min-h-screen'>
             <DetailPageNavbar
-                path={`${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}`}
+            // path={`${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}`}
             />
             {pyq ? (
                 <div>

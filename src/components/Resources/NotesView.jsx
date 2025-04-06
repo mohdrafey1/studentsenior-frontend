@@ -335,7 +335,7 @@ function NotesView() {
     return (
         <div className='container mx-auto sm:px-2 min-h-screen'>
             <DetailPageNavbar
-                path={`${collegeName}/resources/${courseCode}/${branchCode}/notes/${subjectCode}`}
+            // path={`${collegeName}/resources/${courseCode}/${branchCode}/notes/${subjectCode}`}
             />
             {note ? (
                 <div>

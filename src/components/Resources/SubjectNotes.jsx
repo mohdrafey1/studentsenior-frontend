@@ -22,10 +22,19 @@ import useRequireLogin from '../../hooks/useRequireLogin.js';
 import Seo from '../SEO/Seo.jsx';
 import { fetchUserData } from '../../redux/slices/userDataSlice.js';
 import Button from '../../ui/Button.jsx';
+import { fetchSavedCollection } from '../../redux/slices/savedCollectionSlice.js';
+import { useSaveResource } from '../../hooks/useSaveResource.js';
 
 function SubjectNotes() {
     const { collegeName, courseCode, subjectCode, branchCode } = useParams();
     const collegeId = useCollegeId(collegeName);
+
+    const { saveResource, unsaveResource } = useSaveResource(
+        subjectCode,
+        branchCode,
+        collegeId
+    );
+
     const [isModalOpen, setModalOpen] = useState(false);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [noteIdToDelete, setNoteIdToDelete] = useState(null);
@@ -41,21 +50,13 @@ function SubjectNotes() {
     const currentUser = useSelector((state) => state.user.currentUser);
     const ownerId = currentUser?._id;
 
-    const handleBuyNowClick = (note) => {
-        setSelectedNote(note);
-        setBuyNowModalOpen(true);
-    };
-
-    const handleCloseBuyNowModal = () => {
-        setBuyNowModalOpen(false);
-        setSelectedNote(null);
-    };
-
     const { apiRequest, loading: loadingApiRequest } = useApiRequest();
 
     useEffect(() => {
         dispatch(fetchUserData());
+        dispatch(fetchSavedCollection());
     }, []);
+
     useEffect(() => {
         dispatch(fetchSubjectNotes({ subjectCode, branchCode, collegeId }));
     }, [collegeId, subjectCode, branchCode]);
@@ -68,6 +69,19 @@ function SubjectNotes() {
         loading: loadingSubjectNotes,
         error: notesError,
     } = useSelector((state) => state.subjectNotes || {});
+
+    const { savedNotes } = useSelector((state) => state.savedCollection || {});
+
+    // Handlers (same as before)
+    const handleBuyNowClick = (note) => {
+        setSelectedNote(note);
+        setBuyNowModalOpen(true);
+    };
+
+    const handleCloseBuyNowModal = () => {
+        setBuyNowModalOpen(false);
+        setSelectedNote(null);
+    };
 
     const handleOpenAddNoteModal = () => {
         requireLogin(() => setModalOpen(true));
@@ -225,274 +239,395 @@ function SubjectNotes() {
     if (loadingSubjectNotes) {
         return (
             <div className='flex justify-center items-center min-h-screen'>
-                <i className='fas fa-spinner fa-pulse fa-5x'></i>
+                <div className='animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500'></div>
             </div>
         );
     }
 
     if (notesError) {
         return (
-            <div className='h-screen flex justify-center items-center'>
-                <div>
-                    <p className='text-center text-red-500 mb-4'>
-                        {notesError}
-                    </p>
+            <div className='min-h-screen flex flex-col items-center justify-center p-4 bg-gray-50'>
+                <div className='bg-white p-6 rounded-lg shadow-md max-w-md w-full text-center'>
+                    <div className='text-red-500 mb-4'>
+                        <i className='fas fa-exclamation-circle text-4xl'></i>
+                    </div>
+                    <h2 className='text-xl font-bold text-gray-800 mb-2'>
+                        Error Loading Notes
+                    </h2>
+                    <p className='text-gray-600 mb-6'>{notesError}</p>
                     <Link
                         to={`/${collegeName}/resources/${courseCode}/${branchCode}`}
-                        className='bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600'
+                        className='inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors'
                     >
-                        See Other Subjects
+                        Back to Subjects
                     </Link>
                 </div>
             </div>
         );
     }
 
+    const semester =
+        subjectNotes?.length > 0 ? subjectNotes[0]?.subject?.semester || 1 : 1;
+
     return (
-        <div className='container mx-auto p-4 min-h-screen'>
+        <div className='min-h-screen bg-gray-50'>
             <DetailPageNavbar
-                path={`${collegeName}/resources/${courseCode}/${branchCode}?semester=${
-                    subjectNotes[0]?.subject?.semester || 1
-                }`}
-            />
-            <h1 className='sm:text-2xl font-extrabold text-center sm:mb-6 text-gray-800'>
-                {capitalizeWords(collegeName)}: {subjectName} Notes
-            </h1>
-            <Seo
-                title={`${capitalizeWords(collegeName)}: ${subjectName} Notes`}
-                desc={subjectNotes
-                    .slice(0, 5)
-                    .map((note) => note.title)
-                    .join(' ')}
+                path={`${collegeName}/resources/${courseCode}/${branchCode}?semester=${semester}`}
             />
 
-            <div className='flex justify-center gap-4 items-center sm:mb-8'>
-                <Button onClick={handleOpenAddNoteModal}>
-                    <i className='fa-solid fa-plus'></i> Add Note
-                </Button>
-
-                <Link
-                    to={`/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}`}
-                    className='px-4 py-2 bg-sky-400 hover:bg-sky-700 text-white rounded-md shadow-md transition-transform transform hover:scale-105'
-                >
-                    View PYQs
-                </Link>
-                <button
-                    className='rounded-full p-3 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all'
-                    onClick={handleEarnDialog}
-                >
-                    <i className='text-3xl fa-solid fa-circle-info'></i>
-                </button>
-            </div>
-            <p className='text-center dark:text-gray-500 -translate-y-2'>
-                Like good notes to keep them on top
-            </p>
-            {showEarnDialog && (
-                <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50'>
-                    <div className='bg-white p-6 rounded-lg shadow-lg w-full max-w-lg lg:m-4 m-6 dark:bg-gray-800'>
-                        <div className='items-center mb-4 text-white'>
-                            <div className='flex justify-between items-center'>
-                                <h2 className='text-xl sm:text-2xl pb-1 font-bold text-gray-900 dark:text-white '>
-                                    Earn Money
-                                </h2>
-                                <button onClick={handleEarnDialog}>
-                                    <i className='fa-solid fa-xmark text-2xl text-gray-900 dark:text-white'></i>
-                                </button>
-                            </div>
-                            <div className='text-gray-900 dark:text-white'>
-                                <p>You can add notes and earn reward points:</p>
-                                <p className='mt-2'>
-                                    Here are the rules for earning reward
-                                    points:
-                                </p>
-                                <ul className='list-disc ml-4 mt-2'>
-                                    <li>1 unit note = 5 reward points</li>
-                                    <li>
-                                        You can upload 1 unit or the whole in
-                                        one upload
-                                    </li>
-                                    <li>
-                                        Rewards will be given only after the
-                                        notes are approved
-                                    </li>
-                                    <li>
-                                        Duplicate and invalid notes are not
-                                        allowed
-                                    </li>
-                                    <li>
-                                        Labs will be approved only once unless
-                                        they are better than the previous
-                                        submission
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+            {/* Header Section */}
+            <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4'>
+                <div className='text-center mb-4'>
+                    <h1 className='text-xl md:text-3xl font-bold text-gray-900 mb-2'>
+                        {capitalizeWords(collegeName)}: {subjectName} Notes
+                    </h1>
+                    <p className='text-gray-600'>
+                        Access and contribute study materials for this subject
+                    </p>
                 </div>
-            )}
 
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 xl:mx-20'>
-                {subjectNotes.length > 0 ? (
-                    subjectNotes.map((note) => (
-                        <div
-                            key={note._id}
-                            className='bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between h-full'
-                        >
-                            {/* Note Header Section */}
-                            <div className='p-4'>
-                                <div className='flex justify-between'>
-                                    {/* Owner Profile Section */}
-                                    <div className='flex items-center gap-3 mb-3'>
-                                        {note.owner?.profilePicture ? (
-                                            <img
-                                                src={note.owner.profilePicture}
-                                                alt='Author Profile'
-                                                className='rounded-full w-10 h-10 border-2 border-gray-200 object-cover'
-                                            />
-                                        ) : (
-                                            <div className='flex items-center justify-center rounded-full w-10 h-10 bg-gray-300 text-white font-bold'>
-                                                {note.owner?.username?.charAt(
-                                                    0
-                                                ) || 'A'}
+                <Seo
+                    title={`${capitalizeWords(
+                        collegeName
+                    )}: ${subjectName} Notes`}
+                    desc={subjectNotes
+                        ?.slice(0, 5)
+                        .map((note) => note.title)
+                        .join(' ')}
+                />
+
+                {/* Action Bar */}
+                <div className='flex flex-wrap justify-center gap-4 mb-8'>
+                    <Button
+                        onClick={handleOpenAddNoteModal}
+                        variant='primary'
+                        className='flex items-center gap-2'
+                    >
+                        <i className='fas fa-plus'></i> Add Note
+                    </Button>
+
+                    <Link
+                        to={`/${collegeName}/resources/${courseCode}/${branchCode}/pyqs/${subjectCode}`}
+                        className='flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm transition-colors'
+                    >
+                        <i className='fas fa-file-alt'></i> View PYQs
+                    </Link>
+
+                    <button
+                        onClick={handleEarnDialog}
+                        className='p-2 text-gray-500 hover:text-blue-600 transition-colors'
+                        aria-label='Earn rewards information'
+                    >
+                        <i className='fas fa-info-circle text-xl'></i>
+                    </button>
+                </div>
+
+                {/* Notes Grid */}
+                {subjectNotes?.length > 0 ? (
+                    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
+                        {subjectNotes?.map((note) => {
+                            const isSaved = savedNotes.some(
+                                (savedNote) => savedNote.noteId._id === note._id
+                            );
+                            return (
+                                <div
+                                    key={note._id}
+                                    className='bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100 flex flex-col'
+                                >
+                                    {/* Note Header */}
+                                    <div className='p-4 flex-1'>
+                                        <div className='flex justify-between items-start mb-3'>
+                                            {/* Author Info */}
+                                            <div className='flex items-center gap-2'>
+                                                {note.owner?.profilePicture ? (
+                                                    <img
+                                                        src={
+                                                            note.owner
+                                                                .profilePicture
+                                                        }
+                                                        alt='Author'
+                                                        className='w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm'
+                                                    />
+                                                ) : (
+                                                    <div className='w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold'>
+                                                        {note.owner?.username?.charAt(
+                                                            0
+                                                        ) || 'A'}
+                                                    </div>
+                                                )}
+                                                <div>
+                                                    <p className='text-sm font-medium text-gray-900'>
+                                                        {note.owner?.username ||
+                                                            'Anonymous'}
+                                                    </p>
+                                                    <p className='text-xs text-gray-500'>
+                                                        {new Date(
+                                                            note.createdAt
+                                                        ).toLocaleDateString()}
+                                                    </p>
+                                                </div>
                                             </div>
-                                        )}
-                                        <span className='text-sm font-semibold text-gray-700'>
-                                            {note.owner?.username ||
-                                                'Anonymous'}
-                                        </span>
-                                    </div>
-                                    {/* Paid Badge */}
-                                    <div className=''>
-                                        {note.isPaid && (
-                                            <span className='bg-red-200 text-red-800 rounded-xl px-3 py-1 text-xs font-semibold'>
-                                                Paid
-                                            </span>
-                                        )}
-                                    </div>
-                                </div>
 
-                                {/* Note Title and Description */}
-                                <h2 className='text-lg font-bold text-gray-800 dark:text-white mb-1 line-clamp-1'>
-                                    {note.title}
-                                </h2>
-                                <p className='text-sm text-gray-600 line-clamp-2'>
-                                    {note.description || 'No description'}
-                                </p>
-
-                                {/* Note Creation Date */}
-                                <p className='text-xs text-gray-400 mt-2'>
-                                    {new Date(
-                                        note.createdAt
-                                    ).toLocaleDateString('en-US', {
-                                        weekday: 'long',
-                                        day: 'numeric',
-                                        year: 'numeric',
-                                        month: 'long',
-                                    })}
-                                </p>
-                            </div>
-
-                            {/* Note Footer Section */}
-                            <div className='border-t border-gray-100 p-4 flex justify-between items-center'>
-                                {/* Views Count */}
-                                <span className='text-xs text-gray-500'>
-                                    {note.clickCounts} views
-                                </span>
-
-                                {/* Action Buttons */}
-                                <div className='flex items-center space-x-3'>
-                                    {/* Like Button */}
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            likeNotes(note._id);
-                                        }}
-                                        className={`text-lg transition-colors duration-200 ${
-                                            Array.isArray(note.likes) &&
-                                            note.likes.includes(ownerId)
-                                                ? 'text-red-500'
-                                                : 'text-gray-400 hover:text-red-500'
-                                        }`}
-                                        title='Like this note'
-                                    >
-                                        <i className='fa-regular fa-heart'></i>
-                                    </button>
-
-                                    {/* Owner Actions or Purchase/View Buttons */}
-                                    {note.owner._id === ownerId ? (
-                                        <div className='flex space-x-2'>
-                                            <Link
-                                                to={note.slug}
-                                                className='bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded-full shadow-md transition-transform transform hover:scale-105 flex items-center gap-1'
-                                            >
-                                                <i className='fa-solid fa-eye text-sm'></i>
-                                                View
-                                            </Link>
-                                            <button
-                                                onClick={() =>
-                                                    handleEditClick(note)
-                                                }
-                                                className='text-gray-500 hover:text-gray-700 transition-colors duration-200'
-                                                title='Edit note'
-                                            >
-                                                <i className='fa-regular fa-pen-to-square text-lg'></i>
-                                            </button>
-                                            <button
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleDeleteClick(note._id);
-                                                }}
-                                                className='text-red-500 hover:text-red-600 transition-colors duration-200'
-                                                title='Delete Note'
-                                            >
-                                                <i className='fa-solid fa-trash text-lg'></i>
-                                            </button>
+                                            {/* Badges and Save Button */}
+                                            <div className='flex items-center gap-2'>
+                                                {note.isPaid && (
+                                                    <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800'>
+                                                        Paid
+                                                    </span>
+                                                )}
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        requireLogin(() => {
+                                                            if (isSaved) {
+                                                                unsaveResource(
+                                                                    'note',
+                                                                    note._id
+                                                                );
+                                                            } else {
+                                                                saveResource(
+                                                                    'note',
+                                                                    note._id
+                                                                );
+                                                            }
+                                                        });
+                                                    }}
+                                                    className={`text-xl ${
+                                                        isSaved
+                                                            ? 'text-blue-500'
+                                                            : 'text-gray-300 hover:text-blue-500'
+                                                    }`}
+                                                    aria-label={
+                                                        isSaved
+                                                            ? 'Unsave note'
+                                                            : 'Save note'
+                                                    }
+                                                >
+                                                    <i
+                                                        className={`fas ${
+                                                            isSaved
+                                                                ? 'fa-bookmark'
+                                                                : 'fa-bookmark'
+                                                        }`}
+                                                    ></i>
+                                                </button>
+                                            </div>
                                         </div>
-                                    ) : note.purchasedBy?.includes(ownerId) ? (
-                                        <Link
-                                            to={note.slug}
-                                            className='bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded-full shadow-md transition-transform transform hover:scale-105 flex items-center gap-1'
-                                        >
-                                            <i className='fa-solid fa-eye text-sm'></i>
-                                            View
-                                        </Link>
-                                    ) : note.isPaid ? (
-                                        <button
-                                            onClick={() =>
-                                                handleBuyNowClick(note)
-                                            }
-                                            className='bg-green-500 hover:bg-green-600 text-white px-4 py-1.5 rounded-full shadow-md transition-transform transform hover:scale-105 flex items-center gap-1'
-                                        >
-                                            <i className='fa-solid fa-cart-shopping text-sm'></i>
-                                            Buy Now {note.price / 5}₹
-                                        </button>
-                                    ) : (
-                                        <Link
-                                            to={note.slug}
-                                            className='bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded-full shadow-md transition-transform transform hover:scale-105 flex items-center gap-1'
-                                        >
-                                            <i className='fa-solid fa-eye text-sm'></i>
-                                            View
-                                        </Link>
-                                    )}
+
+                                        {/* Note Content */}
+                                        <div className='mb-4'>
+                                            <h3 className='text-lg font-semibold text-gray-900 mb-2 line-clamp-2'>
+                                                {note.title}
+                                            </h3>
+                                            <p className='text-sm text-gray-600 line-clamp-3'>
+                                                {note.description ||
+                                                    'No description provided'}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Note Footer */}
+                                    <div className='border-t border-gray-100 px-4 py-3 bg-gray-50'>
+                                        <div className='flex justify-between items-center'>
+                                            {/* Stats */}
+                                            <div className='flex items-center gap-3'>
+                                                <span className='text-xs text-gray-500 flex items-center gap-1'>
+                                                    <i className='fas fa-eye'></i>{' '}
+                                                    {note.clickCounts}
+                                                </span>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        likeNotes(note._id);
+                                                    }}
+                                                    className={`text-sm flex items-center gap-1 ${
+                                                        Array.isArray(
+                                                            note.likes
+                                                        ) &&
+                                                        note.likes.includes(
+                                                            ownerId
+                                                        )
+                                                            ? 'text-red-500'
+                                                            : 'text-gray-400 hover:text-red-500'
+                                                    }`}
+                                                >
+                                                    <i className='fas fa-heart'></i>
+                                                    {Array.isArray(note.likes)
+                                                        ? note.likes.length
+                                                        : 0}
+                                                </button>
+                                            </div>
+
+                                            {/* Action Buttons */}
+                                            <div className='flex items-center gap-2'>
+                                                {note.owner._id === ownerId ? (
+                                                    <>
+                                                        <Link
+                                                            to={note.slug}
+                                                            className='text-sm px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors'
+                                                        >
+                                                            View
+                                                        </Link>
+                                                        <button
+                                                            onClick={() =>
+                                                                handleEditClick(
+                                                                    note
+                                                                )
+                                                            }
+                                                            className='p-1.5 text-gray-500 hover:text-blue-600 transition-colors'
+                                                            aria-label='Edit note'
+                                                        >
+                                                            <i className='fas fa-edit'></i>
+                                                        </button>
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                handleDeleteClick(
+                                                                    note._id
+                                                                );
+                                                            }}
+                                                            className='p-1.5 text-gray-500 hover:text-red-600 transition-colors'
+                                                            aria-label='Delete note'
+                                                        >
+                                                            <i className='fas fa-trash'></i>
+                                                        </button>
+                                                    </>
+                                                ) : note.purchasedBy?.includes(
+                                                      ownerId
+                                                  ) ? (
+                                                    <Link
+                                                        to={note.slug}
+                                                        className='text-sm px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors'
+                                                    >
+                                                        View
+                                                    </Link>
+                                                ) : note.isPaid ? (
+                                                    <button
+                                                        onClick={() =>
+                                                            handleBuyNowClick(
+                                                                note
+                                                            )
+                                                        }
+                                                        className='text-sm px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center gap-1 transition-colors'
+                                                    >
+                                                        <i className='fas fa-shopping-cart'></i>
+                                                        {note.price / 5}₹
+                                                    </button>
+                                                ) : (
+                                                    <Link
+                                                        to={note.slug}
+                                                        className='text-sm px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors'
+                                                    >
+                                                        View
+                                                    </Link>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    ))
+                            );
+                        })}
+                    </div>
                 ) : (
-                    <div className='h-screen text-center text-gray-600 col-span-full flex items-center justify-center'>
-                        <p className='text-xl font-semibold'>
-                            No notes available for this subject. Please add if
-                            you have any.
+                    <div className='bg-white rounded-xl shadow-sm p-8 text-center'>
+                        <div className='mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4'>
+                            <i className='fas fa-file-alt text-3xl text-gray-400'></i>
+                        </div>
+                        <h3 className='text-lg font-medium text-gray-900 mb-2'>
+                            No Notes Available
+                        </h3>
+                        <p className='text-gray-600 mb-6'>
+                            Be the first to contribute notes for this subject
                         </p>
+                        <Button
+                            onClick={handleOpenAddNoteModal}
+                            variant='primary'
+                            className='flex items-center gap-2 mx-auto'
+                        >
+                            <i className='fas fa-plus'></i> Add Note
+                        </Button>
                     </div>
                 )}
             </div>
 
+            {/* Earn Rewards Modal */}
+            <Modal
+                isOpen={showEarnDialog}
+                onClose={handleEarnDialog}
+                title='Earn Reward Points'
+                size='md'
+            >
+                <div className='space-y-4'>
+                    <div className='bg-blue-50 p-4 rounded-lg'>
+                        <p className='font-medium text-blue-800'>
+                            Your current reward balance:{' '}
+                            <span className='font-bold'>
+                                {rewardBalance || 0}
+                            </span>{' '}
+                            points
+                        </p>
+                    </div>
+
+                    <div className='space-y-3'>
+                        <h4 className='font-medium text-gray-900'>
+                            How to earn points:
+                        </h4>
+                        <ul className='space-y-2'>
+                            <li className='flex items-start gap-2'>
+                                <span className='inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-800 rounded-full text-xs font-medium flex-shrink-0'>
+                                    1
+                                </span>
+                                <span>1 unit note = 5 reward points</span>
+                            </li>
+                            <li className='flex items-start gap-2'>
+                                <span className='inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-800 rounded-full text-xs font-medium flex-shrink-0'>
+                                    2
+                                </span>
+                                <span>
+                                    Upload 1 unit or complete notes in one
+                                    upload
+                                </span>
+                            </li>
+                            <li className='flex items-start gap-2'>
+                                <span className='inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-800 rounded-full text-xs font-medium flex-shrink-0'>
+                                    3
+                                </span>
+                                <span>Rewards are given after approval</span>
+                            </li>
+                            <li className='flex items-start gap-2'>
+                                <span className='inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-800 rounded-full text-xs font-medium flex-shrink-0'>
+                                    4
+                                </span>
+                                <span>
+                                    Duplicate and invalid notes are rejected
+                                </span>
+                            </li>
+                            <li className='flex items-start gap-2'>
+                                <span className='inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-800 rounded-full text-xs font-medium flex-shrink-0'>
+                                    5
+                                </span>
+                                <span>
+                                    Lab manuals approved only if better than
+                                    existing
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div className='pt-4 flex justify-end'>
+                        <Button onClick={handleEarnDialog} variant='secondary'>
+                            Close
+                        </Button>
+                    </div>
+                </div>
+            </Modal>
+
+            {/* Add Note Modal */}
             <Modal
                 isOpen={isModalOpen}
-                title={`Add Note:- ${collegeName.toUpperCase()}`}
                 onClose={() => setModalOpen(false)}
+                title={`Add Note - ${capitalizeWords(collegeName)}`}
+                size='lg'
             >
                 <AddNotes
                     subjectCode={subjectCode}
@@ -503,41 +638,38 @@ function SubjectNotes() {
                     onSubmit={handleAddNote}
                 />
             </Modal>
+
+            {/* Delete Confirmation Modal */}
             <Modal
                 isOpen={showDeleteDialog}
                 onClose={handleCloseDialog}
-                title='Delete Confirmation'
-                footer={
-                    <div className='flex py-4 gap-3 lg:justify-end justify-center'>
-                        <button
-                            className='p-1 py-2 bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer'
-                            onClick={handleCloseDialog}
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            className='p-1 py-2 bg-red-600 rounded-lg px-4 text-sm font-semibold text-white cursor-pointer'
-                            onClick={handleConfirmDelete}
-                            disabled={deleteLoading}
-                        >
-                            {deleteLoading ? (
-                                <i className='fa fa-spinner fa-spin'></i>
-                            ) : (
-                                <>
-                                    <span>Confirm</span>
-                                    &nbsp;
-                                    <i className='fa-solid fa-trash fa-xl'></i>
-                                </>
-                            )}
-                        </button>
-                    </div>
-                }
+                title='Confirm Deletion'
+                size='sm'
             >
-                <p>Are you sure you want to delete this note?</p>
-                <p className='text-sm text-gray-500'>
-                    This action cannot be undone.
-                </p>
+                <div className='space-y-4'>
+                    <p className='text-gray-700'>
+                        Are you sure you want to delete this note?
+                    </p>
+                    <p className='text-sm text-gray-500'>
+                        This action cannot be undone.
+                    </p>
+
+                    <div className='flex justify-end gap-3 pt-4'>
+                        <Button onClick={handleCloseDialog} variant='secondary'>
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={handleConfirmDelete}
+                            variant='danger'
+                            loading={deleteLoading}
+                        >
+                            Delete
+                        </Button>
+                    </div>
+                </div>
             </Modal>
+
+            {/* Buy Now Modal */}
             <ConfirmPurchaseModal
                 isOpen={isBuyNowModalOpen}
                 onClose={handleCloseBuyNowModal}
@@ -546,37 +678,51 @@ function SubjectNotes() {
                 handleOnlinePayment={handleOnlinePayment}
                 handleConfirmPurchase={handleConfirmPurchase}
                 viewDemoPath={`${selectedNote?.slug}`}
-                title={'Buy This Note'}
+                title='Purchase Note'
             />
+
+            {/* Edit Note Modal */}
             <Modal
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
-                title='Edit note'
+                title='Edit Note Settings'
+                size='sm'
             >
                 <div className='space-y-4'>
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center justify-between'>
                         <label
                             htmlFor='isPaid'
-                            className='font-semibold text-gray-800 dark:text-gray-100'
+                            className='font-medium text-gray-700'
                         >
-                            Is Paid:
+                            Paid Content
                         </label>
-                        <input
-                            type='checkbox'
-                            id='isPaid'
-                            name='isPaid'
-                            checked={editNoteData.isPaid}
-                            onChange={handleEditChange}
-                        />
+                        <div className='relative inline-block w-12 mr-2 align-middle select-none'>
+                            <input
+                                type='checkbox'
+                                id='isPaid'
+                                name='isPaid'
+                                checked={editNoteData.isPaid}
+                                onChange={handleEditChange}
+                                className='toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform'
+                            />
+                            <label
+                                htmlFor='isPaid'
+                                className={`toggle-label block overflow-hidden h-6 rounded-full cursor-pointer transition-colors ${
+                                    editNoteData.isPaid
+                                        ? 'bg-green-500'
+                                        : 'bg-gray-300'
+                                }`}
+                            ></label>
+                        </div>
                     </div>
 
                     {editNoteData.isPaid && (
-                        <div>
+                        <div className='space-y-2'>
                             <label
                                 htmlFor='price'
-                                className='block font-semibold text-gray-800 dark:text-gray-100'
+                                className='block font-medium text-gray-700'
                             >
-                                Price:
+                                Price (in points)
                             </label>
                             <input
                                 type='number'
@@ -584,19 +730,32 @@ function SubjectNotes() {
                                 name='price'
                                 value={editNoteData.price}
                                 onChange={handleEditChange}
-                                className='w-full px-3 py-2 border rounded-md'
+                                className='w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500'
                                 min='1'
+                                placeholder='Enter price'
                             />
+                            <p className='text-xs text-gray-500'>
+                                Users will pay {editNoteData.price / 5}₹ or{' '}
+                                {editNoteData.price} points
+                            </p>
                         </div>
                     )}
 
-                    <button
-                        onClick={handleUpdatenote}
-                        className='bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md'
-                        disabled={submitting}
-                    >
-                        {submitting ? 'Updating...' : 'Update'}
-                    </button>
+                    <div className='flex justify-end gap-3 pt-4'>
+                        <Button
+                            onClick={() => setIsEditModalOpen(false)}
+                            variant='secondary'
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={handleUpdatenote}
+                            variant='primary'
+                            loading={submitting}
+                        >
+                            Save Changes
+                        </Button>
+                    </div>
                 </div>
             </Modal>
         </div>
