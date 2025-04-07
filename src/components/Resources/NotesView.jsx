@@ -84,7 +84,7 @@ function NotesView() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [pdfDoc, setPdfDoc] = useState(null);
-    const [countdown, setCountdown] = useState(45);
+    const [countdown, setCountdown] = useState(15);
     const [canDownload, setCanDownload] = useState(false);
     const [showCountdown, setShowCountdown] = useState(false);
     const [signedUrl, setSignedUrl] = useState(null);
