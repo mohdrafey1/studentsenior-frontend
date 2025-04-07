@@ -26,6 +26,10 @@ function SubjectPyqs() {
     const { collegeName, courseCode, subjectCode, branchCode } = useParams();
     const collegeId = useCollegeId(collegeName);
 
+    // Add exam type filter state
+    const [activeExamType, setActiveExamType] = useState('all');
+    const examTypes = ['all', 'endsem', 'midsem1', 'midsem2', 'improvement'];
+
     const { saveResource, unsaveResource } = useSaveResource(
         subjectCode,
         branchCode,
@@ -56,6 +60,16 @@ function SubjectPyqs() {
         error: PyqsError,
     } = useSelector((state) => state.subjectPyqs || {});
     const { savedPYQs } = useSelector((state) => state.savedCollection);
+
+    // Filter PYQs based on exam type
+    const filteredPyqs =
+        activeExamType === 'all'
+            ? subjectPyqs
+            : subjectPyqs?.filter(
+                  (pyq) =>
+                      pyq.examType?.toLowerCase() ===
+                      activeExamType.toLowerCase()
+              );
 
     // Fetch data on component mount
     useEffect(() => {
@@ -236,6 +250,27 @@ function SubjectPyqs() {
     const semester =
         subjectPyqs?.length > 0 ? subjectPyqs[0]?.subject?.semester || 1 : 1;
 
+    // Count PYQs by exam type for showing count in tabs
+    const examTypeCounts = {
+        all: subjectPyqs?.length || 0,
+        midsem1:
+            subjectPyqs?.filter(
+                (pyq) => pyq.examType?.toLowerCase() === 'midsem1'
+            ).length || 0,
+        midsem2:
+            subjectPyqs?.filter(
+                (pyq) => pyq.examType?.toLowerCase() === 'midsem2'
+            ).length || 0,
+        endsem:
+            subjectPyqs?.filter(
+                (pyq) => pyq.examType?.toLowerCase() === 'endsem'
+            ).length || 0,
+        improvement:
+            subjectPyqs?.filter(
+                (pyq) => pyq.examType?.toLowerCase() === 'improvement'
+            ).length || 0,
+    };
+
     return (
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen'>
             <DetailPageNavbar
@@ -283,10 +318,38 @@ function SubjectPyqs() {
                 </button>
             </div>
 
+            {/* Exam Type Filter Tabs */}
+            <div className='mb-6 border-b border-gray-200'>
+                <nav className='flex flex-nowrap overflow-x-auto scrollbar-default pb-1'>
+                    {examTypes.map((type) => (
+                        <button
+                            key={type}
+                            className={`whitespace-nowrap px-4 py-2 font-medium text-sm rounded-t-md capitalize mr-1 transition-all ${
+                                activeExamType === type
+                                    ? 'bg-sky-100 text-sky-600 border-b-2 border-sky-500'
+                                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                            }`}
+                            onClick={() => setActiveExamType(type)}
+                        >
+                            {type === 'all' ? 'All PYQs' : type}
+                            <span
+                                className={`ml-1.5 px-1.5 py-0.5 text-xs rounded-full ${
+                                    activeExamType === type
+                                        ? 'bg-sky-200 text-sky-700'
+                                        : 'bg-gray-100 text-gray-600'
+                                }`}
+                            >
+                                {examTypeCounts[type]}
+                            </span>
+                        </button>
+                    ))}
+                </nav>
+            </div>
+
             {/* PYQ Grid */}
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6'>
-                {subjectPyqs?.length > 0 ? (
-                    subjectPyqs?.map((pyq) => {
+                {filteredPyqs?.length > 0 ? (
+                    filteredPyqs?.map((pyq) => {
                         const isSaved = savedPYQs.some(
                             (savedPyq) => savedPyq.pyqId._id === pyq._id
                         );
@@ -294,7 +357,7 @@ function SubjectPyqs() {
                         return (
                             <div
                                 key={pyq._id}
-                                className='bg-white border border-gray-200 p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden flex flex-col '
+                                className='bg-white border border-gray-200 p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden flex flex-col'
                             >
                                 {/* Card Header with badges */}
                                 <div className='flex justify-between items-center mb-3'>
@@ -485,11 +548,14 @@ function SubjectPyqs() {
                     <div className='col-span-full flex flex-col items-center justify-center py-16 px-4'>
                         <i className='fa-solid fa-file-circle-xmark text-4xl text-gray-400 mb-4'></i>
                         <p className='text-xl font-medium text-gray-600 text-center'>
-                            No PYQs available for this subject yet.
+                            {activeExamType === 'all'
+                                ? 'No PYQs available for this subject yet.'
+                                : `No ${activeExamType} PYQs available for this subject yet.`}
                         </p>
                         <p className='text-gray-500 mt-2 text-center'>
-                            Be the first to contribute by adding a previous year
-                            question paper.
+                            {activeExamType === 'all'
+                                ? 'Be the first to contribute by adding a previous year question paper.'
+                                : `Be the first to contribute by adding a ${activeExamType} question paper.`}
                         </p>
                         <button
                             onClick={handleOpenAddPyqModal}
@@ -699,25 +765,6 @@ function SubjectPyqs() {
                     </div>
                 </div>
             </Modal>
-
-            {/* Add this CSS for toggle button */}
-            <style jsx>{`
-                .toggle-checkbox:checked {
-                    right: 0;
-                    border-color: #68d391;
-                }
-                .toggle-label {
-                    transition: background-color 0.2s ease;
-                }
-                .toggle-checkbox {
-                    right: 0;
-                    transition: all 0.2s ease;
-                    border-color: #cbd5e0;
-                }
-                .toggle-checkbox:checked + .toggle-label {
-                    background-color: #68d391;
-                }
-            `}</style>
         </div>
     );
 }
