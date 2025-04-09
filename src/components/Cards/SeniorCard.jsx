@@ -69,7 +69,7 @@ function SeniorCard({
                         onMouseEnter={() => setHoveredCard(senior._id)}
                         onMouseLeave={() => setHoveredCard(null)}
                     >
-                        <Link to={`./${senior.slug}`} className="block">
+                        <Link to={`/college/${collegeName}/seniors/${senior.slug}`} className="block">
                             {/* Profile Image with Gradient Overlay */}
                             <div className="relative h-36 sm:h-48 w-full overflow-hidden">
                                 <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-blue-900/30 z-10"></div>
