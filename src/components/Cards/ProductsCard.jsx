@@ -51,18 +51,23 @@ function ProductsCard({
         const socialLinks = [];
 
         if (product.whatsapp) {
+            const isAvailable = product.available === true;
             socialLinks.push(
                 <a
                     key="whatsapp"
                     onClick={(e) => e.stopPropagation()}
-                    className="flex items-center gap-1.5 text-green-600 hover:text-green-500 transition-colors duration-200 bg-green-50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full"
-                    href={`https://api.whatsapp.com/send?phone=${encodeURIComponent(
-                        product.whatsapp.startsWith('+')
-                            ? product.whatsapp
-                            : `+91${product.whatsapp}`
-                    )}&text=${encodeURIComponent(
-                        `Hey, I came from Student Senior about listed ${product.name}. Can you provide more details?`
-                    )}`}
+                    className={`flex items-center gap-1.5 text-green-600 hover:text-green-500 transition-colors duration-200 bg-green-50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full ${!isAvailable ? 'cursor-not-allowed pointer-events-none' : ''}`}
+                    href={
+                        isAvailable
+                            ? `https://api.whatsapp.com/send?phone=${encodeURIComponent(
+                                product.whatsapp.startsWith('+')
+                                    ? product.whatsapp
+                                    : `+91${product.whatsapp}`
+                            )}&text=${encodeURIComponent(
+                                `Hey, I came from Student Senior about listed ${product.name}. Can you provide more details?`
+                            )}`
+                            : '#'
+                    }
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Contact on WhatsApp"
@@ -74,21 +79,24 @@ function ProductsCard({
         }
 
         if (product.telegram) {
+            const isAvailable = product.available === true;
+
             socialLinks.push(
                 <a
-                    key="telegram"
-                    onClick={(e) => e.stopPropagation()}
-                    className="flex items-center gap-1.5 text-blue-600 hover:text-blue-500 transition-colors duration-200 bg-blue-50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full"
+                    href={isAvailable ? `https://t.me/+91${product.telegram}` : '#'}
+                    className={`flex items-center gap-1.5 text-blue-600 hover:text-blue-500 transition-colors duration-200 bg-blue-50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full ${!isAvailable ? 'cursor-not-allowed pointer-events-none' : ''}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={`https://t.me/+91${product.telegram}`}
+                    onClick={(e) => e.stopPropagation()}
                     aria-label="Contact on Telegram"
                 >
                     <i className="fa-brands fa-telegram text-lg"></i>
                     <span className="text-xs font-medium hidden sm:inline">Telegram</span>
                 </a>
+
             );
         }
+
 
         return socialLinks.length > 0 ? (
             <div className="flex flex-wrap gap-2">{socialLinks}</div>

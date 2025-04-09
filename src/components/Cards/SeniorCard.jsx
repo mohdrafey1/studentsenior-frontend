@@ -57,21 +57,21 @@ function SeniorCard({
     }
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {seniors.map((senior) => {
                 const isHovered = hoveredCard === senior._id;
                 const isOwner = senior.owner._id === ownerId;
 
                 return (
-                    <Link to={`./${senior.slug}`}>
-                        <div
-                            key={senior._id}
-                            className={`bg-white rounded-2xl overflow-hidden transition-all duration-300 ${isHovered ? 'shadow-lg transform -translate-y-1' : 'shadow-md'} border border-gray-100`}
-                            onMouseEnter={() => setHoveredCard(senior._id)}
-                            onMouseLeave={() => setHoveredCard(null)}
-                        >
+                    <div
+                        key={senior._id}
+                        className={`bg-white rounded-xl sm:rounded-2xl overflow-hidden transition-all duration-300 ${isHovered ? 'shadow-lg transform -translate-y-1' : 'shadow-sm sm:shadow-md'} border border-gray-100`}
+                        onMouseEnter={() => setHoveredCard(senior._id)}
+                        onMouseLeave={() => setHoveredCard(null)}
+                    >
+                        <Link to={`./${senior.slug}`} className="block">
                             {/* Profile Image with Gradient Overlay */}
-                            <div className="relative h-48 w-full overflow-hidden">
+                            <div className="relative h-36 sm:h-48 w-full overflow-hidden">
                                 <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-blue-900/30 z-10"></div>
                                 <img
                                     src={senior.owner.profilePicture?.replace('=s96-c', '') || senior.profilePicture}
@@ -80,87 +80,89 @@ function SeniorCard({
                                     loading="lazy"
                                 />
 
-                                {/* Owner Badge */}
+                                {/* Owner Badge - Only show on hover for small screens */}
                                 {isOwner && (
-                                    <div className="absolute top-3 right-3 bg-blue-600 text-white text-xs px-3 py-1 rounded-full shadow-md z-20">
+                                    <div className={`absolute top-2 right-2 sm:top-3 sm:right-3 bg-blue-600 text-white text-xs px-2 py-0.5 sm:px-3 sm:py-1 rounded-full shadow-md z-20 ${isHovered ? 'opacity-100' : 'opacity-0 sm:opacity-100'} transition-opacity duration-200`}>
                                         Your Profile
                                     </div>
                                 )}
                             </div>
 
                             {/* Card Content */}
-                            <div className="p-5">
+                            <div className="p-3 sm:p-4">
                                 {/* Name with Highlight Bar */}
-                                <div className="flex items-start mb-4">
-                                    <div className="w-1 h-8 bg-gradient-to-b from-sky-400 to-indigo-500 rounded-full mr-3"></div>
-                                    <h3 className="text-lg font-bold text-gray-800 line-clamp-1">
+                                <div className="flex items-start mb-2 sm:mb-3">
+                                    <div className="w-1 h-6 sm:h-8 bg-gradient-to-b from-sky-400 to-indigo-500 rounded-full mr-2 sm:mr-3"></div>
+                                    <h3 className="text-sm sm:text-base font-semibold sm:font-bold text-gray-800 line-clamp-1">
                                         {senior.name}
                                     </h3>
                                 </div>
 
                                 {/* Info Grid */}
-                                <div className="grid grid-cols-2 gap-3 mb-4">
-                                    <div className="bg-sky-50 rounded-lg p-2">
-                                        <p className="text-xs text-sky-600 font-medium mb-1">Course</p>
-                                        <p className="text-sm font-medium text-gray-800 truncate">
+                                <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-2 sm:mb-3">
+                                    <div className="bg-sky-50 rounded sm:rounded-lg p-1 sm:p-2">
+                                        <p className="text-xs text-sky-600 font-medium mb-0.5 sm:mb-1">Course</p>
+                                        <p className="text-xs sm:text-sm font-medium text-gray-800 truncate">
                                             {senior.branch || 'N/A'}
                                         </p>
                                     </div>
-                                    <div className="bg-indigo-50 rounded-lg p-2">
-                                        <p className="text-xs text-indigo-600 font-medium mb-1">Year</p>
-                                        <p className="text-sm font-medium text-gray-800">
+                                    <div className="bg-indigo-50 rounded sm:rounded-lg p-1 sm:p-2">
+                                        <p className="text-xs text-indigo-600 font-medium mb-0.5 sm:mb-1">Year</p>
+                                        <p className="text-xs sm:text-sm font-medium text-gray-800">
                                             {senior.year || 'N/A'}
                                         </p>
                                     </div>
                                 </div>
 
                                 {/* Domain */}
-                                <div className="bg-purple-50 rounded-lg p-2 mb-5">
-                                    <p className="text-xs text-purple-600 font-medium mb-1">Domain</p>
-                                    <p className="text-sm font-medium text-gray-800 line-clamp-2">
+                                <div className="bg-purple-50 rounded sm:rounded-lg p-1 sm:p-2 mb-3 sm:mb-4">
+                                    <p className="text-xs text-purple-600 font-medium mb-0.5 sm:mb-1">Domain</p>
+                                    <p className="text-xs sm:text-sm font-medium text-gray-800 line-clamp-2">
                                         {senior.domain || 'N/A'}
                                     </p>
                                 </div>
+                            </div>
+                        </Link>
 
-                                {/* Action Buttons */}
-                                <div className="flex justify-between items-center">
-                                    <button
-                                        className="flex items-center justify-center py-2 px-4 rounded-lg text-sm font-medium bg-gradient-to-r from-sky-500 to-indigo-600 text-white hover:from-sky-600 hover:to-indigo-700 transition-all duration-300 shadow-sm"
-                                        onClick={() => handleDetail(senior)}
-                                    >
-                                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                        </svg>
-                                        View
-                                    </button>
+                        {/* Action Buttons */}
+                        <div className="px-3 sm:px-4 pb-3 sm:pb-4">
+                            <div className="flex justify-between items-center">
+                                <button
+                                    className="flex items-center justify-center py-1.5 px-3 sm:py-2 sm:px-4 rounded sm:rounded-lg text-xs sm:text-sm font-medium bg-gradient-to-r from-sky-500 to-indigo-600 text-white hover:from-sky-600 hover:to-indigo-700 transition-all duration-300 shadow-sm"
+                                    onClick={() => handleDetail(senior)}
+                                >
+                                    <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                    </svg>
+                                    View
+                                </button>
 
-                                    {isOwner && handleDelete && handleEdit && (
-                                        <div className="flex space-x-2">
-                                            <button
-                                                className="p-2 rounded-lg bg-yellow-50 text-yellow-600 hover:bg-yellow-100 transition-colors shadow-sm"
-                                                onClick={() => handleEdit(senior)}
-                                                aria-label="Edit senior profile"
-                                            >
-                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                                </svg>
-                                            </button>
-                                            <button
-                                                className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors shadow-sm"
-                                                onClick={() => handleDeleteClick(senior._id)}
-                                                aria-label="Delete senior profile"
-                                            >
-                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
+                                {isOwner && handleDelete && handleEdit && (
+                                    <div className="flex space-x-1 sm:space-x-2">
+                                        <button
+                                            className="p-1.5 sm:p-2 rounded sm:rounded-lg bg-yellow-50 text-yellow-600 hover:bg-yellow-100 transition-colors shadow-sm"
+                                            onClick={() => handleEdit(senior)}
+                                            aria-label="Edit senior profile"
+                                        >
+                                            <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </button>
+                                        <button
+                                            className="p-1.5 sm:p-2 rounded sm:rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors shadow-sm"
+                                            onClick={() => handleDeleteClick(senior._id)}
+                                            aria-label="Delete senior profile"
+                                        >
+                                            <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
-                    </Link>
+                    </div>
                 );
             })}
 
@@ -172,14 +174,14 @@ function SeniorCard({
                 footer={
                     <div className="flex justify-end gap-3 pt-4">
                         <button
-                            className="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
                             onClick={handleCloseDialog}
                             disabled={deleteLoading}
                         >
                             Cancel
                         </button>
                         <button
-                            className="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-red-500 to-red-600 rounded-lg hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors disabled:opacity-70 flex items-center"
+                            className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-red-500 to-red-600 rounded-lg hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors disabled:opacity-70 flex items-center"
                             onClick={handleConfirmDelete}
                             disabled={deleteLoading}
                         >
