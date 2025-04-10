@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import EditSeniorModal from '../components/SeniorModal/EditSeniorModal';
 import SeniorDetailModal from '../components/SeniorModal/SeniorDetailModal';
 import CollegeLinks from '../components/Links/CollegeLinks';
@@ -13,6 +13,7 @@ import { useCollegeId } from '../hooks/useCollegeId.js';
 import SeniorCard from '../components/Cards/SeniorCard.jsx';
 import { fetchSeniors } from '../redux/slices/seniorSlice.js';
 import Seo from '../components/SEO/Seo.jsx';
+import Button from '../ui/Button.jsx';
 
 const SeniorPage = () => {
     const { collegeName } = useParams();
@@ -26,6 +27,8 @@ const SeniorPage = () => {
     const [loadingStates, setLoadingStates] = useState({
         editSenior: {},
     });
+
+    const navigate = useNavigate();
 
     const { apiRequest, loading } = useApiRequest();
     const dispatch = useDispatch();
@@ -52,6 +55,10 @@ const SeniorPage = () => {
         setIsDetailModalOpen(true);
     };
 
+    const handleAddProduct = () => {
+        navigate(`/becomesenior`);
+    };
+
     const handleDelete = async (seniorId) => {
         try {
             await apiRequest(`${url}/${seniorId}`, 'DELETE');
@@ -75,44 +82,52 @@ const SeniorPage = () => {
     ];
 
     return (
-        <div className="bg-gradient-to-t from-blue-200 to bg-white">
+        <div className='bg-gradient-to-t from-blue-200 to bg-white'>
             <CollegeLinks />
-            <div className="container mx-auto p-5">
-                <div className="flex flex-col justify-center items-center">
-                    <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
+            <div className='container mx-auto p-5'>
+                <div className='flex flex-col justify-center items-center'>
+                    <h1 className='text-lg sm:text-3xl font-bold mb-2 text-center'>
                         Seniors - {capitalizeWords(collegeName)}
-                        <Seo title={`Seniors - ${capitalizeWords(collegeName)}`} desc='Reach out to seniors for mentorship and expert guidance
-                        on your journey' />
+                        <Seo
+                            title={`Seniors - ${capitalizeWords(collegeName)}`}
+                            desc='Reach out to seniors for mentorship and expert guidance
+                        on your journey'
+                        />
                     </h1>
-                    <p className="italic text-center text-xs sm:text-base">
+                    <p className='italic text-center text-xs sm:text-base'>
                         Reach out to seniors for mentorship and expert guidance
                         on your journey
                     </p>
                     <br />
-                    <div className="flex flex-wrap justify-center text-center space-x-4 mb-5">
+                    <div className='flex justify-center mb-4'>
+                        <Button onClick={handleAddProduct}>
+                            Add Yourself As Senior
+                        </Button>
+                    </div>
+                    <div className='flex flex-wrap justify-center text-center space-x-4 mb-5'>
                         <select
-                            className="p-2 border rounded-md mb-2 lg:mb-0"
+                            className='p-2 border rounded-md mb-2 lg:mb-0'
                             onChange={(e) => {
                                 setSelectedYear(e.target.value);
                             }}
                             value={selectedYear}
                         >
-                            <option value="">All Years</option>
-                            <option value="1st Year">1st Year</option>
-                            <option value="2nd Year">2nd Year</option>
-                            <option value="3rd Year">3rd Year</option>
-                            <option value="4th Year">4th Year</option>
-                            <option value="5th Year">5th Year</option>
-                            <option value="Alumni">Alumni</option>
+                            <option value=''>All Years</option>
+                            <option value='1st Year'>1st Year</option>
+                            <option value='2nd Year'>2nd Year</option>
+                            <option value='3rd Year'>3rd Year</option>
+                            <option value='4th Year'>4th Year</option>
+                            <option value='5th Year'>5th Year</option>
+                            <option value='Alumni'>Alumni</option>
                         </select>
                         <select
                             value={selectedCourse}
                             onChange={(e) => {
                                 setSelectedCourse(e.target.value);
                             }}
-                            className="p-2 border rounded-md mb-2 lg:mb-0"
+                            className='p-2 border rounded-md mb-2 lg:mb-0'
                         >
-                            <option value="">All Courses</option>
+                            <option value=''>All Courses</option>
                             {courses.map((course, index) => (
                                 <option key={index} value={course}>
                                     {course}
@@ -121,7 +136,7 @@ const SeniorPage = () => {
                         </select>
                     </div>
                 </div>
-                <div className="flex justify-center items-center">
+                <div className='flex justify-center items-center'>
                     {/* <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-6 w-full max-w-7xl"> */}
                     {filteredSeniors.length > 0 ? (
                         <SeniorCard
@@ -132,13 +147,12 @@ const SeniorPage = () => {
                             handleDetail={handleDetail}
                         />
                     ) : (
-                        <div className="col-span-4 flex justify-center items-center py-10 w-full">
+                        <div className='col-span-4 flex justify-center items-center py-10 w-full'>
                             {loadingSeniors ? (
-                                <i className="fas fa-spinner fa-pulse fa-5x"></i>
+                                <i className='fas fa-spinner fa-pulse fa-5x'></i>
                             ) : (
-                                <p className="text-center text-gray-500 mt-5">
-                                    No Senior found for the selected
-                                    filters.
+                                <p className='text-center text-gray-500 mt-5'>
+                                    No Senior found for the selected filters.
                                 </p>
                             )}
                         </div>
@@ -196,7 +210,7 @@ const SeniorPage = () => {
             </div>
             {/* <Footer /> */}
             <Collegelink2 />
-        </div >
+        </div>
     );
 };
 
