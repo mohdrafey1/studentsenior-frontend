@@ -19,7 +19,7 @@ const FeaturedSeniors = () => {
 
     const dispatch = useDispatch();
     const {
-        seniors,
+        seniors = [],
         loading: loadingSeniors,
         error: seniorError,
     } = useSelector((state) => state.seniors || {});
@@ -31,66 +31,63 @@ const FeaturedSeniors = () => {
     }, []);
 
     return (
-        <section className="container mx-auto">
-            <div className="flex flex-col md:flex-row justify-center items-center text-2xl text-center p-4">
-                <h3 className="my-2 mx-4 md:text-3xl font-medium">
-                    Guided by Experience, Trusted by Students
-                </h3>
-                <div className="text-sky-500 ml-2">
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                </div>
-            </div>
-            <div className="container mx-auto px-5 xl:px-40">
-                <div className="main-card">
-                    <div className="mobile-card cards gap-2 flex md:gap-6 w-full lg:justify-center md:justify-center">
-                        {/* {seniorError && (
-                            <div className="text-red-500 text-center">
-                                Failed to load Seniors: {seniorError}
-                            </div>
-                        )} */}
-                        {seniors.length > 0 ? (
-                            <SeniorCard
-                                seniors={seniors.slice(0, 4)}
-                                handleDetail={handleDetail}
-                            />
-                        ) : (
-                            <div className="col-span-4 flex justify-center items-center py-10 w-full">
-                                {loadingSeniors ? (
-                                    <div className="w-full flex gap-5">
-                                        {fake.map((item, index) => {
-                                            return (
-                                                <div className="bg-white shadow-md rounded-3xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl  w-full lg:h-56 flex flex-col">
-                                                    <div className="h-20 w-20 rounded-full bg-gray-400 m-auto animate-ping"></div>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                ) : (
-                                    <p className="text-center text-gray-500 mt-5">
-                                        No Senior found in your college
-                                    </p>
-                                )}
-                            </div>
-                        )}
+        <section className="bg-white py-6 sm:py-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Heading */}
+                <div className="flex flex-col items-center justify-center text-center mb-6">
+                    <h3 className="text-lg sm:text-xl md:text-3xl font-semibold mb-2">
+                        Guided by Experience, Trusted by Students
+                    </h3>
+                    <div className="text-sky-500 space-x-1">
+                        {[...Array(5)].map((_, i) => (
+                            <i key={i} className="fa-solid fa-star text-sm sm:text-base"></i>
+                        ))}
                     </div>
                 </div>
-                {loadingSeniors ? (
-                    <></>
-                ) : (
-                    <div className="text-center my-5">
+
+                {/* Senior Cards */}
+                <div className="w-full">
+                    {seniors.length > 0 ? (
+                        <SeniorCard
+                            seniors={seniors.slice(0, 4)}
+                            handleDetail={handleDetail}
+                        />
+                    ) : (
+                        <div className="flex justify-center items-center py-10">
+                            {loadingSeniors ? (
+                                <div className="flex flex-wrap justify-center gap-4 w-full">
+                                    {fake.map((_, index) => (
+                                        <div
+                                            key={index}
+                                            className="bg-white shadow rounded-xl w-24 h-32 sm:w-28 sm:h-36 md:w-32 md:h-40 flex justify-center items-center animate-pulse"
+                                        >
+                                            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-300 rounded-full"></div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-center text-gray-500">
+                                    No Senior found in your college
+                                </p>
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                {/* View All Button */}
+                {!loadingSeniors && (
+                    <div className="text-center mt-6">
                         <Link
                             to={`/college/${collegeName}/seniors`}
-                            className="bg-sky-500 text-white py-2 px-4 rounded-xl hover:bg-sky-600"
+                            className="bg-sky-500 text-white text-sm sm:text-base px-5 py-2 rounded-xl hover:bg-sky-600 transition-all"
                         >
                             View All
                         </Link>
                     </div>
                 )}
             </div>
+
+            {/* Senior Detail Modal */}
             {isDetailModalOpen && (
                 <SeniorDetailModal
                     senior={selectedSenior}
