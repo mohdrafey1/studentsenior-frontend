@@ -30,11 +30,7 @@ function SubjectPyqs() {
     const [activeExamType, setActiveExamType] = useState('all');
     const examTypes = ['all', 'endsem', 'midsem1', 'midsem2', 'improvement'];
 
-    const { saveResource, unsaveResource } = useSaveResource(
-        subjectCode,
-        branchCode,
-        collegeId
-    );
+    const { saveResource, unsaveResource } = useSaveResource();
 
     const requireLogin = useRequireLogin();
     const [isModalOpen, setModalOpen] = useState(false);

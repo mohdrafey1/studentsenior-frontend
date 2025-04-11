@@ -9,7 +9,7 @@ function PyqCard({ Pyqs = [] }) {
     const { collegeName } = useParams();
     const requireLogin = useRequireLogin();
 
-    const { saveResource, unsaveResource } = useSaveResource(null, null, null);
+    const { saveResource, unsaveResource } = useSaveResource();
 
     const location = useLocation();
     const navigate = useNavigate();

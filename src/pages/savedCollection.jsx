@@ -8,7 +8,7 @@ const SavedCollection = () => {
     const [activeTab, setActiveTab] = useState('savedPYQs');
     const [isLoading, setIsLoading] = useState(true);
 
-    const { unsaveResource } = useSaveResource(null, null, null);
+    const { unsaveResource } = useSaveResource();
 
     useEffect(() => {
         const loadData = async () => {
