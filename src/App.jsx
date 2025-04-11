@@ -5,13 +5,20 @@ import ScrollToTop from './utils/ScrollToTop';
 import RoutesComponent from './routesComponent';
 import HistoryTracker from './utils/HistoryTracker';
 import { useDispatch } from 'react-redux';
+import { signOut } from './redux/user/userSlice';
 import { fetchSavedCollection } from './redux/slices/savedCollectionSlice';
 
 const App = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchSavedCollection());
+        dispatch(fetchSavedCollection())
+            .unwrap()
+            .catch((error) => {
+                if (error?.status === 401) {
+                    dispatch(signOut());
+                }
+            });
     }, [dispatch]);
 
     return (
