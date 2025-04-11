@@ -17,9 +17,10 @@ export const fetchSavedCollection = createAsyncThunk(
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(
-                    data.message || 'Failed to fetch saved collection'
-                );
+                return rejectWithValue({
+                    message: data.message || 'Failed to fetch saved collection',
+                    status: data.statusCode || response.status,
+                });
             }
 
             return {

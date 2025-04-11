@@ -29,11 +29,7 @@ function SubjectNotes() {
     const { collegeName, courseCode, subjectCode, branchCode } = useParams();
     const collegeId = useCollegeId(collegeName);
 
-    const { saveResource, unsaveResource } = useSaveResource(
-        subjectCode,
-        branchCode,
-        collegeId
-    );
+    const { saveResource, unsaveResource } = useSaveResource();
 
     const [isModalOpen, setModalOpen] = useState(false);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);

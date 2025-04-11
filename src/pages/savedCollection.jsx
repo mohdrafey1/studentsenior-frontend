@@ -8,7 +8,7 @@ const SavedCollection = () => {
     const [activeTab, setActiveTab] = useState('savedPYQs');
     const [isLoading, setIsLoading] = useState(true);
 
-    const { unsaveResource } = useSaveResource(null, null, null);
+    const { unsaveResource } = useSaveResource();
 
     useEffect(() => {
         const loadData = async () => {
@@ -361,7 +361,7 @@ const SavedCollection = () => {
     ];
 
     return (
-        <div className='max-w-7xl mx-auto px-4 py-6'>
+        <div className='max-w-7xl min-h-screen mx-auto px-4 py-6'>
             <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6'>
                 <h1 className='text-2xl font-bold text-gray-800 mb-3 sm:mb-0'>
                     My Collection

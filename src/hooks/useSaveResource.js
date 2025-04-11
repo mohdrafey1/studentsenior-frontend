@@ -2,10 +2,8 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { api } from '../config/apiConfiguration';
 import { fetchSavedCollection } from '../redux/slices/savedCollectionSlice';
-import { fetchSubjectPyqs } from '../redux/slices/subjectPyqsSlice';
-import { fetchSubjectNotes } from '../redux/slices/subjectNotesSlice';
 
-export const useSaveResource = (subjectCode, branchCode, collegeId) => {
+export const useSaveResource = () => {
     const dispatch = useDispatch();
 
     const saveResource = async (resourceType, resourceId) => {
@@ -31,9 +29,6 @@ export const useSaveResource = (subjectCode, branchCode, collegeId) => {
 
             toast.success(data.message);
             dispatch(fetchSavedCollection());
-            if (subjectCode) {
-                dispatch(fetchSubjectData(resourceType));
-            }
         } catch (err) {
             console.error(`Error saving ${resourceType}:`, err);
             toast.error(`Failed to save ${resourceType}`);
@@ -63,20 +58,9 @@ export const useSaveResource = (subjectCode, branchCode, collegeId) => {
 
             toast.success(data.message);
             dispatch(fetchSavedCollection());
-            if (subjectCode) {
-                dispatch(fetchSubjectData(resourceType));
-            }
         } catch (err) {
             console.error(`Error unsaving ${resourceType}:`, err);
             toast.error(`Failed to unsave ${resourceType}`);
-        }
-    };
-
-    const fetchSubjectData = (resourceType) => {
-        if (resourceType === 'pyq') {
-            return fetchSubjectPyqs({ subjectCode, branchCode, collegeId });
-        } else {
-            return fetchSubjectNotes({ subjectCode, branchCode, collegeId });
         }
     };
 
