@@ -84,7 +84,7 @@ const SeniorPage = () => {
     return (
         <div className='bg-gradient-to-t from-blue-200 to bg-white'>
             <CollegeLinks />
-            <div className='container mx-auto p-5'>
+            <div className='2xl:w-4/5 mx-auto p-5'>
                 <div className='flex flex-col justify-center items-center'>
                     <h1 className='text-lg sm:text-3xl font-bold mb-2 text-center'>
                         Seniors - {capitalizeWords(collegeName)}

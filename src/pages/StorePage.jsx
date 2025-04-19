@@ -206,32 +206,32 @@ const StorePage = () => {
     const handleCloseDialog = () => setShowDeleteDialog(false);
 
     return (
-        <div className="bg-gradient-to-t from-sky-200 to bg-white">
+        <div className='bg-gradient-to-t from-sky-200 to bg-white'>
             <CollegeLinks />
-            <div className="container mx-auto px-4 py-5">
-                <div className="flex flex-col justify-center items-center">
-                    <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
+            <div className='container mx-auto px-4 py-5'>
+                <div className='flex flex-col justify-center items-center'>
+                    <h1 className='text-lg sm:text-3xl font-bold mb-2 text-center'>
                         Product Store - {capitalizeWords(collegeName)}
                         <Seo
                             title={`Product Store - ${capitalizeWords(
                                 collegeName
                             )}`}
-                            desc="Buy and sell your stationery and gadgets easily to your
-                        juniors."
+                            desc='Buy and sell your stationery and gadgets easily to your
+                        juniors.'
                         />
                     </h1>
-                    <p className="italic text-center text-xs sm:text-base">
+                    <p className='italic text-center text-xs sm:text-base'>
                         "Buy and sell your stationery and gadgets easily to your
                         juniors."
                     </p>
                     <br />
                 </div>
-                <div className="flex justify-center mb-4">
+                <div className='flex justify-center mb-4'>
                     <Button onClick={handleAddProduct}>Add Product</Button>
                 </div>
 
-                <div className="flex justify-center items-center py-1">
-                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6 w-full max-w-7xl h-fit ">
+                <div className='flex justify-center items-center py-1'>
+                    <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6 w-full max-w-7xl h-fit '>
                         <ProductsCard
                             products={products}
                             loadingFetch={loadingProducts}
@@ -243,27 +243,27 @@ const StorePage = () => {
                         <Dialog
                             isOpen={showDeleteDialog}
                             onClose={handleCloseDialog}
-                            title="Product Delete Confirmation"
+                            title='Product Delete Confirmation'
                             footer={
-                                <div className="flex py-4 gap-3 lg:justify-end justify-center">
+                                <div className='flex py-4 gap-3 lg:justify-end justify-center'>
                                     <button
-                                        className="p-1 py-2 bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer"
+                                        className='p-1 py-2 bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer'
                                         onClick={handleCloseDialog}
                                     >
                                         Cancel
                                     </button>
                                     <button
-                                        className="p-1 py-2 bg-red-600 rounded-lg px-4 text-sm font-semibold text-white cursor-pointer"
+                                        className='p-1 py-2 bg-red-600 rounded-lg px-4 text-sm font-semibold text-white cursor-pointer'
                                         onClick={handleConfirmDelete}
                                         disabled={deleteLoading}
                                     >
                                         {deleteLoading ? (
-                                            <i className="fa fa-spinner fa-spin"></i>
+                                            <i className='fa fa-spinner fa-spin'></i>
                                         ) : (
                                             <>
                                                 <span>Confirm</span>
                                                 &nbsp;
-                                                <i className="fa-solid fa-trash fa-xl"></i>
+                                                <i className='fa-solid fa-trash fa-xl'></i>
                                             </>
                                         )}
                                     </button>
@@ -271,7 +271,7 @@ const StorePage = () => {
                             }
                         >
                             <p>Are you sure you want to delete this item?</p>
-                            <p className="text-sm text-gray-500">
+                            <p className='text-sm text-gray-500'>
                                 This action cannot be undone.
                             </p>
                         </Dialog>
