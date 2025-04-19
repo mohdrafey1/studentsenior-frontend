@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { api } from '../../config/apiConfiguration';
+import SearchableSelect from '../../ui/SearchableSelect';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchBranches } from '../../redux/slices/branchSlice';
+import { fetchSubjects } from '../../redux/slices/subjectSlice';
+import { fetchCourses } from '../../redux/slices/courseSlice';
 
 function AddNotes({
     subjectCode,
@@ -10,12 +15,53 @@ function AddNotes({
     onSubmit,
     submitting,
 }) {
+    const dispatch = useDispatch();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [file, setFile] = useState(null);
     const [isPaid, setIsPaid] = useState(false);
     const [price, setPrice] = useState('');
     const [loading, setLoading] = useState(false);
+    const [course, setCourse] = useState('');
+    const [selectedBranch, setSelectedBranch] = useState('');
+    const [selectedSubject, setSelectedSubject] = useState('');
+
+    const {
+        courses = [],
+        loading: courseLoading,
+        error: courseError,
+    } = useSelector((state) => state.courses || {});
+
+    const {
+        branches = [],
+        loading: branchLoading,
+        error: branchError,
+    } = useSelector((state) => state.branches || {});
+
+    const {
+        subjects = [],
+        loading: subjectsLoading,
+        error: subjectsError,
+    } = useSelector((state) => state.subjects || {});
+
+    useEffect(() => {
+        dispatch(fetchCourses());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (course) {
+            dispatch(fetchBranches(course));
+            setSelectedBranch('');
+            setSelectedSubject('');
+        }
+    }, [course, dispatch]);
+
+    useEffect(() => {
+        if (selectedBranch) {
+            dispatch(fetchSubjects(selectedBranch));
+            setSelectedSubject('');
+        }
+    }, [selectedBranch, dispatch]);
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
@@ -37,6 +83,21 @@ function AddNotes({
         if (!file) {
             toast.error('Please select a file to upload.');
             return;
+        }
+
+        if (!branchCode) {
+            if (!course) {
+                toast.error('Please select a course.');
+                return;
+            }
+            if (!selectedBranch) {
+                toast.error('Please select a branch.');
+                return;
+            }
+            if (!selectedSubject) {
+                toast.error('Please select a subject.');
+                return;
+            }
         }
 
         const fileName = `${title}-${Date.now()}.pdf`;
@@ -78,8 +139,8 @@ function AddNotes({
             const formData = {
                 title,
                 description,
-                subjectCode,
-                branchCode,
+                subjectCode: selectedSubject || subjectCode,
+                branchCode: selectedBranch || branchCode,
                 college: collegeId,
                 isPaid,
                 price: isPaid ? price : 0,
@@ -95,64 +156,124 @@ function AddNotes({
         }
     };
 
+    // Format data for searchable selects
+    const courseOptions = courses.map((course) => ({
+        value: course.courseCode,
+        label: course.courseName,
+    }));
+
+    const branchOptions = branches.map((branch) => ({
+        value: branch.branchCode,
+        label: branch.branchName,
+    }));
+
+    const subjectOptions = subjects.map((subject) => ({
+        value: subject.subjectCode,
+        label: subject.subjectName,
+    }));
+
     return (
-        <form onSubmit={handleSubmit} className="space-y-2 bg-white p-6">
+        <form onSubmit={handleSubmit} className='space-y-2 bg-white '>
+            {!branchCode && (
+                <div className='space-y-4'>
+                    <SearchableSelect
+                        options={courseOptions}
+                        value={course}
+                        onChange={setCourse}
+                        placeholder='Select Course'
+                        label='Course'
+                        loading={courseLoading}
+                        errorState={courseError}
+                        required={true}
+                    />
+
+                    {course && (
+                        <SearchableSelect
+                            options={branchOptions}
+                            value={selectedBranch}
+                            onChange={setSelectedBranch}
+                            placeholder='Select Branch'
+                            label='Branch'
+                            loading={branchLoading}
+                            errorState={branchError}
+                            required={true}
+                        />
+                    )}
+
+                    {selectedBranch && (
+                        <SearchableSelect
+                            options={subjectOptions}
+                            value={selectedSubject}
+                            onChange={setSelectedSubject}
+                            placeholder='Select Subject'
+                            label='Subject'
+                            loading={subjectsLoading}
+                            errorState={subjectsError}
+                            required={true}
+                        />
+                    )}
+                </div>
+            )}
+            {branchCode && (
+                <div>
+                    <label className='block font-semibold text-sky-500 sm:mb-1'>
+                        Subject
+                    </label>
+                    <div className='flex items-center border border-gray-300 p-3 rounded-lg bg-gray-100'>
+                        <input
+                            type='text'
+                            className='w-full bg-transparent focus:outline-none'
+                            value={subjectName}
+                            readOnly
+                        />
+                    </div>
+                </div>
+            )}
             <div>
-                <label className="block font-semibold text-sky-500 mb-2">
-                    Subject
-                </label>
-                <input
-                    type="text"
-                    className="w-full border border-gray-300 p-3 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
-                    value={subjectName}
-                    readOnly
-                />
-            </div>
-            <div>
-                <label className="block font-semibold text-sky-500 mb-2">
+                <label className='block font-semibold text-sky-500 sm:mb-2'>
                     Title
                 </label>
                 <input
-                    type="text"
-                    className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
+                    type='text'
+                    className='w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent'
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required
                 />
             </div>
             <div>
-                <label className="block font-semibold text-sky-500 mb-2">
+                <label className='block font-semibold text-sky-500 sm:mb-2'>
                     Description (optional)
                 </label>
                 <textarea
-                    className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
+                    className='w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent'
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 ></textarea>
             </div>
             <div>
-                <label className="block font-semibold text-sky-500 mb-2">
+                <label className='block font-semibold text-sky-500 sm:mb-2'>
                     Upload PDF (Max 50MB)
                 </label>
                 <input
-                    id="file-upload"
-                    type="file"
-                    className="w-full border-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-sky-500 file:text-white hover:file:bg-sky-600"
-                    accept=".pdf"
+                    id='file-upload'
+                    type='file'
+                    className='w-full border-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-sky-500 file:text-white hover:file:bg-sky-600'
+                    accept='.pdf'
                     onChange={handleFileChange}
                     required
                 />
             </div>
 
-            <div className="mt-4 space-y-2">
-                <div className="flex items-center">
+            <div className='mt-4 space-y-2'>
+                <div className='flex items-center'>
                     <p>Is Paid </p>
-                    <label className="relative inline-flex items-center cursor-pointer ml-2">
+                    <label className='relative inline-flex items-center cursor-pointer ml-2'>
                         <input
-                            type="checkbox"
+                            type='checkbox'
                             checked={isPaid}
                             onChange={(e) => setIsPaid(e.target.checked)}
-                            className="sr-only peer"
+                            className='sr-only peer'
                         />
                         <div className="w-9 h-6 bg-gray-200 hover:bg-gray-300 peer-focus:outline-0 peer-focus:ring-transparent rounded-full peer transition-all ease-in-out duration-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600 hover:peer-checked:bg-indigo-700"></div>
                     </label>
@@ -160,14 +281,14 @@ function AddNotes({
 
                 {isPaid && (
                     <div>
-                        <label className="block font-semibold text-sky-500 mb-1">
+                        <label className='block font-semibold text-sky-500 mb-1'>
                             Price (in Points - 5 points = 1 INR)
                         </label>
                         <input
-                            type="number"
+                            type='number'
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
-                            className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
+                            className='w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent'
                             required
                         />
                     </div>
@@ -175,15 +296,15 @@ function AddNotes({
             </div>
 
             <button
-                type="submit"
+                type='submit'
                 className={`w-full bg-sky-400 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-sky-500 transition-colors duration-200 ${
                     loading || submitting ? 'opacity-70 cursor-not-allowed' : ''
                 }`}
                 disabled={loading || submitting}
             >
                 {loading || submitting ? (
-                    <span className="flex items-center justify-center">
-                        <i className="fas fa-spinner fa-pulse mr-2"></i>
+                    <span className='flex items-center justify-center'>
+                        <i className='fas fa-spinner fa-pulse mr-2'></i>
                         {loading ? 'Uploading...' : 'Submitting...'}
                     </span>
                 ) : (

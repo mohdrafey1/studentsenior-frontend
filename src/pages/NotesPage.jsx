@@ -10,14 +10,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchNotes } from '../redux/slices/NotesSlice.js';
 import { useCollegeId } from '../hooks/useCollegeId.js';
 import Seo from '../components/SEO/Seo.jsx';
+import useRequireLogin from '../hooks/useRequireLogin.js';
+import Modal from '../utils/Dialog.jsx';
+import Button from '../ui/Button.jsx';
+import AddNotes from '../components/Resources/AddNotes.jsx';
+import { api } from '../config/apiConfiguration.js';
+import { toast } from 'react-toastify';
 
 const NotesPage = () => {
     const { collegeName } = useParams();
     const collegeId = useCollegeId(collegeName);
+    const requireLogin = useRequireLogin();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedSemester, setSelectedSemester] = useState('');
     const [selectedBranch, setSelectedBranch] = useState('');
     const [selectedCourse, setSelectedCourse] = useState('');
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
     const dispatch = useDispatch();
     const { notes, loading } = useSelector((state) => state.notes || {});
@@ -25,6 +34,38 @@ const NotesPage = () => {
     useEffect(() => {
         dispatch(fetchNotes(collegeId));
     }, [collegeId]);
+
+    const handleOpenAddNoteModal = () => {
+        requireLogin(() => setModalOpen(true));
+    };
+
+    const handleAddNote = async (formData) => {
+        try {
+            setSubmitting(true);
+            const response = await fetch(`${api.subjectNotes}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(formData),
+            });
+            const data = await response.json();
+            if (data.success === false) {
+                toast.error(data.message);
+                return;
+            }
+            toast.success(data.message);
+            setSubmitting(false);
+            setModalOpen(false);
+        } catch (err) {
+            console.error(err);
+            toast.error('Failed to add note.');
+            setSubmitting(false);
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
     // Extract unique values for filters
     const courses = [
@@ -91,6 +132,14 @@ const NotesPage = () => {
                         title={`${capitalizeWords(collegeName)} - Notes`}
                         desc='Access past year question notes, understand trends, improve strategies, and ace exams confidently with a well-organized, easy-to-use database for students.'
                     />
+                    <div className='flex items-center justify-center mt-4'>
+                        <Button
+                            onClick={handleOpenAddNoteModal}
+                            className='flex items-center gap-2'
+                        >
+                            <i className='fa-solid fa-plus'></i> Add Notes
+                        </Button>
+                    </div>
                 </div>
                 <div className='grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-4 sm:justify-center gap-2 sm:gap-4 mb-4'>
                     <input
@@ -203,6 +252,19 @@ const NotesPage = () => {
                 </div>
             </div>
             <Collegelink2 />
+            {/* Add Note Modal */}
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setModalOpen(false)}
+                title={`Add Note - ${capitalizeWords(collegeName)}`}
+                size='lg'
+            >
+                <AddNotes
+                    collegeId={collegeId}
+                    submitting={submitting}
+                    onSubmit={handleAddNote}
+                />
+            </Modal>
         </div>
     );
 };
