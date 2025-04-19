@@ -5,16 +5,22 @@ import { Link, useParams } from 'react-router-dom';
 import Collegelink2 from '../components/Links/CollegeLink2.jsx';
 import { capitalizeWords } from '../utils/Capitalize.js';
 import PyqCard from '../components/Cards/PyqCard.jsx';
-import pyq from '/assets/pyq.png';
+import Button from '../ui/Button.jsx';
+import Modal from '../utils/Dialog.jsx';
+import AddPyq from '../components/Resources/AddPyq.jsx';
 import notesandpyq from '/assets/notes&pyq.png';
 import request from '/assets/request.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPyqs } from '../redux/slices/pyqSlice.js';
 import { useCollegeId } from '../hooks/useCollegeId.js';
 import Seo from '../components/SEO/Seo.jsx';
+import useRequireLogin from '../hooks/useRequireLogin.js';
+import { api } from '../config/apiConfiguration.js';
+import { toast } from 'react-toastify';
 
 const PYQPage = () => {
     const { collegeName } = useParams();
+    const requireLogin = useRequireLogin();
     const collegeId = useCollegeId(collegeName);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedYear, setSelectedYear] = useState('');
@@ -22,6 +28,8 @@ const PYQPage = () => {
     const [selectedBranch, setSelectedBranch] = useState('');
     const [selectedCourse, setSelectedCourse] = useState('');
     const [selectedExamType, setSelectedExamType] = useState('');
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
     const dispatch = useDispatch();
     const { pyqs, loading } = useSelector((state) => state.pyqs || {});
@@ -29,6 +37,36 @@ const PYQPage = () => {
     useEffect(() => {
         dispatch(fetchPyqs(collegeId));
     }, [collegeId]);
+
+    const handleOpenAddPyqModal = () => {
+        requireLogin(() => setModalOpen(true));
+    };
+
+    const handleAddPyq = async (formData) => {
+        try {
+            setSubmitting(true);
+            const response = await fetch(`${api.newPyqs}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(formData),
+            });
+            const data = await response.json();
+            if (data.success === false) {
+                toast.error(data.message);
+                return;
+            }
+            toast.success(data.message);
+            setModalOpen(false);
+        } catch (err) {
+            console.error(err);
+            toast.error('Failed to add pyq.');
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
     // Extract unique values for filters
     const courses = [
@@ -88,7 +126,7 @@ const PYQPage = () => {
         <div className='container bg-gradient-to-t from-sky-200 to bg-white min-h-screen min-w-full'>
             <CollegeLinks />
             <div className='max-w-7xl mx-auto px-4'>
-                <div className='mb-8'>
+                <div className='mb-8 '>
                     <h1 className='text-lg sm:text-3xl font-bold mb-2 text-center'>
                         PYQs -{capitalizeWords(collegeName)}
                     </h1>
@@ -101,6 +139,14 @@ const PYQPage = () => {
                         improve strategies, and ace exams confidently with a
                         well-organized, easy-to-use database for students.
                     </p>
+                    <div className='flex items-center justify-center mt-4'>
+                        <Button
+                            onClick={handleOpenAddPyqModal}
+                            className='flex items-center gap-2'
+                        >
+                            <i className='fa-solid fa-plus'></i> Add PYQs
+                        </Button>
+                    </div>
                 </div>
 
                 <div className='grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 sm:justify-center gap-2 sm:gap-4 mb-4'>
@@ -256,6 +302,18 @@ const PYQPage = () => {
                 </div>
             </div>
             <Collegelink2 />
+            {/* Add PYQ Modal */}
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setModalOpen(false)}
+                title={`Add PYQ - ${capitalizeWords(collegeName)}`}
+            >
+                <AddPyq
+                    collegeId={collegeId}
+                    onSubmit={handleAddPyq}
+                    submitting={submitting}
+                />
+            </Modal>
         </div>
     );
 };
