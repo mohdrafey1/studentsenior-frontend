@@ -265,34 +265,41 @@ function AddNotes({
                 />
             </div>
 
-            <div className='mt-4 space-y-2'>
-                <div className='flex items-center'>
-                    <p>Is Paid </p>
-                    <label className='relative inline-flex items-center cursor-pointer ml-2'>
-                        <input
-                            type='checkbox'
-                            checked={isPaid}
-                            onChange={(e) => setIsPaid(e.target.checked)}
-                            className='sr-only peer'
-                        />
-                        <div className="w-9 h-6 bg-gray-200 hover:bg-gray-300 peer-focus:outline-0 peer-focus:ring-transparent rounded-full peer transition-all ease-in-out duration-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600 hover:peer-checked:bg-indigo-700"></div>
-                    </label>
-                </div>
-
-                {isPaid && (
-                    <div>
-                        <label className='block font-semibold text-sky-500 mb-1'>
-                            Price (in Points - 5 points = 1 INR)
+            {/* Payment Section - Full Width */}
+            <div className='mt-4 p-4 bg-sky-50 rounded-lg border border-sky-100'>
+                <div className='flex items-center justify-between flex-wrap gap-4'>
+                    <div className='flex items-center gap-2'>
+                        <span className='text-gray-700 font-medium'>
+                            Is this paid content?
+                        </span>
+                        <label className='relative inline-flex items-center cursor-pointer'>
+                            <input
+                                type='checkbox'
+                                checked={isPaid}
+                                onChange={(e) => setIsPaid(e.target.checked)}
+                                className='sr-only peer'
+                            />
+                            <div className="w-11 h-6 bg-gray-200 hover:bg-gray-300 peer-focus:outline-0 peer-focus:ring-transparent rounded-full peer transition-all ease-in-out duration-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-sky-500 hover:peer-checked:bg-sky-600"></div>
                         </label>
-                        <input
-                            type='number'
-                            value={price}
-                            onChange={(e) => setPrice(e.target.value)}
-                            className='w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent'
-                            required
-                        />
                     </div>
-                )}
+
+                    {isPaid && (
+                        <div className='flex-grow max-w-xs'>
+                            <label className='block font-semibold text-sky-500 mb-1 text-sm'>
+                                Price (in Points - 5 points = 1 INR)
+                            </label>
+                            <input
+                                type='number'
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
+                                className='w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent'
+                                required
+                                min='1'
+                                placeholder='Enter price in points'
+                            />
+                        </div>
+                    )}
+                </div>
             </div>
 
             <button

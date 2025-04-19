@@ -191,7 +191,7 @@ function AddPyq({
     return (
         <form
             onSubmit={handleSubmit}
-            className='space-y-4 bg-white p-6 rounded-xl shadow-sm'
+            className='space-y-4 bg-white rounded-xl shadow-sm'
         >
             {!branchCode && (
                 <div className='space-y-4'>
@@ -250,7 +250,7 @@ function AddPyq({
                 </div>
             )}
 
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div className='grid grid-cols-2 gap-4'>
                 <div>
                     <label className='block font-semibold text-sky-500 mb-1'>
                         Year
