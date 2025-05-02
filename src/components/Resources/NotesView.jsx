@@ -15,6 +15,7 @@ import {
     handleOnlinePaymentUtil,
 } from '../../utils/purchaseUtils.js';
 import useApiRequest from '../../hooks/useApiRequest.js';
+import { NOTE_DOWNLOAD_TIMER } from '../../config/constant.js';
 
 // Set up PDF.js worker (adjust the path if you host it yourself)
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
@@ -84,10 +85,11 @@ function NotesView() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [pdfDoc, setPdfDoc] = useState(null);
-    const [countdown, setCountdown] = useState(15);
+    const [countdown, setCountdown] = useState(NOTE_DOWNLOAD_TIMER);
     const [canDownload, setCanDownload] = useState(false);
     const [showCountdown, setShowCountdown] = useState(false);
     const [signedUrl, setSignedUrl] = useState(null);
+    const [loadingPreview, setLoadingPreview] = useState(false);
 
     const [isBuyNowModalOpen, setBuyNowModalOpen] = useState(false);
     const [selectedNote, setSelectedNote] = useState(null);
@@ -188,39 +190,39 @@ function NotesView() {
     }, [note]);
 
     // Fetch Signed URL for Download
-    useEffect(() => {
-        const fetchSignedUrlForDownload = async () => {
-            if (canDownload && note && note.fileUrl) {
-                try {
-                    const response = await fetch(
-                        `${api.getSignedUrl}?fileUrl=${note.fileUrl}`,
-                        {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'x-api-key': API_KEY,
-                            },
-                        }
-                    );
-
-                    const data = await response.json();
-                    if (response.ok) {
-                        setSignedUrl(data.signedUrl); // Store Signed URL for download
-                    } else {
-                        throw new Error(
-                            data.message ||
-                                'Failed to get signed URL for download.'
-                        );
+    const fetchSignedUrlForDownload = async () => {
+        if (canDownload && note && note.fileUrl) {
+            setLoadingPreview(true);
+            try {
+                const response = await fetch(
+                    `${api.getSignedUrl}?fileUrl=${note.fileUrl}`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-api-key': API_KEY,
+                        },
                     }
-                } catch (error) {
-                    console.error(
-                        'Error fetching signed URL for download:',
-                        error
+                );
+
+                const data = await response.json();
+                if (response.ok) {
+                    setSignedUrl(data.signedUrl); // Store Signed URL for download
+                    toast.success('File is ready to view!');
+                } else {
+                    throw new Error(
+                        data.message || 'Failed to get signed URL for download.'
                     );
                 }
+            } catch (error) {
+                console.error('Error fetching signed URL for download:', error);
+            } finally {
+                setLoadingPreview(false);
             }
-        };
+        }
+    };
 
+    useEffect(() => {
         fetchSignedUrlForDownload();
     }, [canDownload, note]);
 
@@ -419,6 +421,11 @@ function NotesView() {
                                         “View in Google Drive” button is
                                         provided only for your convenience.
                                     </p>
+                                    <p className='text-center text-sm text-gray-500 mb-2'>
+                                        If you see no preview, please click on
+                                        refresh preview and try again:
+                                    </p>
+
                                     <a
                                         href={`https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(
                                             signedUrl
@@ -429,6 +436,19 @@ function NotesView() {
                                     >
                                         View in Google Drive
                                     </a>
+                                    <button
+                                        onClick={fetchSignedUrlForDownload}
+                                        className={`bg-yellow-500 text-white px-4 py-2 mt-5 rounded-md hover:bg-yellow-600 ${
+                                            loadingPreview ? 'cursor-wait' : ''
+                                        }`}
+                                        disabled={loadingPreview}
+                                    >
+                                        {loadingPreview ? (
+                                            <i className='fas fa-spinner fa-pulse'></i>
+                                        ) : (
+                                            'Refresh Preview'
+                                        )}
+                                    </button>
                                 </div>
                             ) : (
                                 <button
