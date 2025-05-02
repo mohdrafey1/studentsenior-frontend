@@ -81,7 +81,7 @@ function PyqView() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [pdfDoc, setPdfDoc] = useState(null);
-    const [countdown, setCountdown] = useState(15);
+    const [countdown, setCountdown] = useState(5);
     const [canDownload, setCanDownload] = useState(false);
     const [showCountdown, setShowCountdown] = useState(false);
     const [signedUrl, setSignedUrl] = useState('');
@@ -218,15 +218,6 @@ function PyqView() {
 
         fetchSignedUrlForDownload();
     }, [canDownload, pyq]);
-
-    const handleDirectDownload = () => {
-        const link = document.createElement('a');
-        link.href = signedUrl;
-        link.download = pyq?.subject?.subjectName || 'file.pdf';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
 
     // Download Button Logic
     const handleDownloadClick = () => {
@@ -412,15 +403,24 @@ function PyqView() {
                     {!pyq.solved && (
                         <div className='flex justify-center mb-5'>
                             {canDownload ? (
-                                <a
-                                    onClick={handleDirectDownload}
-                                    href={signedUrl}
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                    className='bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 transition-transform transform hover:scale-105'
-                                >
-                                    Download now
-                                </a>
+                                <div className='flex flex-col justify-center items-center'>
+                                    <p className='text-center text-sm text-gray-500 mb-2'>
+                                        If you want to share this PYQ, please
+                                        share it directly from our website. The
+                                        “View in Google Drive” button is
+                                        provided only for your convenience.
+                                    </p>
+                                    <a
+                                        href={`https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(
+                                            signedUrl
+                                        )}`}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                        className='max-w-fit bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 transition-transform transform hover:scale-105'
+                                    >
+                                        View in Google Drive
+                                    </a>
+                                </div>
                             ) : (
                                 <button
                                     onClick={handleDownloadClick}

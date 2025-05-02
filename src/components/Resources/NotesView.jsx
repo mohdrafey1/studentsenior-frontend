@@ -224,15 +224,6 @@ function NotesView() {
         fetchSignedUrlForDownload();
     }, [canDownload, note]);
 
-    const handleDirectDownload = () => {
-        const link = document.createElement('a');
-        link.href = signedUrl;
-        link.download = note.title || 'file.pdf';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
     // Download countdown logic.
     const handleDownloadClick = () => {
         if (showCountdown) return;
@@ -421,21 +412,30 @@ function NotesView() {
                     {!note.isPaid && (
                         <div className='flex justify-center mb-4'>
                             {canDownload ? (
-                                <a
-                                    onClick={handleDirectDownload}
-                                    href={signedUrl}
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                    className='bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 transition-transform transform hover:scale-105'
-                                >
-                                    Download now
-                                </a>
+                                <div className='flex flex-col justify-center items-center'>
+                                    <p className='text-center text-sm text-gray-500 mb-2'>
+                                        If you want to share this note, please
+                                        share it directly from our website. The
+                                        “View in Google Drive” button is
+                                        provided only for your convenience.
+                                    </p>
+                                    <a
+                                        href={`https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(
+                                            signedUrl
+                                        )}`}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                        className='max-w-fit bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 transition-transform transform hover:scale-105'
+                                    >
+                                        View in Google Drive
+                                    </a>
+                                </div>
                             ) : (
                                 <button
                                     onClick={handleDownloadClick}
                                     disabled={false}
                                     className='bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 cursor-pointer'
-                                    title='Download pyq PDF'
+                                    title='Download note PDF'
                                 >
                                     {showCountdown
                                         ? `Download ${countdown}s`
