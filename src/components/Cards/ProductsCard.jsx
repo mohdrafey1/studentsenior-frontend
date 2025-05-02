@@ -14,10 +14,10 @@ function ProductsCard({
     const ownerId = currentUser?._id;
 
     const renderProductActions = (product) => {
-        if (!loadingStates || product.owner !== ownerId) return null;
+        if (product.owner !== ownerId) return null;
 
         return (
-            <div className='absolute top-2 right-2 flex gap-2 bg-white bg-opacity-80 rounded-lg p-1.5 shadow-sm'>
+            <div className='absolute top-2 right-2 flex gap-4 bg-white rounded-lg p-1.5 shadow-sm'>
                 <button
                     className='text-yellow-600 hover:text-yellow-500 transition-colors duration-200'
                     onClick={(e) => {
@@ -130,9 +130,6 @@ function ProductsCard({
                             : 'opacity-80 grayscale-[30%]'
                     }`}
                 >
-                    {/* Admin actions */}
-                    {renderProductActions(product)}
-
                     {/* Image container - fixed height */}
                     <div className='relative h-40 sm:h-44 md:h-48 overflow-hidden bg-gray-100'>
                         <img
@@ -192,6 +189,8 @@ function ProductsCard({
                                     </Link>
                                 )}
                             </div>
+                            {/* Admin actions */}
+                            {renderProductActions(product)}
                         </div>
                     </div>
                 </div>
