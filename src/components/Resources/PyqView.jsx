@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import Modal from '../../utils/Dialog.jsx';
 import ConfirmPurchaseModal from './ConfirmPurchaseModal.jsx';
 import { api, API_KEY } from '../../config/apiConfiguration.js';
 import { toast } from 'react-toastify';
@@ -220,6 +219,15 @@ function PyqView() {
         fetchSignedUrlForDownload();
     }, [canDownload, pyq]);
 
+    const handleDirectDownload = () => {
+        const link = document.createElement('a');
+        link.href = signedUrl;
+        link.download = pyq?.subject?.subjectName || 'file.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     // Download Button Logic
     const handleDownloadClick = () => {
         setCanDownload(false);
@@ -237,11 +245,14 @@ function PyqView() {
         }, 1000);
     };
 
+    const navigate = useNavigate();
+
     const handleConfirmPurchase = async () => {
         handleConfirmPurchaseUtil(selectedPyq, api.newPyqs, navigate, () =>
             setBuyNowModalOpen(false)
         );
         await fetchpyq();
+        window.location.reload();
     };
 
     const { apiRequest } = useApiRequest();
@@ -329,9 +340,6 @@ function PyqView() {
             {pyq ? (
                 <div>
                     <div className='flex flex-col items-center px-2'>
-                        <h1 className='text-2xl font-bold text-gray-800'>
-                            {pyq.title}
-                        </h1>
                         <p className='text-lg text-gray-600 mt-2'>
                             Subject: {pyq.subject.subjectName} ({pyq.examType} -{' '}
                             {pyq.year})
@@ -403,28 +411,28 @@ function PyqView() {
 
                     {!pyq.solved && (
                         <div className='flex justify-center mb-5'>
-                            <button
-                                onClick={handleDownloadClick}
-                                disabled={canDownload}
-                                className={`bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 ${
-                                    canDownload ? '' : 'cursor-not-allowed'
-                                }`}
-                                title='Download pyq PDF'
-                            >
-                                {canDownload ? (
-                                    <a
-                                        href={signedUrl}
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                    >
-                                        Download now
-                                    </a>
-                                ) : showCountdown ? (
-                                    `Download ${countdown}s`
-                                ) : (
-                                    'Download'
-                                )}
-                            </button>
+                            {canDownload ? (
+                                <a
+                                    onClick={handleDirectDownload}
+                                    href={signedUrl}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    className='bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 transition-transform transform hover:scale-105'
+                                >
+                                    Download now
+                                </a>
+                            ) : (
+                                <button
+                                    onClick={handleDownloadClick}
+                                    disabled={false}
+                                    className='bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 cursor-pointer'
+                                    title='Download pyq PDF'
+                                >
+                                    {showCountdown
+                                        ? `Download ${countdown}s`
+                                        : 'Download'}
+                                </button>
+                            )}
                         </div>
                     )}
                 </div>

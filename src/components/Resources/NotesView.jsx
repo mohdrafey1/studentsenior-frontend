@@ -224,6 +224,15 @@ function NotesView() {
         fetchSignedUrlForDownload();
     }, [canDownload, note]);
 
+    const handleDirectDownload = () => {
+        const link = document.createElement('a');
+        link.href = signedUrl;
+        link.download = note.title || 'file.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     // Download countdown logic.
     const handleDownloadClick = () => {
         if (showCountdown) return;
@@ -251,6 +260,7 @@ function NotesView() {
             () => setBuyNowModalOpen(false)
         );
         await fetchNote();
+        window.location.reload();
     };
 
     const { apiRequest } = useApiRequest();
@@ -410,28 +420,28 @@ function NotesView() {
                     {/* Download Button */}
                     {!note.isPaid && (
                         <div className='flex justify-center mb-4'>
-                            <button
-                                onClick={handleDownloadClick}
-                                disabled={canDownload}
-                                className={`bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 ${
-                                    canDownload ? '' : 'cursor-not-allowed'
-                                }`}
-                                title='Download Note PDF'
-                            >
-                                {canDownload ? (
-                                    <a
-                                        href={signedUrl}
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                    >
-                                        Download now
-                                    </a>
-                                ) : showCountdown ? (
-                                    `Download ${countdown}s`
-                                ) : (
-                                    'Download'
-                                )}
-                            </button>
+                            {canDownload ? (
+                                <a
+                                    onClick={handleDirectDownload}
+                                    href={signedUrl}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    className='bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 transition-transform transform hover:scale-105'
+                                >
+                                    Download now
+                                </a>
+                            ) : (
+                                <button
+                                    onClick={handleDownloadClick}
+                                    disabled={false}
+                                    className='bg-sky-500 text-white rounded-md px-4 py-2 mt-3 hover:bg-sky-600 cursor-pointer'
+                                    title='Download pyq PDF'
+                                >
+                                    {showCountdown
+                                        ? `Download ${countdown}s`
+                                        : 'Download'}
+                                </button>
+                            )}
                         </div>
                     )}
                 </div>
