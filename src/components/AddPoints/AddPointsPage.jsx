@@ -24,6 +24,10 @@ const AddPointsPage = () => {
             setError('Minimum points to add is 500');
             return;
         }
+        if (points > 100000) {
+            setError('Maximum points allowed is 100,000');
+            return;
+        }
         setError('');
 
         const pointsData = {
@@ -41,11 +45,17 @@ const AddPointsPage = () => {
 
     const handlePointsChange = (e) => {
         const value = parseInt(e.target.value) || 0;
-        setPoints(value);
-        if (value < 500) {
-            setError('Minimum points to add is 500');
+
+        if (value > 100000) {
+            setPoints(100000);
+            setError('Maximum points allowed is 100,000');
         } else {
-            setError('');
+            setPoints(value);
+            if (value < 500) {
+                setError('Minimum points to add is 500');
+            } else {
+                setError('');
+            }
         }
     };
 
@@ -69,6 +79,7 @@ const AddPointsPage = () => {
                         value={points}
                         onChange={handlePointsChange}
                         min='500'
+                        max='100000'
                         required
                         className='w-full p-3 mb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
                     />
