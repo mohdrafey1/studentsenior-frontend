@@ -301,6 +301,7 @@ function PyqView() {
     if (loading) {
         return (
             <div className='flex justify-center items-center min-h-screen'>
+                <DetailPageNavbar path={`college/${collegeName}/resources`} />
                 <div className='text-center'>
                     <i className='fas fa-spinner fa-pulse fa-5x text-sky-500'></i>
                     <p className='mt-4 text-lg text-gray-600'>Loading pyq...</p>
