@@ -31,6 +31,7 @@ const Branches = () => {
     if (loading) {
         return (
             <div className='flex justify-center items-center min-h-screen'>
+                <DetailPageNavbar path={`college/${collegeName}/resources`} />
                 <i className='fas fa-spinner fa-pulse fa-5x'></i>
             </div>
         );

@@ -82,22 +82,23 @@ function Subjects() {
 
     if (subjectsLoading) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
-                <i className="fas fa-spinner fa-pulse fa-5x"></i>
+            <div className='flex justify-center items-center min-h-screen'>
+                <DetailPageNavbar path={`college/${collegeName}/resources`} />
+                <i className='fas fa-spinner fa-pulse fa-5x'></i>
             </div>
         );
     }
 
     if (subjectsError) {
         return (
-            <p className="text-center text-red-500">Error: {subjectsError}</p>
+            <p className='text-center text-red-500'>Error: {subjectsError}</p>
         );
     }
 
     return (
-        <div className="container mx-auto p-4">
+        <div className='container mx-auto p-4'>
             <DetailPageNavbar path={`${collegeName}/resources/${courseCode}`} />
-            <h1 className="text-2xl font-bold text-center mb-2">
+            <h1 className='text-2xl font-bold text-center mb-2'>
                 {capitalizeWords(collegeName)}: {branchCode.toUpperCase()}
             </h1>
             <Seo
@@ -111,13 +112,13 @@ function Subjects() {
                     .join(', ')}
             />
 
-            <h2 className="text-xs sm:text-lg text-center mb-4">
+            <h2 className='text-xs sm:text-lg text-center mb-4'>
                 Semester subjects or Code may vary across different colleges,
                 please adjust accordingly
             </h2>
 
             {/* Semester Tabs */}
-            <div className="flex justify-start lg:justify-center space-x-4 mb-6 pb-2 overflow-x-scroll">
+            <div className='flex justify-start lg:justify-center space-x-4 mb-6 pb-2 overflow-x-scroll'>
                 {Object.keys(groupedSubjects)
                     .sort((a, b) => a - b)
                     .map((semester) => (
@@ -136,11 +137,11 @@ function Subjects() {
             </div>
 
             {/* Search Input */}
-            <div className="mb-2 flex justify-center">
+            <div className='mb-2 flex justify-center'>
                 <input
-                    type="text"
-                    placeholder="Search by Subject Name or Code"
-                    className="border border-gray-300 px-4 py-2 rounded-lg shadow-md w-full max-w-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    type='text'
+                    placeholder='Search by Subject Name or Code'
+                    className='border border-gray-300 px-4 py-2 rounded-lg shadow-md w-full max-w-lg focus:outline-none focus:ring-2 focus:ring-sky-500'
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -148,20 +149,20 @@ function Subjects() {
 
             {/* Subjects Table */}
             {activeSemester && filteredSubjects[activeSemester]?.length > 0 ? (
-                <div className="overflow-x-auto lg:mx-20 xl:mx-40 min-h-screen">
-                    <table className="table-auto w-full bg-white rounded-lg shadow-md overflow-hidden">
-                        <thead className="bg-sky-500 text-white">
+                <div className='overflow-x-auto lg:mx-20 xl:mx-40 min-h-screen'>
+                    <table className='table-auto w-full bg-white rounded-lg shadow-md overflow-hidden'>
+                        <thead className='bg-sky-500 text-white'>
                             <tr>
-                                <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
+                                <th className='border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left'>
                                     Subject Name
                                 </th>
-                                <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
+                                <th className='border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left'>
                                     Code
                                 </th>
-                                <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left">
+                                <th className='border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-left'>
                                     Total Notes / Pyqs
                                 </th>
-                                <th className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-center">
+                                <th className='border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-center'>
                                     Actions
                                 </th>
                             </tr>
@@ -170,22 +171,22 @@ function Subjects() {
                             {filteredSubjects[activeSemester].map((subject) => (
                                 <tr
                                     key={subject._id}
-                                    className="hover:bg-gray-100"
+                                    className='hover:bg-gray-100'
                                 >
-                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                    <td className='border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2'>
                                         {subject.subjectName}
                                     </td>
-                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                    <td className='border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2'>
                                         {subject.subjectCode}
                                     </td>
-                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2">
+                                    <td className='border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2'>
                                         {subject.totalNotes || 0} /{' '}
                                         {subject.totalPyqs || 0}
                                     </td>
-                                    <td className="border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-center">
+                                    <td className='border border-gray-300 px-2 text-xs sm:text-lg sm:px-4 py-2 text-center'>
                                         <Link
                                             to={`notes/${subject.subjectCode.toLowerCase()}`}
-                                            className="px-1 sm:px-3 py-1 bg-sky-500 text-white rounded hover:bg-sky-600 transition-colors duration-200 mx-1"
+                                            className='px-1 sm:px-3 py-1 bg-sky-500 text-white rounded hover:bg-sky-600 transition-colors duration-200 mx-1'
                                             aria-label={`View Notes for ${subject.subjectName}`}
                                         >
                                             Notes
@@ -193,7 +194,7 @@ function Subjects() {
                                         <Link
                                             to={`pyqs/${subject.subjectCode.toLowerCase()}`}
                                             state={{ subjectId: subject._id }}
-                                            className="px-1 sm:px-3 py-1 bg-sky-500 text-white rounded hover:bg-sky-600 transition-colors duration-200 mx-1"
+                                            className='px-1 sm:px-3 py-1 bg-sky-500 text-white rounded hover:bg-sky-600 transition-colors duration-200 mx-1'
                                             aria-label={`View PYQs for ${subject.subjectName}`}
                                         >
                                             Pyqs
@@ -205,7 +206,7 @@ function Subjects() {
                     </table>
                 </div>
             ) : (
-                <p className="text-center text-gray-600">
+                <p className='text-center text-gray-600'>
                     No subjects available for Semester {activeSemester}.
                 </p>
             )}

@@ -235,6 +235,7 @@ function SubjectNotes() {
     if (loadingSubjectNotes) {
         return (
             <div className='flex justify-center items-center min-h-screen'>
+                <DetailPageNavbar path={`college/${collegeName}/resources`} />
                 <i className='fas fa-spinner fa-pulse text-4xl text-sky-500'></i>
             </div>
         );
