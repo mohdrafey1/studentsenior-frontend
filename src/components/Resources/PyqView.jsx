@@ -75,25 +75,32 @@ const LazyPDFPage = ({ pdf, pageNum, scale = 1.5 }) => {
     );
 };
 
-// Ad component
 const AdPlacement = ({ id }) => {
+    useEffect(() => {
+        // Load the ad script and push the ad after component mounts
+        if (window.adsbygoogle) {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+        }
+    }, []);
+
     return (
         <div className="ad-container my-4 p-4 bg-gray-100 rounded-lg border border-gray-300 text-center">
-            {/* Replace this with your actual ad code or component */}
             <div id={`ad-${id}`} style={{ minHeight: '90px' }}>
-                {/* Example: Google AdSense */}
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                {/* Google AdSense */}
+                <script
+                    async
+                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4435788387381825"
+                    crossOrigin="anonymous"
+                />
+                {/* Ad unit */}
                 <ins
                     className="adsbygoogle"
                     style={{ display: 'block' }}
                     data-ad-client="ca-pub-4435788387381825"
-                    data-ad-slot={`8136832666`}
+                    data-ad-slot="8136832666"
                     data-ad-format="auto"
                     data-full-width-responsive="true"
-                ></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({ });
-                </script>
+                />
             </div>
             <p className="text-xs text-gray-500 mt-1">Advertisement</p>
         </div>
