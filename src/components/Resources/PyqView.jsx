@@ -75,37 +75,64 @@ const LazyPDFPage = ({ pdf, pageNum, scale = 1.5 }) => {
     );
 };
 
-const AdPlacement = ({ id }) => {
+
+function AdPlacement({ id }) {
+    const adContainerRef = useRef(null);
+
     useEffect(() => {
-        // Load the ad script and push the ad after component mounts
-        if (window.adsbygoogle) {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
+        const adScriptSrc =
+            'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4435788387381825';
+
+        const initializeAd = () => {
+            try {
+                (window.adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (e) {
+                console.error('AdSense error:', e);
+            }
+        };
+
+        const existingScript = document.querySelector(`script[src="${adScriptSrc}"]`);
+
+        if (!existingScript) {
+            const script = document.createElement('script');
+            script.src = adScriptSrc;
+            script.async = true;
+            script.crossOrigin = 'anonymous';
+            script.onload = initializeAd;
+            document.head.appendChild(script);
+        } else {
+            initializeAd();
         }
-    }, []);
+
+        return () => {
+            if (adContainerRef.current) {
+                adContainerRef.current.innerHTML = '';
+            }
+        };
+    }, [id]);
 
     return (
-        <div className="ad-container my-4 p-4 bg-gray-100 rounded-lg border border-gray-300 text-center">
-            <div id={`ad-${id}`} style={{ minHeight: '90px' }}>
-                {/* Google AdSense */}
-                <script
-                    async
-                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4435788387381825"
-                    crossOrigin="anonymous"
-                />
-                {/* Ad unit */}
-                <ins
-                    className="adsbygoogle"
-                    style={{ display: 'block' }}
-                    data-ad-client="ca-pub-4435788387381825"
-                    data-ad-slot="8136832666"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"
-                />
-            </div>
-            <p className="text-xs text-gray-500 mt-1">Advertisement</p>
+        <div
+            ref={adContainerRef}
+            className="ad-container my-4 p-4 bg-gray-100 rounded-lg border border-gray-300 text-center"
+            style={{ minWidth: '300px' }}
+            data-testid={`ad-container-${id}`}
+        >
+            <ins
+                className="adsbygoogle"
+                style={{ display: 'block' }}
+                data-ad-client="ca-pub-4435788387381825"
+                data-ad-slot="8136832666"
+                data-ad-format="auto"
+                data-full-width-responsive="true"
+            />
+            <p className="text-xs text-gray-500 mt-1" data-testid="ad-label">
+                Advertisement
+            </p>
         </div>
     );
-};
+}
+
 
 function PyqView() {
     const { courseCode, branchCode, subjectCode, slug, collegeName } =
