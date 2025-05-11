@@ -75,6 +75,65 @@ const LazyPDFPage = ({ pdf, pageNum, scale = 1.5 }) => {
     );
 };
 
+
+function AdPlacement({ id }) {
+    const adContainerRef = useRef(null);
+
+    useEffect(() => {
+        const adScriptSrc =
+            'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4435788387381825';
+
+        const initializeAd = () => {
+            try {
+                (window.adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (e) {
+                console.error('AdSense error:', e);
+            }
+        };
+
+        const existingScript = document.querySelector(`script[src="${adScriptSrc}"]`);
+
+        if (!existingScript) {
+            const script = document.createElement('script');
+            script.src = adScriptSrc;
+            script.async = true;
+            script.crossOrigin = 'anonymous';
+            script.onload = initializeAd;
+            document.head.appendChild(script);
+        } else {
+            initializeAd();
+        }
+
+        return () => {
+            if (adContainerRef.current) {
+                adContainerRef.current.innerHTML = '';
+            }
+        };
+    }, [id]);
+
+    return (
+        <div
+            ref={adContainerRef}
+            className="ad-container my-4 p-4 bg-gray-100 rounded-lg border border-gray-300 text-center"
+            style={{ minWidth: '300px' }}
+            data-testid={`ad-container-${id}`}
+        >
+            <ins
+                className="adsbygoogle"
+                style={{ display: 'block' }}
+                data-ad-client="ca-pub-4435788387381825"
+                data-ad-slot="8136832666"
+                data-ad-format="auto"
+                data-full-width-responsive="true"
+            />
+            <p className="text-xs text-gray-500 mt-1" data-testid="ad-label">
+                Advertisement
+            </p>
+        </div>
+    );
+}
+
+
 function PyqView() {
     const { courseCode, branchCode, subjectCode, slug, collegeName } =
         useParams();
@@ -354,8 +413,8 @@ function PyqView() {
                             {pdfDoc ? (
                                 <>
                                     {pyq.isPaid &&
-                                    pyq.owner._id !== ownerId &&
-                                    !pyq.purchasedBy.includes(ownerId) ? (
+                                        pyq.owner._id !== ownerId &&
+                                        !pyq.purchasedBy.includes(ownerId) ? (
                                         // If the PYQ is paid and user is not owner or buyer, show only the first 2 pages
                                         <>
                                             {Array.from({
@@ -364,12 +423,15 @@ function PyqView() {
                                                     pdfDoc.numPages
                                                 ),
                                             }).map((_, index) => (
-                                                <LazyPDFPage
-                                                    key={index}
-                                                    pdf={pdfDoc}
-                                                    pageNum={index + 1}
-                                                    scale={1.5}
-                                                />
+                                                <React.Fragment key={index}>
+                                                    <LazyPDFPage
+                                                        pdf={pdfDoc}
+                                                        pageNum={index + 1}
+                                                        scale={1.5}
+                                                    />
+                                                    {/* Show ad after first page */}
+                                                    {/* will implement if needed */}
+                                                </React.Fragment>
                                             ))}
                                             <div className='text-center mt-5'>
                                                 <button
@@ -388,14 +450,21 @@ function PyqView() {
                                         Array.from({
                                             length: pdfDoc.numPages,
                                         }).map((_, index) => (
-                                            <LazyPDFPage
-                                                key={index}
-                                                pdf={pdfDoc}
-                                                pageNum={index + 1}
-                                                scale={1.5}
-                                            />
+                                            <React.Fragment key={index}>
+                                                <LazyPDFPage
+                                                    pdf={pdfDoc}
+                                                    pageNum={index + 1}
+                                                    scale={1.5}
+                                                />
+                                                {/* Show ads after every 3 pages */}
+                                                {(index + 1) % 5 === 0 && (
+                                                    <AdPlacement id={`page-${index}`} />
+                                                )}
+                                            </React.Fragment>
                                         ))
                                     )}
+                                    {/* Bottom ad after all pages */}
+                                    <AdPlacement id="bottom" />
                                 </>
                             ) : (
                                 <p>Loading PDF...</p>
@@ -427,11 +496,10 @@ function PyqView() {
                                                 onClick={
                                                     fetchSignedUrlForDownload
                                                 }
-                                                className={`bg-yellow-500 text-white px-4 py-2 mt-5 rounded-md hover:bg-yellow-600 ${
-                                                    loadingPreview
-                                                        ? 'cursor-wait'
-                                                        : ''
-                                                }`}
+                                                className={`bg-yellow-500 text-white px-4 py-2 mt-5 rounded-md hover:bg-yellow-600 ${loadingPreview
+                                                    ? 'cursor-wait'
+                                                    : ''
+                                                    }`}
                                                 disabled={loadingPreview}
                                             >
                                                 {loadingPreview ? (
