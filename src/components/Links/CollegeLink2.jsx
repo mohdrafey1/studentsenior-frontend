@@ -28,9 +28,9 @@ const Collegelink2 = () => {
             text: 'Store',
         },
         {
-            to: `/college/${collegeName}/community`,
-            icon: 'fa-solid fa-users',
-            text: 'Community',
+            to: `/college/${collegeName}/pyq`,
+            icon: 'fa-solid fa-note-sticky',
+            text: 'PYQs',
         },
     ];
 
@@ -56,10 +56,11 @@ const Collegelink2 = () => {
             text: 'Lost Found',
         },
         {
-            to: `/college/${collegeName}/pyq`,
-            icon: 'fa-solid fa-note-sticky',
-            text: 'PYQs',
+            to: `/college/${collegeName}/community`,
+            icon: 'fa-solid fa-users',
+            text: 'Community',
         },
+
         {
             to: `/college/${collegeName}/notes`,
             icon: 'fa-solid fa-note-sticky',

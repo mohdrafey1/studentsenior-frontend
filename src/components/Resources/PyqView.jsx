@@ -16,6 +16,7 @@ import {
 } from '../../utils/purchaseUtils.js';
 import useApiRequest from '../../hooks/useApiRequest.js';
 import { PYQ_DOWNLOAD_TIMER } from '../../config/constant.js';
+import useRequireLogin from '../../hooks/useRequireLogin.js';
 
 // Set up PDF.js worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
@@ -75,7 +76,6 @@ const LazyPDFPage = ({ pdf, pageNum, scale = 1.5 }) => {
     );
 };
 
-
 function AdPlacement({ id }) {
     const adContainerRef = useRef(null);
 
@@ -91,7 +91,9 @@ function AdPlacement({ id }) {
             }
         };
 
-        const existingScript = document.querySelector(`script[src="${adScriptSrc}"]`);
+        const existingScript = document.querySelector(
+            `script[src="${adScriptSrc}"]`
+        );
 
         if (!existingScript) {
             const script = document.createElement('script');
@@ -114,27 +116,28 @@ function AdPlacement({ id }) {
     return (
         <div
             ref={adContainerRef}
-            className="ad-container my-4 p-4 bg-gray-100 rounded-lg border border-gray-300 text-center"
+            className='ad-container my-4 p-4 bg-gray-100 rounded-lg border border-gray-300 text-center'
             style={{ minWidth: '300px' }}
             data-testid={`ad-container-${id}`}
         >
             <ins
-                className="adsbygoogle"
+                className='adsbygoogle'
                 style={{ display: 'block' }}
-                data-ad-client="ca-pub-4435788387381825"
-                data-ad-slot="8136832666"
-                data-ad-format="auto"
-                data-full-width-responsive="true"
+                data-ad-client='ca-pub-4435788387381825'
+                data-ad-slot='8136832666'
+                data-ad-format='auto'
+                data-full-width-responsive='true'
             />
-            <p className="text-xs text-gray-500 mt-1" data-testid="ad-label">
+            <p className='text-xs text-gray-500 mt-1' data-testid='ad-label'>
                 Advertisement
             </p>
         </div>
     );
 }
 
-
 function PyqView() {
+    const requireLogin = useRequireLogin();
+
     const { courseCode, branchCode, subjectCode, slug, collegeName } =
         useParams();
     const [pyq, setPyq] = useState(null);
@@ -282,29 +285,35 @@ function PyqView() {
 
     // Download Button Logic
     const handleDownloadClick = () => {
-        setCanDownload(false);
-        setShowCountdown(true);
-        let timer = countdown;
-        const interval = setInterval(() => {
-            timer -= 1;
-            setCountdown(timer);
-            if (timer === 0) {
-                clearInterval(interval);
-                setCanDownload(true);
-                setShowCountdown(false);
-                setCountdown(45);
-            }
-        }, 1000);
+        requireLogin(() => {
+            setCanDownload(false);
+            setShowCountdown(true);
+            let timer = countdown;
+            const interval = setInterval(() => {
+                timer -= 1;
+                setCountdown(timer);
+                if (timer === 0) {
+                    clearInterval(interval);
+                    setCanDownload(true);
+                    setShowCountdown(false);
+                    setCountdown(PYQ_DOWNLOAD_TIMER);
+                }
+            }, 1000);
+        });
     };
-
     const navigate = useNavigate();
 
-    const handleConfirmPurchase = async () => {
-        handleConfirmPurchaseUtil(selectedPyq, api.newPyqs, navigate, () =>
-            setBuyNowModalOpen(false)
-        );
-        await fetchpyq();
-        window.location.reload();
+    const handleConfirmPurchase = () => {
+        requireLogin(async () => {
+            await handleConfirmPurchaseUtil(
+                selectedPyq,
+                api.newPyqs,
+                navigate,
+                () => setBuyNowModalOpen(false)
+            );
+            await fetchpyq();
+            window.location.reload();
+        });
     };
 
     const { apiRequest } = useApiRequest();
@@ -413,8 +422,8 @@ function PyqView() {
                             {pdfDoc ? (
                                 <>
                                     {pyq.isPaid &&
-                                        pyq.owner._id !== ownerId &&
-                                        !pyq.purchasedBy.includes(ownerId) ? (
+                                    pyq.owner._id !== ownerId &&
+                                    !pyq.purchasedBy.includes(ownerId) ? (
                                         // If the PYQ is paid and user is not owner or buyer, show only the first 2 pages
                                         <>
                                             {Array.from({
@@ -458,13 +467,15 @@ function PyqView() {
                                                 />
                                                 {/* Show ads after every 3 pages */}
                                                 {(index + 1) % 5 === 0 && (
-                                                    <AdPlacement id={`page-${index}`} />
+                                                    <AdPlacement
+                                                        id={`page-${index}`}
+                                                    />
                                                 )}
                                             </React.Fragment>
                                         ))
                                     )}
                                     {/* Bottom ad after all pages */}
-                                    <AdPlacement id="bottom" />
+                                    <AdPlacement id='bottom' />
                                 </>
                             ) : (
                                 <p>Loading PDF...</p>
@@ -496,10 +507,11 @@ function PyqView() {
                                                 onClick={
                                                     fetchSignedUrlForDownload
                                                 }
-                                                className={`bg-yellow-500 text-white px-4 py-2 mt-5 rounded-md hover:bg-yellow-600 ${loadingPreview
-                                                    ? 'cursor-wait'
-                                                    : ''
-                                                    }`}
+                                                className={`bg-yellow-500 text-white px-4 py-2 mt-5 rounded-md hover:bg-yellow-600 ${
+                                                    loadingPreview
+                                                        ? 'cursor-wait'
+                                                        : ''
+                                                }`}
                                                 disabled={loadingPreview}
                                             >
                                                 {loadingPreview ? (

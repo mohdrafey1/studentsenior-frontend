@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSavedCollection } from '../redux/slices/savedCollectionSlice';
 import { useSaveResource } from '../hooks/useSaveResource';
@@ -45,7 +45,7 @@ const SavedCollection = () => {
                 No items found
             </h3>
             <p className='text-gray-500 max-w-md'>
-                You don't have any items in this collection yet.
+                You dont have any items in this collection yet.
             </p>
         </div>
     );
@@ -105,7 +105,7 @@ const SavedCollection = () => {
                             {pyq.isPaid && (
                                 <div className='mt-1'>
                                     <span className='bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded'>
-                                        ₹{pyq.price}
+                                        ₹{pyq.price / 5}
                                     </span>
                                 </div>
                             )}

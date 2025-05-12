@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { api, API_KEY } from '../../config/apiConfiguration.js';
 import { toast } from 'react-toastify';
@@ -16,6 +16,7 @@ import {
 } from '../../utils/purchaseUtils.js';
 import useApiRequest from '../../hooks/useApiRequest.js';
 import { NOTE_DOWNLOAD_TIMER } from '../../config/constant.js';
+import useRequireLogin from '../../hooks/useRequireLogin.js';
 
 // Set up PDF.js worker (adjust the path if you host it yourself)
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
@@ -79,6 +80,8 @@ const LazyPDFPage = ({ pdf, pageNum, scale = 1.5 }) => {
 };
 
 function NotesView() {
+    const requireLogin = useRequireLogin();
+
     const { courseCode, branchCode, subjectCode, slug, collegeName } =
         useParams();
     const [note, setNote] = useState(null);
@@ -228,32 +231,36 @@ function NotesView() {
 
     // Download countdown logic.
     const handleDownloadClick = () => {
-        if (showCountdown) return;
-        setCanDownload(false);
-        setShowCountdown(true);
-        let timer = countdown;
-        const interval = setInterval(() => {
-            timer -= 1;
-            setCountdown(timer);
-            if (timer === 0) {
-                clearInterval(interval);
-                setCanDownload(true);
-                setShowCountdown(false);
-            }
-        }, 1000);
+        requireLogin(() => {
+            if (showCountdown) return;
+            setCanDownload(false);
+            setShowCountdown(true);
+            let timer = countdown;
+            const interval = setInterval(() => {
+                timer -= 1;
+                setCountdown(timer);
+                if (timer === 0) {
+                    clearInterval(interval);
+                    setCanDownload(true);
+                    setShowCountdown(false);
+                }
+            }, 1000);
+        });
     };
 
     const navigate = useNavigate(); //need to search jugaad
 
-    const handleConfirmPurchase = async () => {
-        handleConfirmPurchaseUtil(
-            selectedNote,
-            api.subjectNotes,
-            navigate,
-            () => setBuyNowModalOpen(false)
-        );
-        await fetchNote();
-        window.location.reload();
+    const handleConfirmPurchase = () => {
+        requireLogin(async () => {
+            handleConfirmPurchaseUtil(
+                selectedNote,
+                api.subjectNotes,
+                navigate,
+                () => setBuyNowModalOpen(false)
+            );
+            await fetchNote();
+            window.location.reload();
+        });
     };
 
     const { apiRequest } = useApiRequest();
