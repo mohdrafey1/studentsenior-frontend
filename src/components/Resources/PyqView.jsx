@@ -319,12 +319,14 @@ function PyqView() {
     const { apiRequest } = useApiRequest();
 
     const handleOnlinePayment = () => {
-        handleOnlinePaymentUtil(
-            selectedPyq,
-            apiRequest,
-            window.location.href,
-            'pyq_purchase'
-        );
+        requireLogin(() => {
+            handleOnlinePaymentUtil(
+                selectedPyq,
+                apiRequest,
+                window.location.href,
+                'pyq_purchase'
+            );
+        });
     };
 
     useEffect(() => {

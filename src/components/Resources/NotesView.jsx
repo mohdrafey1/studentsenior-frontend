@@ -266,12 +266,14 @@ function NotesView() {
     const { apiRequest } = useApiRequest();
 
     const handleOnlinePayment = () => {
-        handleOnlinePaymentUtil(
-            selectedNote,
-            apiRequest,
-            window.location.href,
-            'note_purchase'
-        );
+        requireLogin(() => {
+            handleOnlinePaymentUtil(
+                selectedNote,
+                apiRequest,
+                window.location.href,
+                'note_purchase'
+            );
+        });
     };
 
     useEffect(() => {
