@@ -1,4 +1,3 @@
-import React from 'react';
 import { Route, Routes, Navigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -34,7 +33,6 @@ import SubjectPyqs from './components/Resources/SubjectPyqs';
 import NotesView from './components/Resources/NotesView';
 import PyqView from './components/Resources/PyqView';
 import OpportunityDetails from './DetailPages/OpportunityDetails';
-import DonationPage from './others/DonationPage';
 import AddPointsPage from './components/AddPoints/AddPointsPage';
 import RefundPolicy from './others/RefundPolicy';
 import TermsAndConditions from './others/TermsAndConditions';
@@ -226,6 +224,23 @@ const RoutesComponent = () => {
                 }
             />
 
+            <Route
+                path='/:collegeName/resources/:courseCode/:branchCode/notes/:subjectCode/:slug'
+                element={
+                    <ValidateCollegeRoute>
+                        <NotesView />
+                    </ValidateCollegeRoute>
+                }
+            />
+            <Route
+                path='/:collegeName/resources/:courseCode/:branchCode/pyqs/:subjectCode/:slug'
+                element={
+                    <ValidateCollegeRoute>
+                        <PyqView />
+                    </ValidateCollegeRoute>
+                }
+            />
+
             {/* Static Routes */}
             <Route path='/becomesenior' element={<AddSenior />} />
             <Route path='/add-college' element={<AddCollege />} />
@@ -244,22 +259,6 @@ const RoutesComponent = () => {
                 <Route path='/collections' element={<SavedCollection />} />
                 <Route path='/profile' element={<Profile />} />
                 <Route path='/add-points' element={<AddPointsPage />} />
-                <Route
-                    path='/:collegeName/resources/:courseCode/:branchCode/notes/:subjectCode/:slug'
-                    element={
-                        <ValidateCollegeRoute>
-                            <NotesView />
-                        </ValidateCollegeRoute>
-                    }
-                />
-                <Route
-                    path='/:collegeName/resources/:courseCode/:branchCode/pyqs/:subjectCode/:slug'
-                    element={
-                        <ValidateCollegeRoute>
-                            <PyqView />
-                        </ValidateCollegeRoute>
-                    }
-                />
             </Route>
 
             {/* Other Pages */}
@@ -279,8 +278,6 @@ const RoutesComponent = () => {
             <Route path='/cart' element={<Cart />} />
 
             <Route path='/payment-complete' element={<PaymentComplete />} />
-
-            {/* <Route path="/donation" element={<DonationPage />} /> */}
 
             {/* Catch-all for undefined routes */}
             <Route path='*' element={<NotFoundPage />} />

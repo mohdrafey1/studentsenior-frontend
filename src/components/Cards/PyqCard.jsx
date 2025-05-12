@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSavedCollection } from '../../redux/slices/savedCollectionSlice';
@@ -196,93 +196,66 @@ function PyqCard({ Pyqs = [] }) {
                         {/* Card Footer */}
                         <div className='px-4 py-3 bg-gray-50 border-t border-gray-100'>
                             <div className='flex items-center justify-between'>
-                                {isAuthenticated ? (
-                                    <Link
-                                        to={pyqUrl}
-                                        className={`w-4/5 flex items-center justify-center py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-                                            pyq.isPaid
-                                                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 shadow-md hover:shadow-lg'
-                                                : 'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg'
-                                        }`}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                        }}
-                                    >
-                                        {pyq.isPaid ? (
-                                            <>
-                                                <svg
-                                                    className='w-4 h-4 mr-2 flex-shrink-0'
-                                                    fill='none'
-                                                    stroke='currentColor'
-                                                    viewBox='0 0 24 24'
-                                                    xmlns='http://www.w3.org/2000/svg'
-                                                >
-                                                    <path
-                                                        strokeLinecap='round'
-                                                        strokeLinejoin='round'
-                                                        strokeWidth='2'
-                                                        d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
-                                                    ></path>
-                                                </svg>
-                                                <span className='whitespace-nowrap'>
-                                                    View Premium PYQ
-                                                </span>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <svg
-                                                    className='w-4 h-4 mr-2 flex-shrink-0'
-                                                    fill='none'
-                                                    stroke='currentColor'
-                                                    viewBox='0 0 24 24'
-                                                    xmlns='http://www.w3.org/2000/svg'
-                                                >
-                                                    <path
-                                                        strokeLinecap='round'
-                                                        strokeLinejoin='round'
-                                                        strokeWidth='2'
-                                                        d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'
-                                                    ></path>
-                                                    <path
-                                                        strokeLinecap='round'
-                                                        strokeLinejoin='round'
-                                                        strokeWidth='2'
-                                                        d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'
-                                                    ></path>
-                                                </svg>
-                                                <span className='whitespace-nowrap'>
-                                                    View PYQ
-                                                </span>
-                                            </>
-                                        )}
-                                    </Link>
-                                ) : (
-                                    <button
-                                        className='w-4/5 flex items-center justify-center py-2 px-3 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors shadow-sm hover:shadow'
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleCardClick(pyqUrl, e);
-                                        }}
-                                    >
-                                        <svg
-                                            className='w-4 h-4 mr-2 flex-shrink-0'
-                                            fill='none'
-                                            stroke='currentColor'
-                                            viewBox='0 0 24 24'
-                                            xmlns='http://www.w3.org/2000/svg'
-                                        >
-                                            <path
-                                                strokeLinecap='round'
-                                                strokeLinejoin='round'
-                                                strokeWidth='2'
-                                                d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
-                                            ></path>
-                                        </svg>
-                                        <span className='whitespace-nowrap'>
-                                            Sign in to view
-                                        </span>
-                                    </button>
-                                )}
+                                <Link
+                                    to={pyqUrl}
+                                    className={`w-4/5 flex items-center justify-center py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                                        pyq.isPaid
+                                            ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 shadow-md hover:shadow-lg'
+                                            : 'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg'
+                                    }`}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                    }}
+                                >
+                                    {pyq.isPaid ? (
+                                        <>
+                                            <svg
+                                                className='w-4 h-4 mr-2 flex-shrink-0'
+                                                fill='none'
+                                                stroke='currentColor'
+                                                viewBox='0 0 24 24'
+                                                xmlns='http://www.w3.org/2000/svg'
+                                            >
+                                                <path
+                                                    strokeLinecap='round'
+                                                    strokeLinejoin='round'
+                                                    strokeWidth='2'
+                                                    d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
+                                                ></path>
+                                            </svg>
+                                            <span className='whitespace-nowrap'>
+                                                View Premium PYQ
+                                            </span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <svg
+                                                className='w-4 h-4 mr-2 flex-shrink-0'
+                                                fill='none'
+                                                stroke='currentColor'
+                                                viewBox='0 0 24 24'
+                                                xmlns='http://www.w3.org/2000/svg'
+                                            >
+                                                <path
+                                                    strokeLinecap='round'
+                                                    strokeLinejoin='round'
+                                                    strokeWidth='2'
+                                                    d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'
+                                                ></path>
+                                                <path
+                                                    strokeLinecap='round'
+                                                    strokeLinejoin='round'
+                                                    strokeWidth='2'
+                                                    d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'
+                                                ></path>
+                                            </svg>
+                                            <span className='whitespace-nowrap'>
+                                                View PYQ
+                                            </span>
+                                        </>
+                                    )}
+                                </Link>
+
                                 <button
                                     className='w-1/6 h-10 flex items-center justify-center py-2 px-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors shadow-sm hover:shadow'
                                     onClick={(e) => {

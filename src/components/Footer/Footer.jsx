@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -9,7 +8,7 @@ const Footer = () => {
             icon: 'fa-brands fa-telegram',
         },
         {
-            href: 'https://www.linkedin.com/in/mohd-rafey/',
+            href: 'https://www.linkedin.com/company/student-senior',
             ariaLabel: 'LinkedIn',
             icon: 'fa-brands fa-linkedin',
         },
@@ -31,7 +30,6 @@ const Footer = () => {
     ];
 
     const footerLinks = [
-        // { to: '/donation', text: 'Donate' },
         { to: '/contact-us', text: 'Contact Us' },
         { to: '/about-us', text: 'About Us' },
         { to: '/privacy-policy', text: 'Privacy Policy' },
