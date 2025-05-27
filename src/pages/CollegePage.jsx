@@ -14,7 +14,6 @@ import Seo from '../components/SEO/Seo.jsx';
 import { api } from '../config/apiConfiguration.js';
 import useApiFetch from '../hooks/useApiFetch.js';
 import { capitalizeWords } from '../utils/Capitalize.js';
-import Popup from '../components/Popup/Popup.jsx';
 
 const CollegePage = () => {
     const { collegeName } = useParams();
@@ -47,7 +46,7 @@ const CollegePage = () => {
                     desc={collegeData?.description || ' '}
                 />
                 <Collegelinks />
-                <Popup />
+               
             </CollegeHero>
             <FeaturedSeniors />
             <hr />
