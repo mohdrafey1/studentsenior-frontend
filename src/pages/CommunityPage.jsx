@@ -16,6 +16,7 @@ import { fetchPosts } from '../redux/slices/postSlice';
 import useRequireLogin from '../hooks/useRequireLogin';
 import Seo from '../components/SEO/Seo';
 import Button from '../ui/Button';
+import { CompactSpinner } from '../ui/Spinner';
 
 const CommunityPage = () => {
     const navigate = useNavigate();
@@ -215,30 +216,30 @@ const CommunityPage = () => {
     };
 
     return (
-        <div className="container bg-gradient-to-t from-sky-200 to-white min-h-screen min-w-full">
+        <div className='container bg-gradient-to-t from-sky-200 to-white min-h-screen min-w-full'>
             <CollegeLinks />
-            <div className="max-w-7xl mx-auto p-5">
-                <h1 className="text-lg sm:text-3xl font-bold mb-2 text-center">
+            <div className='max-w-7xl mx-auto p-5'>
+                <h1 className='text-lg sm:text-3xl font-bold mb-2 text-center'>
                     Community - {capitalizeWords(collegeName)}
                 </h1>
-                <p className="italic text-center text-xs sm:text-base">
+                <p className='italic text-center text-xs sm:text-base'>
                     "Connect, share, and ask your questions and doubts through
                     the community."
                 </p>
                 <Seo
                     title={`Community - ${capitalizeWords(collegeName)}`}
-                    desc="Connect, share, and ask your questions and doubts through the community."
+                    desc='Connect, share, and ask your questions and doubts through the community.'
                 />
                 <br />
-                <div className="mb-5 text-center">
+                <div className='mb-5 text-center'>
                     <Button onClick={openModal}>Add Post</Button>
                 </div>
 
                 {/* Add Post Modal */}
                 {showModal && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-                            <h2 className="text-xl mb-4">Create New Post</h2>
+                    <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50'>
+                        <div className='bg-white p-6 rounded-lg shadow-lg max-w-md w-full'>
+                            <h2 className='text-xl mb-4'>Create New Post</h2>
                             <div
                                 style={{
                                     maxHeight: '500px',
@@ -253,34 +254,34 @@ const CommunityPage = () => {
                                     }
                                 />
                             </div>
-                            <div className="mt-4 flex gap-4">
+                            <div className='mt-4 flex gap-4'>
                                 <p>Post As Anonymous</p>
-                                <label className="relative inline-flex items-center cursor-pointer">
+                                <label className='relative inline-flex items-center cursor-pointer'>
                                     <input
-                                        type="checkbox"
+                                        type='checkbox'
                                         checked={isAnonymous}
                                         onChange={(e) =>
                                             setIsAnonymous(e.target.checked)
                                         }
-                                        className="sr-only peer"
+                                        className='sr-only peer'
                                     />
                                     <div className="w-9 h-6 bg-gray-200 hover:bg-gray-300 peer-focus:outline-0 peer-focus:ring-transparent rounded-full peer transition-all ease-in-out duration-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600 hover:peer-checked:bg-indigo-700"></div>
                                 </label>
                             </div>
-                            <div className="flex justify-end mt-4">
+                            <div className='flex justify-end mt-4'>
                                 <button
                                     onClick={closeModal}
-                                    className="mr-2 px-4 py-2 bg-gray-300 text-black rounded-md"
+                                    className='mr-2 px-4 py-2 bg-gray-300 text-black rounded-md'
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={addPost}
-                                    className="px-4 py-2 bg-sky-500 text-white rounded-md"
+                                    className='px-4 py-2 bg-sky-500 text-white rounded-md'
                                     disabled={loading}
                                 >
                                     {loading ? (
-                                        <i className="fa fa-spinner fa-spin"></i>
+                                        <i className='fa fa-spinner fa-spin'></i>
                                     ) : (
                                         'Add Post'
                                     )}
@@ -292,7 +293,7 @@ const CommunityPage = () => {
 
                 {/* Posts List */}
                 {posts.length > 0 ? (
-                    <div className="flex flex-wrap gap-4 justify-center">
+                    <div className='flex flex-wrap gap-4 justify-center'>
                         {posts.map((post) => (
                             <PostCard
                                 key={post._id}
@@ -321,11 +322,15 @@ const CommunityPage = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className="col-span-4 flex justify-center items-center py-10 w-full">
+                    <div className='col-span-4 flex justify-center items-center py-10 w-full'>
                         {postLoading ? (
-                            <i className="fas fa-spinner fa-pulse fa-5x"></i>
+                            <div className='col-span-full flex justify-center h-screen py-12 w-full'>
+                                <div className='text-center'>
+                                    <CompactSpinner />
+                                </div>
+                            </div>
                         ) : (
-                            <p className="text-gray-200  text-center">
+                            <p className='text-gray-200  text-center'>
                                 No Post to show.
                             </p>
                         )}
@@ -334,9 +339,9 @@ const CommunityPage = () => {
 
                 {/* Edit Post Modal */}
                 {showEditModal && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-                            <h2 className="text-xl mb-4">Edit Post</h2>
+                    <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50'>
+                        <div className='bg-white p-6 rounded-lg shadow-lg max-w-md w-full'>
+                            <h2 className='text-xl mb-4'>Edit Post</h2>
                             <div
                                 style={{
                                     maxHeight: '500px',
@@ -351,20 +356,20 @@ const CommunityPage = () => {
                                     }
                                 />
                             </div>
-                            <div className="flex justify-end mt-4">
+                            <div className='flex justify-end mt-4'>
                                 <button
                                     onClick={closeEditModal}
-                                    className="mr-2 px-4 py-2 bg-gray-300 text-black rounded-md"
+                                    className='mr-2 px-4 py-2 bg-gray-300 text-black rounded-md'
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={handleEditPost}
-                                    className="px-4 py-2 bg-sky-500 text-white rounded-md"
+                                    className='px-4 py-2 bg-sky-500 text-white rounded-md'
                                     disabled={editLoading}
                                 >
                                     {editLoading ? (
-                                        <i className="fa fa-spinner fa-spin"></i>
+                                        <i className='fa fa-spinner fa-spin'></i>
                                     ) : (
                                         'Update Post'
                                     )}
@@ -378,17 +383,17 @@ const CommunityPage = () => {
                 <Dialog
                     isOpen={showDeleteDialog}
                     onClose={handleCloseDialog}
-                    title="Delete Confirmation"
+                    title='Delete Confirmation'
                     footer={
-                        <div className="flex py-4 gap-3 lg:justify-end justify-center">
+                        <div className='flex py-4 gap-3 lg:justify-end justify-center'>
                             <button
-                                className="p-1 py-2 bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer"
+                                className='p-1 py-2 bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer'
                                 onClick={handleCloseDialog}
                             >
                                 Cancel
                             </button>
                             <button
-                                className="p-1 py-2 bg-red-600 rounded-lg px-4 text-sm font-semibold text-white cursor-pointer"
+                                className='p-1 py-2 bg-red-600 rounded-lg px-4 text-sm font-semibold text-white cursor-pointer'
                                 onClick={handleConfirmDelete}
                                 disabled={
                                     hookLoadingStates.deletePost[postIdToDelete]
@@ -397,12 +402,12 @@ const CommunityPage = () => {
                                 {hookLoadingStates.deletePost[
                                     postIdToDelete
                                 ] ? (
-                                    <i className="fa fa-spinner fa-spin"></i>
+                                    <i className='fa fa-spinner fa-spin'></i>
                                 ) : (
                                     <>
                                         <span>Confirm</span>
                                         &nbsp;
-                                        <i className="fa-solid fa-trash fa-xl"></i>
+                                        <i className='fa-solid fa-trash fa-xl'></i>
                                     </>
                                 )}
                             </button>
@@ -410,7 +415,7 @@ const CommunityPage = () => {
                     }
                 >
                     <p>Are you sure you want to delete this item?</p>
-                    <p className="text-sm text-gray-500">
+                    <p className='text-sm text-gray-500'>
                         This action cannot be undone.
                     </p>
                 </Dialog>
@@ -441,94 +446,95 @@ const PostCard = ({
     const latestComment = post.comments[post.comments.length - 1];
 
     return (
-        <div className="block max-w-sm p-6 w-full bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100">
-            <div className="flex justify-between">
-                <div className="flex items-center gap-2">
+        <div className='block max-w-sm p-6 w-full bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100'>
+            <div className='flex justify-between'>
+                <div className='flex items-center gap-2'>
                     {post.isAnonymous ? (
-                        <div className="flex items-center justify-center rounded-full w-8 h-8 bg-gray-300 text-white font-bold">
+                        <div className='flex items-center justify-center rounded-full w-8 h-8 bg-gray-300 text-white font-bold'>
                             A
                         </div>
                     ) : (
                         <img
                             src={post.author.profilePicture}
-                            alt="Author Profile"
-                            className="rounded-full w-8 h-8"
+                            alt='Author Profile'
+                            className='rounded-full w-8 h-8'
                         />
                     )}
-                    <h2 className="text-lg font-semibold">
+                    <h2 className='text-lg font-semibold'>
                         {post.isAnonymous
                             ? 'Anonymous'
                             : post.author.username.length >
-                                (post.author._id === ownerId ? 8 : 20)
-                                ? post.author.username.slice(
-                                    0,
-                                    post.author._id === ownerId ? 8 : 20
-                                ) + '...'
-                                : post.author.username}
+                              (post.author._id === ownerId ? 8 : 20)
+                            ? post.author.username.slice(
+                                  0,
+                                  post.author._id === ownerId ? 8 : 20
+                              ) + '...'
+                            : post.author.username}
                     </h2>
                 </div>
 
-                <div className="space-x-2">
+                <div className='space-x-2'>
                     {post.author._id === ownerId && (
                         <>
                             <button
                                 onClick={onEdit}
-                                className="text-yellow-500 px-2 rounded-lg"
-                                title="Edit Post"
+                                className='text-yellow-500 px-2 rounded-lg'
+                                title='Edit Post'
                             >
-                                <i className="fa-regular fa-pen-to-square fa-xl"></i>
+                                <i className='fa-regular fa-pen-to-square fa-xl'></i>
                             </button>
                             <button
                                 onClick={onDelete}
-                                className="text-red-500 px-2 rounded-lg"
-                                title="Delete Post"
+                                className='text-red-500 px-2 rounded-lg'
+                                title='Delete Post'
                             >
-                                <i className="fa-solid fa-trash fa-xl"></i>
+                                <i className='fa-solid fa-trash fa-xl'></i>
                             </button>
                         </>
                     )}
                     <button
-                        className="text-center text-blue-400 hover:text-blue-300"
+                        className='text-center text-blue-400 hover:text-blue-300'
                         onClick={onShare}
-                        title="Share Post"
+                        title='Share Post'
                     >
-                        <i className="fa-regular fa-share-from-square fa-xl"></i>
+                        <i className='fa-regular fa-share-from-square fa-xl'></i>
                     </button>
                 </div>
             </div>
 
-            <div className="mt-3">
+            <div className='mt-3'>
                 <Link to={`/college/${collegeName}/community/post/${post._id}`}>
                     <PostPreview post={post} />
                 </Link>
                 <button
-                    className={`mt-1 px-3 border-2 border-sky-500 rounded-lg ${post.likes.includes(ownerId)
-                        ? 'text-white bg-sky-500'
-                        : 'text-black'
-                        }`}
+                    className={`mt-1 px-3 border-2 border-sky-500 rounded-lg ${
+                        post.likes.includes(ownerId)
+                            ? 'text-white bg-sky-500'
+                            : 'text-black'
+                    }`}
                     onClick={onLike}
                     disabled={hookLoadingStates.likePost[post._id]}
                 >
                     {hookLoadingStates.likePost[post._id] ? (
-                        <i className="fa fa-spinner fa-spin"></i>
+                        <i className='fa fa-spinner fa-spin'></i>
                     ) : (
                         <>
-                            <i className="fa-regular fa-heart"></i> (
+                            <i className='fa-regular fa-heart'></i> (
                             {post.likes.length})
                         </>
                     )}
                 </button>
             </div>
 
-            <div className="mt-1">
-                <h3 className="text-lg font-semibold">
+            <div className='mt-1'>
+                <h3 className='text-lg font-semibold'>
                     Comments{' '}
                     {post.comments.length > 0
                         ? `(${post.comments.length})`
                         : null}{' '}
                     {post.comments.length > 0 && (
                         <button
-                            className="text-sm p-1 rounded-md text-sky-500"
+                            className='text-sm p-1 rounded-md text-sky-500'
                             onClick={onShowComments}
                         >
                             Show All
@@ -539,17 +545,18 @@ const PostCard = ({
                 {latestComment && (
                     <ul>
                         <li key={latestComment._id}>
-                            <p className="line-clamp-1">
+                            <p className='line-clamp-1'>
                                 {latestComment.content}
                             </p>
-                            <div className="flex items-center justify-between mt-2">
+                            <div className='flex items-center justify-between mt-2'>
                                 <button
-                                    className={`text-blue-500 ${likedComments.includes(
-                                        latestComment._id
-                                    )
-                                        ? 'opacity-50 cursor-not-allowed'
-                                        : ''
-                                        }`}
+                                    className={`text-blue-500 ${
+                                        likedComments.includes(
+                                            latestComment._id
+                                        )
+                                            ? 'opacity-50 cursor-not-allowed'
+                                            : ''
+                                    }`}
                                     onClick={() =>
                                         onLikeComment(latestComment._id)
                                     }
@@ -557,27 +564,27 @@ const PostCard = ({
                                         latestComment._id
                                     )}
                                 >
-                                    <i className="fa-regular fa-heart"></i> (
+                                    <i className='fa-regular fa-heart'></i> (
                                     {latestComment.likes})
                                 </button>
                                 {latestComment.author._id === ownerId && (
                                     <button
-                                        className="text-red-500"
+                                        className='text-red-500'
                                         onClick={() =>
                                             onDeleteComment(latestComment._id)
                                         }
                                         disabled={
                                             hookLoadingStates.deleteComment[
-                                            post._id
+                                                post._id
                                             ]
                                         }
                                     >
                                         {hookLoadingStates.deleteComment[
                                             post._id
                                         ] ? (
-                                            <i className="fa fa-spinner fa-spin"></i>
+                                            <i className='fa fa-spinner fa-spin'></i>
                                         ) : (
-                                            <i className="fa-solid fa-trash"></i>
+                                            <i className='fa-solid fa-trash'></i>
                                         )}
                                     </button>
                                 )}
@@ -586,7 +593,7 @@ const PostCard = ({
                     </ul>
                 )}
 
-                <div className="mt-3">
+                <div className='mt-3'>
                     <textarea
                         value={commentContent[post._id] || ''}
                         onChange={(e) =>
@@ -595,17 +602,17 @@ const PostCard = ({
                                 [post._id]: e.target.value,
                             })
                         }
-                        className="w-full p-2 border rounded-md"
-                        placeholder="Add a comment..."
+                        className='w-full p-2 border rounded-md'
+                        placeholder='Add a comment...'
                     />
                     {commentContent[post._id]?.trim() && (
                         <button
                             onClick={onAddComment}
-                            className="mt-2 px-4 py-2 bg-sky-500 text-white rounded-md"
+                            className='mt-2 px-4 py-2 bg-sky-500 text-white rounded-md'
                             disabled={hookLoadingStates.addComment[post._id]}
                         >
                             {hookLoadingStates.addComment[post._id] ? (
-                                <i className="fa fa-spinner fa-spin"></i>
+                                <i className='fa fa-spinner fa-spin'></i>
                             ) : (
                                 'Comment'
                             )}
@@ -630,10 +637,10 @@ const PostPreview = ({ post }) => {
     const previewContent = getPreviewText(post.content);
 
     return (
-        <div className="bg-sky-100 px-4 pt-2 pb-8 sm:pb-2 rounded-lg my-4 text-lg md:h-60 overflow-hidden relative">
-            <div className="post-content">
+        <div className='bg-sky-100 px-4 pt-2 pb-8 sm:pb-2 rounded-lg my-4 text-lg md:h-60 overflow-hidden relative'>
+            <div className='post-content'>
                 <p
-                    className="break-words"
+                    className='break-words'
                     style={{
                         display: '-webkit-box',
                         WebkitBoxOrient: 'vertical',
@@ -651,7 +658,7 @@ const PostPreview = ({ post }) => {
                 {post.content.length > 200 && (
                     <Link
                         to={`/college/${collegeName}/community/post/${post._id}`}
-                        className="text-blue-500 underline absolute bottom-2 right-2"
+                        className='text-blue-500 underline absolute bottom-2 right-2'
                     >
                         Read More
                     </Link>

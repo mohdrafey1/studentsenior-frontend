@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { CompactSpinner } from '../../ui/Spinner';
 
 function ProductsCard({
     products = [],
@@ -183,7 +184,7 @@ function ProductsCard({
                                 {isAvailable && (
                                     <Link
                                         to={productLink}
-                                        className='flex justify-center items-center w-full bg-blue-600 hover:bg-blue-700 text-white py-1.5 sm:py-2 px-3 sm:px-4 rounded-lg transition-colors duration-200 font-medium text-xs sm:text-sm'
+                                        className='flex justify-center items-center w-full bg-sky-600  text-white py-1.5 sm:py-2 px-3 sm:px-4 rounded-lg transition-colors duration-200 font-medium text-xs sm:text-sm'
                                     >
                                         View Details
                                     </Link>
@@ -201,10 +202,9 @@ function ProductsCard({
     const renderContent = () => {
         if (loadingFetch) {
             return (
-                <div className='col-span-full flex justify-center items-center py-12 w-full'>
+                <div className='col-span-full flex justify-center h-screen py-12 w-full'>
                     <div className='text-center'>
-                        <i className='fas fa-spinner fa-pulse fa-3x text-blue-600 mb-4'></i>
-                        <p className='text-gray-600'>Loading products...</p>
+                        <CompactSpinner />
                     </div>
                 </div>
             );

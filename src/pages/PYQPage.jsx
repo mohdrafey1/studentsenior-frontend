@@ -17,6 +17,7 @@ import Seo from '../components/SEO/Seo.jsx';
 import useRequireLogin from '../hooks/useRequireLogin.js';
 import { api } from '../config/apiConfiguration.js';
 import { toast } from 'react-toastify';
+import { CompactSpinner } from '../ui/Spinner.jsx';
 
 const PYQPage = () => {
     const { collegeName } = useParams();
@@ -229,7 +230,11 @@ const PYQPage = () => {
                 ) : (
                     <div className='col-span-4 flex justify-center items-center py-10 w-full'>
                         {loading ? (
-                            <i className='fas fa-spinner fa-pulse fa-5x'></i>
+                            <div className='col-span-full flex justify-center h-screen py-12 w-full'>
+                                <div className='text-center'>
+                                    <CompactSpinner />
+                                </div>
+                            </div>
                         ) : (
                             <div className='text-center p-4 bg-white rounded-lg shadow-3xl'>
                                 <p className='text-xl font-semibold text-gray-700'>

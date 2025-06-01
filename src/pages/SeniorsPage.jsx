@@ -14,6 +14,7 @@ import SeniorCard from '../components/Cards/SeniorCard.jsx';
 import { fetchSeniors } from '../redux/slices/seniorSlice.js';
 import Seo from '../components/SEO/Seo.jsx';
 import Button from '../ui/Button.jsx';
+import { CompactSpinner } from '../ui/Spinner.jsx';
 
 const SeniorPage = () => {
     const { collegeName } = useParams();
@@ -149,7 +150,11 @@ const SeniorPage = () => {
                     ) : (
                         <div className='col-span-4 flex justify-center items-center py-10 w-full'>
                             {loadingSeniors ? (
-                                <i className='fas fa-spinner fa-pulse fa-5x'></i>
+                                <div className='col-span-full flex justify-center h-screen py-12 w-full'>
+                                    <div className='text-center'>
+                                        <CompactSpinner />
+                                    </div>
+                                </div>
                             ) : (
                                 <p className='text-center text-gray-500 mt-5'>
                                     No Senior found for the selected filters.

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import CollegeHero from '../components/Hero/CollegeHero';
@@ -20,14 +20,14 @@ const CollegePage = () => {
     const collegeId = useCollegeId(collegeName);
     const dispatch = useDispatch();
     const [collegeData, setCollegeData] = useState({});
-    const { useFetch, loadingFetch } = useApiFetch();
+    const { useFetch } = useApiFetch();
     const url = api.college;
 
     useEffect(() => {
         fetchCollege();
         dispatch(fetchSeniors(collegeId));
         dispatch(fetchProducts(collegeId));
-    }, [collegeName]);
+    }, [dispatch, collegeName, collegeId]);
 
     const fetchCollege = async () => {
         try {
@@ -46,7 +46,6 @@ const CollegePage = () => {
                     desc={collegeData?.description || ' '}
                 />
                 <Collegelinks />
-               
             </CollegeHero>
             <FeaturedSeniors />
             <hr />

@@ -24,6 +24,7 @@ import { fetchUserData } from '../../redux/slices/userDataSlice.js';
 import Button from '../../ui/Button.jsx';
 import { fetchSavedCollection } from '../../redux/slices/savedCollectionSlice.js';
 import { useSaveResource } from '../../hooks/useSaveResource.js';
+import { CompactSpinner } from '../../ui/Spinner.jsx';
 
 function SubjectNotes() {
     const { collegeName, courseCode, subjectCode, branchCode } = useParams();
@@ -236,7 +237,11 @@ function SubjectNotes() {
         return (
             <div className='flex justify-center items-center min-h-screen'>
                 <DetailPageNavbar path={`college/${collegeName}/resources`} />
-                <i className='fas fa-spinner fa-pulse text-4xl text-sky-500'></i>
+                <div className='col-span-full flex justify-center h-screen py-12 w-full'>
+                    <div className='text-center'>
+                        <CompactSpinner />
+                    </div>
+                </div>
             </div>
         );
     }

@@ -45,26 +45,28 @@ function InstallPage() {
     return (
         <>
             {/* <Header /> */}
-            <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-t from-sky-200 to bg-white">
-                <h1 className="text-3xl font-bold mb-4">Install Our App</h1>
-                <p className="mb-6">
+            <div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-t from-sky-200 to bg-white'>
+                <h1 className='text-3xl font-bold mb-4 mx-10 '>
+                    Install Our App
+                </h1>
+                <p className='mb-6 mx-10 '>
                     Get a better experience by installing the Student Senior
                     app.
                 </p>
                 <Seo
-                    title="Install Our App"
-                    desc="Get a better experience by installing the Student Senior
-                    app."
+                    title='Install Our App'
+                    desc='Get a better experience by installing the Student Senior
+                    app.'
                 />
                 {isInstallable ? (
                     <button
                         onClick={handleInstallClick}
-                        className="bg-sky-500 text-white px-6 py-3 rounded-lg shadow-lg"
+                        className='bg-sky-500 text-white px-6 py-3 rounded-lg shadow-lg'
                     >
                         Install App
                     </button>
                 ) : (
-                    <p>
+                    <p className='mx-10 '>
                         App is already installed or not available for
                         installation.
                     </p>

@@ -5,6 +5,7 @@ import { fetchBranches } from '../../redux/slices/branchSlice.js';
 import { capitalizeWords } from '../../utils/Capitalize.js';
 import DetailPageNavbar from '../../DetailPages/DetailPageNavbar.jsx';
 import Seo from '../SEO/Seo.jsx';
+import { CompactSpinner } from '../../ui/Spinner.jsx';
 
 const Branches = () => {
     const { collegeName, courseCode } = useParams();
@@ -32,7 +33,11 @@ const Branches = () => {
         return (
             <div className='flex justify-center items-center min-h-screen'>
                 <DetailPageNavbar path={`college/${collegeName}/resources`} />
-                <i className='fas fa-spinner fa-pulse fa-5x'></i>
+                <div className='col-span-full flex justify-center h-screen py-12 w-full'>
+                    <div className='text-center'>
+                        <CompactSpinner size='large' />
+                    </div>
+                </div>
             </div>
         );
     }

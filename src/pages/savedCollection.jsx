@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSavedCollection } from '../redux/slices/savedCollectionSlice';
 import { useSaveResource } from '../hooks/useSaveResource';
+import { CompactSpinner } from '../ui/Spinner';
 
 const SavedCollection = () => {
     const dispatch = useDispatch();
@@ -32,9 +33,10 @@ const SavedCollection = () => {
     };
 
     const renderLoadingState = () => (
-        <div className='flex flex-col items-center justify-center p-12 text-center'>
-            <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4'></div>
-            <p className='text-gray-600'>Loading your collection...</p>
+        <div className='col-span-full flex justify-center h-screen py-12 w-full'>
+            <div className='text-center'>
+                <CompactSpinner />
+            </div>
         </div>
     );
 
