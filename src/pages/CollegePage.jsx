@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import CollegeHero from '../components/Hero/CollegeHero';
@@ -14,21 +14,20 @@ import Seo from '../components/SEO/Seo.jsx';
 import { api } from '../config/apiConfiguration.js';
 import useApiFetch from '../hooks/useApiFetch.js';
 import { capitalizeWords } from '../utils/Capitalize.js';
-import Popup from '../components/Popup/Popup.jsx';
 
 const CollegePage = () => {
     const { collegeName } = useParams();
     const collegeId = useCollegeId(collegeName);
     const dispatch = useDispatch();
     const [collegeData, setCollegeData] = useState({});
-    const { useFetch, loadingFetch } = useApiFetch();
+    const { useFetch } = useApiFetch();
     const url = api.college;
 
     useEffect(() => {
         fetchCollege();
         dispatch(fetchSeniors(collegeId));
         dispatch(fetchProducts(collegeId));
-    }, [collegeName]);
+    }, [dispatch, collegeName, collegeId]);
 
     const fetchCollege = async () => {
         try {
@@ -47,7 +46,6 @@ const CollegePage = () => {
                     desc={collegeData?.description || ' '}
                 />
                 <Collegelinks />
-                <Popup />
             </CollegeHero>
             <FeaturedSeniors />
             <hr />

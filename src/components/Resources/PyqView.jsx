@@ -17,6 +17,7 @@ import {
 import useApiRequest from '../../hooks/useApiRequest.js';
 import { PYQ_DOWNLOAD_TIMER } from '../../config/constant.js';
 import useRequireLogin from '../../hooks/useRequireLogin.js';
+import { StudentSeniorSpinner } from '../../ui/Spinner.jsx';
 
 // Set up PDF.js worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
@@ -369,15 +370,7 @@ function PyqView() {
     }, []);
 
     if (loading) {
-        return (
-            <div className='flex justify-center items-center min-h-screen'>
-                <DetailPageNavbar path={`college/${collegeName}/resources`} />
-                <div className='text-center'>
-                    <i className='fas fa-spinner fa-pulse fa-5x text-sky-500'></i>
-                    <p className='mt-4 text-lg text-gray-600'>Loading pyq...</p>
-                </div>
-            </div>
-        );
+        return <StudentSeniorSpinner />;
     }
 
     if (error) {

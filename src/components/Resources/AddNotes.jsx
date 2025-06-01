@@ -294,7 +294,7 @@ function AddNotes({
                                 onChange={(e) => setPrice(e.target.value)}
                                 className='w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent'
                                 required
-                                min='1'
+                                min='25'
                                 placeholder='Enter price in points'
                             />
                         </div>

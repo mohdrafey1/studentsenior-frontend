@@ -16,6 +16,7 @@ import Button from '../ui/Button.jsx';
 import AddNotes from '../components/Resources/AddNotes.jsx';
 import { api } from '../config/apiConfiguration.js';
 import { toast } from 'react-toastify';
+import { CompactSpinner } from '../ui/Spinner.jsx';
 
 const NotesPage = () => {
     const { collegeName } = useParams();
@@ -199,7 +200,11 @@ const NotesPage = () => {
                 ) : (
                     <div className='col-span-4 flex justify-center items-center py-10 w-full'>
                         {loading ? (
-                            <i className='fas fa-spinner fa-pulse fa-5x'></i>
+                            <div className='col-span-full flex justify-center h-screen py-12 w-full'>
+                                <div className='text-center'>
+                                    <CompactSpinner />
+                                </div>
+                            </div>
                         ) : (
                             <div className='text-center p-4 bg-white rounded-lg shadow-3xl'>
                                 <p className='text-xl font-semibold text-gray-700'>

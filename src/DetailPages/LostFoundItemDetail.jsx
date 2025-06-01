@@ -6,6 +6,7 @@ import { api, API_KEY } from '../config/apiConfiguration.js';
 import DetailPageNavbar from '../DetailPages/DetailPageNavbar.jsx';
 import Seo from '../components/SEO/Seo.jsx';
 import { toast } from 'react-toastify';
+import { CompactSpinner, StudentSeniorSpinner } from '../ui/Spinner.jsx';
 
 const LostFoundItemDetail = () => {
     const { collegeName, slug } = useParams();
@@ -141,19 +142,14 @@ const LostFoundItemDetail = () => {
     };
 
     if (loading) {
-        return (
-            <div className="bg-gradient-to-t from-sky-50 to-white min-h-screen py-16 px-8 md:px-32">
-                <DetailPageNavbar />
-                <p className="text-center text-gray-600">Loading...</p>
-            </div>
-        );
+        return <StudentSeniorSpinner />;
     }
 
     if (error) {
         return (
-            <div className="bg-gradient-to-t from-sky-50 to-white min-h-screen py-16 px-8 md:px-32">
+            <div className='bg-gradient-to-t from-sky-50 to-white min-h-screen py-16 px-8 md:px-32'>
                 <DetailPageNavbar />
-                <div className="text-center text-red-500">
+                <div className='text-center text-red-500'>
                     <p>Error: {error}</p>
                 </div>
             </div>
@@ -162,9 +158,9 @@ const LostFoundItemDetail = () => {
 
     if (!lostFoundItem) {
         return (
-            <div className="bg-gradient-to-t from-sky-50 to-white min-h-screen py-16 px-8 md:px-32">
+            <div className='bg-gradient-to-t from-sky-50 to-white min-h-screen py-16 px-8 md:px-32'>
                 <DetailPageNavbar />
-                <div className="text-center text-gray-600">
+                <div className='text-center text-gray-600'>
                     <p>No item found.</p>
                 </div>
             </div>
@@ -175,31 +171,31 @@ const LostFoundItemDetail = () => {
         <div>
             <DetailPageNavbar />
             <Seo title={lostFoundItem.name} description={lostFoundItem?.name} />
-            <div className="bg-gradient-to-t from-sky-50 to-white min-h-screen py-16 px-8 md:px-32">
-                <div className="bg-white p-8 rounded-2xl shadow-lg space-y-6 max-w-4xl mx-auto">
-                    <h1 className="font-bold text-4xl text-sky-800">
+            <div className='bg-gradient-to-t from-sky-50 to-white min-h-screen py-16 px-8 md:px-32'>
+                <div className='bg-white p-8 rounded-2xl shadow-lg space-y-6 max-w-4xl mx-auto'>
+                    <h1 className='font-bold text-4xl text-sky-800'>
                         {lostFoundItem.name}
                     </h1>
-                    <p className="text-gray-600 text-sm">
+                    <p className='text-gray-600 text-sm'>
                         Posted by: {lostFoundItem.owner?.username}
                     </p>
 
                     {signedImageUrl ? (
                         <img
                             src={signedImageUrl}
-                            alt="Lost Found Item"
-                            className="w-full h-96 object-cover rounded-lg shadow-md"
+                            alt='Lost Found Item'
+                            className='w-full h-96 object-cover rounded-lg shadow-md'
                         />
                     ) : (
-                        <div className="w-full h-96 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500">
+                        <div className='w-full h-96 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500'>
                             No Image Available
                         </div>
                     )}
 
-                    <div className="space-y-6">
+                    <div className='space-y-6'>
                         {/* Status */}
-                        <div className="flex items-center space-x-2">
-                            <strong className="text-sky-700 text-lg">
+                        <div className='flex items-center space-x-2'>
+                            <strong className='text-sky-700 text-lg'>
                                 Status:
                             </strong>
                             <span
@@ -218,27 +214,27 @@ const LostFoundItemDetail = () => {
 
                         {/* Location */}
                         <div>
-                            <strong className="text-sky-700 text-lg">
+                            <strong className='text-sky-700 text-lg'>
                                 Location:
                             </strong>
-                            <p className="text-gray-700 mt-1">
+                            <p className='text-gray-700 mt-1'>
                                 {lostFoundItem.location}
                             </p>
                         </div>
 
                         {/* Description */}
                         <div>
-                            <strong className="text-sky-700 text-lg">
+                            <strong className='text-sky-700 text-lg'>
                                 Description:
                             </strong>
-                            <p className="text-gray-700 mt-1">
+                            <p className='text-gray-700 mt-1'>
                                 {lostFoundItem.description}
                             </p>
                         </div>
 
                         {/* Type */}
                         <div>
-                            <strong className="text-sky-700 text-lg">
+                            <strong className='text-sky-700 text-lg'>
                                 Type:
                             </strong>
                             <p
@@ -253,10 +249,10 @@ const LostFoundItemDetail = () => {
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="mt-6">
+                        <div className='mt-6'>
                             {ownerId === lostFoundItem.owner?._id ? (
                                 <button
-                                    className="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"
+                                    className='px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-lg shadow-md transition-all duration-300 transform hover:scale-105'
                                     onClick={() => setIsEditing(true)}
                                 >
                                     Edit Details
@@ -270,9 +266,9 @@ const LostFoundItemDetail = () => {
                                     )}&text=${encodeURIComponent(
                                         `Hey, I came from Student Senior about ${lostFoundItem.type} ${lostFoundItem.name}. Can you provide more details?`
                                     )}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center justify-center px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    className='inline-flex items-center justify-center px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-lg shadow-md transition-all duration-300 transform hover:scale-105'
                                 >
                                     Contact on WhatsApp
                                 </a>
@@ -284,68 +280,68 @@ const LostFoundItemDetail = () => {
 
             {/* Edit Modal */}
             {isEditing && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-white p-8 rounded-2xl shadow-lg w-11/12 max-w-md">
-                        <h2 className="text-2xl font-bold text-sky-800 mb-6">
+                <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'>
+                    <div className='bg-white p-8 rounded-2xl shadow-lg w-11/12 max-w-md'>
+                        <h2 className='text-2xl font-bold text-sky-800 mb-6'>
                             Edit Item
                         </h2>
 
-                        <div className="space-y-4">
-                            <label className="block text-gray-700">Name</label>
+                        <div className='space-y-4'>
+                            <label className='block text-gray-700'>Name</label>
                             <input
-                                type="text"
-                                name="name"
+                                type='text'
+                                name='name'
                                 value={formData.name}
                                 onChange={handleInputChange}
-                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                className='w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500'
                             />
 
-                            <label className="block text-gray-700">
+                            <label className='block text-gray-700'>
                                 Description
                             </label>
                             <textarea
-                                name="description"
+                                name='description'
                                 value={formData.description}
                                 onChange={handleInputChange}
-                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                className='w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500'
                             ></textarea>
 
-                            <label className="block text-gray-700">
+                            <label className='block text-gray-700'>
                                 Location
                             </label>
                             <input
-                                type="text"
-                                name="location"
+                                type='text'
+                                name='location'
                                 value={formData.location}
                                 onChange={handleInputChange}
-                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                className='w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500'
                             />
 
-                            <label className="block text-gray-700">
+                            <label className='block text-gray-700'>
                                 Current Status
                             </label>
                             <select
-                                name="currentStatus"
+                                name='currentStatus'
                                 value={formData.currentStatus}
                                 onChange={handleInputChange}
-                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                className='w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500'
                             >
-                                <option value="pending">Pending</option>
-                                <option value="claimed">Claimed</option>
-                                <option value="resolved">Resolved</option>
+                                <option value='pending'>Pending</option>
+                                <option value='claimed'>Claimed</option>
+                                <option value='resolved'>Resolved</option>
                             </select>
                         </div>
 
-                        <div className="mt-6 flex justify-end space-x-4">
+                        <div className='mt-6 flex justify-end space-x-4'>
                             <button
                                 onClick={() => setIsEditing(false)}
-                                className="px-6 py-2 bg-gray-500 hover:bg-gray-600 transition text-white rounded-lg shadow-md"
+                                className='px-6 py-2 bg-gray-500 hover:bg-gray-600 transition text-white rounded-lg shadow-md'
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleUpdateItem}
-                                className="px-6 py-2 bg-sky-600 hover:bg-sky-700 transition text-white rounded-lg shadow-md"
+                                className='px-6 py-2 bg-sky-600 hover:bg-sky-700 transition text-white rounded-lg shadow-md'
                             >
                                 Save
                             </button>
