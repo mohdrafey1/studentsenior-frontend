@@ -1,18 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+
 import { toast } from 'react-toastify';
-import { API_BASE_URL } from '../config/apiConfiguration';
+import { API_BASE_URL, isDevelopment } from '../config/apiConfiguration';
 import useApiFetch from '../hooks/useApiFetch';
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState(null);
-
-    const navigate = useNavigate();
-
-    const currentUser = useSelector((state) => state.user.currentUser);
-    const ownerId = currentUser?._id;
 
     const { useFetch, loadingFetch: loading } = useApiFetch();
 
@@ -29,21 +23,10 @@ const Courses = () => {
         fetchCourses();
     }, []);
 
-    // Fetch course details
-    const fetchCourseDetails = async (slug) => {
-        try {
-            const data = await useFetch(
-                `${API_BASE_URL}/courseapi/course/${slug}`
-            );
-            setSelectedCourse(data);
-        } catch (err) {
-            toast.error(err.message || 'Failed to fetch course details: ');
-        }
-    };
-
-    const handleBuy = (slug) => {
-        localStorage.setItem('course-slug', slug);
-        navigate('/cart');
+    const handleViewDetails = (slug) => {
+        window.location.href = isDevelopment
+            ? `http://localhost:3009/course/${slug}`
+            : `https://course.studentsenior.com/course/${slug}`;
     };
 
     return (
@@ -78,24 +61,9 @@ const Courses = () => {
                                 ₹{course.price}
                             </p>
                             <div className='mt-4 flex justify-between'>
-                                {course.enrolledStudents.some(
-                                    (student) => student.userId === ownerId
-                                ) ? (
-                                    <button className='bg-green-500 text-white px-5 py-2 rounded-xl cursor-default'>
-                                        Purchased
-                                    </button>
-                                ) : (
-                                    <button
-                                        className='bg-blue-500 text-white px-5 py-2 rounded-xl hover:bg-blue-600'
-                                        onClick={() => handleBuy(course.slug)}
-                                    >
-                                        Buy Now
-                                    </button>
-                                )}
-
                                 <button
                                     onClick={() =>
-                                        fetchCourseDetails(course.slug)
+                                        handleViewDetails(course.slug)
                                     }
                                     className='text-blue-500 font-semibold hover:underline'
                                 >

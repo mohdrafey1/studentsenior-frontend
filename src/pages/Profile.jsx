@@ -13,9 +13,6 @@ import {
     updateUserStart,
     updateUserSuccess,
     updateUserFailure,
-    deleteUserStart,
-    deleteUserSuccess,
-    deleteUserFailure,
     signOut,
 } from '../redux/user/userSlice';
 import { toast } from 'react-toastify';
@@ -98,29 +95,6 @@ export default function Profile() {
         }
     };
 
-    const handleDeleteAccount = async () => {
-        try {
-            dispatch(deleteUserStart());
-            const res = await fetch(
-                `${API_BASE_URL}/api/user/delete/${currentUser._id}`,
-                {
-                    method: 'DELETE',
-                    headers: {
-                        'x-api-key': API_KEY,
-                    },
-                }
-            );
-            const data = await res.json();
-            if (data.success === false) {
-                dispatch(deleteUserFailure(data));
-                return;
-            }
-            dispatch(deleteUserSuccess(data));
-        } catch (error) {
-            dispatch(deleteUserFailure(error));
-        }
-    };
-
     const handleSignOut = async () => {
         try {
             setLoading1(true);
@@ -166,41 +140,41 @@ export default function Profile() {
     } = useSelector((state) => state.userData || {});
 
     return (
-        <div className="flex flex-col sm:flex-row bg-gray-100">
+        <div className='flex flex-col sm:flex-row bg-gray-100'>
             {showDialog ? (
-                <div className="fixed inset-0 flex items-center justify-center bg-gray-400 z-50 bg-opacity-75 ">
-                    <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 rounded-lg lg:w-1/3 w-2/3 shadow-2xl">
-                        <div className="sm:flex sm:items-start">
-                            <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                <div className='fixed inset-0 flex items-center justify-center bg-gray-400 z-50 bg-opacity-75 '>
+                    <div className='bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 rounded-lg lg:w-1/3 w-2/3 shadow-2xl'>
+                        <div className='sm:flex sm:items-start'>
+                            <div className='mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10'>
                                 <img
                                     src={warning}
-                                    alt="warning icon"
-                                    className="p-2"
+                                    alt='warning icon'
+                                    className='p-2'
                                 />
                             </div>
-                            <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                            <div className='mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left'>
                                 <p> Do you want to log out?</p>
-                                <div className="mt-2">
-                                    <p className="text-sm text-gray-500">
-                                        You'll need to log in again to access
-                                        your account.
+                                <div className='mt-2'>
+                                    <p className='text-sm text-gray-500'>
+                                        You&apos;ll need to log in again to
+                                        access your account.
                                     </p>
                                 </div>
-                                <div className="flex py-4 gap-3 lg:justify-end justify-center ">
+                                <div className='flex py-4 gap-3 lg:justify-end justify-center '>
                                     <button
-                                        className="p-1 py-2 bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer"
+                                        className='p-1 py-2 bg-white rounded-lg px-4 border-gray-400 text-sm ring-1 ring-inset ring-gray-300 cursor-pointer'
                                         onClick={() => setShowDialog(false)}
                                     >
                                         Cancel
                                     </button>
                                     <button
-                                        className="p-1 py-2 bg-red-600 rounded-lg px-4 border-gray-400 text-sm font-semibold text-white outline-indigo-100 cursor-pointer"
+                                        className='p-1 py-2 bg-red-600 rounded-lg px-4 border-gray-400 text-sm font-semibold text-white outline-indigo-100 cursor-pointer'
                                         onClick={handleSignOut}
                                         disabled={loading1}
                                     >
                                         {loading1 ? (
                                             <>
-                                                <i className="fas fa-spinner fa-pulse"></i>
+                                                <i className='fas fa-spinner fa-pulse'></i>
                                             </>
                                         ) : (
                                             <>Logout</>
@@ -212,18 +186,18 @@ export default function Profile() {
                     </div>
                 </div>
             ) : null}
-            <div className="p-3 w-96 mx-auto">
-                <h1 className="text-3xl font-semibold text-center my-7">
+            <div className='p-3 w-96 mx-auto'>
+                <h1 className='text-3xl font-semibold text-center my-7'>
                     Profile
                 </h1>
                 <Seo title={`Profile - ${currentUser.username}`} />
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    <div className="relative flex justify-center">
+                <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+                    <div className='relative flex justify-center'>
                         <input
-                            type="file"
+                            type='file'
                             ref={fileRef}
                             hidden
-                            accept="image/*"
+                            accept='image/*'
                             onChange={(e) => setImage(e.target.files[0])}
                         />
                         <img
@@ -231,26 +205,26 @@ export default function Profile() {
                                 formData.profilePicture ||
                                 currentUser.profilePicture
                             }
-                            alt="profile"
-                            className="h-32 w-32 self-center cursor-pointer rounded-full object-cover border border-sky-300"
+                            alt='profile'
+                            className='h-32 w-32 self-center cursor-pointer rounded-full object-cover border border-sky-300'
                             onClick={() => fileRef.current.click()}
                         />
                         <i
-                            className="fa-solid fa-pen absolute top-8 right-1/4 sm:right-1/3 transform -translate-x-1/2 -translate-y-1/2 bg-gray-50 p-2 rounded-full cursor-pointer text-gray-700"
+                            className='fa-solid fa-pen absolute top-8 right-1/4 sm:right-1/3 transform -translate-x-1/2 -translate-y-1/2 bg-gray-50 p-2 rounded-full cursor-pointer text-gray-700'
                             onClick={() => fileRef.current.click()}
                         ></i>
                     </div>
 
-                    <p className="text-sm self-center">
+                    <p className='text-sm self-center'>
                         {imageError ? (
-                            <span className="text-red-700">
+                            <span className='text-red-700'>
                                 Error uploading image (file size must be less
                                 than 2 MB)
                             </span>
                         ) : imagePercent > 0 && imagePercent < 100 ? (
-                            <span className="text-slate-700">{`Uploading: ${imagePercent} %`}</span>
+                            <span className='text-slate-700'>{`Uploading: ${imagePercent} %`}</span>
                         ) : imagePercent === 100 ? (
-                            <span className="text-green-700">
+                            <span className='text-green-700'>
                                 Image uploaded successfully please click update
                             </span>
                         ) : (
@@ -259,79 +233,73 @@ export default function Profile() {
                     </p>
                     <input
                         defaultValue={currentUser.username}
-                        type="text"
-                        id="username"
-                        placeholder="Username"
-                        className="bg-slate-200 rounded-lg p-3"
+                        type='text'
+                        id='username'
+                        placeholder='Username'
+                        className='bg-slate-200 rounded-lg p-3'
                         onChange={handleChange}
                     />
                     <input
                         defaultValue={currentUser.email}
-                        type="email"
-                        id="email"
-                        placeholder="Email"
-                        className="bg-slate-200 rounded-lg p-3"
+                        type='email'
+                        id='email'
+                        placeholder='Email'
+                        className='bg-slate-200 rounded-lg p-3'
                         onChange={handleChange}
                         readOnly
                     />
                     <input
                         defaultValue={currentUser.college}
-                        type="text"
-                        id="college"
-                        placeholder="College Name"
-                        className="bg-slate-200 rounded-lg p-3"
+                        type='text'
+                        id='college'
+                        placeholder='College Name'
+                        className='bg-slate-200 rounded-lg p-3'
                         onChange={handleChange}
                     />
                     <input
                         defaultValue={currentUser.phone}
-                        type="number"
-                        id="phone"
-                        placeholder="Please Enter 10 digit Mobile No"
-                        className="bg-slate-200 rounded-lg p-3"
+                        type='number'
+                        id='phone'
+                        placeholder='Please Enter 10 digit Mobile No'
+                        className='bg-slate-200 rounded-lg p-3'
                         onChange={handleChange}
                     />
-                    <div className="w-full flex justify-between">
+                    <div className='w-full flex justify-between'>
                         <input
                             type={passwordShown ? 'text' : 'password'}
-                            id="password"
-                            placeholder="Password"
-                            className="bg-slate-200 rounded-lg p-3 w-full"
+                            id='password'
+                            placeholder='Password'
+                            className='bg-slate-200 rounded-lg p-3 w-full'
                             onChange={handleChange}
                         />
                         <i
-                            className="fa-solid fa-eye -translate-x-10 w-0 content-center cursor-pointer text-lg"
+                            className='fa-solid fa-eye -translate-x-10 w-0 content-center cursor-pointer text-lg'
                             onClick={togglePass}
                         ></i>
                     </div>
-                    <button className="bg-sky-500 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
+                    <button className='bg-sky-500 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>
                         {loading ? 'Loading...' : 'Update'}
                     </button>
                 </form>
-                <div className="flex justify-between mt-5">
-                    <span
-                        onClick={handleDeleteAccount}
-                        className="text-gray-400 cursor-pointer"
-                    >
-                        <button disabled>Delete Account</button>
-                    </span>
+                <div className='flex justify-between mt-5'>
                     <span
                         onClick={() => {
                             setShowDialog(true);
                         }}
-                        className="text-red-700 cursor-pointer"
+                        className='text-red-700 cursor-pointer'
                     >
                         Sign out
                     </span>
                 </div>
-                <p className="text-red-700 mt-5">
+                <p className='text-red-700 mt-5'>
                     {error && 'Something went wrong!'}
                 </p>
-                <p className="text-green-700 mt-5">
+                <p className='text-green-700 mt-5'>
                     {updateSuccess && 'User is updated successfully!'}
                 </p>
             </div>
 
-            <div className="sm:w-2/3">
+            <div className='sm:w-2/3'>
                 <ProfileDetails
                     data={{
                         rewardBalance,

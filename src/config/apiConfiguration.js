@@ -1,6 +1,7 @@
 export const API_BASE_URL = import.meta.env.VITE_API_URL;
 export const API_KEY = import.meta.env.VITE_API_KEY;
 export const API_KEY_URL = import.meta.env.VITE_API_KEY_URL;
+export const isDevelopment = import.meta.env.VITE_IS_DEVELOPMENT;
 
 export const api = {
     auth: {
