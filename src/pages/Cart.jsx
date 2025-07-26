@@ -27,7 +27,7 @@ const Cart = () => {
             setLoading(true);
             try {
                 const response = await fetch(
-                    `${API_BASE_URL}/courseapi/course/${slug}`,
+                    `${API_BASE_URL}/courseapi/course/cart/${slug}`,
                     { credentials: 'include' }
                 );
                 if (!response.ok)
@@ -181,9 +181,9 @@ const Cart = () => {
                                     </p>
                                 </div>
                             </div>
-                            <p className='font-semibold text-lg text-gray-800'>
+                            {/* <p className='font-semibold text-lg text-gray-800'>
                                 ₹{selectedProduct.price}
-                            </p>
+                            </p> */}
                         </div>
                     </div>
                 ) : (
