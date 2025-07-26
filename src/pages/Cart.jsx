@@ -8,11 +8,12 @@ const Cart = () => {
     const query = new URLSearchParams(useLocation().search);
     const courseSlug = query.get('courseSlug');
 
-    console.log(courseSlug);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [coupon, setCoupon] = useState('');
+    const [couponDetails, setCouponDetails] = useState(null);
     const [discount, setDiscount] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [couponLoading, setCouponLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const { apiRequest } = useApiRequest();
@@ -52,8 +53,24 @@ const Cart = () => {
             return;
         }
 
+        // If there's a valid coupon, apply it before payment
+        if (couponDetails) {
+            try {
+                await apiRequest(
+                    `${API_BASE_URL}/courseapi/coupon/apply`,
+                    'POST',
+                    { code: coupon }
+                );
+            } catch (err) {
+                console.error('Failed to apply coupon:', err);
+                toast.error('Failed to apply coupon. Please try again.');
+                return;
+            }
+        }
+
+        const finalAmount = selectedProduct.price - discount;
         const body = {
-            amount: selectedProduct.price, // Convert to paisa for PhonePe
+            amount: finalAmount,
             purchaseItemId: selectedProduct._id,
             typeOfPurchase: 'course_purchase',
             redirectUrl: isDevelopment
@@ -69,7 +86,7 @@ const Cart = () => {
             );
 
             if (response.success) {
-                window.location.href = response.redirectUrl; // Redirect to PhonePe payment page
+                window.location.href = response.redirectUrl;
             } else {
                 toast.error('Payment initiation failed. Please try again.');
             }
@@ -79,13 +96,51 @@ const Cart = () => {
         }
     };
 
-    // Apply coupon discount
-    const applyCoupon = () => {
-        if (coupon === 'NEW500') {
-            setDiscount(10);
-        } else {
-            setDiscount(0);
+    // Validate and apply coupon
+    const applyCoupon = async () => {
+        if (!coupon.trim()) {
+            toast.error('Please enter a coupon code');
+            return;
         }
+
+        if (!selectedProduct) {
+            toast.error('No product selected');
+            return;
+        }
+
+        setCouponLoading(true);
+        try {
+            const response = await apiRequest(
+                `${API_BASE_URL}/courseapi/coupon/validate`,
+                'POST',
+                {
+                    code: coupon,
+                    amount: selectedProduct.price,
+                }
+            );
+
+            if (response.success) {
+                setCouponDetails(response.couponDetails);
+                setDiscount(response.discount);
+                toast.success('Coupon applied successfully!');
+            } else {
+                toast.error(response.message);
+            }
+        } catch (err) {
+            console.error('Coupon Error:', err);
+            toast.error(err.response?.data?.message || 'Invalid coupon code');
+            setCouponDetails(null);
+            setDiscount(0);
+        } finally {
+            setCouponLoading(false);
+        }
+    };
+
+    // Remove applied coupon
+    const removeCoupon = () => {
+        setCoupon('');
+        setCouponDetails(null);
+        setDiscount(0);
     };
 
     if (loading)
@@ -138,22 +193,41 @@ const Cart = () => {
                 )}
 
                 {/* Coupon Section */}
-                <div className='flex items-center space-x-4 mb-6'>
-                    <input
-                        type='text'
-                        placeholder='Enter coupon code'
-                        className='border border-gray-300 rounded-lg px-4 py-2 w-2/3'
-                        value={coupon}
-                        onChange={(e) => setCoupon(e.target.value)}
-                    />
-                    <button
-                        className='bg-green-500 text-white px-5 py-2 rounded-lg hover:bg-green-600 transition'
-                        onClick={applyCoupon}
-                    >
-                        Apply
-                    </button>
-                    {discount > 0 && (
-                        <span className='text-green-600'>Coupon Applied!</span>
+                <div className='mb-6'>
+                    <div className='flex items-center space-x-4'>
+                        <input
+                            type='text'
+                            placeholder='Enter coupon code'
+                            className='border border-gray-300 rounded-lg px-4 py-2 w-2/3'
+                            value={coupon}
+                            onChange={(e) =>
+                                setCoupon(e.target.value.toUpperCase())
+                            }
+                            disabled={couponDetails !== null}
+                        />
+                        {!couponDetails ? (
+                            <button
+                                className='bg-green-500 text-white px-5 py-2 rounded-lg hover:bg-green-600 transition disabled:opacity-50'
+                                onClick={applyCoupon}
+                                disabled={couponLoading || !coupon.trim()}
+                            >
+                                {couponLoading ? 'Applying...' : 'Apply'}
+                            </button>
+                        ) : (
+                            <button
+                                className='bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition'
+                                onClick={removeCoupon}
+                            >
+                                Remove
+                            </button>
+                        )}
+                    </div>
+                    {couponDetails && (
+                        <div className='mt-2 text-sm text-green-600'>
+                            {couponDetails.discountType === 'percentage'
+                                ? `${couponDetails.discountValue}% off`
+                                : `₹${couponDetails.discountValue} off`}
+                        </div>
                     )}
                 </div>
 
@@ -167,7 +241,7 @@ const Cart = () => {
                         <div className='border-t border-gray-300 my-3'></div>
                         {discount > 0 && (
                             <div className='flex justify-between text-green-600'>
-                                <p>Coupon ({coupon})</p>
+                                <p>Discount ({couponDetails.code})</p>
                                 <p>- ₹{discount}</p>
                             </div>
                         )}
@@ -181,9 +255,10 @@ const Cart = () => {
 
                 <button
                     onClick={handlePaymentClick}
-                    className='w-full bg-green-500 text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-600 transition'
+                    disabled={loading || couponLoading}
+                    className='w-full bg-green-500 text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-600 transition disabled:opacity-50'
                 >
-                    Proceed to Pay
+                    {loading ? 'Processing...' : 'Proceed to Pay'}
                 </button>
             </div>
         </div>
