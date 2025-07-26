@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { api, API_BASE_URL } from '../config/apiConfiguration';
@@ -98,7 +98,7 @@ const PaymentComplete = () => {
                     paymentData.purchaseItemId,
                     apiEndpoint,
                     navigate,
-                    () => { }
+                    () => {}
                 );
             }
 
@@ -175,10 +175,10 @@ const PaymentComplete = () => {
                                     'pyq_purchase',
                                     'add_points',
                                 ].includes(paymentDetails?.typeOfPurchase) &&
-                                    paymentDetails?.redirectBackUrl ? (
+                                paymentDetails?.redirectBackUrl ? (
                                     <>
-                                        Thank you for your purchase. You'll be
-                                        redirected back shortly.
+                                        Thank you for your purchase. You&apos;ll
+                                        be redirected back shortly.
                                         <p className='text-sm text-gray-500 mt-2'>
                                             Not redirecting?{' '}
                                             <a
@@ -247,9 +247,7 @@ const PaymentComplete = () => {
 
                         <div className='space-y-4'>
                             <div className='flex items-center justify-between'>
-                                <span className='text-gray-600 '>
-                                    Type:
-                                </span>
+                                <span className='text-gray-600 '>Type:</span>
                                 <span className='text-gray-900   font-medium'>
                                     {paymentDetails?.typeOfPurchase}
                                 </span>
@@ -280,12 +278,12 @@ const PaymentComplete = () => {
                                 <span className='text-gray-900  '>
                                     {paymentDetails?.createdAt
                                         ? new Date(
-                                            paymentDetails.createdAt
-                                        ).toLocaleDateString('en-IN', {
-                                            day: 'numeric',
-                                            month: 'long',
-                                            year: 'numeric',
-                                        })
+                                              paymentDetails.createdAt
+                                          ).toLocaleDateString('en-IN', {
+                                              day: 'numeric',
+                                              month: 'long',
+                                              year: 'numeric',
+                                          })
                                         : 'N/A'}
                                 </span>
                             </div>
@@ -302,7 +300,9 @@ const PaymentComplete = () => {
                             'add_points',
                         ].includes(paymentDetails?.typeOfPurchase) && (
                             <button
-                                onClick={() => navigate(`/courses`)}
+                                onClick={() => {
+                                    window.location.href = `http://localhost:3009/course/${paymentDetails.purchaseItemId.slug}`;
+                                }}
                                 className='flex-1 flex items-center justify-center gap-2 px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-teal-600 hover:bg-teal-700'
                             >
                                 <i className='fa-solid fa-calendar'></i> View

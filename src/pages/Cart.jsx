@@ -1,21 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useApiRequest from '../hooks/useApiRequest';
 import { toast } from 'react-toastify';
-import { API_BASE_URL } from '../config/apiConfiguration';
+import { API_BASE_URL, isDevelopment } from '../config/apiConfiguration';
+import { useLocation } from 'react-router-dom';
 
 const Cart = () => {
+    const query = new URLSearchParams(useLocation().search);
+    const courseSlug = query.get('courseSlug');
+
+    console.log(courseSlug);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [coupon, setCoupon] = useState('');
     const [discount, setDiscount] = useState(0);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const { apiRequest, loading: apiRequestLoading } = useApiRequest();
+    const { apiRequest } = useApiRequest();
 
     // Fetch course details from backend
     useEffect(() => {
         const fetchCourse = async () => {
-            const slug = localStorage.getItem('course-slug');
+            const slug = courseSlug;
             if (!slug) return;
 
             setLoading(true);
@@ -38,7 +43,7 @@ const Cart = () => {
         };
 
         fetchCourse();
-    }, []);
+    }, [courseSlug]);
 
     // Handle payment initiation with PhonePe
     const handlePaymentClick = async () => {
@@ -51,11 +56,14 @@ const Cart = () => {
             amount: selectedProduct.price, // Convert to paisa for PhonePe
             purchaseItemId: selectedProduct._id,
             typeOfPurchase: 'course_purchase',
+            redirectUrl: isDevelopment
+                ? `http://localhost:3009/course/${courseSlug}`
+                : `https://course.studentsenior.com/course/${courseSlug}`,
         };
 
         try {
             const response = await apiRequest(
-                `${API_BASE_URL}/api/phonepe/initiate`,
+                `${API_BASE_URL}/courseapi/phonepe/initiate`,
                 'POST',
                 body
             );
